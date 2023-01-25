@@ -34,6 +34,7 @@ DRF_APPS = [
 SERVICE_APPS = [
     'common_app.apps.CommonAppConfig',
     'auth_app.apps.AuthAppConfig',
+    'persona_app.apps.PersonaAppConfig',
 ]
 
 INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + SERVICE_APPS
