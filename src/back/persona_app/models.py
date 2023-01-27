@@ -1,9 +1,7 @@
 from django.db import models
 
-from common_app.models import BaseModel
 
-
-class Persona(BaseModel):
+class Persona(models.Model):
     class Gender(models.TextChoices):
         NONE = 'NO', '미입력'
         MALE = 'ML', '남성'
@@ -26,6 +24,9 @@ class Persona(BaseModel):
     age_group = models.IntegerField('연령대', choices=AgeGroup.choices, null=True, default=None)
     job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
     is_certified = models.BooleanField('공인 여부', default=False)
+
+    created_at = models.DateTimeField('생성 시각', auto_now_add=True)
+    updated_at = models.DateTimeField('갱신 시각', auto_now=True)
 
     def __str__(self):
         return f"[{self.pk}] {self.user.id}:{self.nickname}"

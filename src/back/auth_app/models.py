@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from common_app.models import BaseModel
 
 
-class User(AbstractUser, BaseModel):
+class User(AbstractUser):
     first_name = last_name = None
 
     def __str__(self) -> str:
