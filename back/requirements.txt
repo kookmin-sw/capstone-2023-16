@@ -6,6 +6,7 @@ graphene==3.2.1
 graphene-django==3.0.0
 graphql-core==3.2.3
 graphql-relay==3.2.0
+mysqlclient==2.1.1
 promise==2.3
 pytz==2022.7.1
 six==1.16.0
