@@ -3,9 +3,12 @@
 ## Running the server
 ### Requirements
 - Python 3.11
+- Docker
 
-### Scripts
+### 서버 띄우기 Script
 ```
+docker-compose up -d ;; mysql db 띄우기
+
 python -m venv venv
 pip install -r requirements.txt
 python manage.py runserver
