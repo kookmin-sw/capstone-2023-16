@@ -22,3 +22,5 @@ class EmailUser(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
+    class Meta:
+        db_table = 'email_users'
