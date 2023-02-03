@@ -31,13 +31,21 @@ DRF_APPS = [
     'rest_framework'
 ]
 
+GRAPHQL_APPS = [
+    "graphene_django"
+]
+
+GRAPHENE = {
+    "SCHEMA": "auth_app.schema.schema"
+}
+
 SERVICE_APPS = [
     'common_app.apps.CommonAppConfig',
     'auth_app.apps.AuthAppConfig',
     'persona_app.apps.PersonaAppConfig',
 ]
 
-INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + SERVICE_APPS
+INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + GRAPHQL_APPS + SERVICE_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
