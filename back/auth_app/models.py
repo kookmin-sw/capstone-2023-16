@@ -19,6 +19,7 @@ class User(models.Model):
 class EmailUser(models.Model):
     email = models.EmailField(verbose_name='유저의 이메일')
     password = models.TextField(verbose_name='유저의 비밀번호')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
