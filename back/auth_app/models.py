@@ -10,7 +10,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username'
 
     signup_method = models.CharField(max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
-    username = models.TextField(unique=True)
+    username = models.CharField(max_length=254, unique=True)
     picture_url = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
