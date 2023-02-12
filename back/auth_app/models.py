@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, UserManager
 from django.db import models
 
 
@@ -8,6 +8,7 @@ class User(AbstractBaseUser):
         (EMAIL, 'EMAIL'),
     ]
     USERNAME_FIELD = 'username'
+    objects = UserManager
 
     signup_method = models.CharField(max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
     username = models.CharField(max_length=254, unique=True)
