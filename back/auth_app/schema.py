@@ -1,35 +1,31 @@
-import graphene
+import typing
 
-from graphene_django import DjangoObjectType
-
-from .models import User, EmailUser
+import strawberry
 
 
-class Query(graphene.ObjectType):
-    hello = graphene.String(default_value="Hi!")
+@strawberry.type
+class Book:
+    title: str
+    author: str
 
 
-class UserType(DjangoObjectType):
-    class Meta:
-        model = User
+@strawberry.type
+class Query:
+    books: typing.List[Book]
 
 
-class EmailRegisterMutation(graphene.Mutation):
-    class Arguments:
-        # The input arguments for this mutation
-        username = graphene.String(required=True)
-        password = graphene.String(required=True)
-
-    # The class attributes define the response of the mutation
-    emailRegister = graphene.Field(UserType)
-
-    @classmethod
-    def mutate(cls, root, info, text, id):
-        # Create a new user and return it
-        return EmailRegisterMutation()
+def get_books():
+    return [
+        Book(
+            title="The Great Gatsby",
+            author="F. Scott Fitzgerald",
+        ),
+    ]
 
 
-class Mutation(graphene.ObjectType):
-    email_register = EmailRegisterMutation.Field()
+@strawberry.type
+class Query:
+    books: typing.List[Book] = strawberry.field(resolver=get_books)
 
-schema = graphene.Schema(query=Query,mutation=EmailRegisterMutation)
+
+schema = strawberry.Schema(query=Query)

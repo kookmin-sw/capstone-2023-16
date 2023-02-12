@@ -3,7 +3,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -14,7 +13,7 @@ SECRET_KEY = 'django-insecure-ilvtojpkntx8=v1d)dsokaixw%u+kxc54c=nzwq)jkd0qh1+27
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+APPEND_SLASH = False
 
 # Application definition
 
@@ -32,7 +31,7 @@ DRF_APPS = [
 ]
 
 GRAPHQL_APPS = [
-    "graphene_django"
+    "strawberry.django"
 ]
 
 GRAPHENE = {
@@ -104,7 +103,6 @@ CORS_ALLOW_METHODS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -125,4 +123,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
