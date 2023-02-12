@@ -12,11 +12,12 @@ brew install mysql-connector-c
 
 docker-compose up -d ;; mysql db 띄우기
 
-python -m venv venv
-pip install -r requirements.txt
-python manage.py runserver
+poetry install
 ```
 
+
+### 개발시 참고
+`PyCharm` 등에서 Poetry의 virtual env 를 사용해서 개발.
 
 ### GraphQL 실행창 띄우기
 http://127.0.0.1:8000/graphql
