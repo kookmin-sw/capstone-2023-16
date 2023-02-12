@@ -46,10 +46,10 @@ class Query:
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def register(self, info: Info, username: str, email: str, password: str) -> bool:
-        user, created = User.objects.get_or_create(username=username, email=email, password=password)
-        if created:
-            user.set_password(password)  # This line will hash the password
+    def register_or_login(self, info: Info, username: str, email: str, password: str) -> bool:
+        if not User.objects.filter(email=email).exists():
+            user = User.objects.create(username=username, email=email, password=password)
+            user.set_password(password)
             user.save()
 
         user = authenticate(email=email, password=password)
