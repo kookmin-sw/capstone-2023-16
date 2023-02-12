@@ -42,7 +42,8 @@ SERVICE_APPS = [
     'persona_app.apps.PersonaAppConfig',
 ]
 
-INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + GRAPHQL_APPS + SERVICE_APPS + ["corsheaders"]
+INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + GRAPHQL_APPS + SERVICE_APPS + [
+    "corsheaders", ]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
