@@ -34,9 +34,7 @@ GRAPHQL_APPS = [
     "strawberry.django"
 ]
 
-GRAPHENE = {
-    "SCHEMA": "auth_app.schema.schema"
-}
+AUTH_USER_MODEL = 'auth_app.User'
 
 SERVICE_APPS = [
     'common_app.apps.CommonAppConfig',
