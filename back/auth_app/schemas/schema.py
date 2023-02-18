@@ -1,5 +1,3 @@
-import typing
-
 import strawberry
 from strawberry import Schema
 from strawberry.tools import merge_types

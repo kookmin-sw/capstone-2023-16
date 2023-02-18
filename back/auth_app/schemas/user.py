@@ -3,6 +3,20 @@ import strawberry
 from auth_app.models import User
 from django.contrib.auth import authenticate, login
 from strawberry.types.info import Info
+from .types import User as UserType
+
+
+@strawberry.type
+class LoginSuccess:
+    user: UserType
+
+
+@strawberry.type
+class LoginError:
+    message: str
+
+
+LoginResult = strawberry.union("LoginResult", (LoginSuccess, LoginError))
 
 
 @strawberry.type
@@ -13,7 +27,7 @@ class UserResponse:
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def register_or_login(self, info: Info, username: str, email: str, password: str) -> bool:
+    def register_or_login(self, info: Info, username: str, email: str, password: str) -> LoginResult:
         if not User.objects.filter(email=email).exists():
             user = User.objects.create(username=username, email=email, password=password)
             user.set_password(password)
@@ -21,6 +35,7 @@ class Mutation:
 
         user = authenticate(email=email, password=password)
         if not user:
-            return False
+            return LoginError(message="Something went wrong")
+
         login(info.context.request, user)
-        return True
+        return LoginSuccess(user=UserType(username=user.username))
