@@ -35,7 +35,7 @@ class Mutation:
 
         user = authenticate(email=email, password=password)
         if not user:
-            return LoginError(message="Something went wrong")
+            return LoginError(message="Something wrong")
 
         login(info.context.request, user)
         return LoginSuccess(user=UserType(username=user.username))
