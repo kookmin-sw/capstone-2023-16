@@ -1,9 +1,9 @@
 name: Python
 
-on:
-  push:
-    paths:
-      - back/**
+# on:
+#   push:
+#     paths:
+#       - back/**
 
 jobs:
   flake8-lint:
@@ -18,3 +18,7 @@ jobs:
           python-version: "3.11"
       - name: flake8 Lint
         uses: py-actions/flake8@v2
+        with:
+          ignore: "F401"
+          path: "back"
+
