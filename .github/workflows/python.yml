@@ -1,5 +1,6 @@
 name: Python
 
+on: [push]
 # on:
 #   push:
 #     paths:
