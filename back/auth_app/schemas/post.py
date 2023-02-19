@@ -8,6 +8,7 @@ from strawberry_django_plus.mutations import resolvers
 from strawberry_django_plus.relay import NodeType
 
 from auth_app.models import Post as PostModel
+from auth_app.schemas.utils import requires_auth
 
 
 @gql.django.type(PostModel)
@@ -39,9 +40,6 @@ class Query:
 class CreatePostInput:
     title: gql.auto
     content: gql.auto
-    user_id: int
-    is_public: gql.auto
-    is_deleted: gql.auto
 
 
 @gql.type
@@ -50,4 +48,5 @@ class Mutation:
     # noinspection PyTypeChecker
     @gql.mutation
     def post_create(self, info: Info, input: CreatePostInput) -> PostNode:
+        input.user_id = info.context.request.user.id
         return resolvers.create(info, PostModel, resolvers.parse_input(info, vars(input)))

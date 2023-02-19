@@ -45,8 +45,8 @@ class Post(models.Model):
     user_id = models.ForeignKey(User,
                                 verbose_name="글쓴이",
                                 on_delete=models.CASCADE)  # TODO: 추후 Persona id 로 변경 필요
-    is_public = models.BooleanField(verbose_name="공개 여부")
-    is_deleted = models.BooleanField(verbose_name="글 삭제 여부")
+    is_public = models.BooleanField(verbose_name="공개 여부", default=True)
+    is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
-    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
+    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
