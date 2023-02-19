@@ -7,6 +7,8 @@ from strawberry.tools import merge_types
 from strawberry.types import Info
 
 from .user import Mutation as UserMutation
+from .post import Query as PostQuery
+from .post import Mutation as PostMutation
 
 
 def requires_auth(resolver):
@@ -31,8 +33,10 @@ class Query:
     books: List[str] = strawberry.field(resolver=sample_query_resolver)
 
 
-mutations = (UserMutation,)
+queries = (Query, PostQuery)
+mutations = (UserMutation, PostMutation)
 
+Query = merge_types("Query", queries)
 Mutation = merge_types("Mutation", mutations)
 
 schema = Schema(mutation=Mutation, query=Query)

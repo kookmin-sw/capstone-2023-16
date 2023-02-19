@@ -9,3 +9,10 @@ from auth_app import models
 class User:
     id: auto
     username: auto
+
+
+@strawberry.django.type(models.Post)
+class Post:
+    id: auto
+    title: auto
+    content: auto
