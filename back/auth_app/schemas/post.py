@@ -9,6 +9,8 @@ from strawberry_django_plus.gql import relay
 from auth_app.models import Post as PostModel
 from typing_extensions import Self
 
+from strawberry_django_plus.mutations import resolvers
+
 
 @strawberry.type
 class PostCreateSuccess:
@@ -21,11 +23,6 @@ class PostCreateError:
 
 
 PostCreateResult = strawberry.union("PostCreateResult", (PostCreateSuccess, PostCreateError))
-
-
-def to_post(post):
-    p = Post(title=post['title'], content=post['content'], _id=post['id'])
-    return p
 
 
 @gql.type
@@ -45,10 +42,11 @@ class Post(relay.Node):
     @classmethod
     def resolve_nodes(cls, info: Optional[Info] = None, node_ids: Optional[Iterable[str]] = None):
         if node_ids is not None:
-            posts = PostModel.objects.filter(id__in=node_ids).values
+            posts = PostModel.objects.filter(id__in=node_ids).values  # FIXME: node_id 를 base64 decode 해야함
         else:
             posts = PostModel.objects.all().values()
 
+        # TODO: Author도 fk resolve 되어야 함
         return map(lambda post: Post(title=post['title'], content=post['content'], _id=post['id']), posts)
 
 
@@ -58,8 +56,17 @@ class Query:
     posts_connection: relay.Connection[Post] = relay.connection()
 
 
-@strawberry.type
+@gql.django.partial(PostModel)
+class CreatePostInput:
+    title: gql.auto
+    content: gql.auto
+    user_id: int
+    is_public: gql.auto
+    is_deleted: gql.auto
+
+
+@gql.type
 class Mutation:
-    @strawberry.mutation
-    def post_create(self, info: Info, title: str, content: str) -> PostCreateResult:
-        pass
+    @gql.mutation
+    def post_create(self, info: Info, input: CreatePostInput) -> Post:
+        return resolvers.create(info, PostModel, resolvers.parse_input(info, vars(input)))
