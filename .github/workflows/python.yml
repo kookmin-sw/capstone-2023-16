@@ -1,10 +1,9 @@
 name: Python
 
-on: [push]
-# on:
-#   push:
-#     paths:
-#       - back/**
+on:
+  push:
+    paths:
+      - back/**
 
 jobs:
   flake8-lint:
