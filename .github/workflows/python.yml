@@ -20,6 +20,6 @@ jobs:
       - name: flake8 Lint
         uses: py-actions/flake8@v2
         with:
-          ignore: "F401"
+          exclude: "back/**/migrations/**"
           path: "back"
 
