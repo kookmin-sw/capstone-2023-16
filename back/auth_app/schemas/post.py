@@ -5,6 +5,7 @@ from strawberry.utils.await_maybe import AwaitableOrValue
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
 from strawberry_django_plus.mutations import resolvers
+from strawberry_django_plus.permissions import IsAuthenticated
 from strawberry_django_plus.relay import NodeType
 
 from auth_app.models import Post as PostModel
@@ -46,7 +47,7 @@ class CreatePostInput:
 class Mutation:
     # TODO: Type 수정
     # noinspection PyTypeChecker
-    @gql.mutation
+    @gql.mutation(directives=[IsAuthenticated()])
     def post_create(self, info: Info, input: CreatePostInput) -> PostNode:
         input.user_id = info.context.request.user.id
         return resolvers.create(info, PostModel, resolvers.parse_input(info, vars(input)))
