@@ -5,12 +5,15 @@
 - Python 3.11
 - Docker
 
-### 서버 띄우기 Script
+### Docker로 서버 실행하기
+```docker-compose up```
+
+### 로컬에서 개발할 때 서버 띄우기 Script
 ```
 brew install mysql
 brew install mysql-connector-c
 
-docker-compose up -d ;; mysql db 띄우기
+docker-compose up mysql ;; mysql db 띄우기
 
 poetry install
 ```
