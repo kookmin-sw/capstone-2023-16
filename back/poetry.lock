@@ -553,6 +553,28 @@ anyio = ">=3.4.0,<5"
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
 
 [[package]]
+name = "strawberry-django-plus"
+version = "2.0.4"
+description = "Enhanced Strawberry GraphQL integration with Django"
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "strawberry_django_plus-2.0.4-py3-none-any.whl", hash = "sha256:4dff8265dcd209cb50bf2d430e295dbd96eb8b58ddb9809a4ab8e3a1c7289015"},
+    {file = "strawberry_django_plus-2.0.4.tar.gz", hash = "sha256:576c5a149b444e8a2b3561afb4006f293966ec89b8b7a66cfce36b85e9e66f6f"},
+]
+
+[package.dependencies]
+django = ">=3.2"
+strawberry-graphql = ">=0.140.3"
+strawberry-graphql-django = ">=0.8"
+typing-extensions = ">=4.2.0"
+
+[package.extras]
+debug-toolbar = ["django-debug-toolbar (>=3.4)"]
+enum = ["django-choices-field (>=2.0)"]
+
+[[package]]
 name = "strawberry-graphql"
 version = "0.156.4"
 description = "A library for creating GraphQL APIs"
@@ -681,4 +703,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "a1200150f6161e3ad49905b8ccd60e6190dee6d30485fd0c4403aee9e4c6737e"
+content-hash = "3229a3049b6461007955c16a14c1c4f90dcd519fc28e0ad2084286a79add2245"
