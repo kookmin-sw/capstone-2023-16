@@ -46,6 +46,8 @@ class CreatePostInput:
 
 @gql.type
 class Mutation:
+    # TODO: Type 수정
+    # noinspection PyTypeChecker
     @gql.mutation
     def post_create(self, info: Info, input: CreatePostInput) -> PostNode:
         return resolvers.create(info, PostModel, resolvers.parse_input(info, vars(input)))
