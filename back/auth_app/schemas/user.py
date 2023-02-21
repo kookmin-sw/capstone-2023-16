@@ -1,6 +1,7 @@
 import strawberry
 
 from auth_app.models import User
+from common_app.schemas.types import Error
 from django.contrib.auth import authenticate, login
 from strawberry.types.info import Info
 from .types import User as UserType
@@ -11,12 +12,24 @@ class LoginSuccess:
     user: UserType
 
 
+@strawberry.interface
+class LoginError(Error):
+    """
+    로그인 관련 에러
+    """
+    pass
+
+
 @strawberry.type
-class LoginError:
-    message: str
+class WrongCertInfoError(LoginError):
+    """
+    잘못된 인증 정보(email, password 등)이 전달 되어 로그인에 실패한 경우
+    """
+    message: str = 'Wrong certification info.'
+    code: int = 1
 
 
-LoginResult = strawberry.union("LoginResult", (LoginSuccess, LoginError))
+LoginResult = strawberry.union("LoginResult", (LoginSuccess, WrongCertInfoError))
 
 
 @strawberry.type
@@ -35,7 +48,7 @@ class Mutation:
 
         user = authenticate(email=email, password=password)
         if not user:
-            return LoginError(message="Something wrong")
-
-        login(info.context.request, user)
-        return LoginSuccess(user=UserType(username=user.username))
+            return WrongCertInfoError()
+        else:
+            login(info.context.request, user)
+            return LoginSuccess(user=UserType(username=user.username))
