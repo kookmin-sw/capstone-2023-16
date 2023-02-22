@@ -4,24 +4,37 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth_app', '0001_initial'),
+        ("auth_app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='EmailUser',
+            name="EmailUser",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, verbose_name='유저의 이메일')),
-                ('password', models.TextField(verbose_name='유저의 비밀번호')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')),
-                ('updated_at', models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254, verbose_name="유저의 이메일")),
+                ("password", models.TextField(verbose_name="유저의 비밀번호")),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="생성 시각"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="갱신 시각"),
+                ),
             ],
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='email',
+            model_name="user",
+            name="email",
         ),
     ]

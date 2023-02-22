@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth_app', '0008_alter_post_created_at_alter_post_is_deleted_and_more'),
+        ("auth_app", "0008_alter_post_created_at_alter_post_is_deleted_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='is_deleted',
-            field=models.BooleanField(default=False, verbose_name='글 삭제 여부'),
+            model_name="post",
+            name="is_deleted",
+            field=models.BooleanField(default=False, verbose_name="글 삭제 여부"),
         ),
     ]

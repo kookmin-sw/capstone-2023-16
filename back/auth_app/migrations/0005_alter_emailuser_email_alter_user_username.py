@@ -5,18 +5,20 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('auth_app', '0004_emailuser_user_user_last_login_user_password'),
+        ("auth_app", "0004_emailuser_user_user_last_login_user_password"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='emailuser',
-            name='email',
-            field=models.EmailField(max_length=254, unique=True, verbose_name='유저의 이메일'),
+            model_name="emailuser",
+            name="email",
+            field=models.EmailField(
+                max_length=254, unique=True, verbose_name="유저의 이메일"
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='username',
+            model_name="user",
+            name="username",
             field=models.CharField(max_length=254, unique=True),
         ),
     ]

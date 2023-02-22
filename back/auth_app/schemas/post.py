@@ -18,13 +18,18 @@ class PostNode(relay.Node):
     content: str
 
     @classmethod
-    def resolve_nodes(cls: Type[NodeType], *,
-                      info: Optional[Info] = None, node_ids: Optional[Iterable[str]] = None) \
-            -> AwaitableOrValue[Iterable[NodeType]]:
+    def resolve_nodes(
+        cls: Type[NodeType],
+        *,
+        info: Optional[Info] = None,
+        node_ids: Optional[Iterable[str]] = None
+    ) -> AwaitableOrValue[Iterable[NodeType]]:
         raise NotImplementedError
 
     @classmethod
-    def resolve_node(cls, node_id: str, *, info: Optional[Info] = None, required: bool = False):
+    def resolve_node(
+        cls, node_id: str, *, info: Optional[Info] = None, required: bool = False
+    ):
         raise NotImplementedError
 
 
@@ -50,4 +55,6 @@ class Mutation:
     @gql.mutation(directives=[IsAuthenticated()])
     def post_create(self, info: Info, input: CreatePostInput) -> PostNode:
         input.user_id = info.context.request.user.id
-        return resolvers.create(info, PostModel, resolvers.parse_input(info, vars(input)))
+        return resolvers.create(
+            info, PostModel, resolvers.parse_input(info, vars(input))
+        )

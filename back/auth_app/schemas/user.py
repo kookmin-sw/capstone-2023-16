@@ -14,7 +14,8 @@ class LoginSuccess:
     """
     로그인에 성공했을 경우에 대한 응답
     """
-    user: UserType = strawberry.field(description='로그인한 사용자의 정보')
+
+    user: UserType = strawberry.field(description="로그인한 사용자의 정보")
 
 
 @strawberry.interface
@@ -22,6 +23,7 @@ class LoginError(MutationError):
     """
     로그인 관련 에러
     """
+
     pass
 
 
@@ -30,7 +32,8 @@ class WrongCertInfoError(LoginError):
     """
     잘못된 인증 정보(email, password 등)이 전달 되어 로그인에 실패한 경우
     """
-    message: str = 'Wrong certification info.'
+
+    message: str = "Wrong certification info."
     code: int = 1
 
 
@@ -39,6 +42,7 @@ class RegisterError(MutationError):
     """
     회원 가입 관련 에러
     """
+
     pass
 
 
@@ -47,18 +51,23 @@ class UsernameAlreadyUsedError(RegisterError):
     """
     이미 사용 중인 username으로 회원 가입을 시도하려는 경우
     """
-    message: str = 'Given username is already used.'
+
+    message: str = "Given username is already used."
     code: int = 1
 
 
-RegisterOrLoginResult = strawberry.union("RegisterOrLoginResult", (LoginSuccess,
-                                                                   WrongCertInfoError, UsernameAlreadyUsedError))
+RegisterOrLoginResult = strawberry.union(
+    "RegisterOrLoginResult",
+    (LoginSuccess, WrongCertInfoError, UsernameAlreadyUsedError),
+)
 
 
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def register_or_login(self, info: Info, username: str, email: str, password: str) -> RegisterOrLoginResult:
+    def register_or_login(
+        self, info: Info, username: str, email: str, password: str
+    ) -> RegisterOrLoginResult:
         """
         이미 존재하는 사용자 정보인 경우 username과 password로 로그인을 시도하고,
         존재하지 않는 사용자 정보인 경우 username, email, password로 회원 가입하여 로그인을 시도한다.

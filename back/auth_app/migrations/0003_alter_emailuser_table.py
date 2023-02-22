@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth_app', '0002_emailuser_remove_user_email'),
+        ("auth_app", "0002_emailuser_remove_user_email"),
     ]
 
     operations = [
         migrations.AlterModelTable(
-            name='emailuser',
-            table='email_users',
+            name="emailuser",
+            table="email_users",
         ),
     ]

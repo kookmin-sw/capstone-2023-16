@@ -4,26 +4,43 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254)),
-                ('signup_method', models.CharField(choices=[('EM', 'EMAIL')], default='EM', max_length=2)),
-                ('username', models.TextField()),
-                ('picture_url', models.URLField()),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')),
-                ('updated_at', models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254)),
+                (
+                    "signup_method",
+                    models.CharField(
+                        choices=[("EM", "EMAIL")], default="EM", max_length=2
+                    ),
+                ),
+                ("username", models.TextField()),
+                ("picture_url", models.URLField()),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="생성 시각"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="갱신 시각"),
+                ),
             ],
             options={
-                'db_table': 'users',
+                "db_table": "users",
             },
         ),
     ]

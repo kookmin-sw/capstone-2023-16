@@ -4,16 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth_app', '0005_alter_emailuser_email_alter_user_username'),
+        ("auth_app", "0005_alter_emailuser_email_alter_user_username"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='email',
-            field=models.EmailField(default=1, max_length=254, unique=True, verbose_name='유저의 이메일'),
+            model_name="user",
+            name="email",
+            field=models.EmailField(
+                default=1, max_length=254, unique=True, verbose_name="유저의 이메일"
+            ),
             preserve_default=False,
         ),
     ]

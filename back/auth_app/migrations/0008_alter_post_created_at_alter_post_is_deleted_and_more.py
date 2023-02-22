@@ -4,30 +4,33 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('auth_app', '0007_post'),
+        ("auth_app", "0007_post"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, null=True, verbose_name='생성 시각'),
+            model_name="post",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, null=True, verbose_name="생성 시각"
+            ),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='is_deleted',
-            field=models.BooleanField(default=True, verbose_name='글 삭제 여부'),
+            model_name="post",
+            name="is_deleted",
+            field=models.BooleanField(default=True, verbose_name="글 삭제 여부"),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='is_public',
-            field=models.BooleanField(default=True, verbose_name='공개 여부'),
+            model_name="post",
+            name="is_public",
+            field=models.BooleanField(default=True, verbose_name="공개 여부"),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, null=True, verbose_name='갱신 시각'),
+            model_name="post",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, null=True, verbose_name="갱신 시각"
+            ),
         ),
     ]
