@@ -1,0 +1,42 @@
+import React, { FC } from "react";
+import styled from "styled-components/native";
+import {
+  GestureResponderEvent,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
+
+import { colors } from "../colors";
+import RegularText from "../Texts/RegularText";
+
+const ButtonView = styled.TouchableOpacity`
+  align-items: center;
+  background-color: ${colors.white};
+  width: 100%;
+  padding: 12px;
+  border-radius: 15px;
+  border: solid 3px ${colors.gray};
+  shadow-color: ${colors.gray};
+  shadow-offset: {width: 0, height: 2};
+  shadow-opacity: 0.9;
+  shadow-radius: 3,
+  elevation: 5;
+`;
+
+interface ButtonProps {
+  btnStyles?: StyleProp<ViewStyle>;
+  onPress: ((evnet: GestureResponderEvent) => void) | undefined;
+  textStyles?: StyleProp<TextStyle>;
+  children: React.ReactNode;
+}
+
+const RegularButton: FC<ButtonProps> = (props) => {
+  return (
+    <ButtonView onPress={props.onPress} style={props.btnStyles}>
+      <RegularText textStyle={props.textStyles}>{props.children}</RegularText>
+    </ButtonView>
+  );
+};
+
+export default RegularButton;
