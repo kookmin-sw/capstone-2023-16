@@ -17,7 +17,6 @@ const InputField = styled.TextInput`
   height: 50px;
   min-width: ${ScreenWidth * 0.8}px;
   shadow-color: ${colors.black};
-  shadow-offset: {width: 0, height: 2};
   shadow-opacity: 0.1;
   shadow-radius: 3.8,
   elevation: 5;

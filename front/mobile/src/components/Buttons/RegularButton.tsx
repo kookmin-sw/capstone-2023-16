@@ -14,7 +14,6 @@ const ButtonView = styled.TouchableOpacity`
   border-radius: 15px;
   border: solid 3px ${colors.gray};
   shadow-color: ${colors.gray};
-  shadow-offset: {width: 0, height: 2};
   shadow-opacity: 0.9;
   shadow-radius: 3,
   elevation: 5;
