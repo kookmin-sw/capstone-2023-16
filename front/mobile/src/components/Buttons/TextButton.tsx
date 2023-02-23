@@ -1,26 +1,15 @@
 import React, { FC } from "react";
 import styled from "styled-components/native";
-import {
-  GestureResponderEvent,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
 
 import { colors } from "../colors";
 import SmallText from "../Texts/SmallText";
+
+import { ButtonProps } from "./types";
 
 const ButtonView = styled.TouchableOpacity`
   align-items: center;
   background-color: ${colors.white};
 `;
-
-interface ButtonProps {
-  btnStyles?: StyleProp<ViewStyle>;
-  onPress: ((evnet: GestureResponderEvent) => void) | undefined;
-  textStyles?: StyleProp<TextStyle>;
-  children: React.ReactNode;
-}
 
 const TextButton: FC<ButtonProps> = (props) => {
   return (
