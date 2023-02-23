@@ -7,6 +7,7 @@ const StyledText = styled.Text`
   font-size: 24px;
   color: ${colors.black};
   text-align: center;
+  font-weight: 700;
 `;
 
 import { TextProps } from "./types";
