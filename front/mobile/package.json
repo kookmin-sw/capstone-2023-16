@@ -13,7 +13,9 @@
     "@react-navigation/native-stack": "^6.9.9",
     "axios": "^1.3.3",
     "expo": "~47.0.12",
+    "expo-constants": "~14.0.2",
     "expo-status-bar": "~1.4.2",
+    "formik": "^2.2.9",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
@@ -21,7 +23,8 @@
     "react-native-screens": "~3.18.0",
     "react-native-web": "~0.18.9",
     "react-redux": "^8.0.5",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -30,6 +33,8 @@
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
     "@types/react-test-renderer": "^18.0.0",
+    "@types/styled-components": "^5.1.26",
+    "@types/styled-components-react-native": "^5.2.1",
     "typescript": "^4.9.5"
   },
   "private": true
