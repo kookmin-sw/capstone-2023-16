@@ -13,6 +13,7 @@ import StyledTextInput from "../components/Inputs/StyledTextInput";
 import RegularButton from "../components/Buttons/RegularButton";
 import TextButton from "../components/Buttons/TextButton";
 import CheckBox from "../components/Buttons/CheckBox";
+import SmallText from "../components/Texts/SmallText";
 
 const LoginContainer = styled(Container)`
   background-color: ${colors.white};
@@ -40,12 +41,14 @@ const FindSection = styled.View`
   flex-direction: row;
   margin-bottom: 10px;
   justify-content: center;
+  align-items: center;
 `;
 
 const SignupSection = styled.View`
   flex-direction: row;
   margin-bottom: 10px;
   justify-content: center;
+  align-items: center;
 `;
 
 export const LoginScreen = () => {
@@ -105,7 +108,7 @@ export const LoginScreen = () => {
                   >
                     아이디 찾기
                   </TextButton>
-                  <Text> / </Text>
+                  <SmallText textStyle={{ color: colors.black }}> / </SmallText>
                   <TextButton
                     textStyles={{ color: colors.black }}
                     onPress={() => {}}
@@ -114,7 +117,9 @@ export const LoginScreen = () => {
                   </TextButton>
                 </FindSection>
                 <SignupSection>
-                  <Text>PERSONA가 처음이신가요?</Text>
+                  <SmallText textStyle={{ color: colors.black }}>
+                    PERSONA가 처음이신가요?
+                  </SmallText>
                   <TextButton
                     textStyles={{ color: colors.black, marginLeft: 12 }}
                     onPress={() => {}}
