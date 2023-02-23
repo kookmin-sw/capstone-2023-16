@@ -1,12 +1,6 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components/native";
-import {
-  View,
-  StyleProp,
-  TextStyle,
-  KeyboardType,
-  TextInputProps,
-} from "react-native";
+import { View, StyleProp, TextStyle, TextInputProps } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -15,12 +9,12 @@ import { ScreenWidth } from "../shared";
 import SmallText from "../Texts/SmallText";
 
 const InputField = styled.TextInput`
-  padding: 25px;
+  padding: 12px;
   border-radius: 10px;
   background-color: ${colors.white};
   color: ${colors.graydark};
-  height: 50px;
   width: 100%;
+  height: 50px;
   min-width: ${ScreenWidth * 0.8}px;
   shadow-color: ${colors.black};
   shadow-offset: {width: 0, height: 2};
@@ -35,8 +29,8 @@ const ErrorMessage = styled.Text`
 
 const RightIcon = styled.TouchableOpacity`
   position: absolute;
-  top: 38px;
   right: 15px;
+  top: 50%;
   z-index: 1;
 `;
 

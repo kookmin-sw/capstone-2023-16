@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import styled from "styled-components/native";
-import { Text } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
