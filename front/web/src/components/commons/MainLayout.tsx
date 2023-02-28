@@ -16,17 +16,13 @@ const MainLayout = (props: MainLayoutProps) => {
 
 export default MainLayout;
 
-interface LayoutProps{
-  widthType?: string;
-}
-
-const LayoutContainer = styled.div<LayoutProps>`
+const LayoutContainer = styled.div<{widthType?:string}>`
   position: absolute;
   & > div:nth-child(1){
     position: relative;
     top: ${(props) => { return WHcal(props.widthType!, 53) }};
     left: ${(props) => { return WHcal(props.widthType!, 53) }};
-    font-size: ${(props) => {return WHcal(props.widthType!, 67)}};
+    font-size: ${(props) => {return WHcal(props.widthType!, 36)}};
     font-weight: 900;    
   }
   & > div:nth-child(2){
