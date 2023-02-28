@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { GlobalStyles } from './styles/GlobalStyles';
 import PostChoice from './pages/PostChoice';
+import Layout from './components/commons/MainLayout';
 
 const App = () => {
 
@@ -10,7 +11,7 @@ const App = () => {
       <GlobalStyles />
       <Routes>
         <Route path='/' element={<PostChoice/>} />
-        <Route path='/signUp' element={<div>회원가입페이지</div>} />
+        <Route path='/signUp' element={<Layout>테스트 문구입니다.</Layout>} />
       </Routes>
     </>
   );
