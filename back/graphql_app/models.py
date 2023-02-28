@@ -42,9 +42,9 @@ class Post(models.Model):
     # TODO: Tag, Read count, Category 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
-    user_id = models.ForeignKey(User,
-                                verbose_name="글쓴이",
-                                on_delete=models.CASCADE)  # TODO: 추후 Persona id 로 변경 필요
+    user = models.ForeignKey(User,
+                             verbose_name="글쓴이",
+                             on_delete=models.CASCADE)  # TODO: 추후 Persona로 변경 필요
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 

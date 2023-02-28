@@ -43,4 +43,4 @@ class Mutation:
             return WrongCertInfoError()
         else:
             login(info.context.request, user)
-            return self.LoginSuccess(user=User(username=user.username))
+            return Mutation.LoginSuccess(user=User(username=user.username))

@@ -19,5 +19,5 @@ class Mutation:
     # noinspection PyTypeChecker
     @gql.mutation(directives=[IsAuthenticated()])
     def post_create(self, info: Info, new_post_input: CreatePostInput) -> PostNode:
-        new_post_input.user_id = info.context.request.user.id
+        new_post_input.user = info.context.request.user.id
         return resolvers.create(info, PostModel, resolvers.parse_input(info, vars(new_post_input)))
