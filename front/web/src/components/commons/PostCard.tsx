@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import postImg from "../../imgs/post.png";
-import trashcanImg from "../../imgs/trashcan.png";
+import postImg from "../../assets/imgs/post.png";
+import trashcanImg from "../../assets/imgs/trashcan.png";
 import { GrayShadowBox } from '../../containers/GrayShadowBox';
 import WHcal from "../../utils/WHcal";
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import profileImg from "../imgs/profileImg.png"
+import profileImg from "../assets/imgs/profileImg.png"
 import { GrayShadowBox } from '../../containers/GrayShadowBox';
 import WHcal from '../../utils/WHcal';
 
