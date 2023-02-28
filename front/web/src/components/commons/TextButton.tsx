@@ -1,15 +1,9 @@
 import styled from "styled-components";
+import WHcal from '../../utils/WHcal';
 
 interface buttonContent {
     widthType?: string,
     text?:string,
-}
-
-const WHcal = (widthType:string, num:number) =>{
-    return (widthType==='big')? (num!*100/1440).toString() + 'vw':((widthType==='small')? (num!*100/820).toString() + 'vw':((num!*100/820)*450/100).toString() + 'px');
-}
-const tmpWHcal = (widthType:string, num:number) =>{
-    return (widthType==='big')? (num!*100/1440):((widthType==='small')? (num!*100/820):((num!*100/820)*450/100));
 }
 
 const Btn = styled.button<{widthType?:string}>`
@@ -34,8 +28,6 @@ const TextButton = ({text, widthType}:buttonContent) => {
     console.log('====================================');
     console.log(WHcal(widthType!, 30));
     console.log('====================================');
-    console.log('====================================');
-    console.log(tmpWHcal(widthType!, 30));
     console.log('====================================');
     return(
         <Btn widthType={widthType}>

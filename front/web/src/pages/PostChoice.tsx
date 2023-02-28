@@ -1,23 +1,9 @@
-import { useMediaQuery } from "react-responsive";
+import useDeviceType from "../hooks/useDeviceType";
 import PostCard from "../components/commons/PostCard";
 import TextButton from "../components/commons/TextButton";
 
 const PostChoice = () => {
-    const isPC = useMediaQuery({
-        query: "(min-width:900px)"
-    });
-    const small = useMediaQuery({
-        query: "(min-width:450px) and (max-width:899px)"
-    });
-
-    let type = '';
-    if(isPC){
-        type = 'big';
-    }else if(small){
-        type = 'small';
-    }else{
-        type = 'min';
-    }
+    const deviceType = useDeviceType();
 
     // 데이터 받아왔을 때
     const temptitle = '반려동물우린왜고양이를까칠하다고생각할까ㅁ';
@@ -40,8 +26,8 @@ const PostChoice = () => {
 
     return(
         <div>
-            <PostCard widthType={type} title={title} date={tempdate} content={content} hashtag={hashtag}/>
-            <TextButton widthType={type} text='미리보기'/>
+            <PostCard widthType={deviceType} title={title} date={tempdate} content={content} hashtag={hashtag}/>
+            <TextButton widthType={deviceType} text='미리보기'/>
         </div>
     )
 }
