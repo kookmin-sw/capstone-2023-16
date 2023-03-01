@@ -7,9 +7,11 @@ import {
 } from "@react-navigation/native-stack";
 
 import { LoginScreen } from "../screens/LoginScreen";
+import SignupScreen from "../screens/SignupScreen";
 
 export type ParamList = {
   Login: undefined;
+  Signup: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -22,6 +24,7 @@ const AuthNavigator = () => {
         component={LoginScreen}
         options={{ headerShown: false }}
       />
+      <StackNavigator.Screen name="Signup" component={SignupScreen} />
     </StackNavigator.Navigator>
   );
 };

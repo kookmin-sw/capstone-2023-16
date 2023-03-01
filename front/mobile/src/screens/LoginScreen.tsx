@@ -13,6 +13,7 @@ import RegularButton from "../components/Buttons/RegularButton";
 import TextButton from "../components/Buttons/TextButton";
 import CheckBox from "../components/Buttons/CheckBox";
 import SmallText from "../components/Texts/SmallText";
+import { NavigationData } from "../navigation/AuthNavigator";
 
 const LoginContainer = styled(Container)`
   background-color: ${colors.white};
@@ -50,7 +51,9 @@ const SignupSection = styled.View`
   align-items: center;
 `;
 
-export const LoginScreen = () => {
+type Props = NavigationData<"Login">;
+
+export const LoginScreen: FC<Props> = ({ navigation }) => {
   return (
     <LoginContainer>
       <StatusBar />
@@ -121,7 +124,9 @@ export const LoginScreen = () => {
                   </SmallText>
                   <TextButton
                     textStyles={{ color: colors.black, marginLeft: 12 }}
-                    onPress={() => {}}
+                    onPress={() => {
+                      navigation.navigate("Signup");
+                    }}
                   >
                     회원가입
                   </TextButton>
