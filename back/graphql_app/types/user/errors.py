@@ -1,11 +1,11 @@
 import strawberry
 
-from graphql_app.types.errors import GraphQLError
+from graphql_app.types.errors import Error
 
 
 # 로그인 관련 에러 =====================================================
 @strawberry.interface
-class LoginError(GraphQLError):
+class LoginError(Error):
     """
     로그인 관련 에러
     """
@@ -23,7 +23,7 @@ class WrongCertInfoError(LoginError):
 
 # 회원 가입 관련 에러 ==================================================
 @strawberry.interface
-class RegisterError(GraphQLError):
+class RegisterError(Error):
     """
     회원 가입 관련 에러
     """

@@ -2,7 +2,7 @@ import strawberry
 
 
 @strawberry.interface
-class GraphQLError:
+class Error:
     """
     GraphQL 관련 최상위 에러
     """
