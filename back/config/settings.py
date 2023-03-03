@@ -38,12 +38,10 @@ GRAPHQL_APPS = [
     "strawberry.django"
 ]
 
-AUTH_USER_MODEL = 'auth_app.User'
+AUTH_USER_MODEL = 'graphql_app.User'
 
 SERVICE_APPS = [
-    'common_app.apps.CommonAppConfig',
-    'auth_app.apps.AuthAppConfig',
-    'persona_app.apps.PersonaAppConfig',
+    'graphql_app.apps.GraphqlAppConfig',
 ]
 
 INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + GRAPHQL_APPS + SERVICE_APPS + [
