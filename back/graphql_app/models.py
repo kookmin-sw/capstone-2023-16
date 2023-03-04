@@ -82,6 +82,7 @@ class Persona(models.Model):
 
 class Tag(models.Model):
     body = models.CharField(max_length=20, null=False, blank=False, unique=True, verbose_name='태그 본문')
+    created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
         db_table = 'tags'

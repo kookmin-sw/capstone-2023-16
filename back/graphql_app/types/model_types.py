@@ -78,3 +78,4 @@ class Tag(relay.Node):
     - Persona : Tag = N : M
     """
     body: str = strawberry.field(description='태그 본문')
+    created_at: datetime = strawberry.field(description='생성 일시')
