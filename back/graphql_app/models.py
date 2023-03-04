@@ -39,7 +39,7 @@ class EmailUser(models.Model):
 
 
 class Post(models.Model):
-    # TODO: Tag, Read count, Category 추가 필요
+    # TODO: Read count, Category 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
     user = models.ForeignKey(User,
@@ -47,6 +47,8 @@ class Post(models.Model):
                              on_delete=models.CASCADE)  # TODO: 추후 Persona로 변경 필요
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
+
+    tags = models.ManyToManyField('graphql_app.Tag', related_name='related_posts', verbose_name='연관 태그 목록')
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
@@ -63,6 +65,9 @@ class Persona(models.Model):
     job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
     is_certified = models.BooleanField('공인 여부', default=False)
 
+    preferred_tags = models.ManyToManyField('graphql_app.Tag', related_name='preferred_users',
+                                            verbose_name='선호 태그 목록')
+
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
     updated_at = models.DateTimeField('갱신 시각', auto_now=True)
 
@@ -73,3 +78,12 @@ class Persona(models.Model):
         db_table = 'personas'
         verbose_name = '구독 페르소나'
         verbose_name_plural = '구독 페르소나 목록'
+
+
+class Tag(models.Model):
+    body = models.CharField(max_length=20, null=False, blank=False, unique=True, verbose_name='태그 본문')
+
+    class Meta:
+        db_table = 'tags'
+        verbose_name = '태그'
+        verbose_name_plural = '태그 목록'
