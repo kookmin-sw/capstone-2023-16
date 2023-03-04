@@ -8,9 +8,10 @@ from .post import Query as PostQuery
 from .user import Mutation as UserMutation
 from .persona import Mutation as PersonaMutation
 from .persona import Query as PersonaQuery
+from .tag import Mutation as TagMutation
 
-queries = (PostQuery, PersonaQuery)
-mutations = (UserMutation, PostMutation, PersonaMutation)
+queries = (PostQuery, PersonaQuery, TagMutation)
+mutations = (UserMutation, PostMutation, PersonaMutation, TagMutation)
 
 Query = merge_types("Query", queries)
 Mutation = merge_types("Mutation", mutations)

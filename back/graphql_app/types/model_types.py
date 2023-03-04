@@ -68,3 +68,13 @@ class Persona(relay.Node):
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
+
+
+@gql.django.type(models.Tag)
+class Tag(relay.Node):
+    """
+    Post를 설명하거나, Persona의 선호 대상이 되는 태그
+    - Post : Tag = N : M
+    - Persona : Tag = N : M
+    """
+    body: str = strawberry.field(description='태그 본문')
