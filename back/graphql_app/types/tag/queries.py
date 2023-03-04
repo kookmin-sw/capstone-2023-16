@@ -3,7 +3,7 @@ from typing import Iterable, cast, Optional
 
 import strawberry
 from strawberry.types import Info
-from strawberry_django_plus import gql
+from strawberry_django_plus import gql, relay
 
 from graphql_app.types.enums import SortingDirection
 from graphql_app.types.model_types import Tag
@@ -23,6 +23,8 @@ class TagSortBy(Enum):
 
 @gql.type
 class Query:
+    tag: Optional[Tag] = relay.node()
+
     @strawberry.input
     class TagSortingRule:
         """
@@ -36,7 +38,6 @@ class Query:
         """
         등록된 모든 태그의 목록
         """
-
         order_by_prefix = '' if sorting_rule.direction == SortingDirection.ASC else '-'
         order_by_suffix = sorting_rule.sort_by.value
         tags = TagModel.objects.all().order_by(order_by_prefix + order_by_suffix)

@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
@@ -81,10 +83,36 @@ class Persona(models.Model):
 
 
 class Tag(models.Model):
-    body = models.CharField(max_length=20, null=False, blank=False, unique=True, verbose_name='태그 본문')
+    MIN_TAG_BODY_LEN = 2
+    MAX_TAG_BODY_LEN = 20
+
+    body = models.CharField(max_length=MAX_TAG_BODY_LEN, null=False, blank=False, unique=True, verbose_name='태그 본문')
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
         db_table = 'tags'
         verbose_name = '태그'
         verbose_name_plural = '태그 목록'
+
+    @classmethod
+    def check_length(cls, body: str) -> int:
+        if len(body) < cls.MIN_TAG_BODY_LEN:
+            return -1
+        elif len(body) > cls.MAX_TAG_BODY_LEN:
+            return 1
+        else:
+            return 0
+
+    @classmethod
+    def upsert_tags(cls, bodies: List[str]) -> List[Tuple['Tag', bool]]:
+        unique_bodies = set(bodies)
+
+        for body in unique_bodies:
+            cls.check_length(body)
+
+        tags = [
+            cls.objects.get_or_create(body=body)
+            for body in unique_bodies
+        ]
+
+        return tags

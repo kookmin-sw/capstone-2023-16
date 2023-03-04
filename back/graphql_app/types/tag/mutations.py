@@ -11,9 +11,6 @@ from graphql_app.types.tag.errors import TagBodyTooLongError, TagBodyTooShortErr
 
 @gql.type
 class Mutation:
-    MIN_TAG_BODY_LEN = 2
-    MAX_TAG_BODY_LEN = 10
-
     @strawberry.type
     class TagUpsertOutput:
         """
@@ -37,9 +34,10 @@ class Mutation:
         단, 중복되는 태그 이름이 있는 경우 기존의 태그를 반환한다.
         """
 
-        if len(body) < Mutation.MIN_TAG_BODY_LEN:
+        body_len_check = models.Tag.check_length(body)
+        if body_len_check < 0:
             raise TagBodyTooShortError(body, Mutation.MIN_TAG_BODY_LEN)
-        elif len(body) > Mutation.MAX_TAG_BODY_LEN:
+        elif body_len_check > 0:
             raise TagBodyTooLongError(body, Mutation.MAX_TAG_BODY_LEN)
 
         tag, is_created = models.Tag.objects.get_or_create(body=body)
