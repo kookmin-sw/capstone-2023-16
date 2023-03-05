@@ -1,3 +1,5 @@
+import typing
+
 import strawberry
 from strawberry.types import Info
 from strawberry_django_plus import gql
@@ -23,7 +25,7 @@ class Mutation:
     @gql.mutation
     @requires_auth
     def post_create(self, info: Info, new_post_input: CreatePostInput) \
-            -> strawberry.union('CreatePostResult', (PostNode, AuthInfoRequiredError)):
+            -> typing.Union[PostNode, AuthInfoRequiredError]:
         """
         새 게시물을 생성한다.
         """

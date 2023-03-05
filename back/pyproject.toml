@@ -35,7 +35,7 @@ autopep8 = "^2.0.2"
 
 [tool.autopep8]
 max_line_length = 120
-ignore = "E501,W6"
+ignore = "E501,E501,F403,F401,F821"
 in-place = true
 recursive = true
 aggressive = 3
