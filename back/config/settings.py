@@ -16,8 +16,7 @@ SECRET_KEY = 'django-insecure-ilvtojpkntx8=v1d)dsokaixw%u+kxc54c=nzwq)jkd0qh1+27
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1",
-                 "localhost", "persona-backend.herokuapp.com"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost", "persona-backend.herokuapp.com"]
 APPEND_SLASH = False
 
 # Application definition
