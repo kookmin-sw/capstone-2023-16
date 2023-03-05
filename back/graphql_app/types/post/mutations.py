@@ -25,7 +25,7 @@ class Mutation:
     @gql.mutation
     @requires_auth
     def post_create(self, info: Info, new_post_input: CreatePostInput) \
-            -> typing.Union[PostNode, AuthInfoRequiredError]:
+            -> strawberry.union('CreatePostResult', (PostNode, AuthInfoRequiredError)):
         """
         새 게시물을 생성한다.
         """
