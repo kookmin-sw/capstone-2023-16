@@ -1,3 +1,4 @@
+import typing
 from typing import Optional
 
 import strawberry
@@ -23,7 +24,8 @@ class Mutation:
         nickname: str = strawberry.field(description='닉네임 (unique)')
         introduction: str = strawberry.field(description='소개')
         is_public: bool = strawberry.field(description='공개 여부')
-        gender: Optional[Gender] = strawberry.field(default=None, description='성별')
+        gender: Optional[Gender] = strawberry.field(
+            default=None, description='성별')
         age: Optional[int] = strawberry.field(default=None, description='나이')
         job: Optional[str] = strawberry.field(default=None, description='직업')
 
@@ -49,6 +51,7 @@ class Mutation:
 
         # 요청한 사용자를 페르소나의 소유자로 설정
         new_persona_input.user = info.context.request.user.id
-        new_persona = resolvers.create(info, models.Persona, resolvers.parse_input(info, vars(new_persona_input)))
+        new_persona = resolvers.create(
+            info, models.Persona, resolvers.parse_input(info, vars(new_persona_input)))
 
         return new_persona

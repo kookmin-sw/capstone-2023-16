@@ -1,13 +1,13 @@
 from datetime import datetime
-from typing import Optional, Iterable, Type, Union, Literal
+from typing import Optional, Iterable, Type
 
 import strawberry
 from strawberry import auto
 from strawberry.types.info import Info
 from strawberry.utils.await_maybe import AwaitableOrValue
 from strawberry_django_plus import gql
-from strawberry_django_plus.relay import NodeType
 from strawberry_django_plus.gql import relay
+from strawberry_django_plus.relay import NodeType
 
 from graphql_app import models
 from graphql_app.types.enums import Gender

@@ -23,7 +23,8 @@ class Mutation:
         username, email, password로 회원 가입을 시도한다.
         단, username, email은 각각 Unique하다.
         """
-        duplicated_users = UserModel.objects.filter(Q(username=username) | Q(email=email))
+        duplicated_users = UserModel.objects.filter(
+            Q(username=username) | Q(email=email))
         # 해당 username 또는 email을 사용하는 사용자가 있는 경우 오류 발생
         if duplicated_users:
             # username 중복

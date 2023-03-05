@@ -16,7 +16,8 @@ class User(AbstractBaseUser):
 
     email = models.EmailField(verbose_name='유저의 이메일', unique=True)
     username = models.CharField(max_length=254, unique=True)
-    signup_method = models.CharField(max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
+    signup_method = models.CharField(
+        max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
     picture_url = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
@@ -48,8 +49,10 @@ class Post(models.Model):
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
-    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='생성 시각', null=True)
+    updated_at = models.DateTimeField(
+        auto_now_add=True, verbose_name='갱신 시각', null=True)
 
 
 class Persona(models.Model):
@@ -59,8 +62,10 @@ class Persona(models.Model):
     introduction = models.TextField('소개', blank=True, default='자기 소개가 없습니다.')
     is_public = models.BooleanField('공개 여부', default=True)
     gender = models.CharField('성별', max_length=2, null=True, default=None)
-    age = models.PositiveIntegerField('연령대', null=True, blank=True, default=None)
-    job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
+    age = models.PositiveIntegerField(
+        '연령대', null=True, blank=True, default=None)
+    job = models.CharField('직업', max_length=15, null=True,
+                           blank=True, default=None)
     is_certified = models.BooleanField('공인 여부', default=False)
 
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)

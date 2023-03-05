@@ -15,4 +15,5 @@ mutations = (UserMutation, PostMutation, PersonaMutation)
 Query = merge_types("Query", queries)
 Mutation = merge_types("Mutation", mutations)
 
-schema = Schema(mutation=Mutation, query=Query, extensions=[SchemaDirectiveExtension, ExtendErrorFormat])
+schema = Schema(mutation=Mutation, query=Query, extensions=[
+                SchemaDirectiveExtension, ExtendErrorFormat])
