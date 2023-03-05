@@ -10,4 +10,5 @@ RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 COPY . /app/
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:${PORT##\\}"]
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+
