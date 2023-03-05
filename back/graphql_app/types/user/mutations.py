@@ -1,46 +1,58 @@
+from django.db.models import Q
+from django.contrib.auth import login
+
 import strawberry
 from strawberry.types.info import Info
-from django.contrib.auth import authenticate, login
-from django.db import IntegrityError
 
 from graphql_app.models import User as UserModel
-from graphql_app.types.user.errors import UsernameAlreadyUsedError, WrongCertInfoError
+from graphql_app.types.decorators import anonymous_only
+from graphql_app.types.errors import AnonymousOnlyError
 from graphql_app.types.model_types import User
+from graphql_app.types.user.errors import UsernameAlreadyUsedError, WrongCertInfoError, EmailAlreadyUsedError
 
 
 @strawberry.type
 class Mutation:
-    @strawberry.type
-    class LoginSuccess:
-        """
-        로그인에 성공했을 경우에 대한 응답
-        """
-        user: User = strawberry.field(description='로그인한 사용자의 정보')
-
-    RegisterOrLoginResult = strawberry.union("RegisterOrLoginResult", (LoginSuccess,
-                                                                       WrongCertInfoError, UsernameAlreadyUsedError))
-
     @strawberry.mutation
-    def register_or_login(self, info: Info, username: str, email: str, password: str) -> RegisterOrLoginResult:
+    @anonymous_only
+    def register(self, info: Info, username: str, email: str, password: str) \
+            -> strawberry.union("RegisterOrLoginResult", (User,
+                                                          AnonymousOnlyError,
+                                                          UsernameAlreadyUsedError, EmailAlreadyUsedError)):
         """
-        이미 존재하는 사용자 정보인 경우 username과 password로 로그인을 시도하고,
-        존재하지 않는 사용자 정보인 경우 username, email, password로 회원 가입하여 로그인을 시도한다.
+        username, email, password로 회원 가입을 시도한다.
         단, username, email은 각각 Unique하다.
         """
-        if not UserModel.objects.filter(email=email).exists():
-            try:
-                user = UserModel.objects.create(username=username, email=email)
-            # 새 email이지만, 이미 사용 중인 username인 경우
-            except IntegrityError:
-                return UsernameAlreadyUsedError()
-            # email과 username 둘 다 문제 없는 경우
-            else:
-                user.set_password(password)
-                user.save()
+        duplicated_users = UserModel.objects.filter(Q(username=username) | Q(email=email))
+        # 해당 username 또는 email을 사용하는 사용자가 있는 경우 오류 발생
+        if duplicated_users:
+            # username 중복
+            if duplicated_users.filter(username=username).exists():
+                raise UsernameAlreadyUsedError(username)
+            # email 중복
+            elif duplicated_users.filter(email=email).exists():
+                raise EmailAlreadyUsedError(email)
+        # 유효한 정보인 경우 회원 가입 수행
+        else:
+            user = UserModel.objects.create(username=username, email=email)
+            user.set_password(password)
+            user.save()
+            return user
 
-        user = authenticate(email=email, password=password)
-        if not user:
-            return WrongCertInfoError()
+    @strawberry.mutation
+    @anonymous_only
+    def login(self, info: Info, username: str, password: str) \
+            -> strawberry.union("LoginResult", (User,
+                                                AnonymousOnlyError,
+                                                WrongCertInfoError)):
+        """
+        username과 password로 로그인을 시도한다.
+        """
+        user = UserModel.objects.get(username=username)
+        # 비밀번호 불일치
+        if not user.check_password(password):
+            raise WrongCertInfoError()
+        # 로그인 성공
         else:
             login(info.context.request, user)
-            return self.LoginSuccess(user=User(username=user.username))
+            return user

@@ -42,9 +42,9 @@ class Post(models.Model):
     # TODO: Tag, Read count, Category 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
-    user_id = models.ForeignKey(User,
-                                verbose_name="글쓴이",
-                                on_delete=models.CASCADE)  # TODO: 추후 Persona id 로 변경 필요
+    user = models.ForeignKey(User,
+                             verbose_name="글쓴이",
+                             on_delete=models.CASCADE)  # TODO: 추후 Persona로 변경 필요
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 
@@ -52,31 +52,14 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
 
 
-from django.db import models
-
-
 class Persona(models.Model):
-    class Gender(models.TextChoices):
-        NONE = 'NO', '미입력'
-        MALE = 'ML', '남성'
-        FEMALE = 'FM', '여성'
-
-    class AgeGroup(models.IntegerChoices):
-        NONE = 0
-        _10 = 1
-        _20 = 2
-        _30 = 3
-        _40 = 4
-        _50 = 5
-        ELDER = 6
-
     user = models.ForeignKey('graphql_app.User', null=False, verbose_name='대상 사용자', on_delete=models.CASCADE,
                              db_column='user_id')
     nickname = models.CharField('닉네임', unique=True, max_length=20)
     introduction = models.TextField('소개', blank=True, default='자기 소개가 없습니다.')
     is_public = models.BooleanField('공개 여부', default=True)
-    gender = models.CharField('성별', max_length=2, choices=Gender.choices, null=True, default=None)
-    age_group = models.IntegerField('연령대', choices=AgeGroup.choices, null=True, default=None)
+    gender = models.CharField('성별', max_length=2, null=True, default=None)
+    age = models.PositiveIntegerField('연령대', null=True, blank=True, default=None)
     job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
     is_certified = models.BooleanField('공인 여부', default=False)
 
