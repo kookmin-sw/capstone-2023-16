@@ -1,6 +1,14 @@
-# 백엔드 서버 실행법
-Docker를 통해 간편하게 실행할 수 있습니다.
+# Backend
+## Deploy
+https://persona-backend.herokuapp.com/graphql
 
+Github Actions 통해서 배포 가능합니다.
+
+## Local development
+Docker를 통해 간편하게 실행할 수 있습니다.
+1. `.env.template` 를 복사해 `.env` 파일로 이름을 변경합니다.
+2. 각자 로컬 환경에 맞게 DB 접속 정보를 채웁니다.
+3. 다음 명령을 실행합니다.
 ```bash
 cd back
 docker-compose up
