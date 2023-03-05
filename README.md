@@ -1,4 +1,10 @@
-# 백엔드 서버 실행법
+# Backend
+## Deploy
+https://persona-backend.herokuapp.com/graphql
+
+Github Actions 통해서 배포 가능합니다.
+
+## Local development
 Docker를 통해 간편하게 실행할 수 있습니다.
 
 ```bash
