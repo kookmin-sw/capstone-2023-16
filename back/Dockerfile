@@ -10,5 +10,5 @@ RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 COPY . /app/
 
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+CMD gunicorn --bind 0.0.0.0:$PORT -k uvicorn.workers.UvicornWorker
 
