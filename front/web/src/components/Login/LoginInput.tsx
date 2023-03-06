@@ -23,8 +23,8 @@ const LoginInput = ({ text, isPassword, inputRef, widthType }: LoginInputProps) 
       <Input id={text} ref={inputRef} type={visibility ? 'text' : 'password'} widthType={widthType} />
       {isPassword ?
         visibility ?
-          <VisibleIcon onClick={onToggleVisibility} widthType={widthType} />
-          : <InvisibleIcon onClick={onToggleVisibility} widthType={widthType}/>
+          <VisibleIcon onClick={onToggleVisibility} widthtype={widthType} />
+          : <InvisibleIcon onClick={onToggleVisibility} widthtype={widthType}/>
           : null
           }
     </LoginInputBox>
@@ -61,12 +61,12 @@ const Input = styled.input<{ widthType: string }>`
   flex: 10;
 `
 
-const VisibleIcon = styled(Visible) <{ widthType: string }>`
+const VisibleIcon = styled(Visible) <{ widthtype: string }>`
   height: 80% !important;
   flex: 1;
 `
 
-const InvisibleIcon = styled(Invisible)<{ widthType: string }>`
+const InvisibleIcon = styled(Invisible)<{ widthtype: string }>`
   height: 80% !important;
   flex: 1;
 `

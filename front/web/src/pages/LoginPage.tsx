@@ -7,7 +7,6 @@ import LoginCheckBox from '../components/Login/LoginCheckBox';
 import MainLayout from '../components/commons/MainLayout';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { GrayShadowBox } from '../components/commons/GrayShadowBox';
 import ContainerLayout from '../components/commons/ContainerLayout';
 
 const LoginPage = () => {
@@ -36,19 +35,6 @@ const LoginPage = () => {
 } ;
 
 export default LoginPage;
-
-const LoginContainer = styled(GrayShadowBox) <{ widthType: string }>`
-  display: flex;
-  width: ${(props) => { return WHcal(props.widthType!, 400) }};
-  position: absolute;
-  padding: ${(props) => { return WHcal(props.widthType!, 65) }} ${(props) => { return WHcal(props.widthType!, 71) }};
-  border-radius: ${(props) => { return WHcal(props.widthType!, 50) }};
-  top: 53%;
-  left: 60%;
-  transform: ${(props)=> props.widthType === 'big'? 'translate(-10%, -50%)': 'translate(-50%, -50%)'};
-  flex-direction: column;
-  align-items: start;
-`
 
 const SignInTitle = styled.h2<{ widthType: string }>`
   margin-bottom: ${(props) => { return WHcal(props.widthType!, 17) }};
