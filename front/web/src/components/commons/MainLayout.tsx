@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import WHcal from '../../utils/WHcal';
+import {WHcal} from '../../utils/WHcal';
 
 type MainLayoutProps  = {
   widthType?: string,

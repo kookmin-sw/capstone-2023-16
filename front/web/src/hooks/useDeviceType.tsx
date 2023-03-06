@@ -1,19 +1,24 @@
 import { useMediaQuery } from 'react-responsive';
 
 const useDeviceType = () => {
-  let deviceType = 'min';
+  let deviceType = 'mobile';
 
-  const isPC = useMediaQuery({
-    query: "(min-width:900px)"
+  const desktop = useMediaQuery({
+    query: "(min-width:1280px)"
   });
-  const small = useMediaQuery({
-    query: "(min-width:450px) and (max-width:899px)"
+  const tablet = useMediaQuery({
+    query: "(min-width:744px) and (max-width:1279px)"
+  });
+  const mobile = useMediaQuery({
+    query: "(max-width:743px)"
   })
 
-  if (isPC) {
-    deviceType = 'big';
-  } else if (small) {
-    deviceType = 'small';
+  if (desktop) {
+    deviceType = 'desktop';
+  } else if (tablet) {
+    deviceType = 'tablet';
+  } else if(mobile){
+    deviceType = 'mobile';
   }
 
   return deviceType;
