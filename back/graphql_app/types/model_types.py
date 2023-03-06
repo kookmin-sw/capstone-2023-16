@@ -25,6 +25,13 @@ class User:
         return models.User.objects.all()
 
 
+@strawberry.django.type(models.Post)
+class Post(relay.Node):
+    id: auto
+    title: auto = strawberry.field(description='글 제목')
+    content: auto = strawberry.field(description='글 내용')
+
+
 @gql.django.type(models.Post)
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')

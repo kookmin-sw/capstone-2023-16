@@ -22,7 +22,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("password", models.CharField(max_length=128, verbose_name="password")),
+                ("password", models.CharField(
+                    max_length=128, verbose_name="password")),
                 (
                     "last_login",
                     models.DateTimeField(
@@ -45,11 +46,13 @@ class Migration(migrations.Migration):
                 ("picture_url", models.URLField()),
                 (
                     "created_at",
-                    models.DateTimeField(auto_now_add=True, verbose_name="생성 시각"),
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="생성 시각"),
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now_add=True, verbose_name="갱신 시각"),
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="갱신 시각"),
                 ),
             ],
             options={
@@ -70,7 +73,8 @@ class Migration(migrations.Migration):
                 ),
                 ("title", models.TextField(verbose_name="글 제목")),
                 ("content", models.TextField(verbose_name="글 내용")),
-                ("is_public", models.BooleanField(default=True, verbose_name="공개 여부")),
+                ("is_public", models.BooleanField(
+                    default=True, verbose_name="공개 여부")),
                 (
                     "is_deleted",
                     models.BooleanField(default=False, verbose_name="글 삭제 여부"),
@@ -111,7 +115,8 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "nickname",
-                    models.CharField(max_length=20, unique=True, verbose_name="닉네임"),
+                    models.CharField(
+                        max_length=20, unique=True, verbose_name="닉네임"),
                 ),
                 (
                     "introduction",
@@ -119,7 +124,8 @@ class Migration(migrations.Migration):
                         blank=True, default="자기 소개가 없습니다.", verbose_name="소개"
                     ),
                 ),
-                ("is_public", models.BooleanField(default=True, verbose_name="공개 여부")),
+                ("is_public", models.BooleanField(
+                    default=True, verbose_name="공개 여부")),
                 (
                     "gender",
                     models.CharField(
@@ -163,7 +169,8 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created_at",
-                    models.DateTimeField(auto_now_add=True, verbose_name="생성 시각"),
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="생성 시각"),
                 ),
                 (
                     "updated_at",
@@ -206,11 +213,13 @@ class Migration(migrations.Migration):
                 ("password", models.TextField(verbose_name="유저의 비밀번호")),
                 (
                     "created_at",
-                    models.DateTimeField(auto_now_add=True, verbose_name="생성 시각"),
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="생성 시각"),
                 ),
                 (
                     "updated_at",
-                    models.DateTimeField(auto_now_add=True, verbose_name="갱신 시각"),
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="갱신 시각"),
                 ),
                 (
                     "user",
