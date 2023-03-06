@@ -27,19 +27,6 @@ class User(AbstractBaseUser):
         db_table = 'users'
 
 
-class EmailUser(models.Model):
-    """Deprecated. `User` 모델을 사용하세요."""
-    email = models.EmailField(verbose_name='유저의 이메일', unique=True)
-    password = models.TextField(verbose_name='유저의 비밀번호')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
-    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
-
-    class Meta:
-        db_table = 'email_users'
-
-
 class Post(models.Model):
     # TODO: Read count, Category 추가 필요
     title = models.TextField(verbose_name="글 제목")
