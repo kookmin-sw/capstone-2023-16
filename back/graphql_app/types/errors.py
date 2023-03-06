@@ -62,3 +62,23 @@ class DuplicatedValueError(ExceptionWithAdditionalInfo):
             'violatedFieldName': field_name,
             'violatedFieldValue': field_value,
         }
+
+
+@strawberry.type
+class StaticValidationError(ExceptionWithAdditionalInfo):
+    """
+    특정 필드에 대한 validation에 실패했을 때 발생하는 에러
+    단, 미리 정해진 규칙(글자 수 등)에 위반되는 입력에 대해서만 발생한다.
+    """
+    message = '필드값 검증에 실패했습니다.'
+    violated_field_name: str = strawberry.field(description='위반 필드 이름')
+    violated_field_name: str = strawberry.field(description='위반 필드 값')
+    detail: Optional[str] = strawberry.field(description='위반 사유 상세')
+
+    def __init__(self, field_name: str, field_value: str, detail: Optional[str] = None):
+        super().__init__()
+        self.additional_info = {
+            'violatedFieldName': field_name,
+            'violatedFieldValue': field_value,
+            'detail': detail
+        }

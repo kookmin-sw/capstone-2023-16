@@ -1,13 +1,10 @@
 from datetime import datetime
-from typing import Optional, Iterable, Type
+from typing import Optional, List
 
 import strawberry
 from strawberry import auto
-from strawberry.types.info import Info
-from strawberry.utils.await_maybe import AwaitableOrValue
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
-from strawberry_django_plus.relay import NodeType
 
 from graphql_app import models
 from graphql_app.types.enums import Gender
@@ -36,19 +33,10 @@ class Post(relay.Node):
 
 
 @gql.django.type(models.Post)
-class PostNode(relay.Node):
-    title: str
-    content: str
-
-    @classmethod
-    def resolve_nodes(cls: Type[NodeType], *,
-                      info: Optional[Info] = None, node_ids: Optional[Iterable[str]] = None) \
-            -> AwaitableOrValue[Iterable[NodeType]]:
-        raise NotImplementedError
-
-    @classmethod
-    def resolve_node(cls, node_id: str, *, info: Optional[Info] = None, required: bool = False):
-        raise NotImplementedError
+class Post(relay.Node):
+    title: str = strawberry.field(description='글 제목')
+    content: str = strawberry.field(description='글 내용')
+    tags: List['Tag'] = strawberry.field(description='태그 목록')
 
 
 @gql.django.type(models.Persona)
@@ -68,3 +56,15 @@ class Persona(relay.Node):
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
+
+
+@gql.django.type(models.Tag)
+class Tag(relay.Node):
+    """
+    Post를 설명하거나, Persona의 선호 대상이 되는 태그
+    - Post : Tag = N : M
+    - Persona : Tag = N : M
+    """
+    body: str = strawberry.field(description='태그 본문')
+    created_at: datetime = strawberry.field(description='생성 일시')
+

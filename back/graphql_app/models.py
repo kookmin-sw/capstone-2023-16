@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
@@ -16,8 +18,7 @@ class User(AbstractBaseUser):
 
     email = models.EmailField(verbose_name='유저의 이메일', unique=True)
     username = models.CharField(max_length=254, unique=True)
-    signup_method = models.CharField(
-        max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
+    signup_method = models.CharField(max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
     picture_url = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
@@ -40,7 +41,7 @@ class EmailUser(models.Model):
 
 
 class Post(models.Model):
-    # TODO: Tag, Read count, Category 추가 필요
+    # TODO: Read count, Category 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
     user = models.ForeignKey(User,
@@ -49,10 +50,10 @@ class Post(models.Model):
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 
-    created_at = models.DateTimeField(
-        auto_now_add=True, verbose_name='생성 시각', null=True)
-    updated_at = models.DateTimeField(
-        auto_now_add=True, verbose_name='갱신 시각', null=True)
+    tags = models.ManyToManyField('graphql_app.Tag', related_name='related_posts', verbose_name='연관 태그 목록')
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
+    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
 
 
 class Persona(models.Model):
@@ -62,11 +63,12 @@ class Persona(models.Model):
     introduction = models.TextField('소개', blank=True, default='자기 소개가 없습니다.')
     is_public = models.BooleanField('공개 여부', default=True)
     gender = models.CharField('성별', max_length=2, null=True, default=None)
-    age = models.PositiveIntegerField(
-        '연령대', null=True, blank=True, default=None)
-    job = models.CharField('직업', max_length=15, null=True,
-                           blank=True, default=None)
+    age = models.PositiveIntegerField('연령대', null=True, blank=True, default=None)
+    job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
     is_certified = models.BooleanField('공인 여부', default=False)
+
+    preferred_tags = models.ManyToManyField('graphql_app.Tag', related_name='preferred_users',
+                                            verbose_name='선호 태그 목록')
 
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
     updated_at = models.DateTimeField('갱신 시각', auto_now=True)
@@ -78,3 +80,39 @@ class Persona(models.Model):
         db_table = 'personas'
         verbose_name = '구독 페르소나'
         verbose_name_plural = '구독 페르소나 목록'
+
+
+class Tag(models.Model):
+    MIN_TAG_BODY_LEN = 2
+    MAX_TAG_BODY_LEN = 20
+
+    body = models.CharField(max_length=MAX_TAG_BODY_LEN, null=False, blank=False, unique=True, verbose_name='태그 본문')
+    created_at = models.DateTimeField('생성 시각', auto_now_add=True)
+
+    class Meta:
+        db_table = 'tags'
+        verbose_name = '태그'
+        verbose_name_plural = '태그 목록'
+
+    @classmethod
+    def check_length(cls, body: str) -> int:
+        if len(body) < cls.MIN_TAG_BODY_LEN:
+            return -1
+        elif len(body) > cls.MAX_TAG_BODY_LEN:
+            return 1
+        else:
+            return 0
+
+    @classmethod
+    def upsert_tags(cls, bodies: List[str]) -> List[Tuple['Tag', bool]]:
+        unique_bodies = set(bodies)
+
+        for body in unique_bodies:
+            cls.check_length(body)
+
+        tags = [
+            cls.objects.get_or_create(body=body)
+            for body in unique_bodies
+        ]
+
+        return tags
