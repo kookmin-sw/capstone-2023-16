@@ -4,15 +4,21 @@ import styled from "styled-components/native";
 import { StatusBar } from "expo-status-bar";
 import { Formik } from "formik";
 
-import { colors } from "../components/colors";
-import { Container, ScreenHeight, StatusBarHeight } from "../components/shared";
+import { colors } from "../components/common/colors";
+import {
+  Container,
+  ScreenHeight,
+  StatusBarHeight,
+} from "../components/common/shared";
+import * as ButtonTheme from "../components/common/Buttons/theme";
 
-import KeyboardAvoidingViewContainer from "../components/Containers/KeyboardAvoidingViewContainer";
-import StyledTextInput from "../components/Inputs/StyledTextInput";
-import RegularButton from "../components/Buttons/RegularButton";
-import TextButton from "../components/Buttons/TextButton";
-import CheckBox from "../components/Buttons/CheckBox";
-import SmallText from "../components/Texts/SmallText";
+import KeyboardAvoidingViewContainer from "../components/common/Containers/KeyboardAvoidingViewContainer";
+import StyledTextInput from "../components/common/Inputs/StyledTextInput";
+import RegularButton from "../components/common/Buttons/RegularButton";
+import TextButton from "../components/common/Buttons/TextButton";
+import CheckBox from "../components/common/Buttons/CheckBox";
+import SmallText from "../components/common/Texts/SmallText";
+
 import { NavigationData } from "../navigation/AuthNavigator";
 
 const LoginContainer = styled(Container)`
@@ -20,7 +26,7 @@ const LoginContainer = styled(Container)`
   width: 100%;
   padding-top: ${StatusBarHeight + 200}px;
   flex: 1;
-  justify-content" space-between;
+  justify-content: space-between;
 `;
 
 const InputSection = styled.View`
@@ -75,11 +81,11 @@ export const LoginScreen: FC<Props> = ({ navigation }) => {
               <InputSection>
                 <StyledTextInput
                   labelStyle={{
-                    color: `${colors.black}`,
+                    color: colors.black,
                     marginBottom: 7,
                     fontWeight: "700",
                   }}
-                  label="ID"
+                  label="아이디"
                   value={values.email}
                   onChangeText={handleChange("email")}
                   onBlur={handleBlur("email")}
@@ -87,11 +93,11 @@ export const LoginScreen: FC<Props> = ({ navigation }) => {
                 />
                 <StyledTextInput
                   labelStyle={{
-                    color: `${colors.black}`,
+                    color: colors.black,
                     marginBottom: 7,
                     fontWeight: "700",
                   }}
-                  label="PASSWORD"
+                  label="비밀번호"
                   value={values.password}
                   onChangeText={handleChange("password")}
                   onBlur={handleBlur("password")}
@@ -132,7 +138,13 @@ export const LoginScreen: FC<Props> = ({ navigation }) => {
                   </TextButton>
                 </SignupSection>
                 <RegularButton
-                  btnStyles={{ height: 55 }}
+                  btnStyles={[
+                    ButtonTheme.whiteBGpurpleSD.btnStyle,
+                    {
+                      height: 55,
+                    },
+                  ]}
+                  textStyles={ButtonTheme.whiteBGpurpleSD.textStyle}
                   onPress={() => {
                     handleSubmit();
                   }}
