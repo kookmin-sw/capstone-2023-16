@@ -37,7 +37,7 @@ const CheckBox: FC<CheckboxProps> = (props) => {
         }}
       >
         {isChecked ? (
-          <Feather name="check" style={{ color: colors.tertiary }} />
+          <Feather name="check" style={{ color: colors.graydark }} />
         ) : null}
       </StyledCheckBox>
       <SmallText textStyle={props.labelStyle}>{props.label}</SmallText>

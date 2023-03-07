@@ -1,29 +1,40 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components/native";
-import { View, StyleProp, TextStyle, TextInputProps } from "react-native";
+import {
+  View,
+  StyleProp,
+  TextStyle,
+  TextInputProps,
+  ViewStyle,
+} from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
 import { colors } from "../colors";
-import { ScreenWidth } from "../shared";
 import SmallText from "../Texts/SmallText";
+
+const StyledTextInputContainer = styled.View`
+  margin-bottom: 10px;
+`;
 
 const InputField = styled.TextInput`
   padding: 12px;
   border-radius: 10px;
   background-color: ${colors.white};
   color: ${colors.graydark};
-  width: 100%;
   height: 50px;
-  min-width: ${ScreenWidth * 0.8}px;
+  min-width: 100%;
   shadow-color: ${colors.black};
+  shadow-offset: 3px 3px;
   shadow-opacity: 0.1;
   shadow-radius: 3.8,
   elevation: 5;
 `;
 
 const ErrorMessage = styled.Text`
-  color: ${colors.tertiary};
+  color: ${colors.graydark};
+  margin-top: 5px;
+  margin-bottom: 10px;
 `;
 
 const RightIcon = styled.TouchableOpacity`
@@ -34,24 +45,34 @@ const RightIcon = styled.TouchableOpacity`
 `;
 
 interface StyledTextInputProps extends TextInputProps {
+  viewStyle?: StyleProp<ViewStyle>;
   label?: string;
   labelStyle?: StyleProp<TextStyle>;
   textStyle?: StyleProp<TextStyle>;
+  error?: string | boolean;
+  touched?: boolean;
   isPassword?: boolean;
 }
 
 const StyledTextInput: FC<StyledTextInputProps> = ({
+  viewStyle,
   label,
   labelStyle,
   textStyle,
   isPassword,
+  error,
+  touched,
   ...props
 }) => {
   const [hidePassword, setHidePassword] = useState(true);
   return (
-    <View style={{ marginBottom: 10 }}>
+    <StyledTextInputContainer style={viewStyle}>
       <SmallText textStyle={labelStyle}>{label}</SmallText>
-      <InputField {...props} secureTextEntry={isPassword && hidePassword} />
+      <InputField
+        style={viewStyle}
+        {...props}
+        secureTextEntry={isPassword && hidePassword}
+      />
       {isPassword && (
         <RightIcon
           onPress={() => {
@@ -65,7 +86,8 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
           />
         </RightIcon>
       )}
-    </View>
+      {error && touched ? <ErrorMessage>{error}</ErrorMessage> : null}
+    </StyledTextInputContainer>
   );
 };
 
