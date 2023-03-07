@@ -24,7 +24,11 @@ const AuthNavigator = () => {
         component={LoginScreen}
         options={{ headerShown: false }}
       />
-      <StackNavigator.Screen name="Signup" component={SignupScreen} />
+      <StackNavigator.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ title: "회원가입" }}
+      />
     </StackNavigator.Navigator>
   );
 };
