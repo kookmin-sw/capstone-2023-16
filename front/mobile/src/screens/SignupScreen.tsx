@@ -80,8 +80,19 @@ const BottomSection = styled.View`
 type Props = NavigationData<"Signup">;
 
 const SignupScreen: FC<Props> = () => {
+  // 이용약관 모달
+  const [show, setShow] = useState(false);
+
+  // 이용약관 동의
+  const [agree, setAgree] = useState(false);
+
+  // 성별
+  const [isMale, setIsMale] = useState(true);
+
   const SignupSchema = Yup.object().shape({
-    email: Yup.string().email().required("이메일 정보는 필수입니다."),
+    email: Yup.string()
+      .email("유효하지 않은 이메일입니다.")
+      .required("이메일 정보는 필수입니다."),
     password: Yup.string()
       .required("비밀번호 정보는 필수입니다.")
       .min(8, "비밀번호는 8자 이상입니다."),
@@ -89,9 +100,6 @@ const SignupScreen: FC<Props> = () => {
       .required("비밀번호 확인은 필수입니다.")
       .oneOf([Yup.ref("password")], "비밀번호가 일치하지 않습니다"),
   });
-
-  // 이용약관 모달
-  const [show, setShow] = useState(false);
 
   return (
     <SignupContainer>
@@ -201,8 +209,17 @@ const SignupScreen: FC<Props> = () => {
                       성별
                     </SmallText>
                     <RadioButtonSection>
-                      <CheckBox labelStyle={{ marginRight: 30 }} label={"남"} />
-                      <CheckBox label={"여"} />
+                      <CheckBox
+                        onPress={() => setIsMale(true)}
+                        isChecked={isMale}
+                        labelStyle={{ marginRight: 30 }}
+                        label={"남"}
+                      />
+                      <CheckBox
+                        onPress={() => setIsMale(false)}
+                        isChecked={isMale ? false : true}
+                        label={"여"}
+                      />
                     </RadioButtonSection>
                   </GenderInfoSection>
                   <TermsSection>
@@ -217,6 +234,8 @@ const SignupScreen: FC<Props> = () => {
                       }}
                     >
                       <CheckBox
+                        onPress={() => setAgree(!agree)}
+                        isChecked={agree}
                         labelStyle={{
                           color: colors.black,
                           fontWeight: "700",

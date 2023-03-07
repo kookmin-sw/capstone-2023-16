@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components/native";
 
 import { StatusBar } from "expo-status-bar";
@@ -60,6 +60,7 @@ const SignupSection = styled.View`
 type Props = NavigationData<"Login">;
 
 export const LoginScreen: FC<Props> = ({ navigation }) => {
+  const [autoLogin, setAutoLogin] = useState(false);
   return (
     <LoginContainer>
       <StatusBar />
@@ -104,6 +105,8 @@ export const LoginScreen: FC<Props> = ({ navigation }) => {
                   isPassword={true}
                 />
                 <CheckBox
+                  onPress={() => setAutoLogin(!autoLogin)}
+                  isChecked={autoLogin}
                   label="로그인 유지"
                   labelStyle={{ color: colors.black }}
                 />
