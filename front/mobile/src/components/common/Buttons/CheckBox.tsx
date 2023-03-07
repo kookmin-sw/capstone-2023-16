@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components/native";
-import { StyleProp, TextStyle } from "react-native";
+import { GestureResponderEvent, StyleProp, TextStyle } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -25,18 +25,15 @@ const StyledCheckBox = styled.TouchableOpacity`
 type CheckboxProps = {
   label: string;
   labelStyle?: StyleProp<TextStyle>;
+  isChecked: boolean;
+  onPress: ((event: GestureResponderEvent) => void) | undefined | undefined;
 };
 
 const CheckBox: FC<CheckboxProps> = (props) => {
-  const [isChecked, setIsChecked] = useState(false);
   return (
     <StyledView>
-      <StyledCheckBox
-        onPress={() => {
-          setIsChecked(!isChecked);
-        }}
-      >
-        {isChecked ? (
+      <StyledCheckBox onPress={props.onPress}>
+        {props.isChecked ? (
           <Feather name="check" style={{ color: colors.graydark }} />
         ) : null}
       </StyledCheckBox>
