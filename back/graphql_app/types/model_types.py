@@ -10,6 +10,17 @@ from graphql_app import models
 from graphql_app.types.enums import Gender
 
 
+@gql.django.type(models.Tag)
+class Tag(relay.Node):
+    """
+    Post를 설명하거나, Persona의 선호 대상이 되는 태그
+    - Post : Tag = N : M
+    - Persona : Tag = N : M
+    """
+    body: str = strawberry.field(description='태그 본문')
+    created_at: datetime = strawberry.field(description='생성 일시')
+
+
 @strawberry.django.type(models.User)
 class User:
     id: auto
@@ -36,7 +47,7 @@ class Post(relay.Node):
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
-    tags: List['Tag'] = strawberry.field(description='태그 목록')
+    tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
 
 
 @gql.django.type(models.Persona)
@@ -56,14 +67,3 @@ class Persona(relay.Node):
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
-
-
-@gql.django.type(models.Tag)
-class Tag(relay.Node):
-    """
-    Post를 설명하거나, Persona의 선호 대상이 되는 태그
-    - Post : Tag = N : M
-    - Persona : Tag = N : M
-    """
-    body: str = strawberry.field(description='태그 본문')
-    created_at: datetime = strawberry.field(description='생성 일시')
