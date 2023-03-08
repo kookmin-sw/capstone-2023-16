@@ -45,7 +45,7 @@ class Persona(relay.Node):
     구독자, 구독 대상, 컨텐츠 작성자에 해당되는 페르소나
     User : Persona = 1 : N
     """
-    user: User = strawberry.field(User.get_all_users, description='소유자')
+    owner: User = strawberry.field(User.get_all_users, description='소유자')
     nickname: str = strawberry.field(description='닉네임 (unique)')
     introduction: bool = strawberry.field(description='소개')
     is_public: bool = strawberry.field(description='공개 여부')
@@ -67,4 +67,3 @@ class Tag(relay.Node):
     """
     body: str = strawberry.field(description='태그 본문')
     created_at: datetime = strawberry.field(description='생성 일시')
-
