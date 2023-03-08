@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional
 
 import strawberry
 from strawberry import auto
@@ -64,6 +64,7 @@ class Persona(relay.Node):
     age: Optional[int] = strawberry.field(description='연령')
     job: Optional[str] = strawberry.field(description='직업')
     is_certified: bool = strawberry.field(description='공식 인증 여부')
+    preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')

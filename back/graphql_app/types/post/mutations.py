@@ -8,7 +8,7 @@ from strawberry_django_plus.mutations import resolvers
 from graphql_app import models
 from graphql_app.types.decorators import requires_auth
 from graphql_app.types.errors import AuthInfoRequiredError, ResourceNotFoundError
-from graphql_app.types.model_types import Post, Tag
+from graphql_app.types.model_types import Post
 
 
 @gql.type
