@@ -27,26 +27,12 @@ class User(AbstractBaseUser):
         db_table = 'users'
 
 
-class EmailUser(models.Model):
-    """Deprecated. `User` 모델을 사용하세요."""
-    email = models.EmailField(verbose_name='유저의 이메일', unique=True)
-    password = models.TextField(verbose_name='유저의 비밀번호')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
-    updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
-
-    class Meta:
-        db_table = 'email_users'
-
-
 class Post(models.Model):
     # TODO: Read count, Category 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
-    user = models.ForeignKey(User,
-                             verbose_name="글쓴이",
-                             on_delete=models.CASCADE)  # TODO: 추후 Persona로 변경 필요
+    author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
+                               verbose_name="글쓴이")
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 
@@ -57,8 +43,8 @@ class Post(models.Model):
 
 
 class Persona(models.Model):
-    user = models.ForeignKey('graphql_app.User', null=False, verbose_name='대상 사용자', on_delete=models.CASCADE,
-                             db_column='user_id')
+    owner = models.ForeignKey('graphql_app.User', null=False, verbose_name='대상 사용자', on_delete=models.CASCADE,
+                              db_column='owner_user_id')
     nickname = models.CharField('닉네임', unique=True, max_length=20)
     introduction = models.TextField('소개', blank=True, default='자기 소개가 없습니다.')
     is_public = models.BooleanField('공개 여부', default=True)
@@ -74,7 +60,7 @@ class Persona(models.Model):
     updated_at = models.DateTimeField('갱신 시각', auto_now=True)
 
     def __str__(self):
-        return f"[{self.pk}] {self.user.id}:{self.nickname}"
+        return f"[{self.pk}] {self.owner.id}:{self.nickname}"
 
     class Meta:
         db_table = 'personas'
@@ -96,6 +82,12 @@ class Tag(models.Model):
 
     @classmethod
     def check_length(cls, body: str) -> int:
+        """
+        Tag body의 길이 유효성을 검증하는 함수
+        -1 : 최소 길이보다 짧은 경우
+        0 : 정상 (유효)
+        +1 : 최대 길이보다 긴 경우
+        """
         if len(body) < cls.MIN_TAG_BODY_LEN:
             return -1
         elif len(body) > cls.MAX_TAG_BODY_LEN:
@@ -105,6 +97,11 @@ class Tag(models.Model):
 
     @classmethod
     def upsert_tags(cls, bodies: List[str]) -> List[Tuple['Tag', bool]]:
+        """
+        tag body 리스트를 입력 받아 각각 upsert를 수행한다.
+        반환 리스트의 각각의 요소 첫번째 요소는 upsert된 Tag 객체,
+        두번째 요소는 create인 경우 True, Retreive인 경우 False.
+        """
         unique_bodies = set(bodies)
 
         for body in unique_bodies:

@@ -1,4 +1,4 @@
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 import strawberry
 from graphql import GraphQLError
@@ -81,4 +81,19 @@ class StaticValidationError(ExceptionWithAdditionalInfo):
             'violatedFieldName': field_name,
             'violatedFieldValue': field_value,
             'detail': detail
+        }
+
+
+@strawberry.type
+class ResourceNotFoundError(ExceptionWithAdditionalInfo):
+    """
+    요청된 자원을 검색하는데 실패한 경우 발생하는 에러
+    """
+    message = '요청된 자원을 찾을 수 없습니다.'
+    resource_name: str = strawberry.field(description='요청한 자원의 종류')
+
+    def __init__(self, resource_name: str):
+        super().__init__()
+        self.additional_info = {
+            'resourceName': resource_name
         }
