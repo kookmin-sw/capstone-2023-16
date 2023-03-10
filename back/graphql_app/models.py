@@ -124,7 +124,7 @@ class Category(models.Model):
     MIN_CATEGORY_BODY_LEN = 1
     MAX_CATEGORY_BODY_LEN = 20
 
-    body = models.CharField(max_length=MIN_CATEGORY_BODY_LEN, null=False, blank=False,
+    body = models.CharField(max_length=MAX_CATEGORY_BODY_LEN, null=False, blank=False,
                             unique=True, verbose_name='카테고리 본문')
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
