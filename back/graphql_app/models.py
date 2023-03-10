@@ -113,3 +113,16 @@ class Tag(models.Model):
         ]
 
         return tags
+
+
+class Category(models.Model):
+    MIN_CATEGORY_BODY_LEN = 1
+    MAX_CATEGORY_BODY_LEN = 20
+
+    body = models.CharField(max_length=MIN_CATEGORY_BODY_LEN, null=False, blank=False,
+                            unique=True, verbose_name='카테고리 본문')
+
+    class Meta:
+        db_table = 'categories'
+        verbose_name = '카테고리'
+        verbose_name_plural = '카테고리 목록'
