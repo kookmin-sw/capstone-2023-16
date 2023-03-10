@@ -28,7 +28,7 @@ class User(AbstractBaseUser):
 
 
 class Post(models.Model):
-    # TODO: Read count, Category 추가 필요
+    # TODO: Read count 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
@@ -37,6 +37,8 @@ class Post(models.Model):
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 
     tags = models.ManyToManyField('graphql_app.Tag', related_name='related_posts', verbose_name='연관 태그 목록')
+    category = models.ForeignKey('graphql_app.Category', related_name='including_posts', null=True, blank=True,
+                                 default=None, on_delete=models.SET_NULL, verbose_name='카테고리')
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
@@ -53,8 +55,10 @@ class Persona(models.Model):
     job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
     is_certified = models.BooleanField('공인 여부', default=False)
 
-    preferred_tags = models.ManyToManyField('graphql_app.Tag', related_name='preferred_users',
+    preferred_tags = models.ManyToManyField('graphql_app.Tag', related_name='preferred_users_as_tag',
                                             verbose_name='선호 태그 목록')
+    preferred_categories = models.ManyToManyField('graphql_app.Category', related_name='preferred_users_as_category',
+                                                  verbose_name='선호 카테고리 목록')
 
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
     updated_at = models.DateTimeField('갱신 시각', auto_now=True)
