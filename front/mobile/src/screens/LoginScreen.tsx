@@ -27,15 +27,13 @@ import {graphql} from 'babel-plugin-relay/macro';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 import {useAppDispatch} from '../redux/hooks';
-// import { useMutation } from 'react-relay';
-import {commitMutation, useLazyLoadQuery, useMutation} from 'react-relay';
+import {useMutation} from 'react-relay';
 // import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 import {login} from '../redux/slices/userSlice';
 
 import {CookieSetting} from '../graphQL/CookieSetting/CookieSetting';
 // import {GetPersonaQuery} from '../graphQL/CookieSetting/__generated__/GetPersonaQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
-import LoginEnvironment from '../LoginEnvironment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginContainer = styled(Container)`
