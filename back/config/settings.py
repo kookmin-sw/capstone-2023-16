@@ -30,6 +30,11 @@ DJANGO_DEFAULT_APPS = [
     'django.contrib.staticfiles',
 ]
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+
 DRF_APPS = [
     'rest_framework'
 ]
@@ -103,6 +108,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
