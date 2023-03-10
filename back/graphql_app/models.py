@@ -16,6 +16,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
 
+    is_admin = models.BooleanField(default=False)
     email = models.EmailField(verbose_name='유저의 이메일', unique=True)
     username = models.CharField(max_length=254, unique=True)
     signup_method = models.CharField(max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
