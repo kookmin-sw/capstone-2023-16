@@ -53,5 +53,8 @@ const StyleReset = `
 
 export const GlobalStyles = createGlobalStyle`
   ${StyleReset}
+  html, body {
+    height: 100vh;
+  }
   /* 공통으로 적용할 스타일을 적어주세요. */
 `;

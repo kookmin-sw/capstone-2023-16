@@ -17,6 +17,13 @@ const Btn = styled.button<{widthType?:string}>`
     align-items: center;
     justify-content: center;
     border:none;
+    &:hover{
+        cursor: pointer;
+    }
+    &:active{
+        cursor: default;
+        background-color: lightgray;
+    }
 `;
 
 const Text = styled.p<{widthType?:string}>`
