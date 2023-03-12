@@ -23,6 +23,7 @@ class Mutation:
         content: str = strawberry.field(description='새 게시글 본문')
         tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
                                                            description='연결할 태그의 body 목록 (upsert됨)')
+        category: gql.auto = strawberry.field(description='소속 카테고리')
 
     # TODO: Type 수정
     @gql.mutation

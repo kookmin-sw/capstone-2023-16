@@ -132,3 +132,18 @@ class Category(models.Model):
         db_table = 'categories'
         verbose_name = '카테고리'
         verbose_name_plural = '카테고리 목록'
+
+    @classmethod
+    def check_length(cls, body: str) -> int:
+        """
+        Category body의 길이 유효성을 검증하는 함수
+        -1 : 최소 길이보다 짧은 경우
+        0 : 정상 (유효)
+        +1 : 최대 길이보다 긴 경우
+        """
+        if len(body) < cls.MIN_CATEGORY_BODY_LEN:
+            return -1
+        elif len(body) > cls.MAX_CATEGORY_BODY_LEN:
+            return 1
+        else:
+            return 0

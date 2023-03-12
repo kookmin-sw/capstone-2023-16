@@ -15,11 +15,14 @@ from .persona import Query as PersonaQuery
 from .tag import Mutation as TagMutation
 from .tag import Query as TagQuery
 
-queries = (PostQuery, PersonaQuery, TagMutation, TagQuery)
-mutations = (UserMutation, PostMutation, PersonaMutation, TagMutation)
+from .category import Mutation as CategoryMutation
+from .category import Query as CategoryQuery
+
+queries = (PostQuery, PersonaQuery, TagMutation, TagQuery, CategoryQuery)
+mutations = (UserMutation, PostMutation, PersonaMutation, TagMutation, CategoryMutation)
 
 Query = merge_types("Query", queries)
 Mutation = merge_types("Mutation", mutations)
 
 schema = Schema(mutation=Mutation, query=Query, extensions=[
-                SchemaDirectiveExtension, ExtendErrorFormat])
+    SchemaDirectiveExtension, ExtendErrorFormat])
