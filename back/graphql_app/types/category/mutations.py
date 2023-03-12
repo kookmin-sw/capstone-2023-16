@@ -15,7 +15,7 @@ from ..errors import AdminPermissionRequiredError
 class Mutation:
     @strawberry.mutation
     @admin_only
-    def create_category(self, info: Info, body: str) \
+    def category_create(self, info: Info, body: str) \
             -> strawberry.union('CreateCategoryResult', (Category,
                                                          AdminPermissionRequiredError,
                                                          CategoryBodyDuplicatedError,

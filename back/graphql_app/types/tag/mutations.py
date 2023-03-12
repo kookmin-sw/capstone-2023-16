@@ -25,7 +25,7 @@ class Mutation:
 
     @strawberry.mutation
     @requires_auth
-    def upsert_tag(self, info: Info, body: str) \
+    def tag_upsert(self, info: Info, body: str) \
             -> strawberry.union('UpsertTagResult', (TagUpsertOutput,
                                                     AuthInfoRequiredError,
                                                     TagBodyTooShortError, TagBodyTooLongError)):

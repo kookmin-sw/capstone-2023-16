@@ -12,7 +12,7 @@ from graphql_app.models import Persona as PersonaModel
 class Query:
     @gql.django.connection
     @requires_auth
-    def get_own_persona_connection(self, info: Info) -> Iterable[Persona]:
+    def get_own_personas(self, info: Info) -> Iterable[Persona]:
         """
         로그인한 사용자의 페르소나 목록
         """

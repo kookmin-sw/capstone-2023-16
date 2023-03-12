@@ -38,7 +38,7 @@ class Mutation:
 
     @strawberry.mutation
     @requires_auth
-    def create_persona(self, info: Info, new_persona_input: PersonaCreateInput) \
+    def persona_create(self, info: Info, new_persona_input: PersonaCreateInput) \
             -> strawberry.union("CreatePersonaResult", (Persona,
                                                         AuthInfoRequiredError,
                                                         PersonaNicknameDuplicatedError)):
