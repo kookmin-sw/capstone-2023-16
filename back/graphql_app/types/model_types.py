@@ -10,6 +10,17 @@ from graphql_app import models
 from graphql_app.types.enums import Gender
 
 
+@gql.django.type(models.Category)
+class Category(relay.Node):
+    """
+    Post가 소속되거나, Persona의 선호 대상이 되는 카테고리
+    - Post : Category = N : 1
+    - Persona : Category = N : M
+    """
+    body: str = strawberry.field(description='카테고리 본문')
+    created_at: datetime = strawberry.field(description='생성 일시')
+
+
 @gql.django.type(models.Tag)
 class Tag(relay.Node):
     """
@@ -48,6 +59,7 @@ class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
+    category: Category = strawberry.field(description='소속 카테고리')
 
 
 @gql.django.type(models.Persona)
@@ -65,6 +77,7 @@ class Persona(relay.Node):
     job: Optional[str] = strawberry.field(description='직업')
     is_certified: bool = strawberry.field(description='공식 인증 여부')
     preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
+    preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')

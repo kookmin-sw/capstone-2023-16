@@ -1,11 +1,11 @@
 from django.db.models import Q
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 import strawberry
 from strawberry.types.info import Info
 
 from graphql_app.models import User as UserModel
-from graphql_app.types.decorators import anonymous_only
+from graphql_app.types.decorators import anonymous_only, requires_auth
 from graphql_app.types.errors import AnonymousOnlyError
 from graphql_app.types.model_types import User
 from graphql_app.types.user.errors import UsernameAlreadyUsedError, WrongCertInfoError, EmailAlreadyUsedError
@@ -57,3 +57,8 @@ class Mutation:
         else:
             login(info.context.request, user)
             return user
+
+    @strawberry.mutation
+    @requires_auth
+    def logout(self, info: Info) -> None:
+        logout(info.context.request)

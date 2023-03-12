@@ -12,9 +12,9 @@ from graphql_app.types.tag.errors import TagBodyTooLongError, TagBodyTooShortErr
 @gql.type
 class Mutation:
     @strawberry.type
-    class TagUpsertOutput:
+    class TagInsertOutput:
         """
-        Tag upsert 결과
+        Tag insert 결과
         """
         tag: Tag = strawberry.field(description='Upsert된 태그')
         is_created: bool = strawberry.field(description='새로 생성된 경우 true, 아닌 경우 false')
@@ -25,8 +25,8 @@ class Mutation:
 
     @strawberry.mutation
     @requires_auth
-    def upsert_tag(self, info: Info, body: str) \
-            -> strawberry.union('UpsertTagResult', (TagUpsertOutput,
+    def tag_insert(self, info: Info, body: str) \
+            -> strawberry.union('UpsertTagResult', (TagInsertOutput,
                                                     AuthInfoRequiredError,
                                                     TagBodyTooShortError, TagBodyTooLongError)):
         """

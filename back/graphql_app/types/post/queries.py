@@ -14,7 +14,7 @@ class Query:
     post: Optional[Post] = relay.node()
 
     @gql.django.connection
-    def get_public_post_connection(self, info: Info) -> Iterable[Post]:
+    def get_public_posts(self, info: Info) -> Iterable[Post]:
         """
         공개된 모든 게시물의 목록
         """
@@ -22,7 +22,7 @@ class Query:
 
     @gql.django.connection
     @admin_only
-    def get_entire_post_connection(self, info: Info) -> Iterable[Post]:
+    def get_entire_posts(self, info: Info) -> Iterable[Post]:
         """
         시스템에 등록된 모든 게시물의 목록
         """
