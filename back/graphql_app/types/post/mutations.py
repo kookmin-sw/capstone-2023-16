@@ -22,7 +22,7 @@ class Mutation:
         title: str = strawberry.field(description='새 게시글 제목')
         content: str = strawberry.field(description='새 게시글 본문')
         tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
-                                                           description='연결할 태그의 body 목록 (upsert됨)')
+                                                           description='연결할 태그의 body 목록 (insert 됨)')
         category: gql.auto = strawberry.field(description='소속 카테고리')
 
     # TODO: Type 수정
@@ -50,7 +50,7 @@ class Mutation:
         new_post = resolvers.create(info, models.Post, new_post_input)
 
         # 태그 연결 처리
-        tags = list(map(lambda pair: pair[0], models.Tag.upsert_tags(new_post_input['tag_bodies'])))
+        tags = list(map(lambda pair: pair[0], models.Tag.insert_tags(new_post_input['tag_bodies'])))
         new_post.tags.add(*tags)
 
         return new_post

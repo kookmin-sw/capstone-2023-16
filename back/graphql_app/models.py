@@ -101,10 +101,10 @@ class Tag(models.Model):
             return 0
 
     @classmethod
-    def upsert_tags(cls, bodies: List[str]) -> List[Tuple['Tag', bool]]:
+    def insert_tags(cls, bodies: List[str]) -> List[Tuple['Tag', bool]]:
         """
-        tag body 리스트를 입력 받아 각각 upsert를 수행한다.
-        반환 리스트의 각각의 요소 첫번째 요소는 upsert된 Tag 객체,
+        tag body 리스트를 입력 받아 각각 insert를 수행한다.
+        반환 리스트의 각각의 요소 첫번째 요소는 insert된 Tag 객체,
         두번째 요소는 create인 경우 True, Retreive인 경우 False.
         """
         unique_bodies = set(bodies)

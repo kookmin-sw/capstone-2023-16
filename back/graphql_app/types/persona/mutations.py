@@ -32,7 +32,7 @@ class Mutation:
         age: Optional[int] = strawberry.field(default=None, description='나이')
         job: Optional[str] = strawberry.field(default=None, description='직업')
         preferred_tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
-                                                                     description='선호하는 태그의 body 목록 (upsert됨)')
+                                                                     description='선호하는 태그의 body 목록 (insert 됨)')
         preferred_categories: Optional[List[CategoryIDInput]] = strawberry.field(default_factory=list,
                                                                                  description='선호 카테고리 목록')
 
@@ -68,7 +68,7 @@ class Mutation:
             info, models.Persona, resolvers.parse_input(info, new_persona_input))
 
         # 선호 태그 연결 처리
-        tags = list(map(lambda pair: pair[0], models.Tag.upsert_tags(new_persona_input['preferred_tag_bodies'])))
+        tags = list(map(lambda pair: pair[0], models.Tag.insert_tags(new_persona_input['preferred_tag_bodies'])))
         new_persona.preferred_tags.add(*tags)
 
         return new_persona
