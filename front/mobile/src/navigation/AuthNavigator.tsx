@@ -1,15 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { RouteProp } from "@react-navigation/native";
+import {RouteProp} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
-} from "@react-navigation/native-stack";
+} from '@react-navigation/native-stack';
 
-import { LoginScreen } from "../screens/LoginScreen";
+import {LoginScreen} from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
 
 export type ParamList = {
   Login: undefined;
+  Signup: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -20,7 +22,12 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{title: '회원가입', headerShadowVisible: false}}
       />
     </StackNavigator.Navigator>
   );
