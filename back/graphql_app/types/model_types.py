@@ -79,5 +79,7 @@ class Persona(relay.Node):
     preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
     preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
 
+    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
+
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')

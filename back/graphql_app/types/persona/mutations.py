@@ -4,13 +4,14 @@ import strawberry
 from strawberry.types.info import Info
 from strawberry_django_plus import gql
 from strawberry_django_plus.mutations import resolvers
+from strawberry_django_plus.relay import GlobalID
 
 from graphql_app import models
 from graphql_app.types.enums import Gender
-from graphql_app.types.errors import AuthInfoRequiredError
+from graphql_app.types.errors import AuthInfoRequiredError, PermissionDeniedError
 from graphql_app.types.model_types import Persona
 from graphql_app.types.decorators import requires_auth
-from graphql_app.types.persona.errors import PersonaNicknameDuplicatedError
+from graphql_app.types.persona.errors import PersonaNicknameDuplicatedError, SelfFollowError
 
 
 @gql.type
@@ -59,11 +60,11 @@ class Mutation:
                 new_persona_input['gender'] = '여성'
 
         # 카테고리 처리 (id를 넘겨 주어야 함)
-        new_persona_input['preferred_categories'] = list(map(lambda c: c['id'].id,
+        new_persona_input['preferred_categories'] = list(map(lambda c: c['id'].toggle_target_persona,
                                                              new_persona_input['preferred_categories']))
 
         # 요청한 사용자를 페르소나의 소유자로 설정
-        new_persona_input['owner'] = info.context.request.user.id
+        new_persona_input['owner'] = info.context.request.user.toggle_target_persona
         new_persona = resolvers.create(
             info, models.Persona, resolvers.parse_input(info, new_persona_input))
 
@@ -72,3 +73,57 @@ class Mutation:
         new_persona.preferred_tags.add(*tags)
 
         return new_persona
+
+    @gql.django.input(models.Persona)
+    class PersonaFollowToggleInput:
+        """
+        페르소나 팔로우/언팔로우 토글에 필요한 정보
+        """
+        toggle_target_persona: GlobalID = strawberry.field(description='팔로우/언팔로우 토글을 수행할 페르소나의 ID')
+        follow_as_persona: GlobalID = strawberry.field(description='팔로우/언팔로우 토글을 수행할 페르소나의 ID (본인 페르소나)')
+
+    @strawberry.type
+    class PersonaFollowToggleOutput:
+        """
+        페르소나 팔로우/언팔로우 토글 결과
+        """
+        target_persona_id: GlobalID = strawberry.field(description='팔로우/언팔로우 토글을 수행한 페르소나의 ID')
+        followed: bool = strawberry.field(description='작업 수행 후 팔로우 여부')
+
+    @strawberry.mutation
+    @requires_auth
+    def persona_follow_toggle(self, info: Info, persona_follow_input: PersonaFollowToggleInput) \
+            -> strawberry.union('PersonaFollowToggleResult', (PersonaFollowToggleOutput,
+                                                              AuthInfoRequiredError,
+                                                              PermissionDeniedError,
+                                                              SelfFollowError)):
+        """
+        특정 페르소나에 대한 팔로우/언팔로우 토글을 수행한다.
+        """
+        requested_user: models.User = info.context.request.user
+
+        parsed_input = resolvers.parse_input(info, persona_follow_input)
+        requested_persona: models.Persona = parsed_input['follow_as_persona']
+        follow_target_persona: models.Persona = parsed_input['toggle_target_persona']
+
+        # 팔로우 토글을 요청한 유저가 페르소나의 소유주가 아닌 경우
+        if requested_persona.owner != requested_user:
+            raise PermissionDeniedError('requested_user == requested_persona.owner')
+        # 팔로잉 대상이 되는 페르소나와 팔로우 대상이 되는 페르소나와 같은 경우
+        elif follow_target_persona == requested_persona:
+            raise SelfFollowError()
+        # 정상 처리
+        else:
+            # 팔로우 상태가 아닌 경우 팔로우 상태로 전환
+            if follow_target_persona not in requested_persona.following_personas.all():
+                requested_persona.following_personas.add(follow_target_persona)
+                requested_persona.save()
+                followed = True
+            # 팔로우 상태인 경우 언팔로우
+            else:
+                requested_persona.following_personas.remove(follow_target_persona)
+                requested_persona.save()
+                followed = False
+
+            return Mutation.PersonaFollowToggleOutput(target_persona_id=follow_target_persona.id,
+                                                      followed=followed)

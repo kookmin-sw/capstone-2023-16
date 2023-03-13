@@ -97,3 +97,29 @@ class ResourceNotFoundError(ExceptionWithAdditionalInfo):
         self.additional_info = {
             'resourceName': resource_name
         }
+
+
+@strawberry.type
+class IntegrityError(ExceptionWithAdditionalInfo):
+    """
+    논리적인 모순이 발생한 경우 발생하는 에러
+    """
+    message = '요청된 작업을 수행할 수 없습니다.'
+
+    def __init__(self):
+        super().__init__()
+
+
+@strawberry.type
+class PermissionDeniedError(ExceptionWithAdditionalInfo):
+    """
+    요청된 작업에 대한 권한이 없을 경우 발생하는 에러
+    """
+    message = '요청된 작업에 대한 권한이 없습니다.'
+    required_permission: str = strawberry.field(description='요구 권한')
+
+    def __init__(self, required_permission: str):
+        super().__init__()
+        self.additional_info = {
+            'requiredPermission': required_permission
+        }
