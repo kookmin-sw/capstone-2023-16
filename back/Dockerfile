@@ -9,5 +9,6 @@ COPY poetry.lock pyproject.toml /app/
 RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 COPY . /app/
+RUN python manage.py migrate
 
 CMD gunicorn --bind 0.0.0.0:$PORT config.wsgi
