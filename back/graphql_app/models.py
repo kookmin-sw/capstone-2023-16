@@ -61,6 +61,9 @@ class Persona(models.Model):
     preferred_categories = models.ManyToManyField('graphql_app.Category', related_name='preferred_users_as_category',
                                                   verbose_name='선호 카테고리 목록')
 
+    following_personas = models.ManyToManyField('graphql_app.Persona', related_name='follower_personas',
+                                                verbose_name='팔로우 하고 있는 페르소나 목록')
+
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
     updated_at = models.DateTimeField('갱신 시각', auto_now=True)
 
