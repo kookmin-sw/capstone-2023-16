@@ -60,11 +60,11 @@ class Mutation:
                 new_persona_input['gender'] = '여성'
 
         # 카테고리 처리 (id를 넘겨 주어야 함)
-        new_persona_input['preferred_categories'] = list(map(lambda c: c['id'].toggle_target_persona,
+        new_persona_input['preferred_categories'] = list(map(lambda c: c['id'].id,
                                                              new_persona_input['preferred_categories']))
 
         # 요청한 사용자를 페르소나의 소유자로 설정
-        new_persona_input['owner'] = info.context.request.user.toggle_target_persona
+        new_persona_input['owner'] = info.context.request.user
         new_persona = resolvers.create(
             info, models.Persona, resolvers.parse_input(info, new_persona_input))
 
