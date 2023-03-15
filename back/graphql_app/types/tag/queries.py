@@ -27,7 +27,7 @@ class Query:
     tag: Optional[Tag] = relay.node()
 
     @strawberry.input
-    class TagSortingRule:
+    class TagSortingOption:
         """
         태그 목록 조회 시 적용할 정렬 방법
         """
@@ -35,7 +35,7 @@ class Query:
         direction: Optional[SortingDirection] = strawberry.field(default=SortingDirection.ASC, description='정렬 방향')
 
     @gql.django.connection
-    def get_all_tags(self, info: Info, sorting_opt: TagSortingRule) -> Iterable[Tag]:
+    def get_all_tags(self, info: Info, sorting_opt: TagSortingOption) -> Iterable[Tag]:
         """
         등록된 모든 태그의 목록
         """
