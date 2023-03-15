@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Iterable, cast, Optional
 
 import strawberry
+from django.db.models import Count, Q
 from strawberry.types import Info
 from strawberry_django_plus import gql, relay
 
@@ -47,26 +48,16 @@ class Query:
         else:
             # 해당 태그를 선호하는 페르소나 수 기준 (공개 페르소나만)
             if sorting_opt.sort_by == TagSortBy.PERSONA_PREFERENCE_CNT:
-                tags = TagModel.objects.raw(f"""
-                        SELECT tags.id, body, count(*)
-                        FROM tags
-                            LEFT JOIN personas_preferred_tags ppt on tags.id = ppt.tag_id
-                                LEFT JOIN personas p on ppt.persona_id = p.id
-                        WHERE p.is_public=true OR ISNULL(p.is_public)
-                        GROUP BY tag_id, body
-                        ORDER BY COUNT(*) {sorting_opt.direction.name}, tags.id ASC;""")
+                tags = TagModel.objects.annotate(
+                    prefer_persona_cnt=Count('preferred_users_as_tag',
+                                             filter=Q(preferred_users_as_tag__is_public=True))
+                ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}prefer_persona_cnt", 'id')
 
             # 연결된 게시물 수 기준 (공개 페르소나 및 공개 포스트만)
             elif sorting_opt.sort_by == TagSortBy.POST_CONNECTION_CNT:
-                tags = TagModel.objects.raw(f"""
-                        SELECT tags.id, body
-                        FROM tags
-                            LEFT OUTER JOIN graphql_app_post_tags post_tag on tags.id = post_tag.tag_id
-                                LEFT OUTER JOIN graphql_app_post post on post_tag.post_id = post.id
-                                    LEFT OUTER JOIN personas on post.author_persona_id = personas.id
-                        WHERE ((post.is_public=true OR ISNULL(post.is_public))
-                            and (personas.is_public=true OR ISNULL(personas.is_public)))
-                        GROUP BY tags.id, body
-                        ORDER BY COUNT(*) {sorting_opt.direction.name}, tags.id ASC;""")
+                tags = TagModel.objects.annotate(
+                    connected_post_cnt=Count('related_posts', filter=Q(related_posts__is_public=True,
+                                                                       related_posts__author__is_public=True))
+                ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}connected_post_cnt", 'id')
 
         return cast(Iterable[Tag], tags)
