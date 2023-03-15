@@ -25,7 +25,9 @@ class User(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
 
     class Meta:
-        db_table = 'users'
+        db_table = 'user'
+        verbose_name = '사용자'
+        verbose_name = '사용자 목록'
 
 
 class Post(models.Model):
@@ -33,7 +35,7 @@ class Post(models.Model):
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
-                               verbose_name="글쓴이")
+                               related_name='written_posts', verbose_name="글쓴이")
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
     is_deleted = models.BooleanField(verbose_name="글 삭제 여부", default=False)
 
@@ -41,8 +43,15 @@ class Post(models.Model):
     category = models.ForeignKey('graphql_app.Category', related_name='including_posts', null=True, blank=True,
                                  default=None, on_delete=models.SET_NULL, verbose_name='카테고리')
 
+    read_count = models.IntegerField(default=0, null=False, blank=True, verbose_name='조회수')
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
+
+    class Meta:
+        db_table = 'post'
+        verbose_name = '게시물'
+        verbose_name_plural = '게시물 목록'
 
 
 class Persona(models.Model):
@@ -71,9 +80,9 @@ class Persona(models.Model):
         return f"[{self.pk}] {self.owner.id}:{self.nickname}"
 
     class Meta:
-        db_table = 'personas'
-        verbose_name = '구독 페르소나'
-        verbose_name_plural = '구독 페르소나 목록'
+        db_table = 'persona'
+        verbose_name = '페르소나'
+        verbose_name_plural = '페르소나 목록'
 
 
 class Tag(models.Model):
@@ -84,7 +93,7 @@ class Tag(models.Model):
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'tags'
+        db_table = 'tag'
         verbose_name = '태그'
         verbose_name_plural = '태그 목록'
 
@@ -132,7 +141,7 @@ class Category(models.Model):
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'categories'
+        db_table = 'categorie'
         verbose_name = '카테고리'
         verbose_name_plural = '카테고리 목록'
 
