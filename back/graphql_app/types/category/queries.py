@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Iterable, cast, Optional
 
 import strawberry
-from django.db.models import Count
+from django.db.models import Count, Sum, Q
 from strawberry.types import Info
 from strawberry_django_plus import gql
 
@@ -45,23 +45,16 @@ class Query:
         else:
             # 해당 카테고리를 선호하는 페르소나 수 기준 (공개 페르소나만)
             if sorting_opt.sort_by == CategorySortBy.PERSONA_REFERENCE_CNT:
-                categories = CategoryModel.objects.raw(f"""
-                SELECT categories.id, body
-                FROM categories
-                    LEFT JOIN personas_preferred_categories ppc on categories.id = ppc.category_id
-                        LEFT JOIN personas p on ppc.persona_id = p.id
-                WHERE p.is_public=true OR ISNULL(p.is_public)
-                GROUP BY categories.id, body
-                ORDER BY COUNT(*) {sorting_opt.direction.name}, categories.id ASC;""")
+                categories = CategoryModel.objects.annotate(
+                    prefer_persona_cnt=Count('preferred_users_as_category',
+                                             filter=Q(preferred_users_as_category__is_public=True))
+                ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}prefer_persona_cnt", 'id')
+
             # 연결된 게시물 수 기준 (공개 페르소나 및 공개 포스트만)
             elif sorting_opt.sort_by == CategorySortBy.POST_CONNECTION_CNT:
-                categories = CategoryModel.objects.raw(f"""
-                SELECT categories.id, body
-                FROM categories
-                    LEFT JOIN graphql_app_post post on categories.id = post.category_id
-                        LEFT JOIN personas p on post.author_persona_id=p.id
-                WHERE (p.is_public=true OR ISNULL(p.is_public)) AND (post.is_public OR ISNULL(p.is_public))
-                GROUP BY categories.id, body
-                ORDER BY COUNT(*) {sorting_opt.direction.name}, categories.id ASC;""")
+                categories = CategoryModel.objects.annotate(
+                    connected_post_cnt=Count('including_posts', filter=Q(including_posts__is_public=True,
+                                                                         including_posts__author__is_public=True))
+                ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}connected_post_cnt", 'id')
 
         return cast(Iterable[Category], categories)
