@@ -60,6 +60,7 @@ class Post(relay.Node):
     content: str = strawberry.field(description='글 내용')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Category = strawberry.field(description='소속 카테고리')
+    read_count: int = strawberry.field(description='조회수')
 
 
 @gql.django.type(models.Persona)
