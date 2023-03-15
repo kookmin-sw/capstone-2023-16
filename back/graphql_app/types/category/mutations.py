@@ -7,14 +7,14 @@ from graphql_app import models
 from graphql_app.types.model_types import Category
 
 from .errors import CategoryBodyDuplicatedError, CategoryBodyTooShortError, CategoryBodyTooLongError
-from ..decorators import admin_only
+from ..decorators import requires_auth
 from ..errors import AdminPermissionRequiredError
 
 
 @gql.type
 class Mutation:
     @strawberry.mutation
-    @admin_only
+    @requires_auth  # TODO : DB 접근 가능해지면 admin_only로 바꾸기
     def category_create(self, info: Info, body: str) \
             -> strawberry.union('CreateCategoryResult', (Category,
                                                          AdminPermissionRequiredError,
