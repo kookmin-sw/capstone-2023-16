@@ -14,5 +14,5 @@ class SortingDirection(Enum):
     """
     정렬 오름차순/내림차순
     """
-    ASC = 'ascending'
-    DESC = 'descending'
+    ASC = '오름차순'
+    DESC = '내림차순'
