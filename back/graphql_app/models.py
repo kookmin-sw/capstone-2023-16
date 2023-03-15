@@ -41,6 +41,8 @@ class Post(models.Model):
     category = models.ForeignKey('graphql_app.Category', related_name='including_posts', null=True, blank=True,
                                  default=None, on_delete=models.SET_NULL, verbose_name='카테고리')
 
+    read_count = models.IntegerField(default=0, null=False, blank=True, verbose_name='조회수')
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
 
