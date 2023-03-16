@@ -5,7 +5,7 @@ import strawberry
 
 
 @strawberry.input
-class RetrieveDatetimeRange:
+class DatetimeBetween:
     """
     특정 날짜/시각 사이의 범위에 해당되는 데이터를 받아 오기 위한 인터페이스
     """

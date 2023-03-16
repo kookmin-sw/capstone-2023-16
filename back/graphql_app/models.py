@@ -31,7 +31,6 @@ class User(AbstractBaseUser):
 
 
 class Post(models.Model):
-    # TODO: Read count 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
