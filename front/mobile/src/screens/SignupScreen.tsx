@@ -141,7 +141,7 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
               },
               onError(error) {
                 console.log('@sign up error : ');
-                error?.source?.errors[0].extensions.__typename ===
+                error.source.errors[0].extensions.__typename ===
                 Error.EmailAlreadyUsedError
                   ? Alert.alert(`${email} 은(는) 이미 사용중인 이메일입니다.`)
                   : Alert.alert(
