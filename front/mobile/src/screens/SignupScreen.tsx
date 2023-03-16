@@ -79,7 +79,7 @@ const BottomSection = styled.View`
 
 type Props = NavigationData<'Signup'>;
 
-const SignupScreen: FC<Props> = () => {
+export const SignupScreen: FC<Props> = ({navigation}) => {
   // 이용약관 모달
   const [show, setShow] = useState(false);
 
@@ -112,7 +112,7 @@ const SignupScreen: FC<Props> = () => {
           }}
           validationSchema={SignupSchema}
           onSubmit={({email, password}) => {
-            alert(`email:${email} password:${password}`);
+            navigation.navigate('BaseInfo');
           }}>
           {({
             values,
@@ -283,5 +283,3 @@ const SignupScreen: FC<Props> = () => {
     </SignupContainer>
   );
 };
-
-export default SignupScreen;
