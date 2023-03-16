@@ -27,8 +27,8 @@ class Mutation:
             id: gql.auto = strawberry.field(description='카테고리 ID')
 
         nickname: str = strawberry.field(description='닉네임 (unique)')
-        introduction: str = strawberry.field(description='소개')
-        is_public: bool = strawberry.field(description='공개 여부')
+        introduction: Optional[str] = strawberry.field(default='자기소개가 없습니다.', description='소개')
+        is_public: Optional[bool] = strawberry.field(default=True, description='공개 여부')
         gender: Optional[Gender] = strawberry.field(default=None, description='성별')
         age: Optional[int] = strawberry.field(default=None, description='나이')
         job: Optional[str] = strawberry.field(default=None, description='직업')
