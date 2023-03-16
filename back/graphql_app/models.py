@@ -31,7 +31,6 @@ class User(AbstractBaseUser):
 
 
 class Post(models.Model):
-    # TODO: Read count 추가 필요
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
@@ -58,7 +57,7 @@ class Persona(models.Model):
     owner = models.ForeignKey('graphql_app.User', null=False, verbose_name='대상 사용자', on_delete=models.CASCADE,
                               db_column='owner_user_id')
     nickname = models.CharField('닉네임', unique=True, max_length=20)
-    introduction = models.TextField('소개', blank=True, default='자기 소개가 없습니다.')
+    introduction = models.TextField('소개', null=True, blank=True, default='자기 소개가 없습니다.')
     is_public = models.BooleanField('공개 여부', null=False, blank=True, default=True)
     gender = models.CharField('성별', max_length=2, null=True, blank=True, default=None)
     age = models.PositiveIntegerField('연령대', null=True, blank=True, default=None)
