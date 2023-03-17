@@ -7,4 +7,5 @@ export const colors = {
   gray: '#ACACAC',
   graylight: '#D9D9D9',
   graydark: '#717171',
+  borderGray: '#C1C1C1',
 };
