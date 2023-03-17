@@ -191,7 +191,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <TextButton
                     textStyles={{color: colors.black, marginLeft: 12}}
                     onPress={() => {
-                      navigation.navigate('Signup');
+                      navigation.navigate('Main');
                     }}>
                     회원가입
                   </TextButton>
