@@ -84,3 +84,10 @@ class Persona(relay.Node):
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
+
+
+@gql.django.type(models.WaitFreePersona)
+class WaitFreePersona(relay.Node):
+    persona: Persona = strawberry.field(description='소유 페르소나')
+    post: Post = strawberry.field(description="읽은 글")
+    open_at: datetime = strawberry.field(description='개방 일시')

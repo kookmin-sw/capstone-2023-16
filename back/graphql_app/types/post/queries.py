@@ -46,16 +46,3 @@ class Query:
             posts = PostModel.objects.filter(is_public=True).order_by(order_by_prefix + order_by_suffix, 'id')
 
         return cast(Iterable[Post], posts)
-
-    @gql.django.connection
-    @admin_only
-    def get_entire_posts(self, info: Info, sorting_opt: PostSortingOption) -> Iterable[Post]:
-        """
-        시스템에 등록된 모든 게시물의 목록
-        """
-        if sorting_opt.sort_by in (PostSortBy.ID, PostSortBy.CREATED_AT, PostSortBy.READ_CNT):
-            order_by_prefix = '' if sorting_opt.direction == SortingDirection.ASC else '-'
-            order_by_suffix = sorting_opt.sort_by.value
-            posts = PostModel.objects.all().order_by(order_by_prefix + order_by_suffix, 'id')
-
-        return cast(Iterable[Post], posts)

@@ -33,6 +33,8 @@ class User(AbstractBaseUser):
 class Post(models.Model):
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
+    paid_content = models.TextField(verbose_name="무료 내용", blank=True, null=True, default="")
+
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
                                related_name='written_posts', verbose_name="글쓴이")
     is_public = models.BooleanField(verbose_name="공개 여부", default=True)
@@ -158,3 +160,12 @@ class Category(models.Model):
             return 1
         else:
             return 0
+
+
+class WaitFreePersona(models.Model):
+    persona = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE,
+                                db_column='persona_id', verbose_name="글쓴이")
+    post = models.ForeignKey('graphql_app.Post', on_delete=models.CASCADE, db_column='post_id', verbose_name="게시물")
+    open_at = models.DateTimeField('공개 시각', null=False, blank=False)
+    created_at = models.DateTimeField('생성 시각', auto_now_add=True)
+    updated_at = models.DateTimeField('생성 시각', auto_now_add=True)

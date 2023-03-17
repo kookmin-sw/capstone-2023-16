@@ -20,6 +20,7 @@ class Mutation:
         """
         author: gql.auto = strawberry.field(description='작성자 Persona 정보')
         title: str = strawberry.field(description='새 게시글 제목')
+        paid_content: Optional[str] = strawberry.field(default=None, description='무료 본문')
         content: str = strawberry.field(description='새 게시글 본문')
         tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
                                                            description='연결할 태그의 body 목록 (insert 됨)')
