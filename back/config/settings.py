@@ -40,7 +40,8 @@ DRF_APPS = [
 ]
 
 GRAPHQL_APPS = [
-    "strawberry.django"
+    "strawberry.django",
+    "strawberry_django_plus"
 ]
 
 AUTH_USER_MODEL = 'graphql_app.User'
@@ -50,7 +51,11 @@ SERVICE_APPS = [
 ]
 
 INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + GRAPHQL_APPS + SERVICE_APPS + [
-    "corsheaders", ]
+    "corsheaders", "debug_toolbar", ]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -62,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "strawberry_django_plus.middlewares.debug_toolbar.DebugToolbarMiddleware"
 ]
 
 ROOT_URLCONF = 'config.urls'
