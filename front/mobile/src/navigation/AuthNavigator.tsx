@@ -8,6 +8,7 @@ import {
 
 import {LoginScreen} from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
+import MainScreen from '../screens/MainScreen';
 
 export type ParamList = {
   Login: undefined;
@@ -28,6 +29,11 @@ const AuthNavigator = () => {
         name="Signup"
         component={SignupScreen}
         options={{title: '회원가입', headerShadowVisible: false}}
+      />
+      <StackNavigator.Screen
+        name="Main"
+        component={MainScreen}
+        options={{headerShown: false}}
       />
     </StackNavigator.Navigator>
   );
