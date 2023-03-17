@@ -7,12 +7,16 @@ import {
 } from '@react-navigation/native-stack';
 
 import {LoginScreen} from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
+import {SignupScreen} from '../screens/SignupScreen';
+import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
+import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
 
 export type ParamList = {
   Login: undefined;
   Signup: undefined;
+  BaseInfo: undefined;
+  InterestTagSetting: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -34,6 +38,24 @@ const AuthNavigator = () => {
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="BaseInfo"
+        component={BaseInfoScreen}
+        options={{
+          title: '페르소나 생성',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
+        name="InterestTagSetting"
+        component={InterestTagSettingScreen}
+        options={{
+          title: '페르소나 생성',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
       />
     </StackNavigator.Navigator>
   );
