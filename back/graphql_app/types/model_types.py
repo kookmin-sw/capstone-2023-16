@@ -1,10 +1,13 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Iterable, Type
 
 import strawberry
 from strawberry import auto
+from strawberry.types import Info
+from strawberry.utils.await_maybe import AwaitableOrValue
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
+from strawberry_django_plus.relay import NodeType
 
 from graphql_app import models
 from graphql_app.types.enums import Gender
@@ -47,21 +50,27 @@ class User:
         return models.User.objects.all()
 
 
-@strawberry.django.type(models.Post)
+@gql.type
 class Post(relay.Node):
-    id: auto
-    title: auto = strawberry.field(description='글 제목')
-    content: auto = strawberry.field(description='글 내용')
+    @classmethod
+    def resolve_nodes(cls: Type[NodeType], *, info: Optional[Info] = None, node_ids: Optional[Iterable[str]] = None) -> \
+    AwaitableOrValue[Iterable[NodeType]]:
+        raise NotImplementedError
 
-
-@gql.django.type(models.Post)
-class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Category = strawberry.field(description='소속 카테고리')
     read_count: int = strawberry.field(description='조회수')
 
+    def resolve_node(source, info, required):
+        # TODO: read-count 증가, wait-free 추가
+        fetched_post = models.Post.objects.get(id=info.variable_values['postId'].node_id)
+
+        post = Post(title=fetched_post.title, content=fetched_post.content,
+                    tags=fetched_post.tags, category=fetched_post.category, read_count=fetched_post.read_count)
+        post.id = info.variable_values['postId'].node_id
+        return post
 
 @gql.django.type(models.Persona)
 class Persona(relay.Node):
