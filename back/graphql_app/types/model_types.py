@@ -51,9 +51,13 @@ class User:
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
+    author: 'Persona' = strawberry.field(description='작성자')
+    is_public: bool = strawberry.field(description='공개 여부')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Optional[Category] = strawberry.field(description='소속 카테고리')
     read_count: int = strawberry.field(description='조회수')
+    create_at: datetime = strawberry.field(description='생성 시각')
+    updated_at: datetime = strawberry.field(description='갱신 시각')
 
 
 @gql.django.type(models.Persona)
