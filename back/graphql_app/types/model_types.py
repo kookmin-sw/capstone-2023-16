@@ -47,19 +47,12 @@ class User:
         return models.User.objects.all()
 
 
-@strawberry.django.type(models.Post)
-class Post(relay.Node):
-    id: auto
-    title: auto = strawberry.field(description='글 제목')
-    content: auto = strawberry.field(description='글 내용')
-
-
 @gql.django.type(models.Post)
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
-    category: Category = strawberry.field(description='소속 카테고리')
+    category: Optional[Category] = strawberry.field(description='소속 카테고리')
     read_count: int = strawberry.field(description='조회수')
 
 
