@@ -79,7 +79,7 @@ export const InterestTagSettingScreen: FC = () => {
             />
           </SearchSection>
           <TagSection>
-            {tagData.map(item => {
+            {tagData.map((value: {title: string; flag: boolean}) => {
               return (
                 <SmallButton
                   btnStyles={[
@@ -95,7 +95,7 @@ export const InterestTagSettingScreen: FC = () => {
                   ]}
                   textStyles={{color: colors.black}}
                   onPress={() => {}}>
-                  #{item}
+                  #{value.title}
                 </SmallButton>
               );
             })}
