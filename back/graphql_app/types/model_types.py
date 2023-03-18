@@ -1,15 +1,15 @@
+import typing
 from datetime import datetime
-from typing import Optional, Type, Iterable
+from typing import Optional
 
 import strawberry
-from strawberry import auto
+from strawberry import auto, BasePermission
 from strawberry.types import Info
-from strawberry.utils.await_maybe import AwaitableOrValue
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
-from strawberry_django_plus.relay import NodeType
 
 from graphql_app import models
+from graphql_app.post.core import is_eligible_for_paid_content
 from graphql_app.types.enums import Gender
 
 
@@ -50,10 +50,25 @@ class User:
         return models.User.objects.all()
 
 
-@gql.type
+class IsEligibleForPaidContent(BasePermission):
+    message = "유료 콘텐츠에 대해 권한이 없습니다."
+
+    def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
+        post_id = source.id if source else info.variable_values['postId'].node_id
+        post = models.Post.objects.get(id=post_id)
+
+        persona_id = source.author.id if source else info.variable_values['personaId'].node_id
+        persona = models.Persona.objects.get(id=persona_id)
+
+        return (post.author_id == persona_id and persona.owner_id == info.context.request.user.id) or \
+            is_eligible_for_paid_content(persona_id, post_id)
+
+
+@gql.django.type(models.Post)
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
+    paid_content: Optional[str] = strawberry.field(description='유료 내용', permission_classes=[IsEligibleForPaidContent])
     author: 'Persona' = strawberry.field(description='작성자')
     is_public: bool = strawberry.field(description='공개 여부')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
@@ -62,21 +77,6 @@ class Post(relay.Node):
     create_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
-    @classmethod
-    def resolve_nodes(cls: Type[NodeType], *, info: Optional[Info] = None, node_ids: Optional[Iterable[str]] = None) -> \
-            AwaitableOrValue[Iterable[NodeType]]:
-        raise NotImplementedError
-
-    def resolve_node(source, info, required):
-        # TODO: read-count 증가, wait-free 추가
-        fetched_post = models.Post.objects.get(id=info.variable_values['postId'].node_id)
-
-        post = Post(title=fetched_post.title, content=fetched_post.content,
-                    tags=fetched_post.tags, category=fetched_post.category, read_count=fetched_post.read_count,
-                    author=fetched_post.author, is_public=fetched_post.is_public,
-                    create_at=fetched_post.created_at, updated_at=fetched_post.updated_at)
-        post.id = info.variable_values['postId'].node_id
-        return post
 
 @gql.django.type(models.Persona)
 class Persona(relay.Node):
