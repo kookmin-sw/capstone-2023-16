@@ -15,7 +15,7 @@ const LoginPage = () => {
   const pwInput = useRef(null);
 
     return(
-      <MainLayout>
+      <>
         <ContainerLayout alignDirection='right'>
           <SignInTitle widthType={deviceType}>SIGN IN</SignInTitle>
           <SignUpNav widthType={deviceType}>PERSONA가 처음이신가요? <Link to='/'>회원가입</Link></SignUpNav>
@@ -30,7 +30,7 @@ const LoginPage = () => {
 
           <LoginButton widthType={deviceType} onClick={() => console.log('')} />
         </ContainerLayout>
-      </MainLayout>
+      </>
     )
 } ;
 
