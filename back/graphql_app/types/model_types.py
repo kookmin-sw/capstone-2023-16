@@ -1,8 +1,9 @@
 from datetime import datetime
+import typing
 from typing import Optional, Type, Iterable
 
 import strawberry
-from strawberry import auto
+from strawberry import auto, BasePermission
 from strawberry.types import Info
 from strawberry.utils.await_maybe import AwaitableOrValue
 from strawberry_django_plus import gql
@@ -10,6 +11,7 @@ from strawberry_django_plus.gql import relay
 from strawberry_django_plus.relay import NodeType
 
 from graphql_app import models
+from graphql_app.post.core import is_eligible_paid_content
 from graphql_app.types.enums import Gender
 
 
@@ -50,15 +52,24 @@ class User:
         return models.User.objects.all()
 
 
+class IsPaidContentAuthenticated(BasePermission):
+    message = "유료 콘텐츠에 대해 권한이 없습니다."
+
+    def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
+        return is_eligible_paid_content(info.variable_values['personaId'].node_id, info.variable_values['postId'].node_id)
+
+
 @gql.django.type(models.Post)
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
+    paid_content: Optional[str] = strawberry.field(description='유료 내용', permission_classes=[IsPaidContentAuthenticated])
     author: 'Persona' = strawberry.field(description='작성자')
     is_public: bool = strawberry.field(description='공개 여부')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Optional[Category] = strawberry.field(description='소속 카테고리')
     read_count: int = strawberry.field(description='조회수')
+    has_permission: bool = strawberry.field(description="유료 콘텐츠 조회 가능 여부", resolver=lambda info: is_eligible_paid_content(info.variable_values['personaId'].node_id, info.variable_values['postId'].node_id))
     create_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
