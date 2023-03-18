@@ -11,6 +11,7 @@ from graphql_app.types.enums import Gender
 from graphql_app.types.errors import AuthInfoRequiredError, PermissionDeniedError
 from graphql_app.types.model_types import Persona
 from graphql_app.types.decorators import requires_auth
+from graphql_app.types.persona.enums import Job
 from graphql_app.types.persona.errors import PersonaNicknameDuplicatedError, SelfFollowError
 
 
@@ -31,7 +32,7 @@ class Mutation:
         is_public: Optional[bool] = strawberry.field(default=True, description='공개 여부')
         gender: Optional[Gender] = strawberry.field(default=None, description='성별')
         age: Optional[int] = strawberry.field(default=None, description='나이')
-        job: Optional[str] = strawberry.field(default=None, description='직업')
+        job: Optional[Job] = strawberry.field(default=None, description='직업')
         preferred_tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
                                                                      description='선호하는 태그의 body 목록 (insert 됨)')
         preferred_categories: Optional[List[CategoryIDInput]] = strawberry.field(default_factory=list,
@@ -58,6 +59,9 @@ class Mutation:
                 new_persona_input['gender'] = '남성'
             else:
                 new_persona_input['gender'] = '여성'
+
+        if new_persona_input['job']:
+            new_persona_input['job'] = new_persona_input['job'].value
 
         # 카테고리 처리 (id를 넘겨 주어야 함)
         new_persona_input['preferred_categories'] = list(map(lambda c: c['id'].id,

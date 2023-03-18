@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Iterable, cast, Optional, List
+from typing import Iterable, cast, Optional
 
 import strawberry
 from django.db.models import Count, Sum, QuerySet
@@ -7,9 +7,11 @@ from strawberry.types import Info
 from strawberry_django_plus import gql
 
 from graphql_app.types.decorators import requires_auth
-from graphql_app.types.enums import SortingDirection
+from graphql_app.types.enums import SortingDirection, StringFindMode, Gender
+from graphql_app.types.helpers import DatetimeBetween
 from graphql_app.types.model_types import Persona
 from graphql_app.models import Persona as PersonaModel
+from graphql_app.types.persona import Job
 
 
 @strawberry.enum
@@ -25,42 +27,86 @@ class PersonaSortBy(Enum):
 
 
 @strawberry.input
-class AgeBetween:
+class PersonaSortingOption:
+    """
+    페르소나 목록 조회 시 적용할 정렬 방법
+    """
+    sort_by: Optional[PersonaSortBy] = strawberry.field(default=PersonaSortBy.CREATED_AT, description='정렬 기준')
+    direction: Optional[SortingDirection] = strawberry.field(default=SortingDirection.DESC, description='정렬 방향')
+
+
+@strawberry.input
+class AgeFilter:
     """
     일정 나이 구간의 데이터를 받아 오기 위한 인터페이스
     """
     min_age: Optional[int] = strawberry.field(default=0, description='최소 나이')
-    max_age: int = strawberry.field(description='최대 나이')
+    max_age: Optional[int] = strawberry.field(default=100, description='최대 나이')
 
-    @staticmethod
-    def apply(qs: QuerySet):
-        # TODO : query set을 받아서 min_age, max_age 필터링
-        pass
+    def apply(self, qs: QuerySet):
+        if self.min_age:
+            qs = qs.filter(age__isnull=False, age__gte=self.min_age)
+        if self.max_age:
+            qs = qs.filter(age__isnull=False, age__lte=self.max_age)
+
+        return qs
 
 
-@strawberry.enum
-class PersonaCondition(Enum):
+@strawberry.input
+class NicknameFilter:
     """
-    페르소나 필터링
+    닉네임 검색 인터페이스
     """
-    CREATED_AT = strawberry.enum_value('created_at', description='생성 일시 (구간)')
-    NICKNAME = strawberry.enum_value('nickname', description='닉네임 (정확도 지정 가능)')
-    GENDER = strawberry.enum_value('gender', description='성별')
-    AGE = strawberry.enum_value('age', description='연령 (구간)')
-    JOB = strawberry.enum_value('job', description='직업 (정확도 지정 가능)')
-    IS_CERTIFIED = strawberry.enum_value('is_certified', description='공인 여부')
+
+    mode: Optional[StringFindMode] = strawberry.field(default=StringFindMode.EXACTLY, description='검색 모드')
+    token: str = strawberry.field(description='검색 문자열')
+
+    def apply(self, qs: QuerySet):
+        if self.mode == StringFindMode.EXACTLY:
+            return qs.filter(nickname=self.token)
+        elif self.mode == StringFindMode.CONTAINS:
+            return qs.filter(nickname__contains=self.token)
+        elif self.mode == StringFindMode.STARTS_WITH:
+            return qs.filter(nickname__startswith=self.token)
+        elif self.mode == StringFindMode.ENDS_WITH:
+            return qs.filter(nickname__endswith=self.token)
+
+
+@strawberry.input
+class GenderFilter:
+    """
+    성별 검색 인터페이스
+    """
+    gender: Gender = strawberry.field(description='검색할 성별')
+
+    def apply(self, qs: QuerySet):
+        return qs.filter(gender=self.gender)
+
+
+@strawberry.input
+class IsCertifiedFilter:
+    """
+    공인 여부 검색 인터페이스
+    """
+    is_certified: bool = strawberry.field(description='공인 여부')
+
+    def apply(self, qs: QuerySet):
+        return qs.filter(is_certified=self.is_certified)
+
+
+@strawberry.input
+class JobFilter:
+    """
+    직업 검색 인터페이스
+    """
+    job: Job = strawberry.field(description='검색할 직업')
+
+    def apply(self, qs: QuerySet):
+        return qs.filter(job=self.job)
 
 
 @gql.type
 class Query:
-    @strawberry.input
-    class PersonaSortingOption:
-        """
-        페르소나 목록 조회 시 적용할 정렬 방법
-        """
-        sort_by: Optional[PersonaSortBy] = strawberry.field(default=PersonaSortBy.ID, description='정렬 기준')
-        direction: Optional[SortingDirection] = strawberry.field(default=SortingDirection.ASC, description='정렬 방향')
-
     @gql.django.connection
     @requires_auth
     def get_own_personas(self, info: Info) -> Iterable[Persona]:
@@ -72,27 +118,34 @@ class Query:
 
     @gql.django.connection
     def get_public_personas(self, info: Info,
-                            sorting_opt: PersonaSortingOption, conditions: List[PersonaCondition],
-                            age_between: Optional[AgeBetween]) -> Iterable[Persona]:
+                            sorting_opt: PersonaSortingOption,
+                            created_at_filter: Optional[DatetimeBetween] = None,
+                            age_filter: Optional[AgeFilter] = None,
+                            nickname_filter: Optional[NicknameFilter] = None,
+                            gender_filter: Optional[GenderFilter] = None,
+                            is_certified_filter: Optional[IsCertifiedFilter] = None,
+                            job_filter: Optional[JobFilter] = None) -> Iterable[Persona]:
         """
         모든 공개 페르소나의 목록
         """
-        personas = PersonaModel.objects.all()
-        for condition in conditions:
-            condition
+        personas = PersonaModel.objects.filter(is_public=True)
+        for field_filter in (created_at_filter, age_filter, nickname_filter,
+                             gender_filter, is_certified_filter, job_filter):
+            if field_filter is not None:
+                personas = field_filter.apply(personas)
 
         if sorting_opt.sort_by in (PersonaSortBy.ID, PersonaSortBy.NICKNAME, PersonaSortBy.CREATED_AT):
             order_by_prefix = '' if sorting_opt.direction == SortingDirection.ASC else '-'
             order_by_suffix = sorting_opt.sort_by.value
-            personas = PersonaModel.objects.all().order_by(order_by_prefix + order_by_suffix, 'id')
+            personas = personas.order_by(order_by_prefix + order_by_suffix, 'id')
         else:
             # 게시물 조회수 총합이 많은 순
             if sorting_opt.sort_by == PersonaSortBy.TOTAL_POST_READ_CNT:
-                personas = PersonaModel.objects.filter(is_public=True).annotate(
+                personas = personas.annotate(
                     total_post_read_cnt=Sum('written_posts__read_count')
                 ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}total_post_read_cnt", 'id')
             elif sorting_opt.sort_by == PersonaSortBy.FOLLOWER_CNT:
-                personas = PersonaModel.objects.filter(is_public=True).annotate(
+                personas = personas.annotate(
                     follower_cnt=Count('follower_personas')
                 ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}follower_cnt", 'id')
 

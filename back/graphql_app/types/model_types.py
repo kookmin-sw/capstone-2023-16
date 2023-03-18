@@ -52,16 +52,15 @@ class User:
 
 @gql.type
 class Post(relay.Node):
-    @classmethod
-    def resolve_nodes(cls: Type[NodeType], *, info: Optional[Info] = None, node_ids: Optional[Iterable[str]] = None) -> \
-    AwaitableOrValue[Iterable[NodeType]]:
-        raise NotImplementedError
-
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용')
+    author: 'Persona' = strawberry.field(description='작성자')
+    is_public: bool = strawberry.field(description='공개 여부')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
-    category: Category = strawberry.field(description='소속 카테고리')
+    category: Optional[Category] = strawberry.field(description='소속 카테고리')
     read_count: int = strawberry.field(description='조회수')
+    create_at: datetime = strawberry.field(description='생성 시각')
+    updated_at: datetime = strawberry.field(description='갱신 시각')
 
     def resolve_node(source, info, required):
         # TODO: read-count 증가, wait-free 추가
