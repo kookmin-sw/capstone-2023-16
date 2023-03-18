@@ -4,7 +4,7 @@ from typing import Optional, Iterable, cast, List
 import strawberry
 from django.db.models import QuerySet, Count
 from strawberry.types import Info
-from strawberry_django_plus import gql
+from strawberry_django_plus import gql, relay
 from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.types.decorators import admin_only
@@ -94,6 +94,8 @@ class TagFilter:
 
 @gql.type
 class Query:
+    post: Post = relay.node()
+
     @strawberry.input
     class PostSortingOption:
         """
@@ -149,3 +151,12 @@ class Query:
             posts = posts.order_by(order_by_prefix + order_by_suffix, 'id')
 
         return cast(Iterable[Post], posts)
+
+
+    def get_post(self, info: Info):
+        fetched_post = PostModel.objects.get(id=info.variable_values['postId'].node_id)
+
+        post = Post(title=fetched_post.title, content=fetched_post.content,
+                    tags=fetched_post.tags, category=fetched_post.category, read_count=fetched_post.read_count)
+        post.id = info.variable_values['postId'].node_id
+        return post
