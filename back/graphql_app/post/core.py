@@ -3,7 +3,7 @@ import datetime
 from graphql_app import models
 
 
-def is_eligible_paid_content(persona_id: int, post_id: int) -> bool:
+def is_eligible_for_paid_content(persona_id: int, post_id: int) -> bool:
     """
     유료 콘텐츠를 볼 수 있는 자격이 있는지 체크합니다
     """
