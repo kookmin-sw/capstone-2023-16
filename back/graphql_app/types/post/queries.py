@@ -166,3 +166,4 @@ class Query:
             posts = posts.order_by(order_by_prefix + order_by_suffix, 'id')
 
         return cast(Iterable[Post], posts)
+    
