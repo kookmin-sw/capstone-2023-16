@@ -132,14 +132,7 @@ class Query:
 
     @gql.field
     def get_post(self, info: Info, post_id: GlobalID, persona_id: GlobalID) -> Post:
-        persona_id = info.variable_values['personaId'].node_id
         fetched_post = PostModel.objects.get(id=info.variable_values['postId'].node_id)
-
-        today = datetime.date.today()
-        three_days_later = today + datetime.timedelta(days=3)
-
-        models.WaitFreePersona.objects.get_or_create(persona_id=persona_id, post_id=info.variable_values['postId'].node_id,
-                                                     defaults={'open_at': three_days_later})
 
         return cast(Post, fetched_post)
 
@@ -166,4 +159,3 @@ class Query:
             posts = posts.order_by(order_by_prefix + order_by_suffix, 'id')
 
         return cast(Iterable[Post], posts)
-    

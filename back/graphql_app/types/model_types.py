@@ -56,7 +56,14 @@ class IsPaidContentAuthenticated(BasePermission):
     message = "유료 콘텐츠에 대해 권한이 없습니다."
 
     def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
-        return is_eligible_paid_content(info.variable_values['personaId'].node_id, info.variable_values['postId'].node_id)
+        post_id = source.id if source else info.variable_values['postId'].node_id
+        post = models.Post.objects.get(id=post_id)
+
+        persona_id = source.author.id if source else info.variable_values['personaId'].node_id
+        persona = models.Persona.objects.get(id=persona_id)
+
+        return (post.author_id == persona_id and persona.owner_id == info.context.request.user.id) or \
+            is_eligible_paid_content(persona_id, post_id)
 
 
 @gql.django.type(models.Post)
@@ -69,7 +76,6 @@ class Post(relay.Node):
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Optional[Category] = strawberry.field(description='소속 카테고리')
     read_count: int = strawberry.field(description='조회수')
-    has_permission: bool = strawberry.field(description="유료 콘텐츠 조회 가능 여부", resolver=lambda info: is_eligible_paid_content(info.variable_values['personaId'].node_id, info.variable_values['postId'].node_id))
     create_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
