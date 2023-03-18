@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 import WHcal from '../../utils/WHcal';
 
-const MainLayout = ({children}: React.PropsWithChildren) => {
+const TitleLayout = ({children}: React.PropsWithChildren) => {
   const deviceType = useDeviceType();
   
   return  <LayoutWrapper>
@@ -14,7 +14,7 @@ const MainLayout = ({children}: React.PropsWithChildren) => {
   </LayoutWrapper>
 };
 
-export default MainLayout;
+export default TitleLayout;
 
 const LayoutWrapper = styled.div`
   height: 100%;

@@ -4,10 +4,9 @@ import WHcal from '../utils/WHcal';
 import LoginInput from '../components/Login/LoginInput';
 import LoginButton from '../components/Login/LoginButton';
 import LoginCheckBox from '../components/Login/LoginCheckBox';
-import MainLayout from '../components/commons/MainLayout';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import ContainerLayout from '../components/commons/ContainerLayout';
+import LoginContainer from '../components/Login/LoginContainer';
 
 const LoginPage = () => {
   const deviceType = useDeviceType();
@@ -16,7 +15,7 @@ const LoginPage = () => {
 
     return(
       <>
-        <ContainerLayout alignDirection='right'>
+        <LoginContainer>
           <SignInTitle widthType={deviceType}>SIGN IN</SignInTitle>
           <SignUpNav widthType={deviceType}>PERSONA가 처음이신가요? <Link to='/'>회원가입</Link></SignUpNav>
           {/* 비율을 위한 공백 */}
@@ -29,7 +28,7 @@ const LoginPage = () => {
           <EmptyBox widthType={deviceType} />
 
           <LoginButton widthType={deviceType} onClick={() => console.log('')} />
-        </ContainerLayout>
+        </LoginContainer>
       </>
     )
 } ;
