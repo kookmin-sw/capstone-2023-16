@@ -6,14 +6,21 @@ import WHcal from '../../utils/WHcal';
 const MainLayout = ({children}: React.PropsWithChildren) => {
   const deviceType = useDeviceType();
   
-  return <LayoutContainer widthType={deviceType}>
-    <div>PERSONA</div>
-    <div>{children}</div>
-  </LayoutContainer>
+  return  <LayoutWrapper>
+    <LayoutContainer widthType={deviceType}>
+      <div>PERSONA</div>
+      {children}
+    </LayoutContainer>
+  </LayoutWrapper>
 };
 
 export default MainLayout;
 
+const LayoutWrapper = styled.div`
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+`
 const LayoutContainer = styled.div<{ widthType?: string }>`
   height: 100%;
   display: flex;
@@ -26,7 +33,7 @@ const LayoutContainer = styled.div<{ widthType?: string }>`
     font-weight: 900;
   }
   & > div:nth-child(2){
-    width: auto;
+    position: relative;
     margin: ${(props) => {return WHcal(props.widthType!, 78)}} ${(props) => {return WHcal(props.widthType!, 53)}};
   }
 `;
