@@ -1,16 +1,14 @@
-import typing
 from datetime import datetime
 from typing import Optional
 
 import strawberry
-from strawberry import auto, BasePermission
-from strawberry.types import Info
+from strawberry import auto
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
 
 from graphql_app import models
-from graphql_app.post.core import is_eligible_for_paid_content
-from graphql_app.types.enums import Gender
+from graphql_app.resolvers.enums import Gender
+from graphql_app.resolvers.post.errors import IsEligibleForPaidContent
 
 
 @gql.django.type(models.Category)
@@ -48,20 +46,6 @@ class User:
     @classmethod
     def get_all_users(cls):
         return models.User.objects.all()
-
-
-class IsEligibleForPaidContent(BasePermission):
-    message = "유료 콘텐츠에 대해 권한이 없습니다."
-
-    def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
-        post_id = source.id if source else info.variable_values['postId'].node_id
-        post = models.Post.objects.get(id=post_id)
-
-        persona_id = source.author.id if source else info.variable_values['personaId'].node_id
-        persona = models.Persona.objects.get(id=persona_id)
-
-        return (post.author_id == persona_id and persona.owner_id == info.context.request.user.id) or \
-            is_eligible_for_paid_content(persona_id, post_id)
 
 
 @gql.django.type(models.Post)

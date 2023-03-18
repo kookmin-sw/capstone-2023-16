@@ -7,12 +7,12 @@ from strawberry_django_plus.mutations import resolvers
 from strawberry_django_plus.relay import GlobalID
 
 from graphql_app import models
-from graphql_app.types.enums import Gender
-from graphql_app.types.errors import AuthInfoRequiredError, PermissionDeniedError
-from graphql_app.types.model_types import Persona
-from graphql_app.types.decorators import requires_auth
-from graphql_app.types.persona.enums import Job
-from graphql_app.types.persona.errors import PersonaNicknameDuplicatedError, SelfFollowError
+from graphql_app.resolvers.enums import Gender
+from graphql_app.resolvers.errors import AuthInfoRequiredError, PermissionDeniedError
+from graphql_app.resolvers.model_types import Persona
+from graphql_app.resolvers.decorators import requires_auth
+from graphql_app.resolvers.persona.enums import Job
+from graphql_app.resolvers.persona.errors import PersonaNicknameDuplicatedError, SelfFollowError
 
 
 @gql.type

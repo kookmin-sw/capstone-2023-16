@@ -1,6 +1,6 @@
 import strawberry
 
-from graphql_app.types.errors import DuplicatedValueError, StaticValidationError
+from graphql_app.resolvers.errors import DuplicatedValueError, StaticValidationError
 
 
 @strawberry.type

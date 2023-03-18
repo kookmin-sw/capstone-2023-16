@@ -1,6 +1,6 @@
 import strawberry
 
-from graphql_app.types.errors import ExceptionWithAdditionalInfo, DuplicatedValueError
+from graphql_app.resolvers.errors import ExceptionWithAdditionalInfo, DuplicatedValueError
 
 
 # 로그인 관련 에러 =====================================================

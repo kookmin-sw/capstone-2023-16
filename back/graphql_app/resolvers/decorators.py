@@ -2,7 +2,7 @@ from functools import wraps
 
 from strawberry.types import Info
 
-from graphql_app.types.errors import AuthInfoRequiredError, AdminPermissionRequiredError, AnonymousOnlyError
+from graphql_app.resolvers.errors import AuthInfoRequiredError, AdminPermissionRequiredError, AnonymousOnlyError
 
 
 def requires_auth(resolver):
