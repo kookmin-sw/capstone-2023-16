@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, Iterable, Type
+from typing import Optional, Type, Iterable
 
 import strawberry
 from strawberry import auto
@@ -62,12 +62,19 @@ class Post(relay.Node):
     create_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
+    @classmethod
+    def resolve_nodes(cls: Type[NodeType], *, info: Optional[Info] = None, node_ids: Optional[Iterable[str]] = None) -> \
+            AwaitableOrValue[Iterable[NodeType]]:
+        raise NotImplementedError
+
     def resolve_node(source, info, required):
         # TODO: read-count 증가, wait-free 추가
         fetched_post = models.Post.objects.get(id=info.variable_values['postId'].node_id)
 
         post = Post(title=fetched_post.title, content=fetched_post.content,
-                    tags=fetched_post.tags, category=fetched_post.category, read_count=fetched_post.read_count)
+                    tags=fetched_post.tags, category=fetched_post.category, read_count=fetched_post.read_count,
+                    author=fetched_post.author, is_public=fetched_post.is_public,
+                    create_at=fetched_post.created_at, updated_at=fetched_post.updated_at)
         post.id = info.variable_values['postId'].node_id
         return post
 
