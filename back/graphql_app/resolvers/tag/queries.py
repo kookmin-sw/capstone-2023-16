@@ -6,9 +6,9 @@ from django.db.models import Count, Q, QuerySet
 from strawberry.types import Info
 from strawberry_django_plus import gql, relay
 
-from graphql_app.types.enums import SortingDirection, StringFindMode
-from graphql_app.types.helpers import DatetimeBetween
-from graphql_app.types.model_types import Tag
+from graphql_app.resolvers.enums import SortingDirection, StringFindMode
+from graphql_app.resolvers.helpers import DatetimeBetween
+from graphql_app.resolvers.model_types import Tag
 from graphql_app.models import Tag as TagModel
 
 

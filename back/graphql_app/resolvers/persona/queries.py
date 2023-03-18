@@ -6,12 +6,12 @@ from django.db.models import Count, Sum, QuerySet
 from strawberry.types import Info
 from strawberry_django_plus import gql
 
-from graphql_app.types.decorators import requires_auth
-from graphql_app.types.enums import SortingDirection, StringFindMode, Gender
-from graphql_app.types.helpers import DatetimeBetween
-from graphql_app.types.model_types import Persona
+from graphql_app.resolvers.decorators import requires_auth
+from graphql_app.resolvers.enums import SortingDirection, StringFindMode, Gender
+from graphql_app.resolvers.helpers import DatetimeBetween
+from graphql_app.resolvers.model_types import Persona
 from graphql_app.models import Persona as PersonaModel
-from graphql_app.types.persona import Job
+from graphql_app.resolvers.persona import Job
 
 
 @strawberry.enum

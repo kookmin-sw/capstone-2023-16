@@ -4,7 +4,7 @@ from strawberry.types import Info
 from strawberry_django_plus import gql
 
 from graphql_app import models
-from graphql_app.types.model_types import Category
+from graphql_app.resolvers.model_types import Category
 
 from .errors import CategoryBodyDuplicatedError, CategoryBodyTooShortError, CategoryBodyTooLongError
 from ..decorators import requires_auth

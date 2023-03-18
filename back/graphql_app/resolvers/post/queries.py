@@ -8,10 +8,10 @@ from strawberry_django_plus import gql, relay
 from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.models import Post as PostModel, Category as CategoryModel, Persona as PersonaModel, Tag as TagModel
-from graphql_app.types.decorators import admin_only
-from graphql_app.types.enums import SortingDirection, StringFindMode
-from graphql_app.types.helpers import DatetimeBetween
-from graphql_app.types.model_types import Post
+from graphql_app.resolvers.decorators import admin_only
+from graphql_app.resolvers.enums import SortingDirection, StringFindMode
+from graphql_app.resolvers.helpers import DatetimeBetween
+from graphql_app.resolvers.model_types import Post
 
 
 @strawberry.enum

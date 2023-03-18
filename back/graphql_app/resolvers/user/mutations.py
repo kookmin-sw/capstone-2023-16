@@ -5,10 +5,10 @@ import strawberry
 from strawberry.types.info import Info
 
 from graphql_app.models import User as UserModel
-from graphql_app.types.decorators import anonymous_only, requires_auth
-from graphql_app.types.errors import AnonymousOnlyError
-from graphql_app.types.model_types import User
-from graphql_app.types.user.errors import UsernameAlreadyUsedError, WrongCertInfoError, EmailAlreadyUsedError
+from graphql_app.resolvers.decorators import anonymous_only, requires_auth
+from graphql_app.resolvers.errors import AnonymousOnlyError
+from graphql_app.resolvers.model_types import User
+from graphql_app.resolvers.user.errors import UsernameAlreadyUsedError, WrongCertInfoError, EmailAlreadyUsedError
 
 
 @strawberry.type
