@@ -1,6 +1,7 @@
 from typing import List, Tuple
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import MinLengthValidator
 from django.db import models
 
 
