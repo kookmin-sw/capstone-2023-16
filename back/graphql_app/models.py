@@ -178,3 +178,11 @@ class Membership(models.Model):
         ]
         verbose_name = '멤버쉽'
         verbose_name_plural = '멤버쉽 목록'
+
+    @classmethod
+    def get_memberships_as_subscriber(cls, persona: Persona):
+        return cls.objects.filter(subscriber=persona)
+
+    @classmethod
+    def get_memberships_as_creator(cls, persona: Persona):
+        return cls.objects.filter(creator=persona)

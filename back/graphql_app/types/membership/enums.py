@@ -1,4 +1,4 @@
-from django_enumfield.enum import Enum
+from enum import Enum
 
 import strawberry
 
@@ -11,3 +11,9 @@ class Tier(Enum):
     TIER_4 = 4
     TIER_5 = 5
     TIER_6 = 6
+
+
+@strawberry.enum
+class GetMembershipAs(Enum):
+    SUBSCRIBER = "구독자로서 조회"
+    CREATOR = "창작자로서 조회"

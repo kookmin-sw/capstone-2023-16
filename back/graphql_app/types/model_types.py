@@ -1,13 +1,15 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, cast, Iterable, List
 
 import strawberry
 from strawberry import auto
+from strawberry.types import Info
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
 
 from graphql_app import models
 from graphql_app.types.enums import Gender
+from graphql_app.types.membership.enums import Tier
 
 
 @gql.django.type(models.Category)
@@ -60,6 +62,19 @@ class Post(relay.Node):
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
 
+@gql.django.type(models.Membership)
+class Membership(relay.Node):
+    """
+    구독자-창작자 멤버쉽
+    - 구독자 : 멤버쉽 = 1 : N
+    - 창작자 : 멤버쉽 = 1 : N
+    """
+    subscriber: 'Persona' = strawberry.field(description='구독자 페르소나')
+    creator: 'Persona' = strawberry.field(description='창작자 페르소나')
+    tier: Tier = strawberry.field(description='티어')
+    created_at: datetime = strawberry.field(description='생성 일시')
+
+
 @gql.django.type(models.Persona)
 class Persona(relay.Node):
     """
@@ -74,10 +89,6 @@ class Persona(relay.Node):
     age: Optional[int] = strawberry.field(description='연령')
     job: Optional[str] = strawberry.field(description='직업')
     is_certified: bool = strawberry.field(description='공식 인증 여부')
-    preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
-    preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
-
-    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
