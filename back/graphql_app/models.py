@@ -169,3 +169,7 @@ class WaitFreePersona(models.Model):
     open_at = models.DateTimeField('공개 시각', null=False, blank=False)
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
     updated_at = models.DateTimeField('생성 시각', auto_now_add=True)
+
+    class Meta:
+        db_table = 'wait_free_persona'
+        unique_together = ('persona', 'post')

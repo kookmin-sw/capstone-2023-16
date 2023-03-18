@@ -1,3 +1,4 @@
+import datetime
 from enum import Enum
 from typing import Optional, Iterable, cast, List
 
@@ -7,6 +8,7 @@ from strawberry.types import Info
 from strawberry_django_plus import gql, relay
 from strawberry_django_plus.relay import GlobalID
 
+from graphql_app import models
 from graphql_app.types.decorators import admin_only
 from graphql_app.types.enums import SortingDirection, StringFindMode, SequentialConnectionMode
 from graphql_app.types.helpers import DatetimeBetween
@@ -128,6 +130,19 @@ class Query:
 
         return cast(Iterable[Post], posts)
 
+    @gql.field
+    def get_post(self, info: Info, post_id: GlobalID, persona_id: GlobalID) -> Post:
+        persona_id = info.variable_values['personaId'].node_id
+        fetched_post = PostModel.objects.get(id=info.variable_values['postId'].node_id)
+
+        today = datetime.date.today()
+        three_days_later = today + datetime.timedelta(days=3)
+
+        models.WaitFreePersona.objects.get_or_create(persona_id=persona_id, post_id=info.variable_values['postId'].node_id,
+                                                     defaults={'open_at': three_days_later})
+
+        return cast(Post, fetched_post)
+
     @gql.django.connection
     @admin_only
     def get_entire_posts(self, info: Info,
@@ -151,12 +166,3 @@ class Query:
             posts = posts.order_by(order_by_prefix + order_by_suffix, 'id')
 
         return cast(Iterable[Post], posts)
-
-
-    def get_post(self, info: Info):
-        fetched_post = PostModel.objects.get(id=info.variable_values['postId'].node_id)
-
-        post = Post(title=fetched_post.title, content=fetched_post.content,
-                    tags=fetched_post.tags, category=fetched_post.category, read_count=fetched_post.read_count)
-        post.id = info.variable_values['postId'].node_id
-        return post
