@@ -15,12 +15,13 @@ export default LoginContainer;
 
 const LoginContainerWrapper = styled.div<{ widthType: string }>`
   display: flex;
+  background-color: transparent !important;
   flex-direction: column;
   ${(props) => {
   return props.widthType === 'big' ?
     css`
       align-items: end;
-      padding-right: ${WHcal(props.widthType!, 100)};
+      padding-right: ${WHcal(props.widthType!, 180)};
     `:
     css`
       align-items: center;
@@ -33,6 +34,7 @@ const InnerContainer = styled(GrayShadowBox) <{ widthType: string }>`
   height: auto;
   display: flex;
   padding: ${(props) => { return WHcal(props.widthType!, 65) }} ${(props) => { return WHcal(props.widthType!, 71) }};
+  background-color: #fefefe;
   border-radius: ${(props) => { return WHcal(props.widthType!, 50); }};
   flex-direction: column;
   align-items: start;
