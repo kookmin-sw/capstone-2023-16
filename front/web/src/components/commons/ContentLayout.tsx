@@ -15,7 +15,7 @@ const ContentLayout = ({ children }: PropsWithChildren) => {
 export default ContentLayout;
 
 const LayoutWrapper = styled(GrayShadowBox) <{ widthType: string }>`
-  width: ${(props) => { return props.widthType === "big" ? '65%' : '60%' }};
+  width: ${(props) => { return props.widthType === "big" ? '65%' : '60%' }} !important;
   display: flex;
   padding: ${(props) => { return WHcal(props.widthType!, 60) }} ${(props) => { return WHcal(props.widthType!, 60) }} 0;
   justify-content: center;

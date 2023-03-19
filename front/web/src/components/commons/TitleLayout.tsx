@@ -34,6 +34,6 @@ const LayoutContainer = styled.div<{ widthType?: string }>`
   }
   & > div:nth-child(2){
     flex: 15;
-    margin: auto ${(props) => {return WHcal(props.widthType!, 70)}};
+    width: 100%;
   }
 `;

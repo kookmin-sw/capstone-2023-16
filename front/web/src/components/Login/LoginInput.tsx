@@ -46,7 +46,7 @@ const InputLabel = styled.label<{ widthType: string }>`
   font-weight: 700; 
 `
 const LoginInputBox = styled(GrayShadowBox) <{ widthType: string }>`
-  height: ${(props) => { return WHcal(props.widthType!, 30) }};
+  height: ${(props) => { return WHcal(props.widthType!, 35) }};
   display: flex;
   margin-top: ${(props) => { return WHcal(props.widthType!, 9) }};
   padding: ${(props) => { return WHcal(props.widthType!, 5) }};

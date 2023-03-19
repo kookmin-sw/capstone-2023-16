@@ -50,5 +50,5 @@ const SignUpNav = styled.p<{ widthType: string }>`
 `
 
 const EmptyBox = styled.div<{ widthType: string }>`
-  height: ${(props) => { return WHcal(props.widthType!, 44) }};
+  height: ${(props) => { return WHcal(props.widthType!, 40) }};
 `
