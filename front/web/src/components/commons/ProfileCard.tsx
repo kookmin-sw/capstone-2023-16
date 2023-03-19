@@ -1,40 +1,93 @@
 import styled from 'styled-components';
-import profileImg from "../assets/imgs/profileImg.png"
-import { GrayShadowBox } from './GrayShadowBox';
-import WHcal from '../../utils/WHcal';
+import profileImg from "../../assets/imgs/profileImg.png"
+import { GrayShadowBox } from '../../containers/GrayShadowBox';
 
 interface profile {
     src?: string,
     name?: string,
     id?: string,
-    widthType?: string,
-    usageType?: string,
+    devicetype?: string,
+    usagetype?: string,
 };
 
 const BoxDiv = styled(GrayShadowBox)<profile>`
-    width: ${(props)=>{ return (props.usageType==='choice')? WHcal(props.widthType!, 525): WHcal(props.widthType!, 369)}};
-    height: ${(props)=>{ return (props.usageType==='choice')? WHcal(props.widthType!, 134): WHcal(props.widthType!, 105)}};
-    border-radius: ${(props)=>{return WHcal(props.widthType!, 30)}};
+    width: ${(props)=>{ return (
+        (props.usagetype==='choice')? 
+            (props.devicetype === 'mobile')? '285px':
+                '525px':
+            (props.devicetype === 'mobile')? '242px':
+                '369px'
+        )}};
+    height: ${(props)=>{ return (
+        (props.usagetype==='choice')? 
+            (props.devicetype==='mobile')? '73px':
+                '134px':
+            (props.devicetype==='mobile')? '69px':
+                '105px'
+        )}};
+    border-radius: ${(props)=>{return (props.devicetype==='mobile')? '15px': '30px'}};
 `;
 
 const ImgBox = styled.img<profile>`
-    width: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 83): WHcal(props.widthType!, 65)}};
-    height: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 83): WHcal(props.widthType!, 65)}};
-    border-radius: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 41.5): WHcal(props.widthType!, 32.5)}};
-    border-width: ${(props)=>{return WHcal(props.widthType!, 1)}};
-    margin-right: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 23) : WHcal(props.widthType!, 17)}};
-    margin-left: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 27) : WHcal(props.widthType!, 21)}};
+    width: ${(props)=>{return (
+        (props.usagetype==='choice')?
+            (props.devicetype==='mobile')?'45px':
+                '83px':
+            (props.devicetype==='mobile')?'43px':
+                '65px'
+        )}};
+    height: ${(props)=>{return (
+        (props.usagetype==='choice')?
+            (props.devicetype==='mobile')?'45px':
+                '83px':
+            (props.devicetype==='mobile')?'43px':
+                '65px'
+        )}};
+    border-radius: 45px;
+    border-width: 1px;
+    margin-right: ${(props)=>{return (
+        (props.usagetype==='choice')? 
+            (props.devicetype==='mobile')? '15px':
+                '27px':
+            (props.devicetype==='mobile')? '14px':
+                '21px'
+        )}};
+    margin-left: ${(props)=>{return (
+        (props.usagetype==='choice')? 
+            (props.devicetype==='mobile')? '13px':
+                '23px':
+            (props.devicetype==='mobile')? '11px':
+                '18px'
+        )}};
     border-color: #c1c1c1;
 `;
 
 const NameText = styled.p<profile>`
-    font-size: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 28) : WHcal(props.widthType!, 20)}};
-    line-height: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 33.89): WHcal(props.widthType!,24.2)}};
+    font-size: ${(props)=>{return (
+        (props.usagetype==='choice')? 
+            (props.devicetype==='mobile')? '16px':
+                '28px':
+            (props.devicetype==='mobile')? '14px':
+                '20px'
+        )}};
+    margin-bottom: ${(props)=>{return (
+        (props.usagetype==='choice')? 
+            (props.devicetype==='mobile')? '1px':
+                '4px':
+            (props.devicetype==='mobile')? '1px':
+                '2px'
+        )}};
     font-weight: 700;
 `;
 
 const IdText = styled.p<profile>`
-    font-size: ${(props)=>{return (props.usageType==='choice')? WHcal(props.widthType!, 16) : WHcal(props.widthType!, 12)}};
+    font-size: ${(props)=>{return (
+        (props.usagetype==='choice')? 
+            (props.devicetype==='mobile')? '9px':
+                '16px':
+            (props.devicetype==='mobile')? '8px':
+                '12px'
+        )}};
     color: #989898;
 `;
 
@@ -43,13 +96,13 @@ const DivFlex = styled.div`
     flex-direction: column;
 `;
 
-const ProfileCard = ({src, name, id, widthType, usageType}:profile) =>{
+const ProfileCard = ({src, name, id, devicetype, usagetype}:profile) =>{
     return(
-        <BoxDiv widthType={widthType} usageType={usageType}>
-            <ImgBox widthType={widthType} usageType={usageType} src={(src===null||src==="")? profileImg: src} alt="Profile Image"/>
+        <BoxDiv devicetype={devicetype} usagetype={usagetype}>
+            <ImgBox devicetype={devicetype} usagetype={usagetype} src={(src===null||src==="")? profileImg: src} alt="Profile Image"/>
             <DivFlex>
-                <NameText widthType={widthType} usageType={usageType}>{name}</NameText>
-                <IdText widthType={widthType} usageType={usageType}>@{id}</IdText>
+                <NameText devicetype={devicetype} usagetype={usagetype}>{name}</NameText>
+                <IdText devicetype={devicetype} usagetype={usagetype}>@{id}</IdText>
             </DivFlex>
         </BoxDiv>
     )

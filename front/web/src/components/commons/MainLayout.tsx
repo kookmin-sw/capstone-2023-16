@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import useDeviceType from '../../hooks/useDeviceType';
-import WHcal from '../../utils/WHcal';
+import {WHcal} from '../../utils/WHcal';
 
 const MainLayout = ({children}: React.PropsWithChildren) => {
   const deviceType = useDeviceType();
