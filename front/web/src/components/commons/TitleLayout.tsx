@@ -33,6 +33,7 @@ const LayoutContainer = styled.div<{ widthType?: string }>`
     font-weight: 900;
   }
   & > div:nth-child(2){
+    flex: 15;
     margin: auto ${(props) => {return WHcal(props.widthType!, 70)}};
   }
 `;

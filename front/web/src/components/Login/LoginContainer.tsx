@@ -20,6 +20,7 @@ const ContainerWrapper = styled(GrayShadowBox) <ContainerWrapperProps>`
   height: auto;
   min-width: 200px;
   display: flex;
+  margin-bottom: ${(props) => { return WHcal(props.widthType!, 71) }} !important;
   padding: ${(props) => { return WHcal(props.widthType!, 65) }} ${(props) => { return WHcal(props.widthType!, 71) }};
   border-radius: ${(props) => { return WHcal(props.widthType!, 50); }};
   flex-direction: column;
