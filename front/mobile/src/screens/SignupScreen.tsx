@@ -32,12 +32,7 @@ const SignupContainer = styled(Container)`
   justify-content: space-between;
 `;
 
-const InputSection = styled.ScrollView`
-  width: 100%;
-  flex: 1;
-  flex-grow: 1;
-  min-height: ${ScreenHeight * 0.6}px;
-`;
+const InputSection = styled.ScrollView``;
 
 const IdSection = styled.View`
   flex-direction: row;
@@ -72,8 +67,7 @@ const BottomSection = styled.View`
   flex: 1;
   position: absolute;
   margin-top: 20px;
-  margin-left: 6%;
-  top: ${ScreenHeight * 0.7}px;
+  top: ${ScreenHeight * 0.71}px;
   justify-contnet: flex-end;
 `;
 
@@ -147,7 +141,7 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
                   <SmallButton
                     btnStyles={{
                       padding: 5,
-                      marginTop: errors.email ? -20 : 10,
+                      marginTop: errors.email ? -20 : 14,
                       backgroundColor: values.email
                         ? colors.primary
                         : colors.gray,
@@ -258,17 +252,18 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
         </Formik>
       </KeyboardAvoidingViewContainer>
       <Modal show={show}>
-        <View>
+        <View style={{alignItems: 'center'}}>
           <RegularText textStyle={{marginBottom: 20}}>이용약관</RegularText>
           <ScrollView style={{flexGrow: 1}}>
-            <SmallText>{termsAndConditions}</SmallText>
+            <SmallText textStyle={{textAlign: 'justify'}}>
+              {termsAndConditions}
+            </SmallText>
           </ScrollView>
           <RegularButton
             btnStyles={[
               ButtonTheme.purpleBG.btnStyle,
               {
                 width: 250,
-                marginLeft: 10,
                 marginTop: 10,
               },
             ]}

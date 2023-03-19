@@ -51,8 +51,7 @@ const ButtonSection = styled.View`
   width: 100%;
   position: absolute;
   margin-top: 20px;
-  margin-left: 6%;
-  top: ${ScreenHeight * 0.7}px;
+  top: ${ScreenHeight * 0.72}px;
   justify-contnet: flex-end;
 `;
 

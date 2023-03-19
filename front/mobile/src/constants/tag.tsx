@@ -33,3 +33,12 @@ export const tagData = [
   {title: 'IT', flag: false},
   {title: 'react', flag: false},
 ];
+
+export const personalTagData = [
+  {title: 'IT', flag: false},
+  {title: 'react', flag: false},
+  {title: 'django', flag: false},
+  {title: '인터넷', flag: false},
+  {title: 'IT', flag: false},
+  {title: 'react', flag: false},
+];

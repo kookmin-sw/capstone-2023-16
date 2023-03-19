@@ -17,19 +17,23 @@ import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
 
-import { graphql } from 'relay-runtime';
+import {graphql} from 'relay-runtime';
 
-import { useMutation } from 'react-relay';
+import {useMutation} from 'react-relay';
 
 const LoginContainer = styled(Container)`
   width: 100%;
-  padding-top: ${ScreenHeight * 0.3}px;
   flex: 1;
+`;
+
+const FormikSection = styled.View`
+  margin-top: ${ScreenHeight * 0.3}px;
 `;
 
 const InputSection = styled.View`
   width: 100%;
   flex: 1;
+
   min-height: ${ScreenHeight * 0.7}px;
   align-items: flex-start;
 `;
@@ -37,7 +41,6 @@ const InputSection = styled.View`
 const BottomSection = styled.View`
   width: 100%;
   flex: 1;
-  margin-left: 6%;
   justify-content: center;
   position: absolute;
   top: ${ScreenHeight * 0.4}px;
@@ -71,8 +74,10 @@ const [commitMutation, isMutationInFlight] = useMutation(
           email
           username
         }
+      }
     }
-}`);
+  `,
+);
 
 // const commitMutation = {};
 
@@ -85,9 +90,10 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
           initialValues={{email: '', password: ''}}
           onSubmit={({email, password}) => {
             alert(`email:${email} password:${password}`);
+            navigation.navigate('Main');
           }}>
           {({values, handleChange, handleBlur, handleSubmit, isSubmitting}) => (
-            <>
+            <FormikSection>
               <InputSection>
                 <StyledTextInput
                   labelStyle={{
@@ -142,15 +148,6 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                     textStyles={{color: colors.black, marginLeft: 12}}
                     onPress={() => {
                       navigation.navigate('Signup');
-                      const data = commitMutation({
-                        variables: {
-                          username: "test",
-                          password: "1234"
-                        },
-                        onError: e => {
-                          console.log(e);
-                        }
-                      });
                     }}>
                     회원가입
                   </TextButton>
@@ -169,7 +166,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   SIGN IN
                 </RegularButton>
               </BottomSection>
-            </>
+            </FormikSection>
           )}
         </Formik>
       </KeyboardAvoidingViewContainer>

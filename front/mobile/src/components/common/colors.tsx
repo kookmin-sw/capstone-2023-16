@@ -12,5 +12,6 @@ export const colors = {
   graydark2: '#636363',
   purple1: '#B487FF',
   graytext: '#838383',
+  purple: '#9D45D4',
   purplelight: '#F1DBFF',
 };

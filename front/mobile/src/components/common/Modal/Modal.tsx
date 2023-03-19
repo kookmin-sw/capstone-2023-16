@@ -18,7 +18,7 @@ const ModalBackground = styled.View`
 
 const ModalContainer = styled.View`
   width: 80%;
-  height: 80%;
+  height: 65%;
   background-color: ${colors.white};
   padding-horizontal: 20px;
   padding-vertical: 30px;

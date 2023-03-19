@@ -1,5 +1,11 @@
 import React, {FC} from 'react';
-import {Image, ImageSourcePropType} from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  ImageStyle,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
 import {colors} from '../colors';
@@ -17,10 +23,11 @@ const ImageTouchSection = styled.TouchableOpacity``;
 
 interface ProfileImageProps {
   source: ImageSourcePropType;
+  imgStyle?: StyleProp<ViewStyle>;
 }
 const ProfileImage: FC<ProfileImageProps> = props => {
   return (
-    <ImageContainer>
+    <ImageContainer style={props.imgStyle}>
       <ImageTouchSection>
         <Image source={props.source} style={{marginTop: -4}} />
       </ImageTouchSection>
