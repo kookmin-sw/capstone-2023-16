@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import WHcal from '../../utils/WHcal';
+import {WHcal} from '../../utils/WHcal';
 import { GrayShadowBox } from '../commons/GrayShadowBox';
   
 type LoginButtonProps = {

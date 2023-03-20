@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import profileImg from "../assets/imgs/profileImg.png"
 import { GrayShadowBox } from './commons/GrayShadowBox';
-import WHcal from '../utils/WHcal';
+import {WHcal} from '../utils/WHcal';
 
 interface profile {
     src?: string,

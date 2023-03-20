@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import postImg from "../../assets/imgs/post.png";
 import trashcanImg from "../../assets/imgs/trashcan.png";
-import { GrayShadowBox } from '../../containers/GrayShadowBox';
+import { GrayShadowBox } from './GrayShadowBox';
 
 // event와 내용들을 바로 넘겨주는 방식도 괜찮고, 아예 id를 넘겨서 여기서 api post detail을 호출해서 해도 괜찮음.
 // 전자방식으로 코드 작성함.

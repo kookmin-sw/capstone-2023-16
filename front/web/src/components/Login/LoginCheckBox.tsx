@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
-import WHcal from '../../utils/WHcal';
+import {WHcal} from '../../utils/WHcal';
 
 const LoginCheckBox = () => {
   const deviceType = useDeviceType();

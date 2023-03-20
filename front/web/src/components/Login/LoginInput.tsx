@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GrayShadowBox } from '../commons/GrayShadowBox';
 import { ReactComponent as Visible } from '../../assets/icons/visibility.svg';
 import { ReactComponent as Invisible } from '../../assets/icons/visibility-off.svg';
-import WHcal from '../../utils/WHcal';
+import {WHcal} from '../../utils/WHcal';
 import styled from 'styled-components';
 
 type LoginInputProps = {

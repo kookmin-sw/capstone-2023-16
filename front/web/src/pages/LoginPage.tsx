@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import useDeviceType from '../hooks/useDeviceType';
-import WHcal from '../utils/WHcal';
+import { WHcal } from '../utils/WHcal';
 import LoginInput from '../components/Login/LoginInput';
 import LoginButton from '../components/Login/LoginButton';
 import LoginCheckBox from '../components/Login/LoginCheckBox';
