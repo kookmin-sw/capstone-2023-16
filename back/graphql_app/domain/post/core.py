@@ -1,6 +1,14 @@
 import datetime
+from typing import Tuple, Optional
+
+from django.db.models import QuerySet
 
 from graphql_app import models
+from graphql_app.models import Post
+from graphql_app.resolvers.enums import SortingDirection
+from graphql_app.resolvers.interfaces import RetreiveFilter
+from graphql_app.resolvers.post.enums import PostSortBy
+from graphql_app.resolvers.post.types import PostSortingOption
 
 
 def is_eligible_for_paid_content(persona_id: int, post_id: int, current_user_id: int) -> bool:
@@ -20,3 +28,18 @@ def is_eligible_for_paid_content(persona_id: int, post_id: int, current_user_id:
 
     return (post.author_id == persona_id and persona.owner_id == current_user_id) or \
         ((datetime.datetime.today() >= wait_free.open_at) or membership_registered)
+
+
+def get_posts(sorting_opt: PostSortingOption,
+              filters: Tuple[Optional[RetreiveFilter]]) -> QuerySet[Post]:
+    posts = Post.objects.filter(is_public=True, is_deleted=False)
+    for field_filter in filters:
+        if field_filter is not None:
+            posts = field_filter.apply(posts)
+
+    if sorting_opt.sort_by in (PostSortBy.ID, PostSortBy.CREATED_AT, PostSortBy.READ_CNT):
+        order_by_prefix = '' if sorting_opt.direction == SortingDirection.ASC else '-'
+        order_by_suffix = sorting_opt.sort_by.value
+        posts = posts.order_by(order_by_prefix + order_by_suffix, 'id')
+
+    return posts
