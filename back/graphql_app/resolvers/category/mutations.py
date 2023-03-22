@@ -9,6 +9,7 @@ from ..decorators import requires_auth
 from ..errors import AdminPermissionRequiredError
 from graphql_app.domain.category.validations import check_body_length
 from ...domain.category.core import create_category
+from ...domain.category.exceptions import DuplicatedCategoryBodyException
 
 
 @gql.type
@@ -32,8 +33,9 @@ class Mutation:
         elif body_valid_result > 0:
             raise CategoryBodyTooLongError(body, required_length)
 
-        new_category = create_category(body)
-        if new_category is None:
+        try:
+            new_category = create_category(body)
+        except DuplicatedCategoryBodyException:
             raise CategoryBodyDuplicatedError(body)
         else:
             return new_category

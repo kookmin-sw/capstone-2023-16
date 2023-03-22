@@ -3,6 +3,7 @@ from typing import Optional, Tuple
 from django.db import IntegrityError
 from django.db.models import QuerySet, Count, Q
 
+from graphql_app.domain.category.exceptions import DuplicatedCategoryBodyException
 from graphql_app.models import Category
 from graphql_app.resolvers.category.enums import CategorySortBy
 from graphql_app.resolvers.category.types import CategorySortingOption
@@ -44,14 +45,17 @@ def get_all_categories(sorting_opt: CategorySortingOption,
     return categories
 
 
-def create_category(body: str) -> Optional[Category]:
+def create_category(body: str) -> Category:
     """
     새 카테고리를 생성하는 함수 (중복 허용 X)
     단, 카테고리 생성에 실패한 경우 아무 것도 반환하지 않는다.
+    :param body: 생성할 카테고리의 body 값
+    :return: 생성된 새 카테고리
+    :raises DuplicatedCategoryBodyException: 이미 존재하는 body로 카테고리 생성을 시도한 경우
     """
     try:
         new_category = Category.objects.create(body=body)
     except IntegrityError:
-        return None
+        raise DuplicatedCategoryBodyException
     else:
         return new_category
