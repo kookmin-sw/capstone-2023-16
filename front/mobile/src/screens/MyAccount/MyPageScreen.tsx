@@ -1,6 +1,8 @@
 import React, {FC} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
+import {Image} from 'react-native';
+
 import * as ButtonTheme from '../../components/common/theme';
 import SmallButton from '../../components/common/Buttons/SmallButton';
 import {colors} from '../../components/common/colors';
@@ -11,7 +13,6 @@ import {
 } from '../../components/common/shared';
 import SmallText from '../../components/common/Texts/SmallText';
 import {imagePath} from '../../utils/imagePath';
-import {Image} from 'react-native';
 import {personalTagData} from '../../constants/tag';
 import {NavigationData} from '../../navigation/AuthNavigator';
 

@@ -6,19 +6,13 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import ImageButton from '../components/common/Buttons/ImageButton';
-import {imagePath} from '../utils/imagePath';
-
-import MainScreen from '../screens/MainScreen';
-import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
-import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
 import {MyPageScreen} from '../screens/MyAccount/MyPageScreen';
 import {FollowingScreen} from '../screens/MyAccount/FollowingScreen';
 
+import ImageButton from '../components/common/Buttons/ImageButton';
+import {imagePath} from '../utils/imagePath';
+
 export type ParamList = {
-  Main: undefined;
-  BaseInfo: undefined;
-  InterestTagSetting: undefined;
   MyPage: undefined;
   Following: undefined;
 };
@@ -28,29 +22,6 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      <StackNavigator.Screen
-        name="Main"
-        component={MainScreen}
-        options={{headerShown: false}}
-      />
-      <StackNavigator.Screen
-        name="BaseInfo"
-        component={BaseInfoScreen}
-        options={{
-          title: '페르소나 생성',
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-        }}
-      />
-      <StackNavigator.Screen
-        name="InterestTagSetting"
-        component={InterestTagSettingScreen}
-        options={{
-          title: '페르소나 생성',
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-        }}
-      />
       <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}

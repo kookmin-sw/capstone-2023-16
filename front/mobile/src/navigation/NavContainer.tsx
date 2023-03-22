@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {colors} from '../components/common/colors';
 
 import AuthNavigator from './AuthNavigator';
-import {colors} from '../components/common/colors';
 import AppNavigator from './AppNavigator';
 
 const MyTheme = {
