@@ -7,8 +7,6 @@ from graphql_app.resolvers.enums import SortingDirection
 from graphql_app.resolvers.interfaces import RetreiveFilter
 from graphql_app.resolvers.tag.enums import TagSortBy
 from graphql_app.resolvers.tag.types import TagSortingOption
-from graphql_app.domain.tag.validations import check_body_length
-from graphql_app.resolvers.tag.errors import TagBodyTooShortError, TagBodyTooLongError
 
 
 def insert_tag(body: str) -> Tuple[Tag, bool]:
@@ -18,16 +16,7 @@ def insert_tag(body: str) -> Tuple[Tag, bool]:
 
     :param body: 태그의 body 필드 값
     :return: 삽입/조회된 태그 객체와 bool(생성된 경우 true, 그렇지 않은 경우 false)의 tuple 쌍
-    :raises TagBodyTooShortError: 요구 길이보다 body가 짧은 경우
-    :raises TagBodyTooLongError: 요구 길이보다 body가 긴 경우
     """
-    # body 길이 체크
-    body_valid_result, required_length = check_body_length(body)
-    if body_valid_result < 0:
-        raise TagBodyTooShortError(body, required_length)
-    elif body_valid_result > 0:
-        raise TagBodyTooLongError(body, required_length)
-
     tag, is_created = Tag.objects.get_or_create(body=body)
     return tag, is_created
 
