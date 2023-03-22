@@ -159,3 +159,23 @@ class WaitFreePersona(models.Model):
     class Meta:
         db_table = 'wait_free_persona'
         unique_together = ('persona', 'post')
+
+
+class Membership(models.Model):
+    subscriber = models.ForeignKey(Persona, on_delete=models.CASCADE, null=False, blank=False,
+                                   related_name='registered_memberships', verbose_name='구독자 페르소나')
+    creator = models.ForeignKey(Persona, on_delete=models.CASCADE, null=False, blank=False,
+                                related_name='own_memberships', verbose_name='창작자 페르소나')
+    tier = models.IntegerField(null=False, blank=False, verbose_name='티어')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+
+    class Meta:
+        db_table = 'membership'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['subscriber', 'creator'],
+                name='unique membership'
+            )
+        ]
+        verbose_name = '멤버쉽'
+        verbose_name_plural = '멤버쉽 목록'

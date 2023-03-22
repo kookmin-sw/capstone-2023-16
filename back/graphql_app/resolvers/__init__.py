@@ -18,8 +18,11 @@ from .tag import Query as TagQuery
 from .category import Mutation as CategoryMutation
 from .category import Query as CategoryQuery
 
-queries = (PostQuery, PersonaQuery, TagMutation, TagQuery, CategoryQuery)
-mutations = (UserMutation, PostMutation, PersonaMutation, TagMutation, CategoryMutation)
+from .membership import Mutation as MembershipMutation
+from .membership import Query as MembershipQuery
+
+queries = (PostQuery, PersonaQuery, TagMutation, TagQuery, CategoryQuery, MembershipQuery)
+mutations = (UserMutation, PostMutation, PersonaMutation, TagMutation, CategoryMutation, MembershipMutation)
 
 Query = merge_types("Query", queries)
 Mutation = merge_types("Mutation", mutations)
