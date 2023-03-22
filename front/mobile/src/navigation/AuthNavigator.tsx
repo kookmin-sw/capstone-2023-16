@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import {LoginScreen} from '../screens/LoginScreen';
+import MainScreen from '../screens/MainScreen';
 import {SignupScreen} from '../screens/SignupScreen';
 import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
@@ -32,6 +33,11 @@ const AuthNavigator = () => {
         name="Signup"
         component={SignupScreen}
         options={{title: '회원가입', headerShadowVisible: false}}
+      />
+      <StackNavigator.Screen
+        name="Main"
+        component={MainScreen}
+        options={{headerShown: false}}
       />
       <StackNavigator.Screen
         name="BaseInfo"
