@@ -13,7 +13,6 @@ def has_weak_persona_context(request: WSGIRequest) -> bool:
     :param request: Django 요청 객체
     :return: sessionid와 persona_id가 있는 경우 True, 그렇지 않은 경우 False
     """
-    print(request)
     cookies = request.COOKIES
 
     if not (request.user.is_authenticated and 'persona_id' in cookies):
@@ -39,7 +38,6 @@ def has_persona_context(request: WSGIRequest):
         try:
             _, persona_id = parse_global_id(cookies['persona_id'])
             persona = Persona.objects.get(id=persona_id)
-            print(persona.owner.id, request.user.id)
             if persona.owner != request.user:
                 raise Persona.DoesNotExist()
         # 해당 id를 가지는 페르소나가 없거나, 소유주가 아닌 경우
