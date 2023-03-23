@@ -6,9 +6,10 @@ from strawberry_django_plus import gql
 from strawberry_django_plus.relay import GlobalID
 
 from graphql_app import models
-from graphql_app.resolvers.enums import Gender, StringFindMode, SortingDirection
+from graphql_app.resolvers.enums import StringFindMode, SortingDirection
 from graphql_app.resolvers.interfaces import RetreiveFilter, StringRetrieveFilter
-from graphql_app.resolvers.model_types import Persona, User
+from graphql_app.resolvers.model_types import User
+from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import PersonaSortBy, Job
 
 

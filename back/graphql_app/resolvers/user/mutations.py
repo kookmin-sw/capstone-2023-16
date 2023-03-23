@@ -1,7 +1,6 @@
-from django.db.models import Q
-from django.contrib.auth import login, logout
-
 import strawberry
+from django.contrib.auth import login, logout
+from django.db.models import Q
 from strawberry.types.info import Info
 
 from graphql_app.models import User as UserModel

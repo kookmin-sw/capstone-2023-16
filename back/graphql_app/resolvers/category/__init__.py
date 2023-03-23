@@ -1,2 +1,2 @@
-from .queries import Query
 from .mutations import Mutation
+from .queries import Query

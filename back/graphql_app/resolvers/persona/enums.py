@@ -28,3 +28,9 @@ class Job(Enum):
     FINANCE = '금융'
     ART = '예술'
     ETC = '기타'
+
+
+@strawberry.enum
+class Gender(Enum):
+    MALE = '남성'
+    FEMALE = '여성'

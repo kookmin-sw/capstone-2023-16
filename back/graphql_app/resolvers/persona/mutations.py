@@ -6,9 +6,9 @@ from strawberry_django_plus.mutations import resolvers
 from graphql_app import models
 from graphql_app.domain.persona.core import create_persona, persona_follow_toggle
 from graphql_app.domain.persona.exceptions import NicknameDupliationException, SelfFollowException
+from graphql_app.resolvers.decorators import requires_auth, requires_persona_context
 from graphql_app.resolvers.errors import AuthInfoRequiredError, PermissionDeniedError
 from graphql_app.resolvers.model_types import Persona
-from graphql_app.resolvers.decorators import requires_auth, requires_persona_context
 from graphql_app.resolvers.persona.errors import PersonaNicknameDuplicatedError, SelfFollowError
 from graphql_app.resolvers.persona.types import PersonaCreateInput, PersonaFollowToggleOutput, PersonaFollowToggleInput
 from graphql_app.resolvers.utils import parse_global_ids

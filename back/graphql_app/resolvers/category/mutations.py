@@ -2,12 +2,11 @@ import strawberry
 from strawberry.types import Info
 from strawberry_django_plus import gql
 
+from graphql_app.domain.category.validations import check_body_length
 from graphql_app.resolvers.model_types import Category
-
 from .errors import CategoryBodyDuplicatedError, CategoryBodyTooShortError, CategoryBodyTooLongError
 from ..decorators import requires_auth
 from ..errors import AdminPermissionRequiredError
-from graphql_app.domain.category.validations import check_body_length
 from ...domain.category.core import create_category
 from ...domain.category.exceptions import DuplicatedCategoryBodyException
 

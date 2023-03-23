@@ -7,8 +7,8 @@ from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
 
 from graphql_app import models
-from graphql_app.resolvers.enums import Gender
 from graphql_app.domain.membership.enums import Tier
+from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.post.permissions import IsEligibleForPaidContent
 
 

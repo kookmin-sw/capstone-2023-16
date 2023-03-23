@@ -1,6 +1,5 @@
-from typing import Optional, Dict
+from typing import Dict
 
-import strawberry
 from django.db.models import QuerySet
 
 from graphql_app.resolvers.enums import StringFindMode

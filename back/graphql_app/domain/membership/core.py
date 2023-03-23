@@ -1,12 +1,11 @@
 from django.db import IntegrityError
 from django.db.models import QuerySet
 
+from graphql_app.domain.membership.enums import Tier
 from graphql_app.domain.membership.exceptions import AlreadyJoinedException, MembershipNotFoundException, \
     SelfJoinDeniedException
 from graphql_app.models import Persona, Membership
-from graphql_app.domain.membership.enums import Tier
 from graphql_app.resolvers.enums import SortingDirection
-from graphql_app.resolvers.interfaces import RetreiveFilter
 from graphql_app.resolvers.membership.types import MembershipSortingOption, MembershipSortBy
 
 

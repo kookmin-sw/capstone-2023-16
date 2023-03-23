@@ -8,10 +8,10 @@ from graphql_app import models
 from graphql_app.domain.membership.core import create_membership, remove_membership
 from graphql_app.domain.membership.enums import Tier
 from graphql_app.domain.membership.exceptions import AlreadyJoinedException, MembershipNotFoundException
+from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.errors import AuthInfoRequiredError
 from graphql_app.resolvers.membership.errors import AlreadyJoinedMembershipError, NotMemberError
 from graphql_app.resolvers.model_types import Membership, Persona
-from graphql_app.resolvers.decorators import requires_persona_context
 
 
 @gql.type

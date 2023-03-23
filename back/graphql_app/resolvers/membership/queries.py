@@ -5,7 +5,6 @@ from strawberry_django_plus import gql
 
 from graphql_app.domain.membership.core import get_own_memberships
 from graphql_app.resolvers.decorators import requires_persona_context
-from graphql_app.resolvers.enums import SortingDirection
 from graphql_app.resolvers.membership.enums import GetMembershipAs
 from graphql_app.resolvers.membership.types import MembershipSortingOption
 from graphql_app.resolvers.model_types import Membership, Persona

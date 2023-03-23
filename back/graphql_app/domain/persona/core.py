@@ -5,10 +5,11 @@ from django.db.models import QuerySet, Sum, Count
 from graphql_app.domain.persona.exceptions import NicknameDupliationException, NotPersonaOwnerException, \
     SelfFollowException
 from graphql_app.models import Persona, User, Category, Tag
-from graphql_app.resolvers.enums import Gender, SortingDirection
+from graphql_app.resolvers.enums import SortingDirection
 from graphql_app.resolvers.interfaces import RetreiveFilter
-from graphql_app.resolvers.persona.types import PersonaSortingOption
+from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import Job, PersonaSortBy
+from graphql_app.resolvers.persona.types import PersonaSortingOption
 
 
 def create_persona(owner: User, nickname: str, introduction: str, is_public: Optional[bool] = True,
