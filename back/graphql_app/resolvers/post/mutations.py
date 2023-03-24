@@ -5,9 +5,9 @@ from strawberry_django_plus import gql
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.domain.post.core import create_post
-from graphql_app.resolvers.model_types import Post
 from graphql_app.resolvers.decorators import requires_auth
 from graphql_app.resolvers.errors import AuthInfoRequiredError, ResourceNotFoundError
+from graphql_app.resolvers.model_types import Post
 from graphql_app.resolvers.post.types import CreatePostInput
 
 

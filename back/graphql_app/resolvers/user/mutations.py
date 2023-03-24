@@ -4,7 +4,6 @@ from strawberry.types.info import Info
 from graphql_app.domain.user.core import create_user, find_user, login, logout
 from graphql_app.domain.user.exceptions import UsernameDuplicationException, EmailDuplicationException, \
     WrongCertInfoException
-from graphql_app.models import User as UserModel
 from graphql_app.resolvers.decorators import anonymous_only, requires_auth
 from graphql_app.resolvers.errors import AnonymousOnlyError
 from graphql_app.resolvers.model_types import User
