@@ -4,7 +4,7 @@ from typing import Optional
 import strawberry
 from django.db.models import QuerySet
 
-from graphql_app.resolvers.interfaces import RetreiveFilter
+from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 
 
 @strawberry.input

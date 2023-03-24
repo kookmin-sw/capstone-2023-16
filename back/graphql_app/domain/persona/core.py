@@ -6,7 +6,7 @@ from graphql_app.domain.persona.exceptions import NicknameDupliationException, N
     SelfFollowException
 from graphql_app.models import Persona, User, Category, Tag
 from graphql_app.resolvers.enums import SortingDirection
-from graphql_app.resolvers.interfaces import RetreiveFilter
+from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import Job, PersonaSortBy
 from graphql_app.resolvers.persona.types import PersonaSortingOption

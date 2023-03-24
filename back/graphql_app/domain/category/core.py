@@ -8,7 +8,7 @@ from graphql_app.models import Category
 from graphql_app.resolvers.category.enums import CategorySortBy
 from graphql_app.resolvers.category.types import CategorySortingOption
 from graphql_app.resolvers.enums import SortingDirection
-from graphql_app.resolvers.interfaces import RetreiveFilter
+from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 
 
 # 저장된 모든 카테고리의 목록을 반환하는 함수

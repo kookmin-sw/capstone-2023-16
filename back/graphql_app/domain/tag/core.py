@@ -4,7 +4,7 @@ from django.db.models import QuerySet, Count
 
 from graphql_app.models import Tag
 from graphql_app.resolvers.enums import SortingDirection
-from graphql_app.resolvers.interfaces import RetreiveFilter
+from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 from graphql_app.resolvers.tag.enums import TagSortBy
 from graphql_app.resolvers.tag.types import TagSortingOption
 

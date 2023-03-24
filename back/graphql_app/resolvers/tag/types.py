@@ -4,7 +4,7 @@ import strawberry
 from django.db.models import QuerySet
 
 from graphql_app.resolvers.enums import StringFindMode, SortingDirection
-from graphql_app.resolvers.interfaces import StringRetrieveFilter
+from graphql_app.resolvers.RetreiveFilter import StringRetrieveFilter
 from graphql_app.resolvers.model_types import Tag
 from graphql_app.resolvers.tag.enums import TagSortBy
 

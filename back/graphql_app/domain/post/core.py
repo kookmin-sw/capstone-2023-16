@@ -8,7 +8,7 @@ from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.models import Post, Persona, Category, Tag
 from graphql_app.resolvers.enums import SortingDirection
-from graphql_app.resolvers.interfaces import RetreiveFilter
+from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 from graphql_app.resolvers.post.enums import PostSortBy
 from graphql_app.resolvers.post.types import PostSortingOption
 

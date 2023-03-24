@@ -8,7 +8,7 @@ from strawberry_django_plus.relay import GlobalID
 from graphql_app import models
 from graphql_app.models import Persona, Category, Tag
 from graphql_app.resolvers.enums import StringFindMode, SortingDirection
-from graphql_app.resolvers.interfaces import StringRetrieveFilter, RetreiveFilter
+from graphql_app.resolvers.RetreiveFilter import StringRetrieveFilter, RetreiveFilter
 from graphql_app.resolvers.post.enums import PostSortBy
 
 
