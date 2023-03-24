@@ -1,19 +1,16 @@
 import styled from 'styled-components';
-import useDeviceType from '../../hooks/useDeviceType';
-import {WHcal} from '../../utils/WHcal';
 
 const LoginCheckBox = () => {
-  const deviceType = useDeviceType();
 
-  return <LoginCheckBoxWrapper htmlFor='remember' widthType={deviceType}>
+  return <LoginCheckBoxWrapper htmlFor='remember'>
     <input id='remember' type='checkbox' />로그인유지
   </LoginCheckBoxWrapper>
 }
 
 export default LoginCheckBox;
 
-const LoginCheckBoxWrapper = styled.label<{ widthType: string }>`
+const LoginCheckBoxWrapper = styled.label`
   display: flex;
-  font-size: ${(props) => { return WHcal(props.widthType!, 13) }};
+  font-size: 13px;
   align-items: center;
 `
