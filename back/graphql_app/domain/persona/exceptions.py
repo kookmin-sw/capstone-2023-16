@@ -15,3 +15,8 @@ class SelfFollowException(Exception):
     스스로 팔로우 하려는 경우 발생
     """
 
+
+class PersonaNotFoundException(Exception):
+    """
+    요청된 쿼리로 페르소나를 찾을 수 없는 경우 발생
+    """

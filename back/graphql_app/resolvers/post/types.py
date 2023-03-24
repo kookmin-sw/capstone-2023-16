@@ -2,8 +2,10 @@ from typing import Optional, List
 
 import strawberry
 from django.db.models import QuerySet
+from strawberry_django_plus import gql
 from strawberry_django_plus.relay import GlobalID
 
+from graphql_app import models
 from graphql_app.models import Persona, Category, Tag
 from graphql_app.resolvers.enums import StringFindMode, SortingDirection
 from graphql_app.resolvers.interfaces import StringRetrieveFilter, RetreiveFilter
@@ -104,3 +106,17 @@ class PostSortingOption:
     """
     sort_by: Optional[PostSortBy] = strawberry.field(default=PostSortBy.CREATED_AT, description='정렬 기준')
     direction: Optional[SortingDirection] = strawberry.field(default=SortingDirection.DESC, description='정렬 방향')
+
+
+@gql.django.input(models.Post)
+class CreatePostInput:
+    """
+    게시물 생성 input
+    """
+    author: gql.auto = strawberry.field(description='작성자 Persona 정보')
+    title: str = strawberry.field(description='새 게시글 제목')
+    content: str = strawberry.field(description='새 게시글 무료 본문')
+    paid_content: Optional[str] = strawberry.field(default=None, description='새 게시글 유료 본문')
+    tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
+                                                       description='연결할 태그의 body 목록 (insert 됨)')
+    category: gql.auto = strawberry.field(description='소속 카테고리')

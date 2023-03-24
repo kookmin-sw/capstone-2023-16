@@ -1,31 +1,18 @@
-from typing import Optional, List
-
 import strawberry
 from strawberry.types import Info
 from strawberry_django_plus import gql
-from strawberry_django_plus.mutations import resolvers
 
-from graphql_app import models
+from graphql_app.domain.category.exceptions import CategoryNotFoundException
+from graphql_app.domain.persona.exceptions import PersonaNotFoundException
+from graphql_app.domain.post.core import create_post
+from graphql_app.resolvers.model_types import Post
 from graphql_app.resolvers.decorators import requires_auth
 from graphql_app.resolvers.errors import AuthInfoRequiredError, ResourceNotFoundError
-from graphql_app.resolvers.model_types import Post
+from graphql_app.resolvers.post.types import CreatePostInput
 
 
 @gql.type
 class Mutation:
-    @gql.django.input(models.Post)
-    class CreatePostInput:
-        """
-        게시물 생성 input
-        """
-        author: gql.auto = strawberry.field(description='작성자 Persona 정보')
-        title: str = strawberry.field(description='새 게시글 제목')
-        content: str = strawberry.field(description='새 게시글 무료 본문')
-        paid_content: Optional[str] = strawberry.field(default=None, description='새 게시글 유료 본문')
-        tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
-                                                           description='연결할 태그의 body 목록 (insert 됨)')
-        category: gql.auto = strawberry.field(description='소속 카테고리')
-
     # TODO: Type 수정
     @gql.mutation
     @requires_auth
@@ -36,22 +23,22 @@ class Mutation:
         새 게시물을 생성한다.
         """
 
+        # _, author_id =
+        author_id = int(new_post_input.author.id.node_id)
+        requested_user_id = int(info.context.request.user.id)
+        category_id = int(new_post_input.category.id.node_id)
+        title = new_post_input.title
+        content = new_post_input.content
+        paid_content = new_post_input.paid_content
+        tag_bodies = new_post_input.tag_bodies
+
         try:
-            new_post_input = resolvers.parse_input(info, new_post_input)
-
-            author_persona = new_post_input['author'].pk
-            author_persona_owner: models.User = author_persona.owner
-
-            # 요청자가 게시글 작성자로 지정된 페르소나의 소유자가 아닌 경우 에러 발생
-            if author_persona_owner != info.context.request.user:
-                raise models.Persona.DoesNotExist
-        except models.Persona.DoesNotExist:
+            new_post = create_post(author_id=author_id, requested_user_id=requested_user_id,
+                                   title=title, content=content, paid_content=paid_content,
+                                   category_id=category_id, tag_bodies=tag_bodies)
+        except PersonaNotFoundException:
             raise ResourceNotFoundError('Persona')
-
-        new_post = resolvers.create(info, models.Post, new_post_input)
-
-        # 태그 연결 처리
-        tags = list(map(lambda pair: pair[0], models.Tag.insert_tags(new_post_input['tag_bodies'])))
-        new_post.tags.add(*tags)
-
-        return new_post
+        except CategoryNotFoundException:
+            raise ResourceNotFoundError('Category')
+        else:
+            return new_post
