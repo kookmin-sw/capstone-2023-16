@@ -1,11 +1,7 @@
 from typing import List, Tuple
 
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
-
-
-class MyUserManager(BaseUserManager):
-    pass
 
 
 class User(AbstractBaseUser):
@@ -14,18 +10,16 @@ class User(AbstractBaseUser):
         (EMAIL, 'EMAIL'),
     ]
     USERNAME_FIELD = 'email'
-    objects = MyUserManager()
 
     is_staff = models.BooleanField(default=False)
     email = models.EmailField(verbose_name='유저의 이메일', unique=True)
     username = models.CharField(max_length=254, unique=True)
     signup_method = models.CharField(max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
-    picture_url = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
 
     class Meta:
-        db_table = 'user'
+        db_table = 'users'
         verbose_name = '사용자'
         verbose_name = '사용자 목록'
 
@@ -33,7 +27,7 @@ class User(AbstractBaseUser):
 class Post(models.Model):
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
-    paid_content = models.TextField(verbose_name="유료 내용", blank=True, null=True, default="")
+    paid_content = models.TextField(verbose_name="유료 내용", blank=True, null=True)
 
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
                                related_name='written_posts', verbose_name="글쓴이")
@@ -44,13 +38,11 @@ class Post(models.Model):
     category = models.ForeignKey('graphql_app.Category', related_name='including_posts', null=True, blank=True,
                                  default=None, on_delete=models.SET_NULL, verbose_name='카테고리')
 
-    read_count = models.IntegerField(default=0, null=False, blank=True, verbose_name='조회수')
-
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
 
     class Meta:
-        db_table = 'post'
+        db_table = 'posts'
         verbose_name = '게시물'
         verbose_name_plural = '게시물 목록'
 
@@ -61,6 +53,8 @@ class Persona(models.Model):
     nickname = models.CharField('닉네임', unique=True, max_length=20)
     introduction = models.TextField('소개', null=True, blank=True, default='자기 소개가 없습니다.')
     is_public = models.BooleanField('공개 여부', null=False, blank=True, default=True)
+    picture_url = models.URLField(verbose_name='이미지 파일 주소')
+
     gender = models.CharField('성별', max_length=2, null=True, blank=True, default=None)
     age = models.PositiveIntegerField('연령대', null=True, blank=True, default=None)
     job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
@@ -81,7 +75,7 @@ class Persona(models.Model):
         return f"[{self.pk}] {self.owner.id}:{self.nickname}"
 
     class Meta:
-        db_table = 'persona'
+        db_table = 'personas'
         verbose_name = '페르소나'
         verbose_name_plural = '페르소나 목록'
 
@@ -94,7 +88,7 @@ class Tag(models.Model):
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'tag'
+        db_table = 'tags'
         verbose_name = '태그'
         verbose_name_plural = '태그 목록'
 
@@ -142,7 +136,7 @@ class Category(models.Model):
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'categorie'
+        db_table = 'categories'
         verbose_name = '카테고리'
         verbose_name_plural = '카테고리 목록'
 
@@ -156,7 +150,7 @@ class WaitFreePersona(models.Model):
     updated_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'wait_free_persona'
+        db_table = 'wait_free_personas'
         unique_together = ('persona', 'post')
 
 
@@ -169,7 +163,7 @@ class Membership(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
 
     class Meta:
-        db_table = 'membership'
+        db_table = 'memberships'
         constraints = [
             models.UniqueConstraint(
                 fields=['subscriber', 'creator'],
