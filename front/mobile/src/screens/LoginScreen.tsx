@@ -17,6 +17,10 @@ import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
 
+import { graphql } from 'relay-runtime';
+
+import { useMutation } from 'react-relay';
+
 const LoginContainer = styled(Container)`
   width: 100%;
   padding-top: ${ScreenHeight * 0.3}px;
@@ -55,6 +59,22 @@ const SignupSection = styled.View`
 `;
 
 type Props = NavigationData<'Login'>;
+
+const [commitMutation, isMutationInFlight] = useMutation(
+  graphql`
+    mutation LoginScreenMutation($username: String!, $password: String!) {
+      login(username: $username, password: $password) {
+        ... on User {
+          id
+          signupMethod
+          createdAt
+          email
+          username
+        }
+    }
+}`);
+
+// const commitMutation = {};
 
 export const LoginScreen: FC<Props> = ({navigation}) => {
   const [autoLogin, setAutoLogin] = useState(false);
@@ -121,7 +141,15 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <TextButton
                     textStyles={{color: colors.black, marginLeft: 12}}
                     onPress={() => {
-                      navigation.navigate('Main');
+                      const data = commitMutation({
+                        variables: {
+                          username: "test",
+                          password: "1234"
+                        },
+                        onError: e => {
+                          console.log(e);
+                        }
+                      });
                     }}>
                     회원가입
                   </TextButton>
