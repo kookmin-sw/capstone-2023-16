@@ -9,7 +9,7 @@ from strawberry_django_plus.gql import relay
 from graphql_app import models
 from graphql_app.domain.membership.enums import Tier
 from graphql_app.resolvers.persona.enums import Gender
-from graphql_app.resolvers.post.permissions import IsEligibleForPaidContent
+from graphql_app.resolvers.post.permissions import IsEligibleForPaidContent, MembershipTierPermission
 
 
 @gql.django.type(models.Category)
@@ -52,13 +52,13 @@ class User:
 @gql.django.type(models.Post)
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
-    content: str = strawberry.field(description='글 내용')
+    content: str = strawberry.field(description='글 내용', permission_classes=[MembershipTierPermission])
     paid_content: Optional[str] = strawberry.field(description='유료 내용', permission_classes=[IsEligibleForPaidContent])
     author: 'Persona' = strawberry.field(description='작성자')
     is_public: bool = strawberry.field(description='공개 여부')
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Optional[Category] = strawberry.field(description='소속 카테고리')
-    read_count: int = strawberry.field(description='조회수')
+    required_membership_tier: Optional[Tier] = strawberry.field(description='조회 요구 티어')
     created_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 

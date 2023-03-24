@@ -38,6 +38,8 @@ class Post(models.Model):
     category = models.ForeignKey('graphql_app.Category', related_name='including_posts', null=True, blank=True,
                                  default=None, on_delete=models.SET_NULL, verbose_name='카테고리')
 
+    required_membership_tier = models.IntegerField(default=None, null=True, blank=True, verbose_name='요구 멤버쉽 티어')
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
 

@@ -3,7 +3,7 @@ import typing
 from strawberry import BasePermission
 from strawberry.types import Info
 
-from graphql_app.domain.post.core import is_eligible_for_paid_content
+from graphql_app.domain.post.core import is_eligible_for_paid_content, has_required_tier
 from graphql_app.resolvers.errors import CookieContextRequiredError
 from graphql_app.resolvers.utils import parse_global_id
 
@@ -19,3 +19,11 @@ class IsEligibleForPaidContent(BasePermission):
         else:
             _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
             return is_eligible_for_paid_content(persona_id, post_id, info.context.request.user.id)
+
+
+class MembershipTierPermission(BasePermission):
+    message = '요구되는 멤버쉽 티어 조건을 만족하지 않습니다.'
+
+    def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
+        _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
+        return has_required_tier(persona_id, source)

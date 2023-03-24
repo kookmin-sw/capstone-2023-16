@@ -51,6 +51,27 @@ def is_eligible_for_paid_content(requested_persona_id: int, post_id: int, curren
     return is_author or is_waiting_over or is_membership_registered
 
 
+def has_required_tier(requested_persona_id: int, post: int | Post):
+    """
+    게시물의 content 필드를 조회하기 위한 요구 티어 이상을 갖추었음을 검증하는 함수
+    :param requested_persona_id: 조회를 요청한 페르소나의 id
+    :param post: 대상 게시물
+    :return: 통과 여부
+    """
+    if isinstance(post, int):
+        post: Post = Post.objects.get(id=post)
+
+    if post.required_membership_tier is None:
+        return None
+    else:
+        membership = Membership.objects.filter(creator=post.author, subscriber=requested_persona_id)
+        if not membership:
+            return False
+        else:
+            membership = membership[0]
+            return membership.tier >= post.required_membership_tier
+
+
 def get_posts(sorting_opt: PostSortingOption,
               filters: Tuple[Optional[RetreiveFilter]]) -> QuerySet[Post]:
     """
