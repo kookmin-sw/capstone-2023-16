@@ -5,11 +5,11 @@ import styled from 'styled-components/native';
 import * as ButtonTheme from '../../components/common/theme';
 import RegularButton from '../../components/common/Buttons/RegularButton';
 import {colors} from '../../components/common/colors';
-import ProfileImage from '../../components/common/Images/ProfileImage';
 import StyledTextInput from '../../components/common/Inputs/StyledTextInput';
 
 import {
   Container,
+  DimensionTheme,
   ScreenHeight,
   ScreenWidth,
 } from '../../components/common/shared';
@@ -25,10 +25,16 @@ const BaseInfoContainer = styled(Container)`
   align-items: flex-start;
 `;
 
-const PorfileImageSection = styled.View`
+const ProfileImageSection = styled.View`
   flex: 2;
 `;
 
+const ProfileImage = styled.Image`
+  width: ${DimensionTheme.width(74)};
+  height: ${DimensionTheme.height(74)};
+  border: 1px solid ${colors.gray};
+  border-radius: 100px;
+`;
 const AccountCheckSection = styled.View`
   margin-left: ${ScreenWidth * 0.6}px;
   margin-top: -150px;
@@ -63,12 +69,12 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
     <BaseInfoContainer>
       <KeyboardAvoidingViewContainer>
         <>
-          <PorfileImageSection>
+          <ProfileImageSection>
             <RegularText textStyle={{textAlign: 'left', marginBottom: 18}}>
               기본 정보 입력
             </RegularText>
             <ProfileImage source={imagePath.avatar} />
-          </PorfileImageSection>
+          </ProfileImageSection>
           <AccountCheckSection>
             <CheckBox
               onPress={() => setIsPrivate(!isPrivate)}

@@ -12,6 +12,7 @@ import {
 import {colors} from '../colors';
 import SmallText from '../Texts/SmallText';
 import {imagePath} from '../../../utils/imagePath';
+import {DimensionTheme} from '../shared';
 
 const StyledTextInputContainer = styled.View`
   margin-bottom: 10px;
@@ -22,7 +23,7 @@ const InputField = styled.TextInput`
   border-radius: 10px;
   background-color: ${colors.white};
   color: ${colors.graydark};
-  height: 50px;
+  height: ${DimensionTheme.height(43)}
   min-width: 100%;
   shadow-color: ${colors.black};
   shadow-offset: 3px 3px;

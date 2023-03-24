@@ -13,6 +13,7 @@ import KeyboardAvoidingViewContainer from '../components/common/Containers/Keybo
 import StyledTextInput from '../components/common/Inputs/StyledTextInput';
 import {
   Container,
+  DimensionTheme,
   ScreenHeight,
   ScreenWidth,
 } from '../components/common/shared';
@@ -145,6 +146,8 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
                       backgroundColor: values.email
                         ? colors.primary
                         : colors.gray,
+                      width: DimensionTheme.width(85),
+                      height: DimensionTheme.height(43),
                     }}
                     textStyles={{color: colors.white, fontWeight: '700'}}
                     onPress={() => {}}>

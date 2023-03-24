@@ -49,4 +49,16 @@ export const FollowingData = [
     profile: imagePath.avatar,
     isFollow: true,
   },
+  {
+    id: 8,
+    username: '@hong',
+    profile: imagePath.avatar,
+    isFollow: false,
+  },
+  {
+    id: 8,
+    username: '@hong',
+    profile: imagePath.avatar,
+    isFollow: true,
+  },
 ];
