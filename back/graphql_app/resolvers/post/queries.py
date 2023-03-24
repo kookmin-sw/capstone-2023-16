@@ -4,8 +4,7 @@ from strawberry.types import Info
 from strawberry_django_plus import gql
 from strawberry_django_plus.relay import GlobalID
 
-from graphql_app.domain.post.core import get_posts
-from graphql_app.models import Post as PostModel
+from graphql_app.domain.post.core import get_posts, get_post
 from graphql_app.resolvers.decorators import admin_only
 from graphql_app.resolvers.helpers import DatetimeBetween
 from graphql_app.resolvers.model_types import Post
@@ -33,9 +32,13 @@ class Query:
         return cast(Iterable[Post], posts)
 
     @gql.field
-    def get_post(self, info: Info, post_id: GlobalID, persona_id: GlobalID) -> Post:
-        fetched_post = PostModel.objects.get(id=info.variable_values['postId'].node_id)
-        return cast(Post, fetched_post)
+    def get_post(self, info: Info, post_id: GlobalID) -> Post:
+        """
+        게시물 한 건 조회
+        """
+        # TODO : 조회 기록 남겨야 함
+        post_id: int = int(post_id.node_id)
+        return get_post(post_id)
 
     @gql.django.connection
     @admin_only

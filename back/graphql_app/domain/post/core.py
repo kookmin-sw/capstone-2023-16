@@ -91,3 +91,7 @@ def create_post(author_id: int, requested_user_id: int, title: str, content: str
         new_post.tags.add(*tags)
 
         return new_post
+
+
+def get_post(post_id: int) -> Post:
+    return Post.objects.get(id=post_id)
