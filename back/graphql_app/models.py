@@ -27,6 +27,7 @@ class User(AbstractBaseUser):
 class Post(models.Model):
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
+    content_preview = models.TextField(blank=True, null=True, default=True, verbose_name='글 내용 미리보기')
     paid_content = models.TextField(verbose_name="유료 내용", blank=True, null=True)
 
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',

@@ -53,6 +53,7 @@ class User:
 class Post(relay.Node):
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용', permission_classes=[MembershipTierPermission])
+    content_preview: Optional[str] = strawberry.field(description='글 내용 미리보기')
     paid_content: Optional[str] = strawberry.field(description='유료 내용', permission_classes=[IsEligibleForPaidContent])
     author: 'Persona' = strawberry.field(description='작성자')
     is_public: bool = strawberry.field(description='공개 여부')
