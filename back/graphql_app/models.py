@@ -146,21 +146,6 @@ class Category(models.Model):
         verbose_name = '카테고리'
         verbose_name_plural = '카테고리 목록'
 
-    @classmethod
-    def check_length(cls, body: str) -> int:
-        """
-        Category body의 길이 유효성을 검증하는 함수
-        -1 : 최소 길이보다 짧은 경우
-        0 : 정상 (유효)
-        +1 : 최대 길이보다 긴 경우
-        """
-        if len(body) < cls.MIN_CATEGORY_BODY_LEN:
-            return -1
-        elif len(body) > cls.MAX_CATEGORY_BODY_LEN:
-            return 1
-        else:
-            return 0
-
 
 class WaitFreePersona(models.Model):
     persona = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE,
@@ -173,3 +158,23 @@ class WaitFreePersona(models.Model):
     class Meta:
         db_table = 'wait_free_persona'
         unique_together = ('persona', 'post')
+
+
+class Membership(models.Model):
+    subscriber = models.ForeignKey(Persona, on_delete=models.CASCADE, null=False, blank=False,
+                                   related_name='registered_memberships', verbose_name='구독자 페르소나')
+    creator = models.ForeignKey(Persona, on_delete=models.CASCADE, null=False, blank=False,
+                                related_name='own_memberships', verbose_name='창작자 페르소나')
+    tier = models.IntegerField(null=False, blank=False, verbose_name='티어')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+
+    class Meta:
+        db_table = 'membership'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['subscriber', 'creator'],
+                name='unique membership'
+            )
+        ]
+        verbose_name = '멤버쉽'
+        verbose_name_plural = '멤버쉽 목록'

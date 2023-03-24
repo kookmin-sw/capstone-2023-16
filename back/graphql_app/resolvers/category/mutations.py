@@ -1,14 +1,14 @@
 import strawberry
-from django.db import IntegrityError
 from strawberry.types import Info
 from strawberry_django_plus import gql
 
-from graphql_app import models
+from graphql_app.domain.category.validations import check_body_length
 from graphql_app.resolvers.model_types import Category
-
 from .errors import CategoryBodyDuplicatedError, CategoryBodyTooShortError, CategoryBodyTooLongError
 from ..decorators import requires_auth
 from ..errors import AdminPermissionRequiredError
+from ...domain.category.core import create_category
+from ...domain.category.exceptions import DuplicatedCategoryBodyException
 
 
 @gql.type
@@ -25,16 +25,16 @@ class Mutation:
         새 카테고리를 생성한다.
         """
 
-        body_len_check = models.Category.check_length(body)
-        if body_len_check < 0:
-            raise CategoryBodyTooShortError(body, models.Category.MIN_CATEGORY_BODY_LEN)
-        elif body_len_check > 0:
-            raise CategoryBodyTooLongError(body, models.Category.MAX_CATEGORY_BODY_LEN)
+        # body 길이 체크
+        body_valid_result, required_length = check_body_length(body)
+        if body_valid_result < 0:
+            raise CategoryBodyTooShortError(body, required_length)
+        elif body_valid_result > 0:
+            raise CategoryBodyTooLongError(body, required_length)
 
         try:
-            new_category = models.Category.objects.create(body=body)
-        # 중복된 카테고리인 경우
-        except IntegrityError:
+            new_category = create_category(body)
+        except DuplicatedCategoryBodyException:
             raise CategoryBodyDuplicatedError(body)
         else:
             return new_category
