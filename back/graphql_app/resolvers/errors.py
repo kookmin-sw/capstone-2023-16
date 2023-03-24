@@ -26,6 +26,19 @@ class AuthInfoRequiredError(ExceptionWithAdditionalInfo):
 
 
 @strawberry.type
+class CookieContextRequiredError(ExceptionWithAdditionalInfo):
+    """
+    Cookie를 통해 필요한 context를 얻을 수 없는 경우 발생
+    """
+    message: str = 'Cookie로부터 필요한 context를 파싱하는데 실패했습니다.'
+    requried_key: str = strawberry.field(description='요구되는 Cookie의 key value')
+
+    def __init__(self, required_key: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.requried_key = required_key
+
+
+@strawberry.type
 class AdminPermissionRequiredError(ExceptionWithAdditionalInfo):
     """
     요청된 작업에 admin 권한이 필요하나, 권한을 가지고 있지 않은 경우

@@ -3,7 +3,8 @@ from functools import wraps
 from strawberry.types import Info
 
 from graphql_app.permissions import has_persona_context
-from graphql_app.resolvers.errors import AuthInfoRequiredError, AdminPermissionRequiredError, AnonymousOnlyError
+from graphql_app.resolvers.errors import AuthInfoRequiredError, AdminPermissionRequiredError, AnonymousOnlyError, \
+    CookieContextRequiredError
 
 
 def requires_auth(resolver):
@@ -65,7 +66,7 @@ def requires_persona_context(resolver):
     @wraps(resolver)
     def wrapper(self, info: Info, *args, **kwargs):
         if not has_persona_context(info.context.request):
-            raise AuthInfoRequiredError()
+            raise CookieContextRequiredError('persona_id')
         else:
             return resolver(self, info, *args, **kwargs)
 

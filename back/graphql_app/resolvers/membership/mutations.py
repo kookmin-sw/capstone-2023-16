@@ -9,7 +9,7 @@ from graphql_app.domain.membership.core import create_membership, remove_members
 from graphql_app.domain.membership.enums import Tier
 from graphql_app.domain.membership.exceptions import AlreadyJoinedException, MembershipNotFoundException
 from graphql_app.resolvers.decorators import requires_persona_context
-from graphql_app.resolvers.errors import AuthInfoRequiredError
+from graphql_app.resolvers.errors import AuthInfoRequiredError, CookieContextRequiredError
 from graphql_app.resolvers.membership.errors import AlreadyJoinedMembershipError, NotMemberError
 from graphql_app.resolvers.model_types import Membership, Persona
 
@@ -29,6 +29,7 @@ class Mutation:
     def join_membership(self, info: Info, join_input: JoinMembershipInput) \
             -> strawberry.union('MembershipJoinResult', (Membership,
                                                          AuthInfoRequiredError,
+                                                         CookieContextRequiredError,
                                                          AlreadyJoinedMembershipError)):
         """
         특정 페르소나의 멤버쉽에 가입을 요청한다.
@@ -53,7 +54,8 @@ class Mutation:
 
     @gql.mutation
     @requires_persona_context
-    def leave_membership(self, info: Info, leave_input: LeaveMembershipInput) -> None:
+    def leave_membership(self, info: Info, leave_input: LeaveMembershipInput) \
+            -> strawberry.union('MembershipLeaveResult', (CookieContextRequiredError,)):
         """
         특정 페르소나의 멤버쉽에서 탈퇴한다.
         """
