@@ -35,7 +35,9 @@ class CookieContextRequiredError(ExceptionWithAdditionalInfo):
 
     def __init__(self, required_key: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.requried_key = required_key
+        self.additional_info = {
+            'requiredKey': required_key
+        }
 
 
 @strawberry.type

@@ -142,6 +142,9 @@ class Category(models.Model):
 
 
 class WaitFreePersona(models.Model):
+    # 무료로 개방되는 시점까지의 일수
+    FREE_AFTER_DAYS = 3
+
     persona = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE,
                                 db_column='persona_id', verbose_name="글쓴이")
     post = models.ForeignKey('graphql_app.Post', on_delete=models.CASCADE, db_column='post_id', verbose_name="게시물")

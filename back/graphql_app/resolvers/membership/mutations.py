@@ -1,4 +1,5 @@
 import strawberry
+from strawberry.schema.types.base_scalars import Void
 from strawberry.types import Info
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import auto
@@ -55,7 +56,7 @@ class Mutation:
     @gql.mutation
     @requires_persona_context
     def leave_membership(self, info: Info, leave_input: LeaveMembershipInput) \
-            -> strawberry.union('MembershipLeaveResult', (CookieContextRequiredError,)):
+            -> None | CookieContextRequiredError:
         """
         특정 페르소나의 멤버쉽에서 탈퇴한다.
         """
