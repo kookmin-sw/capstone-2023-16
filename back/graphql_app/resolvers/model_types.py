@@ -59,7 +59,7 @@ class Post(relay.Node):
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Optional[Category] = strawberry.field(description='소속 카테고리')
     read_count: int = strawberry.field(description='조회수')
-    create_at: datetime = strawberry.field(description='생성 시각')
+    created_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
 
