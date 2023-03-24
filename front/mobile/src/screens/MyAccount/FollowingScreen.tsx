@@ -14,6 +14,7 @@ import {FollowingData} from '../../constants/follow';
 
 const FollowingContainer = styled(Container)`
   align-items: flex-start;
+  margin-top: 30px;
   flex: 1;
 `;
 
@@ -23,7 +24,7 @@ const TopSection = styled.View`
   justify-contents: center;
 `;
 
-const FollowingCardSection = styled.ScrollView`
+const FollowingCardSection = styled.View`
   margin-top: 80px;
 `;
 
