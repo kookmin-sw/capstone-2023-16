@@ -19,7 +19,7 @@ class User(AbstractBaseUser):
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
 
     class Meta:
-        db_table = 'users'
+        db_table = 'user'
         verbose_name = '사용자'
         verbose_name = '사용자 목록'
 
@@ -42,7 +42,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
 
     class Meta:
-        db_table = 'posts'
+        db_table = 'post'
         verbose_name = '게시물'
         verbose_name_plural = '게시물 목록'
 
@@ -75,7 +75,7 @@ class Persona(models.Model):
         return f"[{self.pk}] {self.owner.id}:{self.nickname}"
 
     class Meta:
-        db_table = 'personas'
+        db_table = 'persona'
         verbose_name = '페르소나'
         verbose_name_plural = '페르소나 목록'
 
@@ -88,7 +88,7 @@ class Tag(models.Model):
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'tags'
+        db_table = 'tag'
         verbose_name = '태그'
         verbose_name_plural = '태그 목록'
 
@@ -136,7 +136,7 @@ class Category(models.Model):
     created_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'categories'
+        db_table = 'categorie'
         verbose_name = '카테고리'
         verbose_name_plural = '카테고리 목록'
 
@@ -150,7 +150,7 @@ class WaitFreePersona(models.Model):
     updated_at = models.DateTimeField('생성 시각', auto_now_add=True)
 
     class Meta:
-        db_table = 'wait_free_personas'
+        db_table = 'wait_free_persona'
         unique_together = ('persona', 'post')
 
 
@@ -163,7 +163,7 @@ class Membership(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
 
     class Meta:
-        db_table = 'memberships'
+        db_table = 'membership'
         constraints = [
             models.UniqueConstraint(
                 fields=['subscriber', 'creator'],
