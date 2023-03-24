@@ -59,4 +59,8 @@ export const GlobalStyles = createGlobalStyle`
   } 
   
   /* 공통으로 적용할 스타일을 적어주세요. */
+
+  html, body{
+    height: 100%;
+  }
 `;

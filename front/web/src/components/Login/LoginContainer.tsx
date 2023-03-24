@@ -1,27 +1,27 @@
 import {PropsWithChildren} from 'react';
 import styled, {css} from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
-import WHcal from '../../utils/WHcal';
 import { GrayShadowBox } from '../commons/GrayShadowBox';
 
 const LoginContainer = ({ children }: PropsWithChildren) => {
   const deviceType = useDeviceType();
-  return <LoginContainerWrapper widthType={deviceType}>
-    <InnerContainer widthType={deviceType} >{children}</InnerContainer>
+  return <LoginContainerWrapper deviceType={deviceType}>
+    <InnerContainer deviceType={deviceType} >{children}</InnerContainer>
   </LoginContainerWrapper>
 };
 
 export default LoginContainer;
 
-const LoginContainerWrapper = styled.div<{ widthType: string }>`
+const LoginContainerWrapper = styled.div<{ deviceType: string }>`
   display: flex;
   background-color: transparent !important;
   flex-direction: column;
+  justify-content: center;
   ${(props) => {
-  return props.widthType === 'big' ?
+  return props.deviceType === 'desktop' ?
     css`
       align-items: end;
-      padding-right: ${WHcal(props.widthType!, 180)};
+      padding-right: 10%;
     `:
     css`
       align-items: center;
@@ -29,13 +29,15 @@ const LoginContainerWrapper = styled.div<{ widthType: string }>`
   }}
 `
 
-const InnerContainer = styled(GrayShadowBox) <{ widthType: string }>`
-  width: ${(props) => { return props.widthType !== 'min'? WHcal(props.widthType!, 400) : '60%'}};
-  height: auto;
+const InnerContainer = styled(GrayShadowBox) <{ deviceType: string }>`
+  width: auto;
+  height: ${(props) => { return props.deviceType !== 'mobile'? '780px' : '60%'}};
   display: flex;
-  padding: ${(props) => { return WHcal(props.widthType!, 65) }} ${(props) => { return WHcal(props.widthType!, 71) }};
+  padding: ${(props) => { return props.deviceType !== 'mobile' ? '79px' : '21px' }};
+  padding-top: ${(props) => { return props.deviceType !== 'mobile' ? '116px' : '40px' }};
   background-color: #fefefe;
-  border-radius: ${(props) => { return WHcal(props.widthType!, 50); }};
+  border-radius: 50px;
   flex-direction: column;
   align-items: start;
+  box-sizing: border-box;
 `

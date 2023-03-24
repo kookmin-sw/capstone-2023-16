@@ -1,6 +1,5 @@
 import useDeviceType from '../hooks/useDeviceType';
 import styled from 'styled-components';
-import WHcal from '../utils/WHcal';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaList from '../components/PersonaChoice/PersonaList';
 
@@ -9,12 +8,12 @@ const PersonaChoice = () => {
 
     return (<ContentLayout>            
             <PersonaChoiceContainer>
-                <PersonaChoiceTitle widthType={deviceType}>페르소나 선택</PersonaChoiceTitle>
+                <PersonaChoiceTitle deviceType={deviceType}>페르소나 선택</PersonaChoiceTitle>
                 <PersonaList />
             </PersonaChoiceContainer>
         </ContentLayout>
     )
-} ;
+};
 
 export default PersonaChoice;
 
@@ -25,7 +24,7 @@ const PersonaChoiceContainer = styled.div`
     flex-direction: column;
 `;
 
-const PersonaChoiceTitle = styled.div<{ widthType: string }>`
-    font-size: ${(props) => { return `${WHcal(props.widthType!, 30)}}` }};
+const PersonaChoiceTitle = styled.div<{ deviceType: string }>`
+    font-size: ${(props) => (props.deviceType === 'desktop') ? '32px' : (props.deviceType === 'tablet') ? '28px': '16px'};
     font-weight: 700;
 `;

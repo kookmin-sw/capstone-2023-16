@@ -1,14 +1,13 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
-import WHcal from '../../utils/WHcal';
 
 const TitleLayout = ({children}: React.PropsWithChildren) => {
   const deviceType = useDeviceType();
   
   return<LayoutBackground>
       <LayoutWrapper> 
-        <LayoutContainer widthType={deviceType}>
+        <LayoutContainer deviceType={deviceType}>
           <div>PERSONA</div>
           {children}
         </LayoutContainer>
@@ -18,13 +17,12 @@ const TitleLayout = ({children}: React.PropsWithChildren) => {
 
 export default TitleLayout;
 
-
 const LayoutBackground = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
   background: #FFFFFF;
-`
+`;
 
 const LayoutWrapper = styled.div`
   width: 100%;
@@ -35,16 +33,17 @@ const LayoutWrapper = styled.div`
   top: 0px;
   overflow-x: hidden;
   overflow-y: auto;
-`
-const LayoutContainer = styled.div<{ widthType?: string }>`
+`;
+
+const LayoutContainer = styled.div<{ deviceType?: string }>`
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   & > div:nth-child(1){
     align-self: start;
-    margin: ${(props) => { return css`${WHcal(props.widthType!, 48)} 0 ${WHcal(props.widthType!, 35)} ${WHcal(props.widthType!, 55)}` }};
-    font-size: ${(props) => {return WHcal(props.widthType!, 36)}};
+    margin: ${(props) => { return props.deviceType === 'desktop' ? '48px 0 35px 55px': props.deviceType === 'tablet'? '44px 0 35px 42px': '21px 0 25px 21px'}};
+    font-size: ${(props) => {return props.deviceType==='mobile'? '24px' : '36px'}};
     font-weight: 900;
   }
   & > div:nth-child(2){

@@ -1,25 +1,24 @@
 import { PropsWithChildren } from 'react';
 import styled, { css } from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
-import WHcal from '../../utils/WHcal';
 import { GrayShadowBox } from './GrayShadowBox';
 
 const ContentLayout = ({ children }: PropsWithChildren) => {
   const deviceType = useDeviceType();
 
-  return <LayoutWrapper widthType={deviceType}>
+  return <LayoutWrapper deviceType={deviceType}>
     {children}
   </LayoutWrapper>
 };
 
 export default ContentLayout;
 
-const LayoutWrapper = styled(GrayShadowBox) <{ widthType: string }>`
-  width: ${(props) => { return props.widthType === "big" ? '65%' : '60%' }} !important;
+const LayoutWrapper = styled(GrayShadowBox) <{ deviceType: string }>`
+  width: ${(props) => { return props.deviceType === "big" ? '65%' : '60%' }} !important;
   display: flex;
-  padding: ${(props) => { return WHcal(props.widthType!, 60) }} ${(props) => { return WHcal(props.widthType!, 60) }} 0;
+  padding: ${(props) => { return (props.deviceType==='desktop')? '70px 70px': (props.deviceType==='tablet')? '51px 51px': '25px 25px' }} 0;
   justify-content: center;
   align-items: center;
-  border-radius: ${(props) => { return css`${WHcal(props.widthType!, 50)} ${WHcal(props.widthType!, 50)} 0 0 `; }};
+  border-radius: ${(props) => { return props.deviceType === 'mobile' ? '25px' : '35px'; }};
   overflow: hidden;
 `;
