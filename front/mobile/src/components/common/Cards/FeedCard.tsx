@@ -5,21 +5,8 @@ import { DimensionTheme } from '../shared';
 import { Text, TouchableOpacity, View, StyleSheet, Image } from 'react-native';
 
 import { colors } from '../colors';
-
-interface feedCardProps {
-    feed_id: number,
-    title?: string,
-    author?: string,
-    author_id?: string,
-    author_img?: string,
-    content?: string,
-    like: number,
-    bookmark: number,
-    comment: number,
-    hash_tag?: string[],
-    like_check: boolean,
-    bookmark_check: boolean,
-};
+import { useNavigation } from '@react-navigation/native';
+import { FeedProps } from '../type';
 
 const ProfileBox = styled.View`
     display: flex;
@@ -55,12 +42,14 @@ const ReactionText = styled.Text`
     margin-right: ${DimensionTheme.width(8)};
 `;
 
-const FeedCard = (props :feedCardProps) =>{
+const FeedCard = (props :FeedProps) =>{
     const [like, setLike] = useState(props.like_check);
     const [bookmark, setBookmark] = useState(props.bookmark_check);
+    const tempNavigation = useNavigation();
+    console.log(props);
 
     return (
-        <TouchableOpacity style={style.CardGrayBox}>
+        <TouchableOpacity style={style.CardGrayBox} onPress={()=>{tempNavigation.navigate('DetailContent', props)}}>
             <Text style={style.CardHeader}>{props.title}</Text>
             <View style={{marginStart: DimensionTheme.width(14)}}>
                 <ProfileBox>
@@ -87,7 +76,7 @@ const FeedCard = (props :feedCardProps) =>{
                                 setLike(true);
                             }
                         }}>
-                            <Image style={style.ReactionImage} source={(like)?require('../../../assets/imgs/heart-filled.png'):require('../../../assets/imgs/heart-empty.png')} />
+                            <Image style={style.ReactionImage} source={(like)?require('../../../assets/heart-filled.png'):require('../../../assets/heart-empty.png')} />
                         </TouchableOpacity>
                         <ReactionText>{props.like}</ReactionText>
                         <TouchableOpacity onPress={()=>{
@@ -99,14 +88,14 @@ const FeedCard = (props :feedCardProps) =>{
                                 setBookmark(true);
                             }
                         }}>
-                            <Image style={style.ReactionImage} source={(bookmark)?require('../../../assets/imgs/bookmark-filled.png'):require('../../../assets/imgs/heart-empty.png')}/>
+                            <Image style={style.ReactionImage} source={(bookmark)?require('../../../assets/bookmark-filled.png'):require('../../../assets/heart-empty.png')}/>
                         </TouchableOpacity>
                         <ReactionText>{props.bookmark}</ReactionText>
-                        <Image style={style.ReactionImage} source={require('../../../assets/imgs/comment.png')}/>
+                        <Image style={style.ReactionImage} source={require('../../../assets/comment.png')}/>
                         <ReactionText>{props.comment}</ReactionText>
                     </View>
                     <TouchableOpacity>
-                        <Image style={style.ReactionImage} source={require('../../../assets/imgs/more-image.png')} resizeMode="contain"/>
+                        <Image style={style.ReactionImage} source={require('../../../assets/more-image.png')} resizeMode="contain"/>
                     </TouchableOpacity>
                 </BottomBox>
             </View>

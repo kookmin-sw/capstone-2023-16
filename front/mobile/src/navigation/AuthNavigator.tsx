@@ -9,6 +9,7 @@ import {
 import {LoginScreen} from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
 import MainScreen from '../screens/MainScreen';
+import DetailScreen from '../screens/DetailScreen';
 
 export type ParamList = {
   Login: undefined;
@@ -33,6 +34,11 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="Main"
         component={MainScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="DetailContent"
+        component={DetailScreen}
         options={{headerShown: false}}
       />
     </StackNavigator.Navigator>

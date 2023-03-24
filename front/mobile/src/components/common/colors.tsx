@@ -8,4 +8,8 @@ export const colors = {
   graylight: '#D9D9D9',
   graydark: '#717171',
   borderGray: '#C1C1C1',
+  borderpurple: '#7826AB',
+  graydark2: '#636363',
+  purple1: '#B487FF',
+  graytext: '#838383',
 };

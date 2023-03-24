@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { colors } from '../common/colors';
 import { DimensionTheme } from '../common/shared';
 
@@ -19,11 +18,11 @@ const DetailHearder = (props:HearderProps) => {
             <View style={{flexDirection:'row'}}>
                 <Text style={style.Title}>{props.title}</Text>
                 <TouchableOpacity style={style.MoreBtn}>
-                    <Image style={style.MoreBtn} source={require('../../assets/imgs/more-image.png')} resizeMode="contain"/>
+                    <Image style={style.MoreBtnImg} source={require('../../assets/more-image.png')} resizeMode="contain"/>
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={style.ProfileBox}>
-                <Image style={style.ProfileImg} source={(props.author_img !== null || props.author_img !== '') ? (props.author_img) : require('../../assets/imgs/profileImg.png')}/>
+                <Image style={style.ProfileImg} source={(props.author_img !== null || props.author_img !== '') ? (props.author_img) : require('../../assets/profileImg.png')}/>
                 <Text style={style.Nickname}>{props.author}</Text>
             </TouchableOpacity>
         </View>
@@ -54,6 +53,12 @@ const style = StyleSheet.create({
     MoreBtn:{
         width: DimensionTheme.width(20),
         height: DimensionTheme.width(20),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    MoreBtnImg:{
+        width: DimensionTheme.width(14),
+        height: DimensionTheme.width(14),
     },
     ProfileBox:{
         marginTop: DimensionTheme.height(12),
