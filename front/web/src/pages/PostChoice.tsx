@@ -3,7 +3,7 @@ import PostCard from "../components/commons/PostCard";
 import TextButton from "../components/commons/TextButton";
 
 const PostChoice = () => {
-    const deviceType = useDeviceType();
+    const devicetype = useDeviceType();
 
     // 데이터 받아왔을 때
     const temptitle = '반려동물우린왜고양이를까칠하다고생각할까ㅁ';
@@ -26,8 +26,8 @@ const PostChoice = () => {
 
     return(
         <div>
-            <PostCard widthType={deviceType} title={title} date={tempdate} content={content} hashtag={hashtag}/>
-            <TextButton widthType={deviceType} text='미리보기'/>
+            <PostCard devicetype={devicetype} title={title} date={tempdate} content={content} hashtag={hashtag}/>
+            <TextButton devicetype={devicetype} text='미리보기'/>
         </div>
     )
 }
