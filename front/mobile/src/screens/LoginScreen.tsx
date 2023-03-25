@@ -141,6 +141,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <TextButton
                     textStyles={{color: colors.black, marginLeft: 12}}
                     onPress={() => {
+                      navigation.navigate('Signup');
                       const data = commitMutation({
                         variables: {
                           username: "test",

@@ -11,6 +11,7 @@ import MainScreen from '../screens/MainScreen';
 import {SignupScreen} from '../screens/SignupScreen';
 import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
+import DetailScreen from '../screens/DetailScreen';
 
 export type ParamList = {
   Login: undefined;
@@ -56,6 +57,11 @@ const AuthNavigator = () => {
           headerShadowVisible: false,
           headerBackTitleVisible: false,
         }}
+      />
+      <StackNavigator.Screen
+        name="DetailContent"
+        component={DetailScreen}
+        options={{headerShown: false}}
       />
     </StackNavigator.Navigator>
   );
