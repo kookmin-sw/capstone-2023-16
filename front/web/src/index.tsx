@@ -4,10 +4,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { legacy_createStore as createStore } from 'redux';
-import rootReducer from './modules';
-
-const store = createStore(rootReducer);
+import { store } from './redux/store'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
