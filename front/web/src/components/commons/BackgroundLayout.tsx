@@ -2,29 +2,31 @@ import React from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 
-const TitleLayout = ({children}: React.PropsWithChildren) => {
+const BackgroundLayout = ({children}: React.PropsWithChildren) => {
   const deviceType = useDeviceType();
   
-  return<LayoutBackground>
-      <LayoutWrapper> 
-        <LayoutContainer deviceType={deviceType}>
+  return<Background>
+      <ColoredLayout> 
+        <Layout deviceType={deviceType}>
           <div>PERSONA</div>
-          {children}
-        </LayoutContainer>
-      </LayoutWrapper>
-    </LayoutBackground>
+          <ContentLayout deviceType={deviceType}>
+            {children}
+          </ContentLayout>
+        </Layout>
+      </ColoredLayout>
+    </Background>
 };
 
-export default TitleLayout;
+export default BackgroundLayout;
 
-const LayoutBackground = styled.div`
+const Background = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #FFFFFF;
 `;
 
-const LayoutWrapper = styled.div`
+const ColoredLayout = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -32,10 +34,10 @@ const LayoutWrapper = styled.div`
   left: 0px;
   top: 0px;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 `;
 
-const LayoutContainer = styled.div<{ deviceType?: string }>`
+const Layout = styled.div<{ deviceType?: string }>`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -46,9 +48,16 @@ const LayoutContainer = styled.div<{ deviceType?: string }>`
     font-size: ${(props) => {return props.deviceType==='mobile'? '24px' : '36px'}};
     font-weight: 900;
   }
-  & > div:nth-child(2){
-    flex: 15;
-    width: 100%;
+`;
+
+const ContentLayout = styled.section<{ deviceType?: string }>`
+  width: 100%;
+  display: flex;
+  padding: 0 ${props => props.deviceType === 'desktop' ? '83px' : props.deviceType === 'tablet' ? '58px' : '20px'};
+  flex-direction: column;
+  align-items: center;
+  & > div {
     background-color: #fefefe;
   }
-`;
+  overflow-y: auto;
+`

@@ -20,8 +20,9 @@ const LoginContainerWrapper = styled.div<{ deviceType: string }>`
   ${(props) => {
   return props.deviceType === 'desktop' ?
     css`
+      align-self: end;
       align-items: end;
-      padding-right: 10%;
+      padding-right: 5%;
     `:
     css`
       align-items: center;
