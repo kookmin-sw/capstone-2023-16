@@ -22,12 +22,12 @@ const PostListContainer = styled.div<{ deviceType: string }>`
   width: 100%;
   display: grid;
   margin-top: ${(props) => props.deviceType === 'mobile' ? '7px' : '23px'}; 
-  padding: 20px 10px 40px; 
-  grid-template-columns: ${(props) => { return props.deviceType === 'desktop' ? '48% 48%' : 'none' }};
+  padding: 20px 0 40px; 
+  grid-template-columns: ${(props) => { return props.deviceType === 'desktop' ? '45% 45%' : 'none' }};
   place-items: center;
   place-content: space-between center;
   row-gap: ${(props) => { return props.deviceType === 'mobile' ? '25px' : '38px' }};
-  column-gap: ${(props) => { return props.deviceType === 'mobile' ? '10px': '20px' }};
+  column-gap: 47px;
   overflow-x: hidden;
   overflow-y: auto;
 `
