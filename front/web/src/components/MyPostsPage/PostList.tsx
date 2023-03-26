@@ -5,15 +5,12 @@ import styled from 'styled-components';
 
 type PostListProps = {
   deviceType: string;
-};
+}
 
 const PostList = ({ deviceType }: PostListProps) => {
 
   return <PostListContainer deviceType={deviceType} >
-    {postList.map(p => <PostCardWrapper key={p.node.id}>
-      <PostCard title={p.node.title} content={p.node.content} date={p.node.createdAt} deviceType={deviceType} />
-    </PostCardWrapper>
-    )}
+    {postList.map(p => <PostCard key={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} deviceType={deviceType} />)}
   </PostListContainer>
 };
 
@@ -32,13 +29,3 @@ const PostListContainer = styled.div<{ deviceType: string }>`
   overflow-x: hidden;
   overflow-y: auto;
 `;
-
-const PostCardWrapper = styled.div`
-  width: 100%;
-  &:hover{
-    cursor: pointer;
-  }
-  &:active{
-    cursor: default;
-  }
-`
