@@ -15,20 +15,21 @@ interface post {
     deviceType: string,
 };
 
-const BoxDiv = styled(GrayShadowBox)<{deviceType?:string}>`
-    width: 90%;
-    height: ${(props) => { return (props.deviceType === 'mobile') ? '127px' : '252px' }};
+const BoxDiv = styled(GrayShadowBox) <{ deviceType?: string }>`
+    display: flex;
+    width: 100%;
+    min-width: 195px;
+    height: ${(props) => { return (props.deviceType === 'mobile') ? '130px' : '255px' }};
     flex-direction: column;
-    border-radius: ${(props) => {return (props.deviceType==='mobile')?'15px': '30px'}};
+    border-radius: ${(props) => { return (props.deviceType === 'mobile') ? '15px' : '30px' }};
 `;
 
-const Header = styled.div<{ deviceType?: string }>`
+const HeaderSection = styled.div<{ deviceType?: string }>`
     width: 100%;
     padding: ${(props) => {return (props.deviceType==='mobile')?'8px 16px': '20px 30px 17.5px'}};
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid #717171;
-    box-sizing: border-box;
 `;
 
 const TitleText = styled.p<{ deviceType?: string }>`
@@ -47,7 +48,7 @@ const DateText = styled.p<{deviceType?:string}>`
     line-height: ${(props) => {return (props.deviceType==='mobile')?'9.6px': '18px'}};
 `;
 
-const ContentBox = styled.div<{ deviceType?: string }>`
+const ContentSection = styled.div<{ deviceType?: string }>`
     width: 90%;
     height: ${(props) => {return (props.deviceType==='mobile')?'71px': '141px'}};
     margin-left: ${(props) => {return (props.deviceType==='mobile')?'15px': '32px'}};
@@ -59,7 +60,7 @@ const ContentBox = styled.div<{ deviceType?: string }>`
 const ContentText = styled.p<{ deviceType?: string }>`
     display: -webkit-box;
     width: 100%;
-    height: ${(props) => { return (props.deviceType === 'mobile') ? '35px' : '70px' }};
+    height: ${(props) => { return (props.deviceType === 'mobile') ? '55px' : '105px' }};
     font-size: ${(props) => {return (props.deviceType==='mobile')?'10px': '20px'}};
     line-height: 150%;
     padding: ${(props) => { return (props.deviceType === 'mobile') ? '9px' : '18px' }} 0;
@@ -83,8 +84,7 @@ const BottomBox = styled.div<{deviceType?:string}>`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    box-sizing: content-box;
-    padding: ${(props) => {return (props.deviceType==='mobile')?'8px': '15px'}} 0; 
+    padding: ${(props) => { return (props.deviceType === 'mobile') ? '8px' : '15px' }} 0; 
 `;
 
 const Btn = styled.button<{deviceType?:string}>`
@@ -92,7 +92,7 @@ const Btn = styled.button<{deviceType?:string}>`
     background-color: #fefefe;
     width: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
     height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
-    padding: 0px;
+    padding: 0;
     border-width: 0px;
 `;
 
@@ -114,11 +114,11 @@ const BtnImg = styled.img<{deviceType?:string}>`
 const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
     return(
         <BoxDiv deviceType={deviceType}>
-            <Header deviceType={deviceType}>
+            <HeaderSection deviceType={deviceType}>
                 <TitleText deviceType={deviceType}>{title}</TitleText>
                 <DateText deviceType={deviceType}>{date.toString()}</DateText>
-            </Header>
-            <ContentBox deviceType={deviceType}>
+            </HeaderSection>
+            <ContentSection deviceType={deviceType}>
                 <ContentText deviceType={deviceType}>{content}</ContentText>
                 <BottomBox deviceType={deviceType}>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
@@ -131,7 +131,7 @@ const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
                         <Btn deviceType={deviceType}><BtnImg deviceType={deviceType} src={trashcanImg}/></Btn>
                     </div>
                 </BottomBox>
-            </ContentBox>
+            </ContentSection>
         </BoxDiv>
     )
 };

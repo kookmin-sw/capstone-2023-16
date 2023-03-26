@@ -31,7 +31,7 @@ export default MyPostsPage;
 
 const PersonaCardWrapper = styled.section<{ deviceType: string }>`
   width: ${(props) => (props.deviceType === 'mobile') ? '242px' : '369px'};
-  margin-left: 6.5%;
+  margin-left: ${(props) => (props.deviceType === 'mobile') ? 'none' : '10%'};
   margin-bottom: 16px;
   background-color: #fefefe;
   border-radius: ${(props) => { return (props.deviceType === 'mobile') ? '15px' : '30px' }};
@@ -53,10 +53,10 @@ const MyPostsPageContainer = styled.section`
 `;
 
 const MyPostsContainer = styled.div`
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-bottom-left-radius: 0;
   overflow-y: hidden;
 `;
 

@@ -21,14 +21,14 @@ export default BackgroundLayout;
 
 const Background = styled.div`
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background: #FFFFFF;
 `;
 
 const ColoredLayout = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   position: absolute;
   background: linear-gradient(116.37deg, rgba(211, 140, 255, 0.9) 0%, rgba(113, 242, 234, 0.729) 99.35%);  
   left: 0px;
@@ -38,7 +38,8 @@ const ColoredLayout = styled.div`
 `;
 
 const Layout = styled.div<{ deviceType?: string }>`
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,9 +58,9 @@ const ContentLayout = styled.section<{ deviceType?: string }>`
   padding: 0 ${props => props.deviceType === 'desktop' ? '83px' : props.deviceType === 'tablet' ? '58px' : '20px'};
   flex-direction: column;
   align-items: center;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   & > div {
     background-color: #fefefe;
   }
-  box-sizing: border-box;
 `

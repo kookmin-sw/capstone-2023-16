@@ -57,6 +57,9 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     height: 100vh;
   } 
+  * {
+    box-sizing: border-box;
+  }
   
   /* 공통으로 적용할 스타일을 적어주세요. */
 
