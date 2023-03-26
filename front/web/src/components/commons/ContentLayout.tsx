@@ -1,3 +1,4 @@
+import React from 'react';
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';

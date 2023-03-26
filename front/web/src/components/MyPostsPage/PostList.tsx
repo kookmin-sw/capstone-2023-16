@@ -1,18 +1,19 @@
-import dummy from './dummy/postList';
-import { PostListType } from './dummy/postListType';
+import React from 'react';
+import postList from './dummy/postList.json';
 import PostCard from '../commons/PostCard';
 import styled from 'styled-components';
 
 type PostListProps = {
   deviceType: string;
-}
-  
+};
+
 const PostList = ({ deviceType }: PostListProps) => {
-  // 추후 연동 시에 제거
-  const postList: PostListType = JSON.parse(dummy);
 
   return <PostListContainer deviceType={deviceType} >
-    {postList.map(p => <PostCard key={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} deviceType={deviceType} />)}
+    {postList.map(p => <PostCardWrapper key={p.node.id}>
+      <PostCard title={p.node.title} content={p.node.content} date={p.node.createdAt} deviceType={deviceType} />
+    </PostCardWrapper>
+    )}
   </PostListContainer>
 };
 
@@ -30,4 +31,14 @@ const PostListContainer = styled.div<{ deviceType: string }>`
   column-gap: 47px;
   overflow-x: hidden;
   overflow-y: auto;
+`;
+
+const PostCardWrapper = styled.div`
+  width: 100%;
+  &:hover{
+    cursor: pointer;
+  }
+  &:active{
+    cursor: default;
+  }
 `

@@ -9,7 +9,7 @@ import { GrayShadowBox } from './GrayShadowBox';
 
 interface post {
     title: string,
-    date: Date,
+    date: string,
     content: string,
     hashtag?: string[],
     deviceType: string,
@@ -116,7 +116,7 @@ const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
         <BoxDiv deviceType={deviceType}>
             <HeaderSection deviceType={deviceType}>
                 <TitleText deviceType={deviceType}>{title}</TitleText>
-                <DateText deviceType={deviceType}>{date.toString()}</DateText>
+                <DateText deviceType={deviceType}>{date}</DateText>
             </HeaderSection>
             <ContentSection deviceType={deviceType}>
                 <ContentText deviceType={deviceType}>{content}</ContentText>
