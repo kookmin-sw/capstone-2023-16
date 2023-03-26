@@ -22,7 +22,7 @@ const BoxDiv = styled(GrayShadowBox)<{deviceType?:string}>`
     border-radius: ${(props) => {return (props.deviceType==='mobile')?'15px': '30px'}};
 `;
 
-const Header = styled.div<{deviceType?:string}>`
+const Header = styled.div<{ deviceType?: string }>`
     width: 100%;
     padding: ${(props) => {return (props.deviceType==='mobile')?'8px 16px': '20px 30px 17.5px'}};
     display: flex;
@@ -31,11 +31,15 @@ const Header = styled.div<{deviceType?:string}>`
     box-sizing: border-box;
 `;
 
-const TitleText = styled.p<{deviceType?:string}>`
+const TitleText = styled.p<{ deviceType?: string }>`
+    display: block;
     font-weight: 700;
     font-size: ${(props) => {return (props.deviceType==='mobile')?'12px': '24px'}};
     line-height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
-    margin-bottom: ${(props) => {return (props.deviceType==='mobile')?'2px': '4px'}};
+    margin-bottom: ${(props) => { return (props.deviceType === 'mobile') ? '2px' : '4px' }};
+    overflow: hidden;
+    text-overflow:  ellipsis;
+    white-space: nowrap;
 `;
 
 const DateText = styled.p<{deviceType?:string}>`
@@ -62,6 +66,7 @@ const ContentText = styled.p<{ deviceType?: string }>`
     overflow: hidden;
     text-overflow:  ellipsis;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
 `;
 
 const HashTagText = styled(ContentText)`

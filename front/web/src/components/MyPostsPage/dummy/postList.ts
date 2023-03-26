@@ -13,7 +13,7 @@ const postList: string = `[
   {
     "node": {
       "id": "UG9zdDo1",
-      "title": "다섯번째 테스트",
+      "title": "다섯번째 테스트-긴 제목을 사용하면 이렇게 잘리게 됩니다.",
       "content": "다섯번째 테스트 내용입니다.다섯번째 테스트 내용입니다.다섯번째 테스트 내용입니다.다섯번째 테스트 내용입니다.다섯번째 테스트 내용입니다.",
       "tags": {
         "__typename": "TagConnection"
