@@ -5,13 +5,15 @@ import useDeviceType from '../hooks/useDeviceType';
 import { useSelector } from 'react-redux';
 import { RootState } from './../redux/store';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const MyPostsPage = () => {
   const deviceType = useDeviceType();
   const persona = useSelector((state: RootState) => state.persona);
+  const navigate = useNavigate();
 
   return <>
-      <PersonaCardWrapper deviceType={deviceType}>
+    <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
         <PersonaCard {...persona} deviceType={deviceType} />
       </PersonaCardWrapper>
       <ContentLayout>
@@ -34,6 +36,12 @@ const PersonaCardWrapper = styled.section<{ deviceType: string }>`
   background-color: #fefefe;
   border-radius: ${(props) => { return (props.deviceType === 'mobile') ? '15px' : '30px' }};
   align-self: start;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    cursor: default;
+  }
   `;
 
 const MyPostsPageContainer = styled.section`

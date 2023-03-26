@@ -3,12 +3,13 @@ import useDeviceType from '../hooks/useDeviceType';
 import LoginInput from '../components/Login/LoginInput';
 import LoginButton from '../components/Login/LoginButton';
 import LoginCheckBox from '../components/Login/LoginCheckBox';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import LoginContainer from '../components/Login/LoginContainer';
 
 const LoginPage = () => {
   const deviceType = useDeviceType();
+  const navigate = useNavigate();
   const idInput = useRef(null);
   const pwInput = useRef(null);
 
@@ -26,7 +27,7 @@ const LoginPage = () => {
           {/* 비율을 위한 공백 */}
           <EmptyBox deviceType={deviceType} />
 
-          <LoginButton deviceType={deviceType} onClick={() => console.log('')} />
+          <LoginButton deviceType={deviceType} onClick={() => navigate('/personas')} />
         </LoginContainer>
       </>
     )

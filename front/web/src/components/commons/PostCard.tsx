@@ -43,7 +43,8 @@ const DateText = styled.p<{deviceType?:string}>`
     line-height: ${(props) => {return (props.deviceType==='mobile')?'9.6px': '18px'}};
 `;
 
-const ContentBox = styled.div<{deviceType?:string}>`
+const ContentBox = styled.div<{ deviceType?: string }>`
+    width: 90%;
     height: ${(props) => {return (props.deviceType==='mobile')?'71px': '141px'}};
     margin-left: ${(props) => {return (props.deviceType==='mobile')?'15px': '32px'}};
     margin-right: ${(props) => {return (props.deviceType==='mobile')?'14px': '28px'}};
@@ -78,11 +79,12 @@ const BottomBox = styled.div<{deviceType?:string}>`
     align-items: center;
     width: 100%;
     box-sizing: content-box;
+    padding: ${(props) => {return (props.deviceType==='mobile')?'8px': '15px'}} 0; 
 `;
 
 const Btn = styled.button<{deviceType?:string}>`
     border-style:none;
-    background-color: #ffffff;
+    background-color: #fefefe;
     width: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
     height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
     padding: 0px;
@@ -95,7 +97,13 @@ const FirstButton = styled(Btn)<{deviceType?:string}>`
 
 const BtnImg = styled.img<{deviceType?:string}>`
     width: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
-    height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
+    height: ${(props) => { return (props.deviceType === 'mobile') ? '14.5px' : '29px' }};
+    &:hover{
+        cursor: pointer;
+    }
+    &:active{
+        cursor: default;
+    }
 `;
 
 const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
