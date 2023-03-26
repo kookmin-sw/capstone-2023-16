@@ -31,7 +31,7 @@ export default MyPostsPage;
 
 const PersonaCardWrapper = styled.section<{ deviceType: string }>`
   width: ${(props) => (props.deviceType === 'mobile') ? '242px' : '369px'};
-  margin-left: ${(props) => (props.deviceType === 'mobile') ? 'none' : '10%'};
+  margin-left: ${(props) => (props.deviceType === 'desktop') ? '10%' : props.deviceType === 'tablet'? '2.5%' : 'none'};
   margin-bottom: 16px;
   background-color: #fefefe;
   border-radius: ${(props) => { return (props.deviceType === 'mobile') ? '15px' : '30px' }};

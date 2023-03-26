@@ -14,7 +14,7 @@ const ContentLayout = ({ children }: PropsWithChildren) => {
 export default ContentLayout;
 
 const LayoutWrapper = styled(GrayShadowBox) <{ deviceType: string }>`
-  width:  ${(props) => { return props.deviceType === 'mobile' ? '100%' : '80%'; }};
+  width:  ${(props) => { return props.deviceType === 'desktop' ? '80%' :  props.deviceType === 'tablet' ? '95%'  : '100%';}};
   height: auto;
   min-width: 250px;
   display: flex;
