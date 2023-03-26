@@ -1,20 +1,22 @@
 import React, {FC} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
+import {Platform} from 'react-native';
 
-import * as ButtonTheme from '../../components/common/theme';
 import ImageButton from '../../components/common/Buttons/ImageButton';
-import {colors} from '../../components/common/colors';
-import {imagePath} from '../../utils/imagePath';
 import KeyboardAvoidingViewContainer from '../../components/common/Containers/KeyboardAvoidingViewContainer';
 import StyledTextInput from '../../components/common/Inputs/StyledTextInput';
 import {Container, ScreenWidth} from '../../components/common/shared';
 import RegularText from '../../components/common/Texts/RegularText';
 import SmallText from '../../components/common/Texts/SmallText';
-import {Platform} from 'react-native';
-import SmallButton from '../../components/common/Buttons/SmallButton';
-import {tagData} from '../../constants/tag';
 import RegularButton from '../../components/common/Buttons/RegularButton';
+import {MultiSelectChip} from '../../components/common/Chips/MultiSelectChip';
+
+import * as ButtonTheme from '../../components/common/theme';
+import {colors} from '../../components/common/colors';
+import {imagePath} from '../../utils/imagePath';
+
+import {tagData} from '../../constants/tag';
 
 const InterestTagSettingContainer = styled(Container)`
   width: 100%;
@@ -35,9 +37,7 @@ const SearchSection = styled.View`
 
 const TagSection = styled.View`
   flex: 2.5;
-  flex-direction: row;
   justify-contents: space-between;
-  flex-wrap: wrap;
 `;
 
 const ButtonSection = styled.View`
@@ -79,26 +79,7 @@ export const InterestTagSettingScreen: FC = () => {
             />
           </SearchSection>
           <TagSection>
-            {tagData.map((value: {title: string; flag: boolean}) => {
-              return (
-                <SmallButton
-                  btnStyles={[
-                    ButtonTheme.whiteBGpurpleSD.btnStyle,
-                    {
-                      height: 30,
-                      paddingTop: 1,
-                      paddingBottom: 2,
-                      borderRadius: 8,
-                      marginBottom: 15,
-                      marginLeft: 10,
-                    },
-                  ]}
-                  textStyles={{color: colors.black}}
-                  onPress={() => {}}>
-                  #{value.title}
-                </SmallButton>
-              );
-            })}
+            <MultiSelectChip data={tagData} />
           </TagSection>
           <ButtonSection>
             <RegularButton

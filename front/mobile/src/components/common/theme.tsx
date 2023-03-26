@@ -50,3 +50,9 @@ export const whiteBGblackSD = {
     elevation: 5,
   },
 };
+
+export const lightpurpleBG = {
+  btnStyle: {
+    backgroundColor: colors.purplelight,
+  },
+};
