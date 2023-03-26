@@ -8,114 +8,114 @@ import { GrayShadowBox } from './GrayShadowBox';
 // 전자방식으로 코드 작성함.
 
 interface post {
-    title?: string,
-    date?: string,
-    content?: string,
+    title: string,
+    date: Date,
+    content: string,
     hashtag?: string[],
-    devicetype?: string,
+    deviceType: string,
 };
 
-const BoxDiv = styled(GrayShadowBox)<{devicetype?:string}>`
+const BoxDiv = styled(GrayShadowBox)<{deviceType?:string}>`
+    width: 90%;
+    height: ${(props) => { return (props.deviceType === 'mobile') ? '127px' : '252px' }};
     flex-direction: column;
-    width: ${(props) => {return (props.devicetype==='mobile')?'279px': '564px'}};
-    border-radius: ${(props) => {return (props.devicetype==='mobile')?'15px': '30px'}};
-    padding-top: ${(props) => {return (props.devicetype==='mobile')?'13px': '25px'}};
-    height: ${(props) => {return (props.devicetype==='mobile')?'127px': '252px'}};
+    border-radius: ${(props) => {return (props.deviceType==='mobile')?'15px': '30px'}};
 `;
 
-const Header = styled.div<{devicetype?:string}>`
-    width: ${(props) => {return (props.devicetype==='mobile')?'252px': '521px'}};
-    padding-left: ${(props) => {return (props.devicetype==='mobile')?'16px': '32px'}};
+const Header = styled.div<{deviceType?:string}>`
+    width: 100%;
+    padding: ${(props) => {return (props.deviceType==='mobile')?'8px 16px': '20px 30px 17.5px'}};
     display: flex;
     flex-direction: column;
-    padding-bottom: ${(props) => {return (props.devicetype==='mobile')?'8px': '17.5px'}};
-    border-style: none none solid none;
-    border-width: 1px
-    border-color: #717171;
-    margin-bottom: ${(props) => {return (props.devicetype==='mobile')?'9.3px': '18.5px'}};
+    border-bottom: 1px solid #717171;
+    box-sizing: border-box;
 `;
 
-const TitleText = styled.p<{devicetype?:string}>`
+const TitleText = styled.p<{deviceType?:string}>`
     font-weight: 700;
-    font-size: ${(props) => {return (props.devicetype==='mobile')?'12px': '24px'}};
-    line-height: ${(props) => {return (props.devicetype==='mobile')?'14.5px': '29px'}};
-    margin-bottom: ${(props) => {return (props.devicetype==='mobile')?'2px': '4px'}};
+    font-size: ${(props) => {return (props.deviceType==='mobile')?'12px': '24px'}};
+    line-height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
+    margin-bottom: ${(props) => {return (props.deviceType==='mobile')?'2px': '4px'}};
 `;
 
-const DateText = styled.p<{devicetype?:string}>`
-    font-size: ${(props) => {return (props.devicetype==='mobile')?'8px': '13px'}};
-    line-height: ${(props) => {return (props.devicetype==='mobile')?'9.6px': '18px'}};
+const DateText = styled.p<{deviceType?:string}>`
+    font-size: ${(props) => {return (props.deviceType==='mobile')?'8px': '13px'}};
+    line-height: ${(props) => {return (props.deviceType==='mobile')?'9.6px': '18px'}};
 `;
 
-const ContentBox = styled.div<{devicetype?:string}>`
-    margin-left: ${(props) => {return (props.devicetype==='mobile')?'15px': '32px'}};
-    margin-right: ${(props) => {return (props.devicetype==='mobile')?'14px': '28px'}};
+const ContentBox = styled.div<{deviceType?:string}>`
+    height: ${(props) => {return (props.deviceType==='mobile')?'71px': '141px'}};
+    margin-left: ${(props) => {return (props.deviceType==='mobile')?'15px': '32px'}};
+    margin-right: ${(props) => {return (props.deviceType==='mobile')?'14px': '28px'}};
     flex-direction: column;
     justify-content: space-between;
-    height: ${(props) => {return (props.devicetype==='mobile')?'71px': '141px'}};
 `;
 
-const ContentText = styled.p<{devicetype?:string}>`
-    font-size: ${(props) => {return (props.devicetype==='mobile')?'10px': '20px'}};
-    margin-bottom: ${(props) => {return (props.devicetype==='mobile')?'9px': '18px'}};
-    line-height: ${(props) => {return (props.devicetype==='mobile')?'12.1px': '25px'}};
-    text-align: justify;
-    height: ${(props) => {return (props.devicetype==='mobile')?'35px': '70px'}};
+const ContentText = styled.p<{ deviceType?: string }>`
+    display: -webkit-box;
+    width: 100%;
+    height: ${(props) => { return (props.deviceType === 'mobile') ? '35px' : '70px' }};
+    font-size: ${(props) => {return (props.deviceType==='mobile')?'10px': '20px'}};
+    line-height: 150%;
+    padding: ${(props) => { return (props.deviceType === 'mobile') ? '9px' : '18px' }} 0;
+    overflow: hidden;
+    text-overflow:  ellipsis;
+    -webkit-box-orient: vertical;
 `;
 
 const HashTagText = styled(ContentText)`
     margin-bottom: 0px;
-    margin-right: ${(props) => {return (props.devicetype==='mobile')?'4px': '8px'}};
+    margin-right: ${(props) => {return (props.deviceType==='mobile')?'4px': '8px'}};
     line-height: auto;
     height:auto;
 `;
 
-const BottomBox = styled.div<{devicetype?:string}>`
+const BottomBox = styled.div<{deviceType?:string}>`
     height: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: ${(props) => {return (props.devicetype==='mobile')?'15px': '30px'}};
-    width: ${(props) => {return (props.devicetype==='mobile')?'247px': '493px'}};
+    width: 100%;
+    box-sizing: content-box;
 `;
 
-const Btn = styled.button<{devicetype?:string}>`
+const Btn = styled.button<{deviceType?:string}>`
     border-style:none;
     background-color: #ffffff;
-    width: ${(props) => {return (props.devicetype==='mobile')?'14.5px': '29px'}};
-    height: ${(props) => {return (props.devicetype==='mobile')?'14.5px': '29px'}};
+    width: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
+    height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
     padding: 0px;
     border-width: 0px;
 `;
 
-const FirstButton = styled(Btn)<{devicetype?:string}>`  
-    margin-right: ${(props) => {return (props.devicetype==='mobile')?'6.5px': '13px'}};
+const FirstButton = styled(Btn)<{deviceType?:string}>`  
+    margin-right: ${(props) => {return (props.deviceType==='mobile')?'6.5px': '13px'}};
 `;
 
-const BtnImg = styled.img<{devicetype?:string}>`
-    width: ${(props) => {return (props.devicetype==='mobile')?'14.5px': '29px'}};
-    height: ${(props) => {return (props.devicetype==='mobile')?'14.5px': '29px'}};
+const BtnImg = styled.img<{deviceType?:string}>`
+    width: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
+    height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
 `;
 
-const PostCard = ({title, date, content, hashtag, devicetype}:post) => {
+const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
     return(
-        <BoxDiv devicetype={devicetype}>
-            <Header devicetype={devicetype}>
-                <TitleText devicetype={devicetype}>{title}</TitleText>
-                <DateText devicetype={devicetype}>{date}</DateText>
+        <BoxDiv deviceType={deviceType}>
+            <Header deviceType={deviceType}>
+                <TitleText deviceType={deviceType}>{title}</TitleText>
+                <DateText deviceType={deviceType}>{date.toString()}</DateText>
             </Header>
-            <ContentBox devicetype={devicetype}>
-                <ContentText devicetype={devicetype}>{content}</ContentText>
-                <BottomBox devicetype={devicetype}>
+            <ContentBox deviceType={deviceType}>
+                <ContentText deviceType={deviceType}>{content}</ContentText>
+                <BottomBox deviceType={deviceType}>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         {
-                            hashtag?.map(tag => <HashTagText devicetype={devicetype}>#{tag}</HashTagText>)
+                            hashtag?.map(tag => <HashTagText deviceType={deviceType}>#{tag}</HashTagText>)
                         }
                     </div>
                     <div>
-                        <FirstButton devicetype={devicetype}><BtnImg devicetype={devicetype} src={postImg}/></FirstButton>
-                        <Btn devicetype={devicetype}><BtnImg devicetype={devicetype} src={trashcanImg}/></Btn>
+                        <FirstButton deviceType={deviceType}><BtnImg deviceType={deviceType} src={postImg}/></FirstButton>
+                        <Btn deviceType={deviceType}><BtnImg deviceType={deviceType} src={trashcanImg}/></Btn>
                     </div>
                 </BottomBox>
             </ContentBox>
