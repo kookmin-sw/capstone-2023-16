@@ -42,6 +42,7 @@ const Layout = styled.div<{ deviceType?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: auto;
   & > div:nth-child(1){
     align-self: start;
     margin: ${(props) => { return props.deviceType === 'desktop' ? '48px 0 35px 55px': props.deviceType === 'tablet'? '44px 0 35px 42px': '21px 0 25px 21px'}};
@@ -56,8 +57,9 @@ const ContentLayout = styled.section<{ deviceType?: string }>`
   padding: 0 ${props => props.deviceType === 'desktop' ? '83px' : props.deviceType === 'tablet' ? '58px' : '20px'};
   flex-direction: column;
   align-items: center;
+  overflow: auto;
   & > div {
     background-color: #fefefe;
   }
-  overflow-y: auto;
+  box-sizing: border-box;
 `
