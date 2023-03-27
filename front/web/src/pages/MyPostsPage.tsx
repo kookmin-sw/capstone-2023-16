@@ -20,7 +20,7 @@ const MyPostsPage = () => {
         <MyPostsPageContainer>
           <MyPostsContainer>
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
-            <PostList deviceType={deviceType} />
+            <PostList />
           </MyPostsContainer>
         </MyPostsPageContainer>
         </ContentLayout>
@@ -42,7 +42,7 @@ const PersonaCardWrapper = styled.section<{ deviceType: string }>`
   &:active {
     cursor: default;
   }
-  `;
+`;
 
 const MyPostsPageContainer = styled.section`
   width: 100%;

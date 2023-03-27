@@ -54,6 +54,7 @@ const Layout = styled.div<{ deviceType?: string }>`
 
 const ContentLayout = styled.section<{ deviceType?: string }>`
   width: 100%;
+  height: 100%;
   display: flex;
   padding: 0 ${props => props.deviceType === 'desktop' ? '83px' : props.deviceType === 'tablet' ? '58px' : '20px'};
   flex-direction: column;
