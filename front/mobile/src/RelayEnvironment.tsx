@@ -16,6 +16,7 @@ async function fetchGraphQL(params: RequestParameters, variables: Variables) {
       variables,
     }),
   });
+  console.log(`@post ; ${JSON.stringify(response.headers)}`);
 
   return await response.json();
 }
