@@ -11,7 +11,7 @@ interface FoldFilterProps{
 
 const FoldFilter = (props:FoldFilterProps) => {
     return (
-        <TouchableOpacity style={style.TouchBox}>
+        <TouchableOpacity style={style.TouchBox} onPress={props.onPress}>
             <Text style={style.text}>{props.text}</Text>
             <Image style={style.image} source={(props.state) ? require('../../assets/top_arrow.png') : require('../../assets/bottom_arrow.png')}/>
         </TouchableOpacity>

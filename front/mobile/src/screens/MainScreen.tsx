@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { SafeAreaView, ScrollView, Image, StyleSheet, View } from 'react-native';
+import React, { FC } from 'react';
+import { SafeAreaView, ScrollView, Image, StyleSheet, View, ImageBackground } from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
 
@@ -9,6 +9,7 @@ import TopButton from '../components/Main/TopButton';
 import { DimensionTheme } from '../components/common/shared';
 import FeedCategory from '../components/Main/FeedCategory';
 import FeedCard from '../components/common/Cards/FeedCard';
+import { NavigationData } from '../navigation/AuthNavigator';
 
 const HeaderBox = styled.View`
     display: flex;
@@ -39,7 +40,9 @@ const CategoryScroll = styled.ScrollView`
     margin-bottom: ${DimensionTheme.height(18)};
 `;
 
-const MainScreen = () => {
+type Props = NavigationData<'Main'>;
+
+const MainScreen : FC<Props> = ({navigation}) => {
     const example = [
         {
             feed_id: 1,
@@ -85,12 +88,14 @@ const MainScreen = () => {
         },
     ];
 
+    navigation.reset;
+
     return (
         <SafeAreaView>
-            <View style={style.BackgroundView}>
+            <ImageBackground style={style.BackgroundView} source={require('../assets/background1.png')}>
                 <HeaderBox>
                     <Image style={style.HearderTitle} source={require('../assets/logoText.png')} resizeMode="contain"/>
-                    <TopButton onPress={()=>{}} img={String(require('../assets/search-black.png'))}/>
+                    <TopButton onPress={() => {navigation.navigate('FilterContent')}} img={String(require('../assets/search-black.png'))}/>
                     <TopButton onPress={() => {}} img={String(require('../assets/profileImg.png'))}/>
                 </HeaderBox>
                 <LibraryTool>
@@ -104,7 +109,7 @@ const MainScreen = () => {
                         }
                     </ScrollView>
                 </LibraryTool>
-            </View>
+            </ImageBackground>
         </SafeAreaView>
     );
 };
@@ -124,7 +129,6 @@ const style = StyleSheet.create({
         marginRight: DimensionTheme.width(30),
     },
     BackgroundView:{
-        backgroundColor: colors.secondary,
         width: '100%',
         height: '100%',
         display: 'flex',

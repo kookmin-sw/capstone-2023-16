@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity, Image, Text } from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity, Image, Text, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { colors } from '../components/common/colors';
@@ -10,17 +10,18 @@ import DetailHeader from '../components/Detail/DetailHeader';
 import ReactBtn from '../components/Detail/ReactBtn';
 import CommentInput from '../components/Detail/CommentInput';
 import BookmarkBtn from '../components/Detail/BookmarkBtn';
-import { FeedProps } from '../components/common/type';
-import { ParamList } from '../navigation/AuthNavigator';
+import { NavigationData } from '../navigation/AuthNavigator';
 
-const DetailScreen = (props:any) => {
+type Props = NavigationData<'DetailContent'>;
+
+const DetailScreen : FC<Props> = ({navigation}, props:any) => {
     const tempNavigation = useNavigation();
 
     return (
         <SafeAreaView>
             <View style={style.BackGroundView}>
                 <View style={style.Header}>
-                    <TouchableOpacity style={style.BackBtn} onPress={()=>{tempNavigation.goBack();}}>
+                    <TouchableOpacity style={style.BackBtn} onPress={()=>{navigation.pop();}}>
                         <Image style={{width:DimensionTheme.width(22), height:DimensionTheme.width(22)}} source={require('../assets/back_btn.png')} resizeMode='contain'/>
                     </TouchableOpacity>
                     <BookmarkBtn onPress={()=>{}} img={String(require('../assets/heart_purple_fill.png'))} width={25} height={29}/>

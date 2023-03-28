@@ -17,7 +17,7 @@ import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
 
-import { graphql } from 'relay-runtime';
+import { graphql } from 'babel-plugin-relay/macro';
 
 import { useMutation } from 'react-relay';
 
@@ -141,7 +141,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <TextButton
                     textStyles={{color: colors.black, marginLeft: 12}}
                     onPress={() => {
-                      navigation.navigate('Signup');
+                      navigation.navigate('Main');
                       const data = commitMutation({
                         variables: {
                           username: "test",

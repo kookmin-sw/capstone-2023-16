@@ -1,19 +1,148 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import { SafeAreaView, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import SmallButton from '../components/common/Buttons/SmallButton';
+import { colors } from '../components/common/colors';
 import { DimensionTheme } from '../components/common/shared';
+import { whiteBGpurpleSD } from '../components/common/theme';
+import FoldFilter from '../components/Filter/FoldFilter';
+import Search from '../components/Filter/Search';
+import { tagData } from '../constants/tag';
+import { NavigationData } from '../navigation/AuthNavigator';
 
-const FilterScreen = () => {
+type Props = NavigationData<'FilterContent'>;
+
+const FilterScreen : FC<Props> = ({navigation}) => {
+    const example = [
+        {
+            feed_id: 1,
+            title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
+            author: '홍현지',
+            author_id: '@hongs_0430',
+            author_img: String(require('../assets/profileImg.png')),
+            content: "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
+            like:16,
+            bookmark:16,
+            comment:3,
+            hash_tag:['대학', '조별과제'],
+            like_check:true,
+            bookmark_check:false,
+        },
+        {
+            feed_id: 2,
+            title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
+            author: '홍현지',
+            author_id: '@hongs_0430',
+            author_img: String(require('../assets/profileImg.png')),
+            content: "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
+            like:16,
+            bookmark:16,
+            comment:3,
+            hash_tag:['대학', '조별과제'],
+            like_check:true,
+            bookmark_check:false,
+        },
+        {
+            feed_id: 3,
+            title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
+            author: '홍현지',
+            author_id: '@hongs_0430',
+            author_img: String(require('../assets/profileImg.png')),
+            content: "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
+            like:16,
+            bookmark:16,
+            comment:3,
+            hash_tag:['대학', '조별과제'],
+            like_check:true,
+            bookmark_check:false,
+        },
+    ];
+    const [searchState, setSearchState] = useState(false);
+    const [categoryState, setCategoryState] = useState(false);
+    const [contentState, setContentState] = useState(false);
+    const [search, setSearch] = useState([]);
+    const [tagSearch, setTagSearch] = useState(false);
+    const [category, setCategory] = useState(tagData);
+    const [content, setContent] = useState([]);
+    const [searchText, setSearchText] = useState('');
+    const [searchType, setSearchType] = useState([
+        {
+            'type':'제목만',
+            'state':true,
+        },
+        {
+            'type':'제목+내용',
+            'state':false,
+        },
+        {
+            'type':'내용',
+            'state':false,
+        },
+        {
+            'type':'작성자',
+            'state':false,
+        },
+    ]);
+    const [searchEvent, setSearchEvent] = useState(false);
+
+    if (searchEvent){
+        // search했을 때 이벤트
+        // 일단 서치 버튼 눌렀을 때만 서치 이벤트 발동하도록 제작
+    }
+
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{backgroundColor:'white', minHeight: '100%'}}>
             <ScrollView style={style.Container}>
                 <View style={style.Header}>
-                    <TouchableOpacity style={style.BackBtn}>
-                        <Image style={style.BackBtnImg} source={require('../../assets/back_btn.png')} resizeMode="contain"/>
+                    <TouchableOpacity style={style.BackBtn} onPress={()=>{navigation.pop();}}>
+                        <Image style={style.BackBtnImg} source={require('../assets/back_btn.png')} resizeMode="contain"/>
                     </TouchableOpacity>
-                    <Image style={style.HeadetText} source={require('../filter_header.png')} resizeMode="contain"/>
+                    <Image style={style.HeadetText} source={require('../assets/filter_header.png')} resizeMode="contain"/>
                 </View>
-                
+                <FoldFilter text="SEARCH" state={searchState} onPress={()=>{setSearchState;}}/>
+                {search &&
+                    <Search
+                        searchText={setSearchText}
+                        searchEvent={setSearchEvent}
+                        searchTagState={setTagSearch}
+                        searchType={setSearchType}
+                    />
+                }
+                <FoldFilter text="CATEGORY" state={categoryState} onPress={()=>{setCategoryState;}}/>
+                {categoryState &&
+                    <View style={{width:DimensionTheme.width(332), marginStart:DimensionTheme.width(30), display:'flex', flexDirection:'row',}}>
+                        {category.map((value: {title: string; flag: boolean}, idx:number) => {
+                            return (
+                                <SmallButton
+                                    btnStyles={{
+                                        ...whiteBGpurpleSD.btnStyle,
+                                        height: DimensionTheme.width(30),
+                                        paddingTop: DimensionTheme.width(1),
+                                        paddingBottom: DimensionTheme.width(2),
+                                        borderRadius: DimensionTheme.width(8),
+                                        marginEnd: DimensionTheme.width(10),
+                                        backgroundColor: (value.flag) ? colors.categorypurple : 'white',
+                                    }}
+                                    textStyles={{color: colors.black}}
+                                    onPress={() => {
+                                        category[idx].flag = !category[idx].flag;
+                                        setCategory(category);
+                                    }}
+                                >
+                                    #{value.title}
+                                </SmallButton>
+                            );
+                        })}
+                    </View>
+                }
+                <FoldFilter text="CONTENT" state={contentState} onPress={()=>{setContentState;}}/>
+                {contentState &&
+                    <View style={{marginStart:DimensionTheme.width(30)}}>
+                        {
+                            example.map((value)=><FeedCard title={value.title} feed_id={value.feed_id} author={value.author} author_id={value.author_id} author_img={value.author_img} content={value.content} like={value.like} bookmark={value.bookmark} comment={value.comment} hash_tag={value.hash_tag} like_check={value.like_check} bookmark_check={value.bookmark_check}/>)
+                        }
+                    </View>
+                }
             </ScrollView>
         </SafeAreaView>
     );
@@ -28,7 +157,6 @@ const style = StyleSheet.create({
     Container:{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
     },
     BackBtn:{
         width: DimensionTheme.width(22),

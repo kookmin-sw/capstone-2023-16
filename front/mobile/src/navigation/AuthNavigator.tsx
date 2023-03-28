@@ -12,12 +12,16 @@ import {SignupScreen} from '../screens/SignupScreen';
 import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
 import DetailScreen from '../screens/DetailScreen';
+import FilterScreen from '../screens/FilterScreen';
 
 export type ParamList = {
   Login: undefined;
   Signup: undefined;
   BaseInfo: undefined;
   InterestTagSetting: undefined;
+  Main: undefined;
+  DetailContent: undefined;
+  FilterContent: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -61,6 +65,11 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="DetailContent"
         component={DetailScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="FilterContent"
+        component={FilterScreen}
         options={{headerShown: false}}
       />
     </StackNavigator.Navigator>

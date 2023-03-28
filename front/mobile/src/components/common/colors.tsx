@@ -12,4 +12,5 @@ export const colors = {
   graydark2: '#636363',
   purple1: '#B487FF',
   graytext: '#838383',
+  categorypurple: '#F1DBFF',
 };
