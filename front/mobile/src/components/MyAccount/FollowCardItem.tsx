@@ -45,7 +45,7 @@ const CardItem: FC<CardProps> = props => {
           }}>
           {props.username}
         </SmallText>
-        <SmallText>{props.username}</SmallText>
+        <SmallText>{props.email}</SmallText>
       </ProfileInfo>
       <SmallButton
         btnStyles={[
