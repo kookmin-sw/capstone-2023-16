@@ -44,10 +44,22 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
 
+    CONTENT_TRUNC_LEN = 50
+
     class Meta:
         db_table = 'post'
         verbose_name = '게시물'
         verbose_name_plural = '게시물 목록'
+
+    def generate_content_preview(self) -> str:
+        """
+        content 값을 content_preview의 형식으로 바꾸어 반환하는 함수
+        :return: 변환된 content_preview 문자열
+        """
+        if len(self.content) > self.CONTENT_TRUNC_LEN:
+            return self.content[:self.CONTENT_TRUNC_LEN] + '...'
+        else:
+            return self.content
 
 
 class Persona(models.Model):

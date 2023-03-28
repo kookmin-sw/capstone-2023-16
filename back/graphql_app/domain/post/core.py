@@ -14,13 +14,13 @@ from graphql_app.resolvers.post.enums import PostSortBy
 from graphql_app.resolvers.post.types import PostSortingOption
 
 
-def is_eligible_for_paid_content(requested_persona_id: int, post_id: int, current_user_id: int) -> bool:
+def is_eligible_for_paid_content(persona_id: int, post_id: int, current_user_id: int) -> bool:
     """
     유료 콘텐츠를 볼 수 있는 자격이 있는지 체크하는 함수
     - 조건 1 : 게시물의 작성자인 경우
     - 조건 2 : 기다무 기간이 끝난 경우
     - 조건 3 : 멤버쉽 회원인 경우
-    :param requested_persona_id: 조회를 요청한 페르소나의 ID
+    :param persona_id: 조회를 요청한 페르소나의 ID
     :param post_id: 조회가 요청된 게시물의 ID
     :param current_user_id: 조회를 요청한 사용자의 ID
     :raises PostNotFoundException: 존재하지 않는 게시물인 경우
@@ -29,7 +29,7 @@ def is_eligible_for_paid_content(requested_persona_id: int, post_id: int, curren
 
     try:
         post = Post.objects.get(id=post_id)
-        requested_persona = Persona.objects.get(id=requested_persona_id)
+        requested_persona = Persona.objects.get(id=persona_id)
     except Post.DoesNotExist:
         raise PostNotFoundException
     except Persona.DoesNotExist:
@@ -38,7 +38,7 @@ def is_eligible_for_paid_content(requested_persona_id: int, post_id: int, curren
     today = datetime.datetime.today()
     n_days_later = today + datetime.timedelta(days=WaitFreePersona.FREE_AFTER_DAYS)
 
-    wait_free = WaitFreePersona.objects.get_or_create(persona_id=requested_persona_id, post_id=post_id,
+    wait_free = WaitFreePersona.objects.get_or_create(persona_id=persona_id, post_id=post_id,
                                                       defaults={'open_at': n_days_later})[0]
 
     # 작성자인 경우
