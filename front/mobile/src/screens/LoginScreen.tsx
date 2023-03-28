@@ -5,7 +5,11 @@ import styled from 'styled-components/native';
 import {Formik} from 'formik';
 
 import {colors} from '../components/common/colors';
-import {Container, ScreenHeight} from '../components/common/shared';
+import {
+  Container,
+  DimensionTheme,
+  ScreenHeight,
+} from '../components/common/shared';
 import * as ButtonTheme from '../components/common/theme';
 
 import KeyboardAvoidingViewContainer from '../components/common/Containers/KeyboardAvoidingViewContainer';
@@ -16,6 +20,9 @@ import CheckBox from '../components/common/CheckBox/CheckBox';
 import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
+import {graphql} from 'babel-plugin-relay/macro';
+import {useMutation} from 'react-relay';
+import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 import {graphql} from 'relay-runtime';
 
@@ -61,6 +68,23 @@ const SignupSection = styled.View`
   align-items: center;
 `;
 
+const loginMutation = graphql`
+  mutation LoginScreenMutation($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      ... on User {
+        id
+        username
+      }
+      ... on AnonymousOnlyError {
+        message
+      }
+      ... on WrongCertInfoError {
+        message
+      }
+    }
+  }
+`;
+
 type Props = NavigationData<'Login'>;
 
 const [commitMutation, isMutationInFlight] = useMutation(
@@ -83,14 +107,35 @@ const [commitMutation, isMutationInFlight] = useMutation(
 
 export const LoginScreen: FC<Props> = ({navigation}) => {
   const [autoLogin, setAutoLogin] = useState(false);
+
+  // 로그인
+  const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
+
   return (
     <LoginContainer>
       <KeyboardAvoidingViewContainer>
         <Formik
-          initialValues={{email: '', password: ''}}
-          onSubmit={({email, password}) => {
-            alert(`email:${email} password:${password}`);
-            navigation.navigate('Main');
+          initialValues={{username: '', password: ''}}
+          onSubmit={({username, password}) => {
+            console.log(username, password);
+            commit({
+              variables: {
+                username,
+                password,
+              },
+              onCompleted(data) {
+                console.log(data);
+              },
+              onError(error) {
+                console.log('@login error:');
+                console.log(error);
+                console.log(error.message);
+              },
+              // updater(store) {
+              //   const payload = store.getRootField('login');
+              //   store.getRoot().setLinkedRecord(payload, 'currentUser');
+              // },
+            });
           }}>
           {({values, handleChange, handleBlur, handleSubmit, isSubmitting}) => (
             <FormikSection>
@@ -102,9 +147,9 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                     fontWeight: '700',
                   }}
                   label="아이디"
-                  value={values.email}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
+                  value={values.username}
+                  onChangeText={handleChange('username')}
+                  onBlur={handleBlur('username')}
                   keyboardType="email-address"
                 />
                 <StyledTextInput
@@ -130,7 +175,9 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                 <FindSection>
                   <TextButton
                     textStyles={{color: colors.black}}
-                    onPress={() => {}}>
+                    onPress={() => {
+                      navigation.navigate('Main');
+                    }}>
                     아이디 찾기
                   </TextButton>
                   <SmallText textStyle={{color: colors.black}}> / </SmallText>
@@ -159,7 +206,10 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                       height: 55,
                     },
                   ]}
-                  textStyles={ButtonTheme.whiteBGpurpleSD.textStyle}
+                  textStyles={[
+                    ButtonTheme.whiteBGpurpleSD.textStyle,
+                    {fontSize: DimensionTheme.fontSize(24), fontWeight: '700'},
+                  ]}
                   onPress={() => {
                     handleSubmit();
                   }}>

@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
-import {Image} from 'react-native';
+import {Image, Platform} from 'react-native';
 
 import * as ButtonTheme from '../../components/common/theme';
 import SmallButton from '../../components/common/Buttons/SmallButton';
@@ -15,25 +15,28 @@ import SmallText from '../../components/common/Texts/SmallText';
 import {imagePath} from '../../utils/imagePath';
 import {personalTagData} from '../../constants/tag';
 import {NavigationData} from '../../navigation/AuthNavigator';
+import {ProfileShortDescription} from '../../constants/profile';
+
+const BackgroundSection = styled.ImageBackground`
+  flex: 1;
+  width: 100%;
+  align-items: center;
+`;
 
 const MyPageContainer = styled(Container)`
   flex: 1;
   align-items: center;
   width: 100%;
+  background-color: transparent;
 `;
 
-const HeaderSection = styled.ImageBackground`
-  flex: 1;
-  width: 100%;
-`;
-
-const RoundSection = styled.ScrollView`
+const RoundSection = styled.View`
   flex: 1;
   border-top-left-radius: 60px;
   border-top-right-radius: 60px;
-
   background-color: ${colors.white};
   padding: 20px;
+  min-height: 100%;
 `;
 
 const ProfileSection = styled.View`
@@ -43,9 +46,10 @@ const ProfileSection = styled.View`
 const ProfileImage = styled.Image`
   border-radius: 100px;
   border: 1px solid ${colors.purple};
-  z-index: 9;
-  margin-left: ${ScreenWidth * 0.4}px;
-  margin-top: ${DimensionTheme.height(110)};
+  z-index: 2;
+  margin-top: ${Platform.OS === 'ios'
+    ? DimensionTheme.height(150)
+    : DimensionTheme.height(300)};
   margin-bottom: -${DimensionTheme.height(30)};
   width: ${DimensionTheme.width(74)};
   height: ${DimensionTheme.height(74)};
@@ -55,24 +59,28 @@ const ProfileImage = styled.Image`
 `;
 
 const ProfileDescription = styled.View`
-  flex: 1;
   margin-left: 25px;
   margin-right: 25px;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 30px;
 `;
 
 const TabSection = styled.View`
-  flex: 1;
   flex-direction: row;
   algin-items: center;
+  margin-top: 20px;
   width: 100%;
 `;
 
-const IntersetTagSection = styled.View`
-  flex: 1;
+const ScrollSection = styled.ScrollView``;
+
+const RepresentingTagSection = styled.View`
   margin-top: 30px;
-  hegiht: 127px;
+  border-radius: 20px;
+  padding: 10px;
+`;
+
+const IntersetTagSection = styled.View`
+  margin-top: 30px;
   border-radius: 20px;
   padding: 10px;
 `;
@@ -84,9 +92,7 @@ const TagChipSection = styled.View`
   flex-wrap: wrap;
 `;
 
-const StatisticsSection = styled.View`
-  flex: 3;
-`;
+const StatisticsSection = styled.View``;
 
 const FeedStaticSection = styled.View`
   padding: 10px;
@@ -99,8 +105,8 @@ type Props = NavigationData<'MyPage'>;
 
 export const MyPageScreen: FC<Props> = ({navigation}) => {
   return (
-    <MyPageContainer>
-      <HeaderSection source={imagePath.background}>
+    <BackgroundSection source={imagePath.background}>
+      <MyPageContainer>
         <ProfileImage source={imagePath.avatar} />
         <RoundSection
           showsVerticalScrollIndicator={false}
@@ -111,10 +117,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
             </SmallText>
             <ProfileDescription>
               <SmallText textStyle={{color: colors.black}}>
-                이거 한 60자 정도 되게 하는 게 좋겠지 18px에 60자면 두줄정도
-                되나? 세줄인가 두줄인듯 ㅇ 아니다 좀 길게 하는 게 좋을 듯 음음
-                크리에이터 입장에서 보면 긴 게 훨씬 낫지 그럼 한 5줄 꽉 채우면
-                몇자지? 그냥 텍스트박스 크기 제한 없이 auto로 하는 게 좋나
+                {ProfileShortDescription}
               </SmallText>
             </ProfileDescription>
           </ProfileSection>
@@ -176,68 +179,111 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
               PERSONA
             </SmallButton>
           </TabSection>
-          <IntersetTagSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
-            <SmallText
-              textStyle={{
-                fontSize: 14,
-                fontWeight: '700',
-                color: colors.black,
-              }}>
-              홍현지님이 관심있는 태그
-            </SmallText>
-            <TagChipSection>
-              {personalTagData.map((value: {title: string; flag: boolean}) => {
-                return (
-                  <SmallButton
-                    btnStyles={[
-                      ButtonTheme.whiteBGpurpleSD.btnStyle,
-                      {
-                        height: 30,
-                        minWidth: DimensionTheme.width(26),
-                        paddingTop: 1,
-                        paddingBottom: 2,
-                        borderRadius: 8,
-                        marginBottom: 15,
-                        marginLeft: 10,
-                      },
-                    ]}
-                    textStyles={{
-                      color: colors.black,
-                      fontSize: DimensionTheme.fontSize(12),
-                    }}
-                    onPress={() => {}}>
-                    #{value.title}
-                  </SmallButton>
-                );
-              })}
-            </TagChipSection>
-          </IntersetTagSection>
-          <StatisticsSection>
-            <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
+          <ScrollSection>
+            <RepresentingTagSection
+              style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
               <SmallText
                 textStyle={{
                   fontSize: 14,
                   fontWeight: '700',
                   color: colors.black,
                 }}>
-                홍현지님이 읽은 일일 피드 수
+                홍현지님을 소개하는 태그
               </SmallText>
-              <Image source={imagePath.sampleStat} />
-            </FeedStaticSection>
-            <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
+              <TagChipSection>
+                {personalTagData.map(
+                  (value: {title: string; flag: boolean}) => {
+                    return (
+                      <SmallButton
+                        btnStyles={[
+                          ButtonTheme.whiteBGpurpleSD.btnStyle,
+                          {
+                            height: 30,
+                            minWidth: DimensionTheme.width(26),
+                            paddingTop: 1,
+                            paddingBottom: 2,
+                            borderRadius: 8,
+                            marginBottom: 15,
+                            marginLeft: 10,
+                          },
+                        ]}
+                        textStyles={{
+                          color: colors.black,
+                          fontSize: DimensionTheme.fontSize(12),
+                        }}
+                        onPress={() => {}}>
+                        #{value.title}
+                      </SmallButton>
+                    );
+                  },
+                )}
+              </TagChipSection>
+            </RepresentingTagSection>
+            <IntersetTagSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
               <SmallText
                 textStyle={{
                   fontSize: 14,
                   fontWeight: '700',
                   color: colors.black,
                 }}>
-                홍현지님이 읽은 일일 피드 수
+                홍현지님이 관심있는 태그
               </SmallText>
-              <Image source={imagePath.sampleStat} />
-            </FeedStaticSection>
-          </StatisticsSection>
+              <TagChipSection>
+                {personalTagData.map(
+                  (value: {title: string; flag: boolean}) => {
+                    return (
+                      <SmallButton
+                        btnStyles={[
+                          ButtonTheme.whiteBGpurpleSD.btnStyle,
+                          {
+                            height: 30,
+                            minWidth: DimensionTheme.width(26),
+                            paddingTop: 1,
+                            paddingBottom: 2,
+                            borderRadius: 8,
+                            marginBottom: 15,
+                            marginLeft: 10,
+                          },
+                        ]}
+                        textStyles={{
+                          color: colors.black,
+                          fontSize: DimensionTheme.fontSize(12),
+                        }}
+                        onPress={() => {}}>
+                        #{value.title}
+                      </SmallButton>
+                    );
+                  },
+                )}
+              </TagChipSection>
+            </IntersetTagSection>
+            <StatisticsSection>
+              <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
+                <SmallText
+                  textStyle={{
+                    fontSize: 14,
+                    fontWeight: '700',
+                    color: colors.black,
+                  }}>
+                  홍현지님이 읽은 일일 피드 수
+                </SmallText>
+                <Image source={imagePath.sampleStat} />
+              </FeedStaticSection>
+              <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
+                <SmallText
+                  textStyle={{
+                    fontSize: 14,
+                    fontWeight: '700',
+                    color: colors.black,
+                  }}>
+                  홍현지님이 읽은 일일 피드 수
+                </SmallText>
+                <Image source={imagePath.sampleStat} />
+              </FeedStaticSection>
+            </StatisticsSection>
+          </ScrollSection>
         </RoundSection>
-      </HeaderSection>
-    </MyPageContainer>
+      </MyPageContainer>
+    </BackgroundSection>
   );
 };
