@@ -22,9 +22,13 @@ import {NavigationData} from '../navigation/AuthNavigator';
 import CheckBox from '../components/common/CheckBox/CheckBox';
 import SmallText from '../components/common/Texts/SmallText';
 import Modal from '../components/common/Modal/Modal';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, Platform} from 'react-native';
 import RegularText from '../components/common/Texts/RegularText';
 import {termsAndConditions} from '../constants/terms';
+
+import {graphql} from 'babel-plugin-relay/macro';
+import {useMutation} from 'react-relay';
+import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
 
 const SignupContainer = styled(Container)`
   width: 100%;
@@ -72,9 +76,36 @@ const BottomSection = styled.View`
   justify-contnet: flex-end;
 `;
 
+const signupMutation = graphql`
+  mutation SignupScreenMutation(
+    $email: String!
+    $password: String!
+    $username: String!
+  ) {
+    register(email: $email, password: $password, username: $username) {
+      ... on User {
+        id
+        email
+        username
+      }
+
+      ... on UsernameAlreadyUsedError {
+        violatedFieldName
+        violatedFieldValue
+      }
+      ... on EmailAlreadyUsedError {
+        violatedFieldValue
+        violatedFieldName
+      }
+    }
+  }
+`;
+
 type Props = NavigationData<'Signup'>;
 
 export const SignupScreen: FC<Props> = ({navigation}) => {
+  const [commit, isInFlight] =
+    useMutation<SignupScreenMutation>(signupMutation);
   // 이용약관 모달
   const [show, setShow] = useState(false);
 
@@ -94,6 +125,7 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
     passwordConfirm: Yup.string()
       .required('비밀번호 확인은 필수입니다.')
       .oneOf([Yup.ref('password')], '비밀번호가 일치하지 않습니다'),
+    username: Yup.string().required('사용자 이름은 필수입니다.'),
   });
 
   return (
@@ -104,10 +136,28 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
             email: '',
             password: '',
             passwordConfirm: '',
+            username: '',
           }}
           validationSchema={SignupSchema}
-          onSubmit={({email, password}) => {
-            navigation.navigate('BaseInfo');
+          onSubmit={({email, username, password}) => {
+            commit({
+              variables: {
+                email,
+                username,
+                password,
+              },
+              onCompleted(data) {
+                console.log(data);
+              },
+              onError(error) {
+                console.log('@sign up error : ');
+                console.log(error);
+              },
+              // updater(store) {
+              //   const payload = store.getRootField('login');
+              //   store.getRoot().setLinkedRecord(payload, 'currentUser');
+              // },
+            });
           }}>
           {({
             values,
@@ -138,21 +188,28 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     keyboardType="email-address"
+                    children={
+                      <SmallButton
+                        btnStyles={{
+                          padding: 5,
+                          backgroundColor: values.email
+                            ? colors.primary
+                            : colors.gray,
+                          marginLeft: 5,
+                          width: DimensionTheme.width(85),
+                          height: DimensionTheme.height(43),
+                          borderRadius: 10,
+                        }}
+                        textStyles={{
+                          color: colors.white,
+                          fontWeight: '700',
+                          fontSize: DimensionTheme.fontSize(16),
+                        }}
+                        onPress={() => {}}>
+                        중복확인
+                      </SmallButton>
+                    }
                   />
-                  <SmallButton
-                    btnStyles={{
-                      padding: 5,
-                      marginTop: errors.email ? -20 : 14,
-                      backgroundColor: values.email
-                        ? colors.primary
-                        : colors.gray,
-                      width: DimensionTheme.width(85),
-                      height: DimensionTheme.height(43),
-                    }}
-                    textStyles={{color: colors.white, fontWeight: '700'}}
-                    onPress={() => {}}>
-                    중복확인
-                  </SmallButton>
                 </IdSection>
                 <PasswordSection>
                   <StyledTextInput
@@ -191,7 +248,10 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
                       marginBottom: 7,
                       fontWeight: '700',
                     }}
-                    label="생년월일"
+                    label="이름"
+                    value={values.username}
+                    onChangeText={handleChange('username')}
+                    onBlur={handleBlur('username')}
                   />
                   <GenderInfoSection>
                     <SmallText
@@ -230,10 +290,13 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
                       <CheckBox
                         onPress={() => setAgree(!agree)}
                         isChecked={agree}
+                        viewStyle={{
+                          marginTop: DimensionTheme.height(13),
+                          marginLeft: DimensionTheme.width(10),
+                        }}
                         labelStyle={{
                           color: colors.black,
                           fontWeight: '700',
-                          marginLeft: 10,
                         }}
                         label="이용약관"
                       />
