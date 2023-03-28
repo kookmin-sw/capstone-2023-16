@@ -14,4 +14,5 @@ export const colors = {
   graytext: '#838383',
   purple: '#9D45D4',
   purplelight: '#F1DBFF',
+  pink: '#FFDEF4',
 };
