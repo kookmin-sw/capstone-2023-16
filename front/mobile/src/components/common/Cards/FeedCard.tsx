@@ -12,34 +12,35 @@ const ProfileBox = styled.View`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: ${DimensionTheme.height(10)};
-    margin-bottom: ${DimensionTheme.height(10)};
+    margin-top: ${DimensionTheme.width(10)}px;
+    margin-bottom: ${DimensionTheme.width(10)}px;
 `;
 
 const HashTagBox = styled.View`
     flex-direction: row;
-    margin-top: ${DimensionTheme.height(2)};
-    width: ${DimensionTheme.width(304)};
-    margin-bottom: ${DimensionTheme.height(6)};
+    margin-top: ${DimensionTheme.width(2)}px;
+    width: ${DimensionTheme.width(304)}px;
+    margin-bottom: ${DimensionTheme.width(6)}px;
 `;
 
 const HashTag = styled.Text`
-    font-size: ${DimensionTheme.fontSize(12)};
+    font-size: ${DimensionTheme.fontSize(12)}px;
     color: black;
-    margin-right: ${DimensionTheme.width(2)};
+    margin-right: ${DimensionTheme.width(2)}px;
 `;
 
 const BottomBox = styled.View`
-    margin-bottom: ${DimensionTheme.height(11)};
-    width: ${DimensionTheme.width(306)};
+    margin-bottom: ${DimensionTheme.width(11)}px;
+    width: ${DimensionTheme.width(306)}px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 `;
 
 const ReactionText = styled.Text`
-    font-size: ${DimensionTheme.fontSize(10)};
-    margin-right: ${DimensionTheme.width(8)};
+    font-size: ${DimensionTheme.fontSize(10)}px;
+    margin-right: ${DimensionTheme.width(8)}px;
+    color: black;
 `;
 
 const FeedCard = (props :FeedProps) =>{
@@ -54,12 +55,9 @@ const FeedCard = (props :FeedProps) =>{
             <View style={{marginStart: DimensionTheme.width(14)}}>
                 <ProfileBox>
                     <Image style={style.ProfileImage} source={props.author_img}/>
-                    <View style={{flexDirection:'column', alignItems:'flex-start'}}>
-                        <Text style={{fontSize: DimensionTheme.fontSize(13), fontWeight: '600'}}>{props.author}</Text>
-                        <Text style={{fontSize: DimensionTheme.fontSize(10), marginTop: DimensionTheme.height(2)}}>{props.author_id}</Text>
-                    </View>
+                    <Text style={{fontSize: DimensionTheme.fontSize(13), fontWeight: '600', color:'black'}}>{props.author}</Text>
                 </ProfileBox>
-                <Text style={{fontSize: DimensionTheme.fontSize(12), width:DimensionTheme.width(307), textAlign:'justify'}}>{props.content}</Text>
+                <Text style={{fontSize: DimensionTheme.fontSize(12), width:DimensionTheme.width(307), textAlign:'justify', color:'black'}}>{props.content}</Text>
                 <HashTagBox>
                     {
                         props.hash_tag?.map(tag => <HashTag>#{tag}</HashTag>)
@@ -76,7 +74,7 @@ const FeedCard = (props :FeedProps) =>{
                                 setLike(true);
                             }
                         }}>
-                            <Image style={style.ReactionImage} source={(like)?require('../../../assets/heart-filled.png'):require('../../../assets/heart-empty.png')} />
+                            <Image style={style.ReactionImage} source={(like)?require('../../../assets/heart-filled.png'):require('../../../assets/heart-empty.png')} resizeMode="contain"/>
                         </TouchableOpacity>
                         <ReactionText>{props.like}</ReactionText>
                         <TouchableOpacity onPress={()=>{
@@ -88,14 +86,14 @@ const FeedCard = (props :FeedProps) =>{
                                 setBookmark(true);
                             }
                         }}>
-                            <Image style={style.ReactionImage} source={(bookmark)?require('../../../assets/bookmark-filled.png'):require('../../../assets/heart-empty.png')}/>
+                            <Image style={style.ReactionImage} source={(bookmark)?require('../../../assets/bookmark-filled.png'):require('../../../assets/heart-empty.png')} resizeMode="contain"/>
                         </TouchableOpacity>
                         <ReactionText>{props.bookmark}</ReactionText>
-                        <Image style={style.ReactionImage} source={require('../../../assets/comment.png')}/>
+                        <Image style={style.ReactionImage} source={require('../../../assets/comment.png')} resizeMode="contain"/>
                         <ReactionText>{props.comment}</ReactionText>
                     </View>
                     <TouchableOpacity>
-                        <Image style={style.ReactionImage} source={require('../../../assets/more-image.png')} resizeMode="contain"/>
+                        <Image style={{width:DimensionTheme.width(15), height: DimensionTheme.width(15)}} source={require('../../../assets/more-image.png')} resizeMode="contain"/>
                     </TouchableOpacity>
                 </BottomBox>
             </View>
@@ -107,18 +105,19 @@ const style = StyleSheet.create({
     CardGrayBox:{
         width: DimensionTheme.width(332),
         borderRadius: DimensionTheme.width(15),
-        borderWidth:1,
-        shadowOffset: {width: 0, height: DimensionTheme.height(2)},
+        shadowOffset: {width: 0, height: DimensionTheme.width(2)},
         shadowColor: '#000000',
         shadowOpacity: 0.34,
         shadowRadius: DimensionTheme.width(1),
-        paddingTop: DimensionTheme.height(16),
-        paddingBottom: DimensionTheme.height(11),
-        marginBottom: DimensionTheme.height(28),
+        paddingTop: DimensionTheme.width(16),
+        paddingBottom: DimensionTheme.width(11),
+        marginBottom: DimensionTheme.width(28),
+        elevation:5,
+        backgroundColor: 'white',
     },
     CardHeader:{
         paddingLeft: DimensionTheme.width(14),
-        paddingBottom: DimensionTheme.height(10),
+        paddingBottom: DimensionTheme.width(10),
         paddingRight: DimensionTheme.width(14),
         width: DimensionTheme.width(332),
         fontSize: DimensionTheme.fontSize(16),
@@ -138,7 +137,7 @@ const style = StyleSheet.create({
     ReactionImage:{
         marginRight: DimensionTheme.width(2),
         width: DimensionTheme.width(18),
-        height: DimensionTheme.height(18),
+        height: DimensionTheme.width(18),
     },
 });
 

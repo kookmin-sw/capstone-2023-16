@@ -9,6 +9,8 @@ import FoldFilter from '../components/Filter/FoldFilter';
 import Search from '../components/Filter/Search';
 import { tagData } from '../constants/tag';
 import { NavigationData } from '../navigation/AuthNavigator';
+import FeedCard from '../components/common/Cards/FeedCard';
+import CategorySelect from '../components/Filter/CategorySelect';
 
 type Props = NavigationData<'FilterContent'>;
 
@@ -57,12 +59,13 @@ const FilterScreen : FC<Props> = ({navigation}) => {
             bookmark_check:false,
         },
     ];
-    const [searchState, setSearchState] = useState(false);
+    const [searchState, setSearchState] = useState(true);
     const [categoryState, setCategoryState] = useState(false);
     const [contentState, setContentState] = useState(false);
     const [search, setSearch] = useState([]);
     const [tagSearch, setTagSearch] = useState(false);
     const [category, setCategory] = useState(tagData);
+    const [render, setRender] = useState(true);
     const [content, setContent] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [searchType, setSearchType] = useState([
@@ -99,47 +102,22 @@ const FilterScreen : FC<Props> = ({navigation}) => {
                     </TouchableOpacity>
                     <Image style={style.HeadetText} source={require('../assets/filter_header.png')} resizeMode="contain"/>
                 </View>
-                <FoldFilter text="SEARCH" state={searchState} onPress={()=>{setSearchState;}}/>
-                {search &&
-                    <Search
+                <FoldFilter text="SEARCH" state={searchState} onPress={()=>{setSearchState(!searchState);}}/>
+                {searchState && <Search
                         searchText={setSearchText}
                         searchEvent={setSearchEvent}
                         searchTagState={setTagSearch}
                         searchType={setSearchType}
                     />
                 }
-                <FoldFilter text="CATEGORY" state={categoryState} onPress={()=>{setCategoryState;}}/>
-                {categoryState &&
-                    <View style={{width:DimensionTheme.width(332), marginStart:DimensionTheme.width(30), display:'flex', flexDirection:'row',}}>
-                        {category.map((value: {title: string; flag: boolean}, idx:number) => {
-                            return (
-                                <SmallButton
-                                    btnStyles={{
-                                        ...whiteBGpurpleSD.btnStyle,
-                                        height: DimensionTheme.width(30),
-                                        paddingTop: DimensionTheme.width(1),
-                                        paddingBottom: DimensionTheme.width(2),
-                                        borderRadius: DimensionTheme.width(8),
-                                        marginEnd: DimensionTheme.width(10),
-                                        backgroundColor: (value.flag) ? colors.categorypurple : 'white',
-                                    }}
-                                    textStyles={{color: colors.black}}
-                                    onPress={() => {
-                                        category[idx].flag = !category[idx].flag;
-                                        setCategory(category);
-                                    }}
-                                >
-                                    #{value.title}
-                                </SmallButton>
-                            );
-                        })}
-                    </View>
+                <FoldFilter text="CATEGORY" state={categoryState} onPress={()=>{setCategoryState(!categoryState);}} type='category'/>
+                {
+                    categoryState && <CategorySelect categoryEvent={setCategory}/>
                 }
-                <FoldFilter text="CONTENT" state={contentState} onPress={()=>{setContentState;}}/>
-                {contentState &&
-                    <View style={{marginStart:DimensionTheme.width(30)}}>
+                <FoldFilter text="CONTENT" state={contentState} onPress={()=>{setContentState(!contentState);}}/>
+                {contentState && <View style={{marginStart:DimensionTheme.width(30)}}>
                         {
-                            example.map((value)=><FeedCard title={value.title} feed_id={value.feed_id} author={value.author} author_id={value.author_id} author_img={value.author_img} content={value.content} like={value.like} bookmark={value.bookmark} comment={value.comment} hash_tag={value.hash_tag} like_check={value.like_check} bookmark_check={value.bookmark_check}/>)
+                            example.map((value, index)=><FeedCard key={index} title={value.title} feed_id={value.feed_id} author={value.author} author_id={value.author_id} author_img={value.author_img} content={value.content} like={value.like} bookmark={value.bookmark} comment={value.comment} hash_tag={value.hash_tag} like_check={value.like_check} bookmark_check={value.bookmark_check}/>)
                         }
                     </View>
                 }

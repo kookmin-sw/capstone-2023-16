@@ -16,6 +16,7 @@ interface FoldFilterProps{
 
 const Search = (props:FoldFilterProps) => {
     const [search, setSearch] = useState('');
+    const [render, setRender] = useState(true);
     const [searchTypeList, setSearchTypeList] = useState([
         {
             'type':'제목만',
@@ -35,7 +36,7 @@ const Search = (props:FoldFilterProps) => {
         },
     ]);
     return (
-        <View>
+        <View style={style.SearchSection}>
             <View style={style.SearchBox}>
                 <TextInput style={style.TextInput} placeholder="#으로 시작하면 태그 검색이 됩니다." placeholderTextColor={colors.graydark2} onChangeText={(text)=>{
                     setSearch(text);
@@ -67,28 +68,28 @@ const Search = (props:FoldFilterProps) => {
             {!search.includes('#') &&
                 <View style={style.SearchTypes}>
                     {
-                        searchTypeList.map((value: {type:string; state:boolean;}, idx:number) => {
+                        searchTypeList.map((value: {type:string; state:boolean;}, index?:number) => {
                             return (
                                 <SmallButton
-                                    btnStyles={[
-                                        whiteBGpurpleSD.btnStyle,
-                                        {
-                                            width: 'auto',
-                                            height: DimensionTheme.width(30),
-                                            paddingTop: DimensionTheme.width(1),
-                                            paddingBottom: DimensionTheme.width(2),
-                                            borderRadius: DimensionTheme.width(8),
-                                            marginEnd: DimensionTheme.width(10),
-                                            backgroundColor: (value.state) ? colors.categorypurple : 'white',
-                                        },
-                                    ]}
+                                    key={index}
+                                    btnStyles={{
+                                        ...whiteBGpurpleSD.btnStyle,
+                                        width: 'auto',
+                                        height: DimensionTheme.width(30),
+                                        paddingTop: DimensionTheme.width(1),
+                                        paddingBottom: DimensionTheme.width(2),
+                                        borderRadius: DimensionTheme.width(8),
+                                        marginEnd: DimensionTheme.width(10),
+                                        backgroundColor: (value.state) ? colors.categorypurple : 'white',
+                                    }}
                                     textStyles={{color: colors.black}}
                                     onPress={()=>{
-                                        searchTypeList[idx].state = !searchTypeList[idx].state;
+                                        searchTypeList[index!].state = !searchTypeList[index!].state;
                                         setSearchTypeList(searchTypeList);
+                                        setRender(!render);
                                     }}
                                 >
-                                    #{value.type}
+                                    {value.type}
                                 </SmallButton>
                             );
                         })
@@ -110,14 +111,21 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         height: DimensionTheme.width(43),
         justifyContent: 'space-between',
-        paddingBottom: DimensionTheme.width(13),
+        marginBottom: DimensionTheme.width(13),
     },
     TextInput:{
         width: DimensionTheme.width(280),
+        height: DimensionTheme.width(43),
         fontSize: DimensionTheme.fontSize(14),
-        paddingStart: DimensionTheme.width(15),
+        paddingStart: DimensionTheme.width(18),
         alignItems: 'center',
         color: 'black',
+        overflow: 'hidden',
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        elevation: 2,
+        borderRadius: DimensionTheme.width(10),
     },
     SearchBtn:{
         width: DimensionTheme.width(43),
@@ -126,6 +134,7 @@ const style = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 0,
         backgroundColor: colors.primary,
+        borderRadius: DimensionTheme.width(10),
     },
     SearchBtnImg:{
         width: DimensionTheme.width(23),

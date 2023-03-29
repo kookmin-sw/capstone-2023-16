@@ -7,12 +7,14 @@ import { DimensionTheme } from '../common/shared';
 interface buttonProps{
     img?: string,
     onPress: ((event:GestureResponderEvent) => void) | undefined,
+    width: number;
+    height: number;
 };
 
 const TopButton = (props:buttonProps) => {
     return (
         <TouchableOpacity style={style.ButtonStyle} onPress={props.onPress}>
-            <Image style={{width:DimensionTheme.width(28), height:DimensionTheme.height(28)}} source={props.img!} resizeMode="contain"/>
+            <Image style={{width:DimensionTheme.width(props.width), height:DimensionTheme.height(props.height)}} source={props.img!} resizeMode="contain"/>
         </TouchableOpacity>
     );
 };
@@ -26,10 +28,12 @@ const style = StyleSheet.create({
         shadowOpacity: 0.79,
         shadowColor: colors.primary,
         shadowRadius: DimensionTheme.width(2),
-        elevation:1,
+        elevation:10,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
+        borderWidth:0.5,
+        borderColor: colors.primary,
         marginRight: DimensionTheme.width(10),
     },
 });

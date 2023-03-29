@@ -7,11 +7,12 @@ interface FoldFilterProps{
     text: string;
     state: boolean;
     onPress: ((event:GestureResponderEvent) => void)|undefined;
+    type?: string;
 }
 
 const FoldFilter = (props:FoldFilterProps) => {
     return (
-        <TouchableOpacity style={style.TouchBox} onPress={props.onPress}>
+        <TouchableOpacity style={{...style.TouchBox, marginBottom: (props.type === 'category') ? (props.state) ? 0 : 16 : 16}} onPress={props.onPress}>
             <Text style={style.text}>{props.text}</Text>
             <Image style={style.image} source={(props.state) ? require('../../assets/top_arrow.png') : require('../../assets/bottom_arrow.png')}/>
         </TouchableOpacity>
@@ -32,6 +33,8 @@ const style = StyleSheet.create({
     },
     text:{
         fontSize: DimensionTheme.fontSize(14),
+        color: 'black',
+        fontWeight: '600',
     },
     image:{
         width: DimensionTheme.width(18),

@@ -22,7 +22,9 @@ const DetailHearder = (props:HearderProps) => {
                 </TouchableOpacity>
             </View>
             <TouchableOpacity style={style.ProfileBox}>
-                <Image style={style.ProfileImg} source={(props.author_img !== null || props.author_img !== '') ? (props.author_img) : require('../../assets/profileImg.png')}/>
+                <View style={style.ProfileImgView}>
+                    <Image style={style.ProfileImg} source={(props.author_img !== null || props.author_img !== '') ? (props.author_img) : require('../../assets/profileImg.png')} resizeMode='contain'/>
+                </View>
                 <Text style={style.Nickname}>{props.author}</Text>
             </TouchableOpacity>
         </View>
@@ -32,7 +34,7 @@ const DetailHearder = (props:HearderProps) => {
 const style = StyleSheet.create({
     HeaderBox:{
         width:'100%',
-        marginTop: DimensionTheme.height(22),
+        // marginTop: DimensionTheme.height(22),
         paddingStart: DimensionTheme.width(24),
         paddingEnd: DimensionTheme.width(24),
         paddingBottom: DimensionTheme.height(15),
@@ -47,10 +49,11 @@ const style = StyleSheet.create({
         width: DimensionTheme.width(310),
         marginEnd: DimensionTheme.width(15),
         fontSize: DimensionTheme.fontSize(20),
-        fontWeight: '700',
+        fontWeight: '800',
         color: 'black',
     },
     MoreBtn:{
+        marginTop: DimensionTheme.width(4),
         width: DimensionTheme.width(20),
         height: DimensionTheme.width(20),
         alignItems: 'center',
@@ -67,14 +70,28 @@ const style = StyleSheet.create({
     },
     ProfileImg:{
         width: DimensionTheme.width(35),
-        height: DimensionTheme.height(35),
+        height: DimensionTheme.width(35),
+        borderRadius: DimensionTheme.width(17.5),
+    },
+    ProfileImgView:{
+        width: DimensionTheme.width(35),
+        height: DimensionTheme.width(35),
         marginEnd: DimensionTheme.width(10),
+        borderRadius: DimensionTheme.width(17.5),
+        borderWidth: DimensionTheme.width(0.7),
+        borderColor: colors.borderGray,
+        shadowOffset: { width: 0, height: 0 },
+        shadowColor: 'black',
+        shadowRadius: DimensionTheme.width(4),
+        shadowOpacity: 0.3,
+        elevation: 4,
+        backgroundColor: 'white',
     },
     Nickname:{
         width: DimensionTheme.width(300),
         fontSize: DimensionTheme.fontSize(14),
         color: 'black',
-    }
+    },
 });
 
 export default DetailHearder;
