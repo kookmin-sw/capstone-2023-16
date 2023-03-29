@@ -16,6 +16,7 @@ import ImageButton from '../components/common/Buttons/ImageButton';
 import {MyPageScreen} from '../screens/MyAccount/MyPageScreen';
 import {imagePath} from '../utils/imagePath';
 import {FollowingScreen} from '../screens/MyAccount/FollowingScreen';
+import {MyHistoryScreen} from '../screens/MyHistory/MyHistoryScreen';
 
 export type ParamList = {
   Login: undefined;
@@ -25,6 +26,7 @@ export type ParamList = {
   InterestTagSetting: undefined;
   MyPage: undefined;
   Following: undefined;
+  History: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -107,6 +109,15 @@ const AuthNavigator = () => {
         component={FollowingScreen}
         options={{
           title: '팔로잉',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
+        name="History"
+        component={MyHistoryScreen}
+        options={{
+          title: 'MY HISTORY',
           headerShadowVisible: false,
           headerBackTitleVisible: false,
         }}

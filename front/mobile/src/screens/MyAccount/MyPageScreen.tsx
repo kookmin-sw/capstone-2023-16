@@ -13,7 +13,7 @@ import {
 } from '../../components/common/shared';
 import SmallText from '../../components/common/Texts/SmallText';
 import {imagePath} from '../../utils/imagePath';
-import {personalTagData} from '../../constants/tag';
+import {personalTagData, TagColor} from '../../constants/tag';
 import {NavigationData} from '../../navigation/AuthNavigator';
 import {ProfileShortDescription} from '../../constants/profile';
 
@@ -161,7 +161,9 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
                 },
               ]}
               textStyles={{fontSize: 12, color: colors.black}}
-              onPress={() => {}}>
+              onPress={() => {
+                navigation.navigate('History');
+              }}>
               HISTORY
             </SmallButton>
             <SmallButton
@@ -192,7 +194,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
               </SmallText>
               <TagChipSection>
                 {personalTagData.map(
-                  (value: {title: string; flag: boolean}) => {
+                  (value: {title: string; category: string}) => {
                     return (
                       <SmallButton
                         btnStyles={[
@@ -205,6 +207,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
                             borderRadius: 8,
                             marginBottom: 15,
                             marginLeft: 10,
+                            backgroundColor: TagColor[value.category],
                           },
                         ]}
                         textStyles={{
@@ -230,7 +233,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
               </SmallText>
               <TagChipSection>
                 {personalTagData.map(
-                  (value: {title: string; flag: boolean}) => {
+                  (value: {title: string; category: string}) => {
                     return (
                       <SmallButton
                         btnStyles={[
@@ -243,6 +246,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
                             borderRadius: 8,
                             marginBottom: 15,
                             marginLeft: 10,
+                            backgroundColor: TagColor[value.category],
                           },
                         ]}
                         textStyles={{
@@ -258,17 +262,6 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
               </TagChipSection>
             </IntersetTagSection>
             <StatisticsSection>
-              <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
-                <SmallText
-                  textStyle={{
-                    fontSize: 14,
-                    fontWeight: '700',
-                    color: colors.black,
-                  }}>
-                  홍현지님이 읽은 일일 피드 수
-                </SmallText>
-                <Image source={imagePath.sampleStat} />
-              </FeedStaticSection>
               <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
                 <SmallText
                   textStyle={{
