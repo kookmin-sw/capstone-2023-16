@@ -32,7 +32,7 @@ _(준비중)_
 
 ### **박유빈** (팀장)
 
-![박유빈 이미지](/page/%EB%B0%95%EC%9C%A0%EB%B9%88_%EC%BA%90%EB%A6%AD%ED%84%B0.jpg)
+![박유빈 이미지지](https://user-images.githubusercontent.com/49488165/228554750-74a4939f-99bc-4228-812a-034d20e02427.png)
 
 ✔️ **학번** : \*\*\*\*1615
 
@@ -42,7 +42,7 @@ _(준비중)_
 
 ### **박정민**
 
-![박정민 이미지](/page/%EB%B0%95%EC%A0%95%EB%AF%BC_%EC%BA%90%EB%A6%AD%ED%84%B0.png)
+![박정민 이미지](https://user-images.githubusercontent.com/49488165/228554840-1ce3a3b6-8d50-4265-8459-5b9688d4b856.png)
 
 ✔️ **학번** : \*\*\*\*3074
 
@@ -62,7 +62,7 @@ _(준비중)_
 
 ### **이채민**
 
-![이채민 이미지](/page/%EC%9D%B4%EC%B1%84%EB%AF%BC_%EC%BA%90%EB%A6%AD%ED%84%B0.png)
+![이채민 이미지](https://user-images.githubusercontent.com/49488165/228554915-d9f9a9cf-4ce6-4191-af7b-c0a8169a860d.png)
 
 ✔️ **학번** : \*\*\*\*3125
 
@@ -72,7 +72,7 @@ _(준비중)_
 
 ### **홍현지**
 
-![홍현지 이미지](/page/%ED%99%8D%ED%98%84%EC%A7%80_%EC%BA%90%EB%A6%AD%ED%84%B0.png)
+![홍현지 이미지](https://user-images.githubusercontent.com/49488165/228554965-2dc26bce-2ebb-481f-a3ca-19a04a73a536.png)
 
 ✔️ **학번** : \*\*\*\*3166
 
