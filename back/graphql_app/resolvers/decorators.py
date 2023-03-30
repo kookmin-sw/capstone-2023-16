@@ -65,7 +65,6 @@ def requires_persona_context(resolver):
 
     @wraps(resolver)
     def wrapper(self, info: Info, *args, **kwargs):
-        print(info.context.request.COOKIES)
         if not has_persona_context(info.context.request):
             raise CookieContextRequiredError('persona_id')
         else:
