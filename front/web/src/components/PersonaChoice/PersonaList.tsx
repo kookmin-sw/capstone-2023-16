@@ -4,8 +4,8 @@ import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import PersonaCard from "../commons/PersonaCard";
 import dummy from './dummy/personaList';
-import { PersonaListType } from "./dummy/personalListType";
 import { connect } from '../../redux/slices/personaSlice';
+import { PersonaListType, Root } from "./dummy/personalListType";
 
 const PersonaList = () => {
   const deviceType = useDeviceType();
@@ -21,7 +21,7 @@ const PersonaList = () => {
   };
 
   return <PersonaListWrapper deviceType={deviceType}>
-    {personaList.map(p => (
+    {personaList.map((p:Root) => (
       <PersonaCardWrapper deviceType={deviceType} key={p.node.id} onClick={() => onClick(p.node)}>
         <PersonaCard src='' nickname={p.node.nickname} deviceType={deviceType} usageType='choice' />
       </PersonaCardWrapper>))}

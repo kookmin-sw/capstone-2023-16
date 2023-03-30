@@ -1,19 +1,18 @@
 import React from 'react';
 import postList from './dummy/postList.json';
-import PostCard from '../commons/PostCard';
+import PostCard from './PostCard';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import useDeviceType from '../../hooks/useDeviceType';
 
-type PostListProps = {
-  deviceType: string;
-};
-
-const PostList = ({ deviceType }: PostListProps) => {
+const PostList = () => {
+  const deviceType = useDeviceType();
+  const navigate = useNavigate();
 
   return <PostListContainer deviceType={deviceType} >
-    {postList.map(p => <PostCardWrapper key={p.node.id}>
-      <PostCard title={p.node.title} content={p.node.content} date={p.node.createdAt} deviceType={deviceType} />
-    </PostCardWrapper>
-    )}
+    {postList.map(p => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(p.node.id)} >
+        <PostCard deviceType={deviceType} title={p.node.title} content={p.node.content} date={p.node.createdAt} />
+      </PostCardWrapper>)}
   </PostListContainer>
 };
 
@@ -33,12 +32,15 @@ const PostListContainer = styled.div<{ deviceType: string }>`
   overflow-y: auto;
 `;
 
-const PostCardWrapper = styled.div`
+const PostCardWrapper = styled.div<{ deviceType: string }>`
   width: 100%;
+  min-width: 195px;
+  height: ${(props) => { return (props.deviceType === 'mobile') ? '130px' : '255px' }};
+  padding-right: 5px;
   &:hover{
     cursor: pointer;
   }
   &:active{
-    cursor: default;
+      cursor: default;
   }
-`
+`;
