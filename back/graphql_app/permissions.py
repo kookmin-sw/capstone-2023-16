@@ -1,24 +1,27 @@
 import binascii
+from typing import Optional, Tuple
 
 from django.core.handlers.wsgi import WSGIRequest
 
+from graphql_app.domain.persona.core import get_persona_context
 from graphql_app.models import Persona
-from graphql_app.resolvers.utils import parse_global_id
 
 
-def has_weak_persona_context(request: WSGIRequest) -> bool:
+def has_weak_persona_context(request: WSGIRequest) -> Tuple[bool, Optional[int]]:
     """
-    Request cookie에 페르소나의 ID(persona_id)가 저장되어 있는지 확인하는 함수
+    Request cookie에 유효한 Session key와 페르소나의 ID(persona_id)가 저장되어 있는지 확인하는 함수
     실제 존재하는 페르소나인지는 확인하지 않는다.
     :param request: Django 요청 객체
-    :return: sessionid와 persona_id가 있는 경우 True, 그렇지 않은 경우 False
+    :return: (존재 여부, persona_id)
     """
     cookies = request.COOKIES
 
-    if not (request.user.is_authenticated and 'persona_id' in cookies):
-        return False
+    persona_id: Optional[int] = get_persona_context(request)
+
+    if (request.user.is_authenticated and persona_id is not None):
+        return (True, persona_id)
     else:
-        return True
+        return (False, None)
 
 
 def has_persona_context(request: WSGIRequest):
@@ -29,14 +32,12 @@ def has_persona_context(request: WSGIRequest):
     :param request: Django 요청 객체
     :return: 통과된 경우 True, 그렇지 않은 경우 False
     """
-    has_weak_context = has_weak_persona_context(request)
+    has_weak_context, persona_id = has_weak_persona_context(request)
 
     if not has_weak_context:
         return False
     else:
-        cookies = request.COOKIES
         try:
-            _, persona_id = parse_global_id(cookies['persona_id'])
             persona = Persona.objects.get(id=persona_id)
             if persona.owner != request.user:
                 raise Persona.DoesNotExist()
