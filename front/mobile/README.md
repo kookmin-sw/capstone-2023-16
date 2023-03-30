@@ -1,4 +1,4 @@
-# POSTONA
+# POSTONA MOBILE
 
 ## 기술 구성
 
