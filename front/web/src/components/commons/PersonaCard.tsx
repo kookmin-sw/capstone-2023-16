@@ -1,3 +1,4 @@
+
 import React from 'react';
 import styled from 'styled-components';
 import profileImg from "../../assets/imgs/profileImg.png"
@@ -9,7 +10,6 @@ interface profile {
     deviceType?: string,
     usageType?: string,
 };
-
 
 const PersonaCard = ({src, nickname,  deviceType, usageType}:profile) =>{
     return(
