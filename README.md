@@ -9,7 +9,6 @@ https://kookmin-sw.github.io/capstone-2023-16/
 <center>
     <image src="https://user-images.githubusercontent.com/49488165/228773104-2fa2ceb2-107f-46bd-b54b-66db312d608c.png"/>
 </center>
-<br/>
 
 **Postona**는 Post와 Persona의 합성어로, 여기서 persona는 콘텐츠(post)를 창작하고, 소비하는 사용자의 가상 인격을 상징한다.
 
