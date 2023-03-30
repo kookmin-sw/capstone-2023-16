@@ -114,6 +114,13 @@ _(준비중)_
 ---
 
 ## 6. 사용법
+### backend
+| ![backend-architecture](https://user-images.githubusercontent.com/1160378/228834767-6798a1da-2593-4522-a017-939b2e0daf42.jpg) | 
+|:--:| 
+| *백엔드 아키텍처* |
+
+
+백엔드 실행방법은 [backend 디렉토리](../back) 에 있습니다.
 
 ### mobile
 
@@ -133,6 +140,7 @@ cd ..
 npm run start
 
 ```
+
 
 
 ### Web
