@@ -5,7 +5,6 @@ import LoginButton from '../components/Login/LoginButton';
 import LoginCheckBox from '../components/Login/LoginCheckBox';
 import LoginContainer from '../components/Login/LoginContainer';
 import { Link } from 'react-router-dom';
-import ContainerLayout from '../components/commons/ContainerLayout';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
@@ -13,8 +12,8 @@ import { login } from '../store/reducers/loginReducer';
 
 const LoginPage = () => {
   const deviceType = useDeviceType();
-  const idInput = useRef(null);
-  const pwInput = useRef(null);
+  const idInput = useRef<HTMLInputElement>(null);
+  const pwInput = useRef<HTMLInputElement>(null);
 
   const loginForm = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
@@ -38,13 +37,13 @@ const LoginPage = () => {
           {/* 비율을 위한 공백 */}
           <EmptyBox deviceType={deviceType}/>
 
-          <LoginInput text='ID' inputRef={idInput} deviceType={deviceType}></LoginInput>
-          <LoginInput text='PASSWORD' inputRef={pwInput} deviceType={deviceType} isPassword></LoginInput>
+          <LoginInput text='ID' ref={idInput} deviceType={deviceType}></LoginInput>
+          <LoginInput text='PASSWORD' ref={pwInput} deviceType={deviceType} isPassword></LoginInput>
           <LoginCheckBox />
           {/* 비율을 위한 공백 */}
           <EmptyBox deviceType={deviceType} />
 
-          <LoginButton deviceType={deviceType} onClick={() => console.log('')} />
+          <LoginButton deviceType={deviceType} onClick={onLogin} />
         </LoginContainer>
       </>
     )
