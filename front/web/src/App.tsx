@@ -1,20 +1,20 @@
 import { Routes, Route } from 'react-router-dom';
 import { GlobalStyles } from './styles/GlobalStyles';
-import PostChoice from './pages/PostChoice';
 import LoginPage from './pages/LoginPage';
 import PersonaChoice from './pages/PersonaChoicePage';
-import TitleLayout from './components/commons/TitleLayout';
+import MyPostsPage from './pages/MyPostsPage';
+import BackgroundLayout from './components/commons/BackgroundLayout';
 
 const App = () => {
   return (
-    <TitleLayout>
+    <BackgroundLayout>
       <GlobalStyles />
       <Routes>
-        <Route path='/' element={<PostChoice/>} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/persona' element={<PersonaChoice />} />
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/personas' element={<PersonaChoice />} />
+        <Route path='/posts' element={<MyPostsPage />} />
       </Routes>
-    </TitleLayout>
+    </BackgroundLayout>
   );
 }
 

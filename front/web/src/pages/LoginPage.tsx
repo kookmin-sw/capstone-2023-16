@@ -7,8 +7,8 @@ import LoginContainer from '../components/Login/LoginContainer';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store';
-import { login } from '../store/reducers/loginReducer';
+import { RootState } from '../redux/store';
+import { login } from '../redux/slices/loginSlice';
 
 const LoginPage = () => {
   const deviceType = useDeviceType();
