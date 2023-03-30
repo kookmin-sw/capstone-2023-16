@@ -1,1 +1,18 @@
-본 디렉토리를 모바일 클라이언트의 루트 디렉토리로 사용해 주세요.
+### mobile
+
+#### requirements
+- Node.js
+- React Native Cli
+
+### 앱 시작하기
+```
+cd front/mobile/
+npm install
+
+cd ios
+pod install
+
+cd ..
+npm run start
+
+```
