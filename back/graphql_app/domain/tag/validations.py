@@ -11,9 +11,9 @@ def check_body_length(body: str) -> Tuple[int, int]:
     2. 최대 길이보다 긴 경우 : (+1, 요구되는 body의 최대 길이)
     3. 유효 : (0, 0)
     """
-    if len(body) < Tag.MIN_CATEGORY_BODY_LEN:
-        return -1, Tag.MIN_CATEGORY_BODY_LEN
-    elif len(body) > Tag.MAX_CATEGORY_BODY_LEN:
-        return 1, Tag.MAX_CATEGORY_BODY_LEN
+    if len(body) > Tag.MAX_TAG_BODY_LEN:
+        return 1, Tag.MAX_TAG_BODY_LEN
+    elif len(body) < Tag.MIN_TAG_BODY_LEN:
+        return -1, Tag.MIN_TAG_BODY_LEN
     else:
         return 0, 0
