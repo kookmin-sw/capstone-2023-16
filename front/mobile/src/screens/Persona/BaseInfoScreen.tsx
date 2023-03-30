@@ -18,6 +18,7 @@ import {NavigationData} from '../../navigation/AuthNavigator';
 import {imagePath} from '../../utils/imagePath';
 import CheckBox from '../../components/common/CheckBox/CheckBox';
 import KeyboardAvoidingViewContainer from '../../components/common/Containers/KeyboardAvoidingViewContainer';
+import SmallText from '../../components/common/Texts/SmallText';
 
 const BaseInfoContainer = styled(Container)`
   width: 100%;
@@ -45,8 +46,25 @@ const PersonaNickSection = styled.View`
   flex: 1;
 `;
 
-const PersonaIDSection = styled.View`
+const ExtraInfoSection = styled.View`
   flex: 1;
+`;
+
+const GenderInfoSection = styled.View`
+  flex-direction: row;
+  margin-top: 20px;
+  margin-left: ${DimensionTheme.width(20)};
+`;
+
+const RadioButtonSection = styled.View`
+  flex-direction: row;
+  margin-left: ${DimensionTheme.width(30)};
+`;
+
+const OccupationInfoSection = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-left: ${DimensionTheme.width(20)};
 `;
 
 const PersonaDescriptionSection = styled.View`
@@ -65,6 +83,8 @@ type Props = NavigationData<'BaseInfo'>;
 
 export const BaseInfoScreen: FC<Props> = ({navigation}) => {
   const [isPrivate, setIsPrivate] = useState(false);
+  // 성별
+  const [isMale, setIsMale] = useState(true);
   return (
     <BaseInfoContainer>
       <KeyboardAvoidingViewContainer>
@@ -94,17 +114,46 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
               placeholder="닉네임을 입력해주세요."
             />
           </PersonaNickSection>
-          <PersonaIDSection>
-            <StyledTextInput
-              label="페르소나 아이디"
-              labelStyle={{
-                color: colors.black,
-                marginBottom: 7,
-                fontWeight: '700',
-              }}
-              placeholder="아이디를 입력해주세요."
-            />
-          </PersonaIDSection>
+          <ExtraInfoSection>
+            <GenderInfoSection>
+              <SmallText
+                textStyle={{
+                  color: colors.black,
+                  marginBottom: 7,
+                  fontWeight: '700',
+                }}>
+                성별
+              </SmallText>
+              <RadioButtonSection>
+                <CheckBox
+                  onPress={() => setIsMale(true)}
+                  isChecked={isMale}
+                  labelStyle={{marginRight: 30}}
+                  label={'남'}
+                />
+                <CheckBox
+                  onPress={() => setIsMale(false)}
+                  isChecked={isMale ? false : true}
+                  label={'여'}
+                />
+              </RadioButtonSection>
+            </GenderInfoSection>
+            <OccupationInfoSection>
+              <SmallText
+                textStyle={{
+                  color: colors.black,
+                  fontWeight: '700',
+                }}>
+                직업
+              </SmallText>
+              <StyledTextInput
+                viewStyle={{
+                  width: DimensionTheme.width(281),
+                  marginLeft: DimensionTheme.width(12),
+                }}
+              />
+            </OccupationInfoSection>
+          </ExtraInfoSection>
           <PersonaDescriptionSection>
             <StyledTextInput
               multiline={true}
