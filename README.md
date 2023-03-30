@@ -64,29 +64,6 @@ _(준비중)_
 ---
 
 ## 5. 팀 소개
-### Backend
-<table>
-  <tr>
-    <th>박유빈</th>
-    <th>손호성</th>
-  </tr>
-  <tr>
-    <td><img src="https://user-images.githubusercontent.com/49488165/228554750-74a4939f-99bc-4228-812a-034d20e02427.png" alt="박유빈 이미지" style="max-width: 100%;"></td>
-    <td><img src="https://user-images.githubusercontent.com/49488165/228745021-181f37e7-0543-4d4b-bdb5-05803e688825.png" alt="손호성 이미지" style="max-width: 100%;"></td>
-  </tr>
-  <tr>
-    <td>****1615</td>
-    <td>****3116</td>
-  </tr>
-  <tr>
-    <td>qkrdbqls1001@naver.com</td>
-    <td>hoseongson@kookmin.ac.kr</td>
-  </tr>
-  <tr>
-    <td>Back-end 개발</td>
-    <td>Back-end 개발, Infrastructure/Deployment</td>
-  </tr>
-</table>
 
 ### Frontend
 <table>
@@ -96,9 +73,9 @@ _(준비중)_
     <th>홍현지</th>
   </tr>
   <tr>
-    <th><img src="https://user-images.githubusercontent.com/49488165/228554840-1ce3a3b6-8d50-4265-8459-5b9688d4b856.png" alt="박정민 이미지" style="max-width: 100%;"></th>
-    <th><img src="https://user-images.githubusercontent.com/49488165/228554915-d9f9a9cf-4ce6-4191-af7b-c0a8169a860d.png" alt="이채민 이미지" style="max-width: 100%;"></th>
-    <th><img src="https://user-images.githubusercontent.com/49488165/228554965-2dc26bce-2ebb-481f-a3ca-19a04a73a536.png" alt="홍현지 이미지" style="max-width: 100%;"></th>
+    <th><img src="https://user-images.githubusercontent.com/49488165/228554840-1ce3a3b6-8d50-4265-8459-5b9688d4b856.png" alt="박정민 이미지" style="width: 250px;"></th>
+    <th><img src="https://user-images.githubusercontent.com/49488165/228554915-d9f9a9cf-4ce6-4191-af7b-c0a8169a860d.png" alt="이채민 이미지" style="width: 250px;"></th>
+    <th><img src="https://user-images.githubusercontent.com/49488165/228554965-2dc26bce-2ebb-481f-a3ca-19a04a73a536.png" alt="홍현지 이미지" style="width: 250px;"></th>
   </tr>
   <tr>
     <td>****3074</td>
@@ -114,6 +91,30 @@ _(준비중)_
     <td>Mobile App 개발</td>
     <td>Web Client 개발</td>
     <td>UI/UX, Mobile App 개발</td>
+  </tr>
+</table>
+
+### Backend
+<table>
+  <tr>
+    <th>박유빈</th>
+    <th>손호성</th>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/49488165/228554750-74a4939f-99bc-4228-812a-034d20e02427.png" alt="박유빈 이미지" style="width: 250px;"></td>
+    <td><img src="https://user-images.githubusercontent.com/49488165/228745021-181f37e7-0543-4d4b-bdb5-05803e688825.png" alt="손호성 이미지" style="width: 250px;"></td>
+  </tr>
+  <tr>
+    <td>****1615</td>
+    <td>****3116</td>
+  </tr>
+  <tr>
+    <td>qkrdbqls1001@naver.com</td>
+    <td>hoseongson@kookmin.ac.kr</td>
+  </tr>
+  <tr>
+    <td>Back-end 개발</td>
+    <td>Back-end 개발, Infrastructure/Deployment</td>
   </tr>
 </table>
 
