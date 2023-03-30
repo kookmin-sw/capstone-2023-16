@@ -24,10 +24,6 @@ import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
-import {graphql} from 'relay-runtime';
-
-import {useMutation} from 'react-relay';
-
 const LoginContainer = styled(Container)`
   width: 100%;
   flex: 1;
@@ -87,21 +83,21 @@ const loginMutation = graphql`
 
 type Props = NavigationData<'Login'>;
 
-const [commitMutation, isMutationInFlight] = useMutation(
-  graphql`
-    mutation LoginScreenMutation($username: String!, $password: String!) {
-      login(username: $username, password: $password) {
-        ... on User {
-          id
-          signupMethod
-          createdAt
-          email
-          username
-        }
-      }
-    }
-  `,
-);
+// const [commitMutation, isMutationInFlight] = useMutation(
+//   graphql`
+//     mutation LoginScreenMutation($username: String!, $password: String!) {
+//       login(username: $username, password: $password) {
+//         ... on User {
+//           id
+//           signupMethod
+//           createdAt
+//           email
+//           username
+//         }
+//       }
+//     }
+//   `,
+// );
 
 // const commitMutation = {};
 
