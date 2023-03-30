@@ -18,8 +18,12 @@ export type ParamList = {
   Welcome: undefined;
   Login: undefined;
   Signup: undefined;
+  Main: undefined;
   BaseInfo: undefined;
   InterestTagSetting: undefined;
+  MyPage: undefined;
+  Following: undefined;
+  History: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
