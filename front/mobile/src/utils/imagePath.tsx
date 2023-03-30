@@ -10,4 +10,5 @@ export const imagePath: {[key: string]: any} = {
   shareIcon: require('../assets/share.png'),
   editIcon: require('../assets/edit.png'),
   moreIcon: require('../assets/more-image.png'),
+  welcome: require('../assets/welcome.png'),
 };
