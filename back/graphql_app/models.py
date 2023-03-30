@@ -27,6 +27,7 @@ class User(AbstractBaseUser):
 class Post(models.Model):
     title = models.TextField(verbose_name="글 제목")
     content = models.TextField(verbose_name="글 내용")
+    content_preview = models.TextField(blank=True, null=True, default=True, verbose_name='글 내용 미리보기')
     paid_content = models.TextField(verbose_name="유료 내용", blank=True, null=True)
 
     author = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE, db_column='author_persona_id',
@@ -38,13 +39,27 @@ class Post(models.Model):
     category = models.ForeignKey('graphql_app.Category', related_name='including_posts', null=True, blank=True,
                                  default=None, on_delete=models.SET_NULL, verbose_name='카테고리')
 
+    required_membership_tier = models.IntegerField(default=None, null=True, blank=True, verbose_name='요구 멤버쉽 티어')
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각', null=True)
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각', null=True)
+
+    CONTENT_TRUNC_LEN = 50
 
     class Meta:
         db_table = 'post'
         verbose_name = '게시물'
         verbose_name_plural = '게시물 목록'
+
+    def generate_content_preview(self) -> str:
+        """
+        content 값을 content_preview의 형식으로 바꾸어 반환하는 함수
+        :return: 변환된 content_preview 문자열
+        """
+        if len(self.content) > self.CONTENT_TRUNC_LEN:
+            return self.content[:self.CONTENT_TRUNC_LEN] + '...'
+        else:
+            return self.content
 
 
 class Persona(models.Model):
@@ -142,6 +157,9 @@ class Category(models.Model):
 
 
 class WaitFreePersona(models.Model):
+    # 무료로 개방되는 시점까지의 일수
+    FREE_AFTER_DAYS = 3
+
     persona = models.ForeignKey('graphql_app.Persona', on_delete=models.CASCADE,
                                 db_column='persona_id', verbose_name="글쓴이")
     post = models.ForeignKey('graphql_app.Post', on_delete=models.CASCADE, db_column='post_id', verbose_name="게시물")
