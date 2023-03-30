@@ -6,44 +6,28 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import {LoginScreen} from '../screens/LoginScreen';
+import ImageButton from '../components/common/Buttons/ImageButton';
+import {imagePath} from '../utils/imagePath';
+
 import MainScreen from '../screens/MainScreen';
-import {SignupScreen} from '../screens/SignupScreen';
 import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
-import DetailScreen from '../screens/DetailScreen';
-import ImageButton from '../components/common/Buttons/ImageButton';
 import {MyPageScreen} from '../screens/MyAccount/MyPageScreen';
-import {imagePath} from '../utils/imagePath';
 import {FollowingScreen} from '../screens/MyAccount/FollowingScreen';
-import {MyHistoryScreen} from '../screens/MyHistory/MyHistoryScreen';
 
 export type ParamList = {
-  Login: undefined;
-  Signup: undefined;
   Main: undefined;
   BaseInfo: undefined;
   InterestTagSetting: undefined;
   MyPage: undefined;
   Following: undefined;
-  History: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
 
-const AuthNavigator = () => {
+const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      <StackNavigator.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
-      <StackNavigator.Screen
-        name="Signup"
-        component={SignupScreen}
-        options={{title: '회원가입', headerShadowVisible: false}}
-      />
       <StackNavigator.Screen
         name="Main"
         component={MainScreen}
@@ -68,17 +52,11 @@ const AuthNavigator = () => {
         }}
       />
       <StackNavigator.Screen
-        name="DetailContent"
-        component={DetailScreen}
-        options={{headerShown: false}}
-      />
-      <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
         options={{
           headerShadowVisible: false,
           headerTitle: '홍현지',
-          headerTransparent: true,
           headerTitleStyle: {
             fontWeight: '700',
             fontSize: 28,
@@ -87,17 +65,17 @@ const AuthNavigator = () => {
             <>
               <ImageButton
                 btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.shareIcon}
+                source={imagePath.eye}
                 onPress={() => {}}
               />
               <ImageButton
                 btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.editIcon}
+                source={imagePath.eye_off}
                 onPress={() => {}}
               />
               <ImageButton
                 btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.settingIcon}
+                source={imagePath.eye}
                 onPress={() => {}}
               />
             </>
@@ -107,26 +85,13 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="Following"
         component={FollowingScreen}
-        options={{
-          title: '팔로잉',
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-        }}
-      />
-      <StackNavigator.Screen
-        name="History"
-        component={MyHistoryScreen}
-        options={{
-          title: 'MY HISTORY',
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-        }}
+        options={{headerShadowVisible: false}}
       />
     </StackNavigator.Navigator>
   );
 };
 
-export default AuthNavigator;
+export default AppNavigator;
 
 export type NavigationData<RouteName extends keyof ParamList> = {
   navigation: NativeStackNavigationProp<ParamList, RouteName>;

@@ -3,6 +3,7 @@ import React, {FC} from 'react';
 import styled from 'styled-components/native';
 import {Modal as DefaultModal} from 'react-native';
 import {colors} from '../colors';
+import {DimensionTheme} from '../shared';
 
 type ModalProps = {
   children: React.ReactNode;
@@ -17,8 +18,8 @@ const ModalBackground = styled.View`
 `;
 
 const ModalContainer = styled.View`
-  width: 80%;
-  height: 80%;
+  width: ${DimensionTheme.width(328)};
+  height: ${DimensionTheme.height(590)};
   background-color: ${colors.white};
   padding-horizontal: 20px;
   padding-vertical: 30px;

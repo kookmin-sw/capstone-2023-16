@@ -1,7 +1,13 @@
 import React, {FC} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
-import {GestureResponderEvent, Image, StyleProp, TextStyle} from 'react-native';
+import {
+  GestureResponderEvent,
+  Image,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 
 import {colors} from '../colors';
 import SmallText from '../Texts/SmallText';
@@ -24,6 +30,7 @@ const StyledCheckBox = styled.TouchableOpacity`
 
 type CheckboxProps = {
   label: string;
+  viewStyle?: StyleProp<ViewStyle>;
   labelStyle?: StyleProp<TextStyle>;
   isChecked: boolean;
   onPress: ((event: GestureResponderEvent) => void) | undefined | undefined;
@@ -31,7 +38,7 @@ type CheckboxProps = {
 
 const CheckBox: FC<CheckboxProps> = props => {
   return (
-    <StyledView>
+    <StyledView style={props.viewStyle}>
       <StyledCheckBox onPress={props.onPress}>
         {props.isChecked ? <Image source={imagePath.check} /> : null}
       </StyledCheckBox>

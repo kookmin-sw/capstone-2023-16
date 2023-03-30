@@ -3,6 +3,7 @@ import React, {FC} from 'react';
 import styled from 'styled-components/native';
 
 import {colors} from '../colors';
+import {DimensionTheme} from '../shared';
 import RegularText from '../Texts/RegularText';
 
 import {ButtonProps} from './types';
@@ -11,8 +12,9 @@ const ButtonView = styled.TouchableOpacity`
   align-items: center;
   background-color: ${colors.white};
   width: 100%;
-  padding: 12px;
+  padding: 8px;
   border-radius: 15px;
+  height: ${DimensionTheme.height(50)};
 `;
 
 const RegularButton: FC<ButtonProps> = props => {

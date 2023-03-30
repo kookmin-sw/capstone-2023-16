@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
 
 interface KeyboardAvoidingViewContainerProps {
@@ -15,17 +16,16 @@ const KeyboardAvoidingViewContainer: FC<
 > = props => {
   return (
     <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={{
         flex: 1,
         backgroundColor: 'transparent',
-        padding: 20,
+        margin: 15,
       }}
       keyboardVerticalOffset={60}>
-      {/* <ScrollView showsVerticalScrollIndicator={false}> */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {props.children}
       </TouchableWithoutFeedback>
-      {/* </ScrollView> */}
     </KeyboardAvoidingView>
   );
 };

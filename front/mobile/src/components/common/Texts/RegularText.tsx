@@ -3,12 +3,13 @@ import React, {FC} from 'react';
 import styled from 'styled-components/native';
 
 import {colors} from '../colors';
+import {DimensionTheme} from '../shared';
 
 const StyledText = styled.Text`
-  font-size: 24px;
+  font-size: ${DimensionTheme.fontSize(20)};
   color: ${colors.black};
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 29px;
 `;
 
