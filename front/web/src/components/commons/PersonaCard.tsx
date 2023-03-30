@@ -1,17 +1,8 @@
+
+import React from 'react';
 import styled from 'styled-components';
 import profileImg from "../../assets/imgs/profileImg.png"
 import { GrayShadowBox } from './GrayShadowBox';
-
-const PersonaCard = ({src, nickname,  deviceType, usageType}:profile) =>{
-    return(
-        <BoxDiv deviceType={deviceType} usageType={usageType}>
-            <ImgBox deviceType={deviceType} usageType={usageType} src={(src===null||src==="")? profileImg: src} alt="Profile Image"/>
-            <NameText deviceType={deviceType} usageType={usageType}>{nickname}</NameText>
-        </BoxDiv>
-    )
-};
-
-export default PersonaCard;
 
 interface profile {
     src?: string,
@@ -19,6 +10,17 @@ interface profile {
     deviceType?: string,
     usageType?: string,
 };
+
+const PersonaCard = ({src, nickname,  deviceType, usageType}:profile) =>{
+    return(
+        <BoxDiv deviceType={deviceType} usageType={usageType}>
+            <ImgBox deviceType={deviceType} usageType={usageType} src={(src===null||src==="")? profileImg: src} alt="Profile Image"/>
+            <NicknameText deviceType={deviceType} usageType={usageType}>{nickname}</NicknameText>
+        </BoxDiv>
+    )
+};
+
+export default PersonaCard;
 
 const BoxDiv = styled(GrayShadowBox)<profile>`
     width: 100%;
@@ -66,7 +68,7 @@ const ImgBox = styled.img<profile>`
     border-color: #c1c1c1;
 `;
 
-const NameText = styled.p<profile>`
+const NicknameText = styled.p<profile>`
     font-size: ${(props)=>{return (
         (props.usageType==='choice')? 
             (props.deviceType==='mobile')? '16px':
