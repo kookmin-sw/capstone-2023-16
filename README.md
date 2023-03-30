@@ -2,6 +2,8 @@
 
 ## 1. 프로젝트 소개
 
+콘텐츠 소비자는 얻고자 하는 양질의 정보를 지속적으로 공급 받을 수 있고, 콘텐츠 창작자는 주요 콘텐츠 소비자의 주요한 특징을 참고하여 자유롭게 콘텐츠를 생산할 수 있도록 지원하는 서비스
+
 <center>
     <image src="https://user-images.githubusercontent.com/49488165/228773104-2fa2ceb2-107f-46bd-b54b-66db312d608c.png"/>
 </center>
