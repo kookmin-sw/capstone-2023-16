@@ -110,48 +110,8 @@ _(준비중)_
 |:--:| 
 | *백엔드 아키텍처* |
 
+백엔드 실행방법은 [backend 디렉토리](back/) 에 있습니다. <br /><br />
 
-백엔드 실행방법은 [backend 디렉토리](back/) 에 있습니다.
-
-### mobile
-
-#### requirements
-- Node.js
-- React Native Cli
-
-### 앱 시작하기
-```
-cd front/mobile/
-npm install
-
-cd ios
-pod install
-
-cd ..
-npm run start
-
-```
-
-
-
-### Web
-
-#### requirements
-- Node.js
-
-## Local development
-1. 로컬에서 terminal을 열어 아래의 명령어를 실행합니다.
-```bash 
-git clone https://github.com/kookmin-sw/capstone-2023-16
-```
-2. 복제가 완료되면 아래의 명령어를 실행하여 웹 클라이언트 메인 폴더로 이동합니다.
-```bash 
-cd capstone-2023-16
-cd front/web
-```
-3. 실행에 필요한 패키지들을 설치하고 실행합니다.
-```bash
-npm install
-npm start
-```
-
+### frontend
+모바일 실행방법은 [front/mobile 디렉토리](front/mobile) 에 있습니다. <br />
+웹  실행방법은 [front/web 디렉토리](front/web) 에 있습니다. <br />
