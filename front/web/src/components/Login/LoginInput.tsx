@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ForwardedRef, useState } from 'react';
 import { GrayShadowBox } from '../commons/GrayShadowBox';
 import { ReactComponent as Visible } from '../../assets/icons/visibility.svg';
 import { ReactComponent as Invisible } from '../../assets/icons/visibility-off.svg';
@@ -6,12 +6,11 @@ import styled from 'styled-components';
 
 type LoginInputProps = {
   text: string,
-  inputRef: React.RefObject<HTMLInputElement>,
   deviceType: string,
   isPassword?: boolean,
 }
 
-const LoginInput = ({ text, isPassword, inputRef, deviceType }: LoginInputProps) => {
+const LoginInput = ({ text, isPassword, deviceType }: LoginInputProps, ref: ForwardedRef<HTMLInputElement>) => {
   const [visibility, setVisibility] = useState<boolean>(isPassword? false : true);
 
   const onToggleVisibility = () => setVisibility(!visibility);
@@ -19,7 +18,7 @@ const LoginInput = ({ text, isPassword, inputRef, deviceType }: LoginInputProps)
   return (<LoginInputContainer deviceType={deviceType}>
     <InputLabel htmlFor={text} deviceType={deviceType}>{text}</InputLabel>
     <LoginInputBox deviceType={deviceType}>
-      <Input id={text} ref={inputRef} type={visibility ? 'text' : 'password'} deviceType={deviceType} />
+      <Input id={text} ref={ref} type={visibility ? 'text' : 'password'} deviceType={deviceType} />
       {isPassword ?
         visibility ?
           <VisibleIcon onClick={onToggleVisibility} />
@@ -31,7 +30,7 @@ const LoginInput = ({ text, isPassword, inputRef, deviceType }: LoginInputProps)
   )
 };
 
-export default LoginInput;
+export default React.forwardRef(LoginInput);
 
 const LoginInputContainer = styled.div<{ deviceType: string }>`
   width: 100%;

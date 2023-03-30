@@ -8,7 +8,7 @@ const PersonaChoice = () => {
 
     return (<ContentLayout>            
             <PersonaChoiceContainer>
-                <PersonaChoiceTitle deviceType={deviceType}>페르소나 선택</PersonaChoiceTitle>
+                <PersonaChoiceHeader deviceType={deviceType}>페르소나 선택</PersonaChoiceHeader>
                 <PersonaList />
             </PersonaChoiceContainer>
         </ContentLayout>
@@ -24,7 +24,7 @@ const PersonaChoiceContainer = styled.div`
     flex-direction: column;
 `;
 
-const PersonaChoiceTitle = styled.div<{ deviceType: string }>`
+const PersonaChoiceHeader = styled.h2<{ deviceType: string }>`
     font-size: ${(props) => (props.deviceType === 'desktop') ? '32px' : (props.deviceType === 'tablet') ? '28px': '16px'};
     font-weight: 700;
 `;

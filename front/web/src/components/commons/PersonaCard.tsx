@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import profileImg from "../../assets/imgs/profileImg.png"
 import { GrayShadowBox } from './GrayShadowBox';
 
-const PersonaCard = ({src, name,  deviceType, usageType}:profile) =>{
+const PersonaCard = ({src, nickname,  deviceType, usageType}:profile) =>{
     return(
         <BoxDiv deviceType={deviceType} usageType={usageType}>
             <ImgBox deviceType={deviceType} usageType={usageType} src={(src===null||src==="")? profileImg: src} alt="Profile Image"/>
-            <NameText deviceType={deviceType} usageType={usageType}>{name}</NameText>
+            <NameText deviceType={deviceType} usageType={usageType}>{nickname}</NameText>
         </BoxDiv>
     )
 };
@@ -15,7 +15,7 @@ export default PersonaCard;
 
 interface profile {
     src?: string,
-    name?: string,
+    nickname?: string,
     deviceType?: string,
     usageType?: string,
 };
