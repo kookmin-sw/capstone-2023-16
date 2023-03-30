@@ -1,5 +1,7 @@
 # POSTONA
 
+https://kookmin-sw.github.io/capstone-2023-16/
+
 ## 1. 프로젝트 소개
 
 콘텐츠 소비자는 얻고자 하는 양질의 정보를 지속적으로 공급 받을 수 있고, 콘텐츠 창작자는 주요 콘텐츠 소비자의 주요한 특징을 참고하여 자유롭게 콘텐츠를 생산할 수 있도록 지원하는 서비스
@@ -62,56 +64,43 @@ _(준비중)_
 ---
 
 ## 5. 팀 소개
-
-### **박유빈** (팀장)
-
-![박유빈 이미지](https://user-images.githubusercontent.com/49488165/228554750-74a4939f-99bc-4228-812a-034d20e02427.png)
-
-✔️ **학번** : \*\*\*\*1615
-
-✔️ **이메일** : qkrdbqls1001@naver.com
-
-✔️ **역할** : Back-end 개발
-
-### **박정민**
-
-![박정민 이미지](https://user-images.githubusercontent.com/49488165/228554840-1ce3a3b6-8d50-4265-8459-5b9688d4b856.png)
-
-✔️ **학번** : \*\*\*\*3074
-
-✔️ **이메일** : pmini09@kookmin.ac.kr
-
-✔️ **역할** : Mobile App 개발
-
-### **손호성**
-
-![손호성 이미지](https://user-images.githubusercontent.com/49488165/228745021-181f37e7-0543-4d4b-bdb5-05803e688825.png)
-
-✔️ **학번** : \*\*\*\*3116
-
-✔️ **이메일** : hoseongson@kookmin.ac.kr
-
-✔️ **역할** : Back-end 개발, Infrastructure/Deployment
-
-### **이채민**
-
-![이채민 이미지](https://user-images.githubusercontent.com/49488165/228554915-d9f9a9cf-4ce6-4191-af7b-c0a8169a860d.png)
-
-✔️ **학번** : \*\*\*\*3125
-
-✔️ **이메일** : chaem12@kookmin.ac.kr
-
-✔️ **역할** : Web Client 개발
-
-### **홍현지**
-
-![홍현지 이미지](https://user-images.githubusercontent.com/49488165/228554965-2dc26bce-2ebb-481f-a3ca-19a04a73a536.png)
-
-✔️ **학번** : \*\*\*\*3166
-
-✔️ **이메일** : hmj2292@kookmin.ac.kr
-
-✔️ **역할** : UI/UX, Mobile App 개발
+<table>
+  <tr>
+    <th>박유빈</th>
+    <th>박정민</th>
+    <th>손호성</th>
+    <th>이채민</th>
+    <th>홍현지</th>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/49488165/228554750-74a4939f-99bc-4228-812a-034d20e02427.png" alt="박유빈 이미지" style="max-width: 100%;"></td>
+    <th><img src="https://user-images.githubusercontent.com/49488165/228554840-1ce3a3b6-8d50-4265-8459-5b9688d4b856.png" alt="박정민 이미지" style="max-width: 100%;"></th>
+    <td><img src="https://user-images.githubusercontent.com/49488165/228745021-181f37e7-0543-4d4b-bdb5-05803e688825.png" alt="손호성 이미지" style="max-width: 100%;"></td>
+    <th><img src="https://user-images.githubusercontent.com/49488165/228554915-d9f9a9cf-4ce6-4191-af7b-c0a8169a860d.png" alt="이채민 이미지" style="max-width: 100%;"></th>
+    <th><img src="https://user-images.githubusercontent.com/49488165/228554965-2dc26bce-2ebb-481f-a3ca-19a04a73a536.png" alt="홍현지 이미지" style="max-width: 100%;"></th>
+  </tr>
+  <tr>
+    <td>****1615</td>
+    <td>****3074</td>
+    <td>****3116</td>
+    <td>****3125</td>
+    <td>****3166</td>
+  </tr>
+  <tr>
+    <td>qkrdbqls1001@naver.com</td>
+    <td>pmini09@kookmin.ac.kr</td>
+    <td>hoseongson@kookmin.ac.kr</td>
+    <td>chaem12@kookmin.ac.kr</td>
+    <td>hmj2292@kookmin.ac.kr</td>
+  </tr>
+  <tr>
+    <td>Back-end 개발</td>
+    <td>Mobile App 개발</td>
+    <td>Back-end 개발, Infrastructure/Deployment</td>
+    <td>Web Client 개발</td>
+    <td>UI/UX, Mobile App 개발</td>
+  </tr>
+</table>
 
 ---
 
