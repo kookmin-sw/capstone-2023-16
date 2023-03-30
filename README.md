@@ -125,4 +125,4 @@ _(준비중)_
 
 ### frontend
 모바일 실행방법은 [front/mobile 디렉토리](front/mobile) 에 있습니다. <br />
-웹  실행방법은 [front/web 디렉토리](front/front) 에 있습니다. <br />
+웹  실행방법은 [front/web 디렉토리](front/web) 에 있습니다. <br />
