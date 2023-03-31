@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-ilvtojpkntx8=v1d)dsokaixw%u+kxc54c=nzwq)jkd0qh1+27
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost", "persona-backend.herokuapp.com"]
 APPEND_SLASH = False
 
 # Application definition
@@ -30,24 +30,32 @@ DJANGO_DEFAULT_APPS = [
     'django.contrib.staticfiles',
 ]
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+
 DRF_APPS = [
     'rest_framework'
 ]
 
 GRAPHQL_APPS = [
-    "strawberry.django"
+    "strawberry.django",
+    "strawberry_django_plus"
 ]
 
-AUTH_USER_MODEL = 'auth_app.User'
+AUTH_USER_MODEL = 'graphql_app.User'
 
 SERVICE_APPS = [
-    'common_app.apps.CommonAppConfig',
-    'auth_app.apps.AuthAppConfig',
-    'persona_app.apps.PersonaAppConfig',
+    'graphql_app.apps.GraphqlAppConfig',
 ]
 
 INSTALLED_APPS = DJANGO_DEFAULT_APPS + DRF_APPS + GRAPHQL_APPS + SERVICE_APPS + [
-    "corsheaders", ]
+    "corsheaders", "debug_toolbar", ]
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -59,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "strawberry_django_plus.middlewares.debug_toolbar.DebugToolbarMiddleware"
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -87,7 +96,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'capstone',
+        'NAME': os.environ.get('MYSQL_DB_NAME'),
         'USER': os.environ.get('MYSQL_USER'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
         'HOST': os.environ.get('MYSQL_HOST'),
@@ -105,6 +114,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

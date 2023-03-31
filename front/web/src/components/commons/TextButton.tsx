@@ -1,37 +1,39 @@
 import styled from "styled-components";
-import WHcal from '../../utils/WHcal';
 
 interface buttonContent {
-    widthType?: string,
+    deviceType?: string,
     text?:string,
 }
 
-const Btn = styled.button<{widthType?:string}>`
-    padding-left: ${(props)=>{return WHcal(props.widthType!, 22)}};
-    padding-right: ${(props)=>{return WHcal(props.widthType!, 22)}};
-    height: ${(props)=>{return WHcal(props.widthType!, 46)}};
-    border-radius: ${(props)=>{return WHcal(props.widthType!, 10)}};
+const Btn = styled.button<{deviceType?:string}>`
+    padding-left: ${(props) => {return (props.deviceType==='mobile')?'11px': '22px'}};
+    padding-right: ${(props) => {return (props.deviceType==='mobile')?'11px': '22px'}};
+    height: ${(props) => {return (props.deviceType==='mobile')?'23px': '46px'}};
+    border-radius: ${(props) => {return (props.deviceType==='mobile')?'5px': '10px'}};
     background-color: #ffffff;
-    box-shadow: 0px ${(props)=>{return WHcal(props.widthType!, 1)}} ${(props)=>{return WHcal(props.widthType!, 7)}} 0px rgba(0,0,0,0.25);
+    box-shadow: 0px 0.0694vw 0.4861vw 0px rgba(0,0,0,0.25);
     display: flex;
     align-items: center;
     justify-content: center;
     border:none;
+    &:hover{
+        cursor: pointer;
+    }
+    &:active{
+        cursor: default;
+        background-color: lightgray;
+    }
 `;
 
-const Text = styled.p<{widthType?:string}>`
-    font-size: ${(props) => {return WHcal(props.widthType!, 24)}};
-    line-height: ${(props)=>{return WHcal(props.widthType!, 29.05)}};
+const Text = styled.p<{deviceType?:string}>`
+    font-size: ${(props) => {return (props.deviceType==='mobile')?'12px': '24px'}};
+    line-height: ${(props) => {return (props.deviceType==='mobile')?'15.5px': '29px'}};
 `;
 
-const TextButton = ({text, widthType}:buttonContent) => {
-    console.log('====================================');
-    console.log(WHcal(widthType!, 30));
-    console.log('====================================');
-    console.log('====================================');
+const TextButton = ({text, deviceType}:buttonContent) => {
     return(
-        <Btn widthType={widthType}>
-            <Text widthType={widthType}>{text}</Text>
+        <Btn deviceType={deviceType}>
+            <Text deviceType={deviceType}>{text}</Text>
         </Btn>
     )
 }
