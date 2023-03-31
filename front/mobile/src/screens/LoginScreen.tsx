@@ -5,7 +5,11 @@ import styled from 'styled-components/native';
 import {Formik} from 'formik';
 
 import {colors} from '../components/common/colors';
-import {Container, ScreenHeight} from '../components/common/shared';
+import {
+  Container,
+  DimensionTheme,
+  ScreenHeight,
+} from '../components/common/shared';
 import * as ButtonTheme from '../components/common/theme';
 
 import KeyboardAvoidingViewContainer from '../components/common/Containers/KeyboardAvoidingViewContainer';
@@ -20,16 +24,23 @@ import {NavigationData} from '../navigation/AuthNavigator';
 // import { graphql } from 'babel-plugin-relay/macro';
 
 // import { useMutation } from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {useMutation} from 'react-relay';
+import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 const LoginContainer = styled(Container)`
   width: 100%;
-  padding-top: ${ScreenHeight * 0.3}px;
   flex: 1;
+`;
+
+const FormikSection = styled.View`
+  margin-top: ${ScreenHeight * 0.3}px;
 `;
 
 const InputSection = styled.View`
   width: 100%;
   flex: 1;
+
   min-height: ${ScreenHeight * 0.7}px;
   align-items: flex-start;
 `;
@@ -37,7 +48,6 @@ const InputSection = styled.View`
 const BottomSection = styled.View`
   width: 100%;
   flex: 1;
-  margin-left: 6%;
   justify-content: center;
   position: absolute;
   top: ${ScreenHeight * 0.4}px;
@@ -56,6 +66,23 @@ const SignupSection = styled.View`
   margin-bottom: 10px;
   justify-content: center;
   align-items: center;
+`;
+
+const loginMutation = graphql`
+  mutation LoginScreenMutation($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      ... on User {
+        id
+        username
+      }
+      ... on AnonymousOnlyError {
+        message
+      }
+      ... on WrongCertInfoError {
+        message
+      }
+    }
+  }
 `;
 
 type Props = NavigationData<'Login'>;
@@ -78,16 +105,38 @@ type Props = NavigationData<'Login'>;
 
 export const LoginScreen: FC<Props> = ({navigation}) => {
   const [autoLogin, setAutoLogin] = useState(false);
+
+  // 로그인
+  const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
+
   return (
     <LoginContainer>
       <KeyboardAvoidingViewContainer>
         <Formik
-          initialValues={{email: '', password: ''}}
-          onSubmit={({email, password}) => {
-            alert(`email:${email} password:${password}`);
+          initialValues={{username: '', password: ''}}
+          onSubmit={({username, password}) => {
+            console.log(username, password);
+            commit({
+              variables: {
+                username,
+                password,
+              },
+              onCompleted(data) {
+                console.log(data);
+              },
+              onError(error) {
+                console.log('@login error:');
+                console.log(error);
+                console.log(error.message);
+              },
+              // updater(store) {
+              //   const payload = store.getRootField('login');
+              //   store.getRoot().setLinkedRecord(payload, 'currentUser');
+              // },
+            });
           }}>
           {({values, handleChange, handleBlur, handleSubmit, isSubmitting}) => (
-            <>
+            <FormikSection>
               <InputSection>
                 <StyledTextInput
                   labelStyle={{
@@ -96,9 +145,9 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                     fontWeight: '700',
                   }}
                   label="아이디"
-                  value={values.email}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
+                  value={values.username}
+                  onChangeText={handleChange('username')}
+                  onBlur={handleBlur('username')}
                   keyboardType="email-address"
                 />
                 <StyledTextInput
@@ -124,7 +173,9 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                 <FindSection>
                   <TextButton
                     textStyles={{color: colors.black}}
-                    onPress={() => {}}>
+                    onPress={() => {
+                      navigation.navigate('Main');
+                    }}>
                     아이디 찾기
                   </TextButton>
                   <SmallText textStyle={{color: colors.black}}> / </SmallText>
@@ -141,16 +192,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <TextButton
                     textStyles={{color: colors.black, marginLeft: 12}}
                     onPress={() => {
-                      navigation.navigate('Main');
-                      // const data = commitMutation({
-                      //   variables: {
-                      //     username: "test",
-                      //     password: "1234"
-                      //   },
-                      //   onError: e => {
-                      //     console.log(e);
-                      //   }
-                      // });
+                      navigation.navigate('Signup');
                     }}>
                     회원가입
                   </TextButton>
@@ -162,14 +204,17 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                       height: 55,
                     },
                   ]}
-                  textStyles={ButtonTheme.whiteBGpurpleSD.textStyle}
+                  textStyles={[
+                    ButtonTheme.whiteBGpurpleSD.textStyle,
+                    {fontSize: DimensionTheme.fontSize(24), fontWeight: '700'},
+                  ]}
                   onPress={() => {
                     handleSubmit();
                   }}>
                   SIGN IN
                 </RegularButton>
               </BottomSection>
-            </>
+            </FormikSection>
           )}
         </Formik>
       </KeyboardAvoidingViewContainer>

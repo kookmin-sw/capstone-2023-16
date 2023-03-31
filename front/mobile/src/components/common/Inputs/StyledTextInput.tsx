@@ -12,9 +12,15 @@ import {
 import {colors} from '../colors';
 import SmallText from '../Texts/SmallText';
 import {imagePath} from '../../../utils/imagePath';
+import {DimensionTheme} from '../shared';
 
 const StyledTextInputContainer = styled.View`
   margin-bottom: 10px;
+`;
+
+const FlexContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const InputField = styled.TextInput`
@@ -22,7 +28,7 @@ const InputField = styled.TextInput`
   border-radius: 10px;
   background-color: ${colors.white};
   color: ${colors.graydark};
-  height: 50px;
+  height: ${DimensionTheme.height(43)}
   min-width: 100%;
   shadow-color: ${colors.black};
   shadow-offset: 3px 3px;
@@ -40,8 +46,8 @@ const ErrorMessage = styled.Text`
 const RightIcon = styled.TouchableOpacity`
   position: absolute;
   right: 15px;
-  top: 38px;
   z-index: 1;
+  top: ${DimensionTheme.height(11)}
   align-items: center;
   justfiy-content: center;
 `;
@@ -53,6 +59,7 @@ interface StyledTextInputProps extends TextInputProps {
   error?: string | boolean;
   touched?: boolean;
   isPassword?: boolean;
+  children?: React.ReactNode;
 }
 
 const StyledTextInput: FC<StyledTextInputProps> = ({
@@ -62,25 +69,30 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
   isPassword,
   error,
   touched,
+  children,
   ...props
 }) => {
   const [hidePassword, setHidePassword] = useState(true);
   return (
     <StyledTextInputContainer style={viewStyle}>
       <SmallText textStyle={labelStyle}>{label}</SmallText>
-      <InputField
-        style={viewStyle}
-        {...props}
-        secureTextEntry={isPassword && hidePassword}
-      />
-      {isPassword && (
-        <RightIcon
-          onPress={() => {
-            setHidePassword(!hidePassword);
-          }}>
-          <Image source={hidePassword ? imagePath.eye_off : imagePath.eye} />
-        </RightIcon>
-      )}
+      <FlexContainer>
+        <InputField
+          style={viewStyle}
+          {...props}
+          secureTextEntry={isPassword && hidePassword}
+        />
+        {children}
+        {isPassword && (
+          <RightIcon
+            onPress={() => {
+              setHidePassword(!hidePassword);
+            }}>
+            <Image source={hidePassword ? imagePath.eye_off : imagePath.eye} />
+          </RightIcon>
+        )}
+      </FlexContainer>
+
       {error && touched ? <ErrorMessage>{error}</ErrorMessage> : null}
     </StyledTextInputContainer>
   );

@@ -1,13 +1,24 @@
 import React, {FC} from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import {colors} from '../components/common/colors';
 
 import AuthNavigator from './AuthNavigator';
+import AppNavigator from './AppNavigator';
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: colors.white,
+  },
+};
 
 const NavContainer: FC = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <AuthNavigator />
+      {/* <AppNavigator /> */}
     </NavigationContainer>
   );
 };

@@ -17,7 +17,7 @@ export const StatusBarHeight =
 export const ScreenWidth = Dimensions.get('screen').width;
 export const ScreenHeight = Dimensions.get('screen').height;
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -29,14 +29,12 @@ export const Container = styled.View`
 //   height: 50 + StatusBarHeight,
 // }
 
-
-
 const basicDimensions = {
   width: 393,
-  height: 852
+  height: 852,
 };
 
-const width = (num: number) : number => {
+const width = (num: number): number => {
   const p = (num / basicDimensions.width) * 100;
   return responsiveWidth(p);
 };
@@ -54,5 +52,5 @@ const fontSize = (num: number): number => {
 export const DimensionTheme = {
   fontSize,
   width,
-  height
-}
+  height,
+};

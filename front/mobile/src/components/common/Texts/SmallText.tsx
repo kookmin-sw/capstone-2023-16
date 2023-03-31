@@ -3,9 +3,10 @@ import React, {FC} from 'react';
 import styled from 'styled-components/native';
 
 import {colors} from '../colors';
+import {DimensionTheme} from '../shared';
 
 const StyledText = styled.Text`
-  font-size: 14px;
+  font-size: ${DimensionTheme.fontSize(13)};
   color: ${colors.graydark};
   text-align: left;
 `;
