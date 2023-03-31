@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable prettier/prettier */
 import React from 'react';
 
 import {RouteProp} from '@react-navigation/native';
@@ -12,6 +14,7 @@ import {SignupScreen} from '../screens/SignupScreen';
 import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
 import DetailScreen from '../screens/DetailScreen';
+import FilterScreen from '../screens/FilterScreen';
 import ImageButton from '../components/common/Buttons/ImageButton';
 import {MyPageScreen} from '../screens/MyAccount/MyPageScreen';
 import {imagePath} from '../utils/imagePath';
@@ -24,6 +27,8 @@ export type ParamList = {
   Main: undefined;
   BaseInfo: undefined;
   InterestTagSetting: undefined;
+  DetailContent: undefined;
+  FilterContent: undefined;
   MyPage: undefined;
   Following: undefined;
   History: undefined;
@@ -70,6 +75,11 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="DetailContent"
         component={DetailScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="FilterContent"
+        component={FilterScreen}
         options={{headerShown: false}}
       />
       <StackNavigator.Screen

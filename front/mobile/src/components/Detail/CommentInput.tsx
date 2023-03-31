@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useState, Dispatch, SetStateAction} from 'react';
 import { TextInput, StyleSheet, GestureResponderEvent, TouchableOpacity, View, Image } from 'react-native';
 import { DimensionTheme } from '../common/shared';
 import { colors } from '../common/colors';
@@ -7,7 +7,8 @@ import { colors } from '../common/colors';
 interface CommentInputProps{
     user_id: number;
     board_id: number;
-    stateEvent: ((event:GestureResponderEvent) => void) | undefined;
+    render: Dispatch<SetStateAction<boolean>>;
+    state: boolean;
 }
 
 const CommentInput = (props:CommentInputProps) => {
@@ -16,7 +17,9 @@ const CommentInput = (props:CommentInputProps) => {
     return (
         <View style={{display: 'flex', flexDirection: 'row'}}>
             <TextInput style={style.InputStyel} placeholder="댓글을 남겨주세요." placeholderTextColor={colors.graytext} value={comment} onChangeText={setComment}/>
-            <TouchableOpacity style={style.BtnStyle}>
+            <TouchableOpacity style={style.BtnStyle} onPress={()=>{
+                props.render(!props.state);
+            }}>
                 <Image style={style.ImgStyle} source={require('../../assets/comment_purple.png')} resizeMode='contain'/>
             </TouchableOpacity>
         </View>
@@ -40,7 +43,6 @@ const style = StyleSheet.create({
     BtnStyle: {
         width: DimensionTheme.width(42),
         height: DimensionTheme.width(44),
-        marginStart: DimensionTheme.width(5),
         borderColor: colors.purple1,
         borderWidth: 1,
         borderRadius: DimensionTheme.width(10),

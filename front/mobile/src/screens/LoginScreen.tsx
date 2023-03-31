@@ -20,6 +20,10 @@ import CheckBox from '../components/common/CheckBox/CheckBox';
 import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
+
+// import { graphql } from 'babel-plugin-relay/macro';
+
+// import { useMutation } from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
@@ -94,10 +98,8 @@ type Props = NavigationData<'Login'>;
 //           email
 //           username
 //         }
-//       }
 //     }
-//   `,
-// );
+// }`);
 
 // const commitMutation = {};
 

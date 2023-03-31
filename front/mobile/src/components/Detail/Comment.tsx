@@ -16,7 +16,7 @@ const Comment = (props:CommentProps) => {
     return (
         <View style={style.commentBox}>
             <TouchableOpacity style={style.imgBtn}>
-                <Image style={style.img} source={(props.user_img !== null || props.user_img !== '') ? (props.user_img) : require('../../assets/imgs/profileImg.png')}/>
+                <Image style={style.img} source={(props.user_img !== null || props.user_img !== '') ? (props.user_img) : require('../../assets/profileImg.png')} resizeMode='contain'/>
             </TouchableOpacity>
             <View style={{flexDirection:'column', width:DimensionTheme.width(270)}}>
                 <TouchableOpacity style={{marginBottom: DimensionTheme.width(4)}}>
@@ -47,10 +47,20 @@ const style = StyleSheet.create({
         width: DimensionTheme.width(35),
         height: DimensionTheme.width(35),
         marginEnd: DimensionTheme.width(9),
+        borderRadius: DimensionTheme.width(17.5),
+        borderWidth: DimensionTheme.width(0.7),
+        borderColor: colors.borderGray,
+        shadowOffset: { width: 0, height: 0 },
+        shadowColor: 'black',
+        shadowRadius: DimensionTheme.width(4),
+        shadowOpacity: 0.3,
+        elevation: 4,
+        backgroundColor: 'white',
     },
     img:{
         width: DimensionTheme.width(35),
-        height: DimensionTheme.height(35),
+        height: DimensionTheme.width(35),
+        borderRadius: DimensionTheme.width(17.5),
     },
     text1:{
         fontSize: DimensionTheme.fontSize(14),
