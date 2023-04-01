@@ -15,7 +15,7 @@ class IsEligibleForPaidContent(BasePermission):
         post_id = source.id if source else info.variable_values['postId'].node_id
 
         if 'persona_id' not in info.context.request.COOKIES:
-            raise CookieContextRequiredError
+            raise CookieContextRequiredError('persona_id')
         else:
             _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
             return is_eligible_for_paid_content(persona_id, post_id, info.context.request.user.id)
