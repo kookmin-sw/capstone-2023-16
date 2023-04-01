@@ -3,6 +3,7 @@ from typing import Optional
 
 import strawberry
 from strawberry import auto
+from strawberry.types import Info
 from strawberry_django_plus import gql
 from strawberry_django_plus.gql import relay
 
@@ -44,8 +45,8 @@ class User(relay.Node):
     updated_at: auto = strawberry.field(description='갱신 시각')
 
     @classmethod
-    def get_all_users(cls):
-        return models.User.objects.all()
+    def get_user_with_info(cls, info: Info) -> 'User':
+        return models.User.objects.get(id=info.context.request.user.id)
 
 
 @gql.django.type(models.Post)
@@ -82,7 +83,7 @@ class Persona(relay.Node):
     구독자, 구독 대상, 컨텐츠 작성자에 해당되는 페르소나
     User : Persona = 1 : N
     """
-    owner: User = strawberry.field(User.get_all_users, description='소유자')
+    owner: User = strawberry.field(User.get_user_with_info, description='소유자')
     nickname: str = strawberry.field(description='닉네임 (unique)')
     introduction: str = strawberry.field(description='소개')
     is_public: bool = strawberry.field(description='공개 여부')
