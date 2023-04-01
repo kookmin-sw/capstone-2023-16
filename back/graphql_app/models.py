@@ -197,6 +197,7 @@ class PostReadingRecord(models.Model):
     persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='읽은 페르소나')
     read_count = models.PositiveIntegerField(default=0, verbose_name='읽은 횟수')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='갱신 시각')
 
     class Meta:
         db_table = 'post_reading_records'
