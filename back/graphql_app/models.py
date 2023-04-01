@@ -1,7 +1,10 @@
-from typing import List, Tuple
+from collections import defaultdict
+from typing import List, Tuple, Dict
 
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
+
+from utils import dict_to_2d_list
 
 
 class User(AbstractBaseUser):
