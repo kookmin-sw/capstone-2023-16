@@ -1,9 +1,6 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
 
 load_dotenv()
 
@@ -22,21 +19,27 @@ DEBUG = True
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost", "persona-backend.herokuapp.com"]
 APPEND_SLASH = False
 
-sentry_sdk.init(
-    dsn="https://6fde7017efda4d799ea24165d7d04a7c@o4504932139270144.ingest.sentry.io/4504932140253184",
-    integrations=[
-        DjangoIntegration(),
-    ],
+# PROD, DEV
+env = os.environ.get('ENV', 'DEV').upper()
+if env == 'PROD':
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
 
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production.
-    traces_sample_rate=1.0,
+    sentry_sdk.init(
+        dsn="https://6fde7017efda4d799ea24165d7d04a7c@o4504932139270144.ingest.sentry.io/4504932140253184",
+        integrations=[
+            DjangoIntegration(),
+        ],
 
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True
-)
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
 
 # Application definition
 
