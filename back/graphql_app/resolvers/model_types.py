@@ -34,9 +34,8 @@ class Tag(relay.Node):
     created_at: datetime = strawberry.field(description='생성 일시')
 
 
-@strawberry.django.type(models.User)
-class User:
-    id: auto
+@gql.django.type(models.User)
+class User(relay.Node):
     username: auto = strawberry.field(description='사용자 ID (Unique)')
     email: auto = strawberry.field(description='사용자 E-mail (Unique)')
     signup_method: auto = strawberry.field(description='로그인 방법')
