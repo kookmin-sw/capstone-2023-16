@@ -190,3 +190,21 @@ class Membership(models.Model):
         ]
         verbose_name = '멤버쉽'
         verbose_name_plural = '멤버쉽 목록'
+
+
+class PostReadingRecord(models.Model):
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, verbose_name='대상 게시물')
+    persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='읽은 페르소나')
+    read_count = models.PositiveIntegerField(default=0, verbose_name='읽은 횟수')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+
+    class Meta:
+        db_table = 'post_reading_records'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['post', 'persona'],
+                name='unique post reading record'
+            )
+        ]
+        verbose_name = '조회 기록'
+        verbose_name_plural = '조회 기록 목록'

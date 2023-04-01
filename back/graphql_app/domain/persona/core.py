@@ -1,5 +1,6 @@
 from typing import Optional, List, Tuple
 
+from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet, Sum, Count
 
 from graphql_app.domain.persona.exceptions import NicknameDupliationException, NotPersonaOwnerException, \
@@ -10,6 +11,7 @@ from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import Job, PersonaSortBy
 from graphql_app.resolvers.persona.types import PersonaSortingOption
+from graphql_app.resolvers.utils import parse_global_id
 
 
 def create_persona(owner: User, nickname: str, introduction: str, is_public: Optional[bool] = True,
@@ -119,3 +121,14 @@ def get_personas(sorting_opt: PersonaSortingOption,
             ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}follower_cnt", 'id')
 
     return personas
+
+
+def get_persona_context(request: WSGIRequest) -> Optional[int]:
+    """
+    Django request 객체의 쿠키로부터 페르소나 id를 받아 오는 함수
+    """
+    if 'persona_id' in request.COOKIES.keys():
+        _, persona_id = parse_global_id(request.COOKIES['persona_id'])
+        return persona_id
+    else:
+        return None
