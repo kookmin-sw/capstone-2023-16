@@ -84,7 +84,7 @@ class Persona(relay.Node):
     """
     owner: User = strawberry.field(User.get_all_users, description='소유자')
     nickname: str = strawberry.field(description='닉네임 (unique)')
-    introduction: bool = strawberry.field(description='소개')
+    introduction: str = strawberry.field(description='소개')
     is_public: bool = strawberry.field(description='공개 여부')
     gender: Optional[Gender] = strawberry.field(description='성별')
     age: Optional[int] = strawberry.field(description='연령')
