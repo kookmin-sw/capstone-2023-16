@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
 
@@ -10,13 +10,15 @@ import SmallText from '../common/Texts/SmallText';
 import SmallButton from '../common/Buttons/SmallButton';
 import {TouchableOpacity, Image} from 'react-native';
 import {imagePath} from '../../utils/imagePath';
+import {BottomSheet} from '../common/BottomSheet/BottomSheet';
+import {BottomSheetContent} from '../common/BottomSheet/BottomSheetContent';
 
 const CardContainer = styled.View`
   height: ${DimensionTheme.height(83)};
   width: ${DimensionTheme.width(330)};
   flex-direction: row;
   align-items: center;
-  justify-contents: center;
+  justify-content: center;
   border-radius: 18px;
   margin-bottom: 15px;
   padding: 17px;
@@ -34,6 +36,12 @@ const ProfileInfo = styled.View`
 `;
 
 const CardItem: FC<CardProps> = props => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const pressButton = () => {
+    setModalVisible(true);
+  };
+
   return (
     <CardContainer style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
       <ProfileImage source={props.profile} />
@@ -65,9 +73,16 @@ const CardItem: FC<CardProps> = props => {
         onPress={() => {}}>
         {props.isFollow ? '팔로잉' : '팔로우'}
       </SmallButton>
-      <TouchableOpacity style={{marginLeft: DimensionTheme.width(12)}}>
+      <TouchableOpacity
+        style={{marginLeft: DimensionTheme.width(12)}}
+        onPress={pressButton}>
         <Image source={imagePath.moreIcon} />
       </TouchableOpacity>
+      <BottomSheet
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}>
+        <BottomSheetContent />
+      </BottomSheet>
     </CardContainer>
   );
 };
