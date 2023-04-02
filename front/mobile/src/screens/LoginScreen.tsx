@@ -24,6 +24,11 @@ import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
+import {useAppDispatch} from '../redux/hooks';
+import {selectUser, setIsLoggedIn, setUser} from '../redux/slices/userSlice';
+import {useAppSelector} from '../redux/hooks';
+import {Alert} from 'react-native';
+
 const LoginContainer = styled(Container)`
   width: 100%;
   flex: 1;
@@ -70,6 +75,7 @@ const loginMutation = graphql`
       ... on User {
         id
         username
+        email
       }
       ... on AnonymousOnlyError {
         message
@@ -104,6 +110,9 @@ type Props = NavigationData<'Login'>;
 export const LoginScreen: FC<Props> = ({navigation}) => {
   const [autoLogin, setAutoLogin] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
   // 로그인
   const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
 
@@ -120,16 +129,21 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                 password,
               },
               onCompleted(data) {
-                console.log(data);
+                console.log('@login success');
+                console.log(data.login);
+                dispatch(setIsLoggedIn(true));
+                dispatch(setUser(data.login));
+                console.log(`update ? : ${JSON.stringify(user)}`);
               },
               onError(error) {
                 console.log('@login error:');
                 console.log(error);
                 console.log(error.message);
+                Alert.alert('존재하지 않는 계정입니다.');
               },
               // updater(store) {
-              //   const payload = store.getRootField('login');
-              //   store.getRoot().setLinkedRecord(payload, 'currentUser');
+              // const payload = store.getRootField('login');
+              // store.getRoot().setLinkedRecord(payload, 'currentUser');
               // },
             });
           }}>
@@ -179,7 +193,9 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <SmallText textStyle={{color: colors.black}}> / </SmallText>
                   <TextButton
                     textStyles={{color: colors.black}}
-                    onPress={() => {}}>
+                    onPress={() => {
+                      navigation.navigate('BaseInfo');
+                    }}>
                     비밀번호 찾기
                   </TextButton>
                 </FindSection>
