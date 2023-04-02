@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {SafeAreaView, ScrollView, Image, StyleSheet, View} from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
@@ -10,6 +10,10 @@ import {DimensionTheme} from '../components/common/shared';
 import FeedCategory from '../components/Main/FeedCategory';
 import FeedCard from '../components/common/Cards/FeedCard';
 import {NavigationData} from '../navigation/AuthNavigator';
+
+import {useLazyLoadQuery} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import {imagePath} from '../utils/imagePath';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -40,9 +44,45 @@ const CategoryScroll = styled.ScrollView`
   margin-bottom: ${DimensionTheme.height(18)};
 `;
 
+const getPublicPostsQuery = graphql`
+  query MainScreenQuery {
+    getPublicPosts(sortingOpt: {}) {
+      edges {
+        node {
+          id
+          contentPreview
+          createdAt
+          tags {
+            edges {
+              node {
+                body
+                id
+              }
+            }
+          }
+          title
+          author {
+            nickname
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 type Props = NavigationData<'Main'>;
 
 const MainScreen: FC<Props> = ({navigation}) => {
+  const data = useLazyLoadQuery(
+    getPublicPostsQuery,
+    {},
+    {fetchPolicy: 'store-or-network'},
+  );
+
+  useEffect(() => {
+    console.log(data.getPublicPosts.edges[0].node);
+  }, [data]);
   const example = [
     {
       feed_id: 1,
@@ -121,20 +161,20 @@ const MainScreen: FC<Props> = ({navigation}) => {
             </FeedCategory>
           </CategoryScroll>
           <ScrollView>
-            {example.map(value => (
+            {data.getPublicPosts.edges.map(value => (
               <FeedCard
-                title={value.title}
-                feed_id={value.feed_id}
-                author={value.author}
-                author_id={value.author_id}
-                author_img={value.author_img}
-                content={value.content}
-                like={value.like}
-                bookmark={value.bookmark}
-                comment={value.comment}
-                hash_tag={value.hash_tag}
-                like_check={value.like_check}
-                bookmark_check={value.bookmark_check}
+                title={value.node.title}
+                feed_id={value.node.id}
+                author={value.node.author.nickname}
+                author_id={value.node.author.id}
+                author_img={imagePath.avatar}
+                content={value.node.contentPreview}
+                like={1}
+                bookmark={2}
+                comment={1}
+                hash_tag={['대학', '조별과제']}
+                like_check={true}
+                bookmark_check={true}
               />
             ))}
           </ScrollView>
