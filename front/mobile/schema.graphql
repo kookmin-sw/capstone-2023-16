@@ -969,6 +969,11 @@ type Post implements Node {
   content: String!
 
   """
+  글 내용 프리뷰
+  """
+  contentPreview: String!
+
+  """
   유료 내용
   """
   paidContent: String
