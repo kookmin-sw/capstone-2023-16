@@ -5,6 +5,8 @@ import {colors} from '../components/common/colors';
 
 import AuthNavigator from './AuthNavigator';
 import AppNavigator from './AppNavigator';
+import {useAppSelector} from '../redux/hooks';
+import {selectAuth} from '../redux/slices/userSlice';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -15,9 +17,12 @@ const MyTheme = {
 };
 
 const NavContainer: FC = () => {
+  const auth = useAppSelector(selectAuth);
+  console.log(`@@contianer: ${auth.isLoggedIn}`);
   return (
     <NavigationContainer theme={MyTheme}>
-      <AuthNavigator />
+      {auth.isLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+      {/* <AuthNavigator /> */}
       {/* <AppNavigator /> */}
     </NavigationContainer>
   );
