@@ -26,9 +26,9 @@ import {ScrollView, View, Platform} from 'react-native';
 import RegularText from '../components/common/Texts/RegularText';
 import {termsAndConditions} from '../constants/terms';
 
-import {graphql} from 'babel-plugin-relay/macro';
-import {useMutation} from 'react-relay';
-import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
+// import {graphql} from 'babel-plugin-relay/macro';
+// import {useMutation} from 'react-relay';
+// import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
 
 const SignupContainer = styled(Container)`
   width: 100%;
@@ -76,36 +76,36 @@ const BottomSection = styled.View`
   justify-contnet: flex-end;
 `;
 
-const signupMutation = graphql`
-  mutation SignupScreenMutation(
-    $email: String!
-    $password: String!
-    $username: String!
-  ) {
-    register(email: $email, password: $password, username: $username) {
-      ... on User {
-        id
-        email
-        username
-      }
+// const signupMutation = graphql`
+//   mutation SignupScreenMutation(
+//     $email: String!
+//     $password: String!
+//     $username: String!
+//   ) {
+//     register(email: $email, password: $password, username: $username) {
+//       ... on User {
+//         id
+//         email
+//         username
+//       }
 
-      ... on UsernameAlreadyUsedError {
-        violatedFieldName
-        violatedFieldValue
-      }
-      ... on EmailAlreadyUsedError {
-        violatedFieldValue
-        violatedFieldName
-      }
-    }
-  }
-`;
+//       ... on UsernameAlreadyUsedError {
+//         violatedFieldName
+//         violatedFieldValue
+//       }
+//       ... on EmailAlreadyUsedError {
+//         violatedFieldValue
+//         violatedFieldName
+//       }
+//     }
+//   }
+// `;
 
 type Props = NavigationData<'Signup'>;
 
 export const SignupScreen: FC<Props> = ({navigation}) => {
-  const [commit, isInFlight] =
-    useMutation<SignupScreenMutation>(signupMutation);
+  // const [commit, isInFlight] =
+  //   useMutation<SignupScreenMutation>(signupMutation);
   // 이용약관 모달
   const [show, setShow] = useState(false);
 
@@ -140,24 +140,24 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
           }}
           validationSchema={SignupSchema}
           onSubmit={({email, username, password}) => {
-            commit({
-              variables: {
-                email,
-                username,
-                password,
-              },
-              onCompleted(data) {
-                console.log(data);
-              },
-              onError(error) {
-                console.log('@sign up error : ');
-                console.log(error);
-              },
-              // updater(store) {
-              //   const payload = store.getRootField('login');
-              //   store.getRoot().setLinkedRecord(payload, 'currentUser');
-              // },
-            });
+            // commit({
+            //   variables: {
+            //     email,
+            //     username,
+            //     password,
+            //   },
+            //   onCompleted(data) {
+            //     console.log(data);
+            //   },
+            //   onError(error) {
+            //     console.log('@sign up error : ');
+            //     console.log(error);
+            //   },
+            //   // updater(store) {
+            //   //   const payload = store.getRootField('login');
+            //   //   store.getRoot().setLinkedRecord(payload, 'currentUser');
+            //   // },
+            // });
           }}>
           {({
             values,

@@ -62,7 +62,7 @@ const Search = (props:FoldFilterProps) => {
                         }
                     }}
                 >
-                    <Image style={style.SearchBtnImg} source={require('../../assets/searchIcon.png')}/>
+                    <Image style={style.SearchBtnImg} source={require('../../assets/search-white.png')}/>
                 </TouchableOpacity>
             </View>
             {!search.includes('#') &&
@@ -77,12 +77,14 @@ const Search = (props:FoldFilterProps) => {
                                         width: 'auto',
                                         height: DimensionTheme.width(30),
                                         paddingTop: DimensionTheme.width(1),
+                                        paddingStart: DimensionTheme.width(15),
+                                        paddingEnd: DimensionTheme.width(15),
                                         paddingBottom: DimensionTheme.width(2),
                                         borderRadius: DimensionTheme.width(8),
                                         marginEnd: DimensionTheme.width(10),
                                         backgroundColor: (value.state) ? colors.categorypurple : 'white',
                                     }}
-                                    textStyles={{color: colors.black}}
+                                    textStyles={{color: colors.black, fontSize:DimensionTheme.fontSize(14)}}
                                     onPress={()=>{
                                         searchTypeList[index!].state = !searchTypeList[index!].state;
                                         setSearchTypeList(searchTypeList);

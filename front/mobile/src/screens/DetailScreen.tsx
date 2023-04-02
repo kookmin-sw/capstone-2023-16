@@ -1,9 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { FC, useState } from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity, Image, Text, ImageBackground } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
-import { colors } from '../components/common/colors';
 import { DimensionTheme } from '../components/common/shared';
 
 import DetailHeader from '../components/Detail/DetailHeader';

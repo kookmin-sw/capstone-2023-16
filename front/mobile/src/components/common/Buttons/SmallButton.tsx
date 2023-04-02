@@ -11,7 +11,7 @@ const ButtonView = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   background-color: ${colors.white};
-  max-width: 85px;
+  /* max-width: 85px; */
   height: 50px;
   padding: 5px;
   text-align: center;

@@ -25,6 +25,8 @@ const CategorySelect = (props:CategorySelectProps) => {
                             height: DimensionTheme.width(30),
                             paddingTop: DimensionTheme.width(1),
                             paddingBottom: DimensionTheme.width(2),
+                            paddingStart: DimensionTheme.width(15),
+                            paddingEnd: DimensionTheme.width(15),
                             borderRadius: DimensionTheme.width(8),
                             marginEnd: DimensionTheme.width(10),
                             marginTop: DimensionTheme.width(15),

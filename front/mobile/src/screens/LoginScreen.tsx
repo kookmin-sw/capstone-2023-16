@@ -26,7 +26,7 @@ import {NavigationData} from '../navigation/AuthNavigator';
 // import { useMutation } from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
-import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+// import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 const LoginContainer = styled(Container)`
   width: 100%;
@@ -68,22 +68,7 @@ const SignupSection = styled.View`
   align-items: center;
 `;
 
-const loginMutation = graphql`
-  mutation LoginScreenMutation($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      ... on User {
-        id
-        username
-      }
-      ... on AnonymousOnlyError {
-        message
-      }
-      ... on WrongCertInfoError {
-        message
-      }
-    }
-  }
-`;
+// s
 
 type Props = NavigationData<'Login'>;
 
@@ -107,7 +92,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
   const [autoLogin, setAutoLogin] = useState(false);
 
   // 로그인
-  const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
+  // const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
 
   return (
     <LoginContainer>

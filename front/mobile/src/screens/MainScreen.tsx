@@ -4,7 +4,6 @@ import { SafeAreaView, ScrollView, Image, StyleSheet, View, ImageBackground } fr
 //@ts-ignore
 import styled from 'styled-components/native';
 
-import { colors } from '../components/common/colors';
 import TopButton from '../components/Main/TopButton';
 import { DimensionTheme } from '../components/common/shared';
 import FeedCategory from '../components/Main/FeedCategory';
@@ -19,22 +18,6 @@ const HeaderBox = styled.View`
     padding-right: ${DimensionTheme.width(9)}px;
     height: ${DimensionTheme.width(60)}px;
 `;
-
-// const LibraryTool = styled.View`
-//     width: 100%;
-//     align-items: center;
-//     height: ${DimensionTheme.height(792)};
-//     border-top-left-radius: ${DimensionTheme.width(40)};
-//     border-top-right-radius: ${DimensionTheme.width(40)};
-//     padding-top: ${DimensionTheme.height(39)};
-//     border-width: 2;
-//     border-color: ${colors.gray};
-//     background-color: white;
-// `;
-
-// const LibraryToolShadow = styled(LibraryTool)`
-//     padding-top: ${DimensionTheme.height(39)};
-// `
 
 const CategoryScroll = styled.ScrollView`
     display: flex;
