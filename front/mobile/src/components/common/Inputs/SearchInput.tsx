@@ -13,7 +13,7 @@ import {StyleProp} from 'react-native';
 const SearchInputContainer = styled.View`
   flex-direction: row;
   flex: 0.6;
-  justify-contents: space-between;
+  justify-content: space-between;
 `;
 
 interface SearchInputProps extends TextInputProps {

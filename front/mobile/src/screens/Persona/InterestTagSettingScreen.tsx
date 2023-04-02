@@ -32,12 +32,12 @@ const TopSection = styled.View`
 const SearchSection = styled.View`
   flex-direction: row;
   flex: 0.6;
-  justify-contents: space-between;
+  justify-content: space-between;
 `;
 
 const TagSection = styled.View`
   flex: 2.5;
-  justify-contents: space-between;
+  justify-content: space-between;
 `;
 
 const ButtonSection = styled.View`
@@ -72,7 +72,7 @@ export const InterestTagSettingScreen: FC = () => {
             <ImageButton
               btnStyles={{
                 marginLeft: 10,
-                marginTop: Platform.OS === 'ios' ? 15 : 20,
+                marginTop: Platform.OS === 'ios' ? 17 : 20,
               }}
               source={imagePath.searchIcon}
               onPress={() => {}}
