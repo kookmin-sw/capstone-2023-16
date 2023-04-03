@@ -30,6 +30,8 @@ const style = StyleSheet.create({
         height: DimensionTheme.width(42),
         marginEnd: DimensionTheme.width(23),
         borderRadius: DimensionTheme.width(21),
+        backgroundColor: 'white',
+        elevation: 6,
     },
 });
 

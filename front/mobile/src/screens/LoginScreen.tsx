@@ -20,9 +20,13 @@ import CheckBox from '../components/common/CheckBox/CheckBox';
 import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
+
+// import { graphql } from 'babel-plugin-relay/macro';
+
+// import { useMutation } from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
-import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+// import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 import {useAppDispatch} from '../redux/hooks';
 import {selectUser, setIsLoggedIn, setUser} from '../redux/slices/userSlice';
@@ -87,6 +91,7 @@ const loginMutation = graphql`
   }
 `;
 
+
 type Props = NavigationData<'Login'>;
 
 // const [commitMutation, isMutationInFlight] = useMutation(
@@ -100,10 +105,8 @@ type Props = NavigationData<'Login'>;
 //           email
 //           username
 //         }
-//       }
 //     }
-//   `,
-// );
+// }`);
 
 // const commitMutation = {};
 
@@ -114,7 +117,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
   const user = useAppSelector(selectUser);
 
   // 로그인
-  const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
+  // const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
 
   return (
     <LoginContainer>
