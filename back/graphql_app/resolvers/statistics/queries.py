@@ -7,7 +7,7 @@ from strawberry.types import Info
 from graphql_app.domain.statistics.post import get_read_post_statistics, get_post_read_counts_by_day
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, GetOwnReadPostStatisticsInput, \
-    GetOwnReadPostStatisticsByDayInput, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement
+    StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement
 
 
 @strawberry.type
@@ -29,7 +29,21 @@ class Query:
 
     @strawberry.field
     @requires_persona_context
-    def get_own_read_post_statistics_per_day(self, info: Info, opt: GetOwnReadPostStatisticsByDayInput) \
+    def get_own_read_post_statistics_per_day(self, info: Info, opt: StatisticsDatetimeBetween) \
+            -> PostReadStatisticsPerDay:
+        """
+        사용자의 일별 읽은 게시물의 수를 반환한다.
+        """
+        persona_id = info.context.request.persona.id
+        result = get_post_read_counts_by_day(persona_id, opt.start_datetime, opt.end_datetime)
+        result = [PostReadStatisticsPerDayElement(date=date, count=count) for date, count in result.items()]
+        result.sort(key=lambda x: x.date)
+        result = PostReadStatisticsPerDay(elements=result)
+        return result
+
+    @strawberry.field
+    @requires_persona_context
+    def get_own_read_post_statistics_per_day(self, info: Info, opt: StatisticsDatetimeBetween) \
             -> PostReadStatisticsPerDay:
         """
         사용자의 일별 읽은 게시물의 수를 반환한다.

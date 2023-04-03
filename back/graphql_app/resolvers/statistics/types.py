@@ -18,7 +18,7 @@ class GetOwnReadPostStatisticsInput:
 
 
 @strawberry.input
-class GetOwnReadPostStatisticsByDayInput:
+class StatisticsDatetimeBetween:
     start_datetime: Optional[datetime] = strawberry.field(default_factory=get_day_before_30_days,
                                                           description='조회 시작 일시 (기본값 : 30일 이전)')
     end_datetime: Optional[datetime] = strawberry.field(default_factory=datetime.now,
