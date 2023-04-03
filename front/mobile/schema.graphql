@@ -1,54 +1,82 @@
-"""Exposes a URL that specifies the behaviour of this scalar."""
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
 directive @specifiedBy(
-  """The URL that specifies the behaviour of this scalar."""
+  """
+  The URL that specifies the behaviour of this scalar.
+  """
   url: String!
 ) on SCALAR
 
-"""요청된 작업에 admin 권한이 필요하나, 권한을 가지고 있지 않은 경우"""
+"""
+요청된 작업에 admin 권한이 필요하나, 권한을 가지고 있지 않은 경우
+"""
 type AdminPermissionRequiredError {
   message: String!
 }
 
-"""이미 멤버쉽에 가입 되어 있으나 다시 멤버쉽 가입을 요청한 경우 발생"""
+"""
+이미 멤버쉽에 가입 되어 있으나 다시 멤버쉽 가입을 요청한 경우 발생
+"""
 type AlreadyJoinedMembershipError {
   message: String!
 }
 
-"""로그인한 사용자는 접근할 수 없는 서비스에 접근한 경우"""
+"""
+로그인한 사용자는 접근할 수 없는 서비스에 접근한 경우
+"""
 type AnonymousOnlyError {
   message: String!
 }
 
-"""Authentication에 필요한 정보가 전달되지 않았을 때 발생하는 에러"""
+"""
+Authentication에 필요한 정보가 전달되지 않았을 때 발생하는 에러
+"""
 type AuthInfoRequiredError {
   message: String!
 }
 
-"""작성자 검색 인터페이스"""
+"""
+작성자 검색 인터페이스
+"""
 input AuthorFilter {
-  """작성자 페르소나의 ID"""
+  """
+  작성자 페르소나의 ID
+  """
   id: GlobalID!
 }
 
-"""일정 생년 구간의 데이터를 받아 오기 위한 인터페이스"""
+"""
+일정 생년 구간의 데이터를 받아 오기 위한 인터페이스
+"""
 input BirthYearFilter {
-  """최소 생년"""
+  """
+  최소 생년
+  """
   minBirthYear: Int = 0
 
-  """최대 생년"""
+  """
+  최대 생년
+  """
   maxBirthYear: Int = 100
 }
 
 type Bookmark implements Node {
   id: GlobalID!
 
-  """대상 페르소나"""
+  """
+  대상 페르소나
+  """
   persona: Persona!
 
-  """대상 게시물"""
+  """
+  대상 게시물
+  """
   post: Post!
 
-  """북마크 일시"""
+  """
+  북마크 일시
+  """
   createdAt: DateTime!
 }
 
@@ -60,243 +88,388 @@ Post가 소속되거나, Persona의 선호 대상이 되는 카테고리
 type Category implements Node {
   id: GlobalID!
 
-  """카테고리 본문"""
+  """
+  카테고리 본문
+  """
   body: String!
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   createdAt: DateTime!
 }
 
-"""이미 등록된 body로 카테고리 생성을 시도한 경우 발생"""
+"""
+이미 등록된 body로 카테고리 생성을 시도한 경우 발생
+"""
 type CategoryBodyDuplicatedError {
-  """중복 필드 이름"""
+  """
+  중복 필드 이름
+  """
   violatedFieldName: String!
 
-  """중복된 카테고리 body 값"""
+  """
+  중복된 카테고리 body 값
+  """
   violatedFieldValue: String!
   message: String!
 }
 
-"""카테고리 검색 인터페이스"""
+"""
+카테고리 검색 인터페이스
+"""
 input CategoryBodyFilter {
-  """검색 모드"""
+  """
+  검색 모드
+  """
   mode: StringFindMode = EXACTLY
 
-  """검색 문자열"""
+  """
+  검색 문자열
+  """
   token: String!
 }
 
-"""카테고리 body의 길이가 기준치보다 긴 경우 발생"""
+"""
+카테고리 body의 길이가 기준치보다 긴 경우 발생
+"""
 type CategoryBodyTooLongError {
-  """위반 필드 값"""
+  """
+  위반 필드 값
+  """
   violatedFieldName: String!
 
-  """위반 사유 상세"""
+  """
+  위반 사유 상세
+  """
   detail: String
   message: String!
 
-  """전달된 카테고리 body 값"""
+  """
+  전달된 카테고리 body 값
+  """
   violatedFieldValue: String!
 }
 
-"""카테고리 body의 길이가 기준치보다 짧은 경우 발생"""
+"""
+카테고리 body의 길이가 기준치보다 짧은 경우 발생
+"""
 type CategoryBodyTooShortError {
-  """위반 필드 값"""
+  """
+  위반 필드 값
+  """
   violatedFieldName: String!
 
-  """위반 사유 상세"""
+  """
+  위반 사유 상세
+  """
   detail: String
   message: String!
 
-  """전달된 카테고리 body 값"""
+  """
+  전달된 카테고리 body 값
+  """
   violatedFieldValue: String!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type CategoryConnection {
-  """Pagination data for this connection"""
+  """
+  Pagination data for this connection
+  """
   pageInfo: PageInfo!
 
-  """Contains the nodes in this connection"""
+  """
+  Contains the nodes in this connection
+  """
   edges: [CategoryEdge!]!
 
-  """Total quantity of existing nodes"""
+  """
+  Total quantity of existing nodes
+  """
   totalCount: Int
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type CategoryEdge {
-  """A cursor for use in pagination"""
+  """
+  A cursor for use in pagination
+  """
   cursor: String!
 
-  """The item at the end of the edge"""
+  """
+  The item at the end of the edge
+  """
   node: Category!
 }
 
-"""카테고리 검색 인터페이스"""
+"""
+카테고리 검색 인터페이스
+"""
 input CategoryFilter {
-  """검색할 카테고리의 ID"""
+  """
+  검색할 카테고리의 ID
+  """
   id: GlobalID!
 }
 
 input CategoryIDInput {
-  """카테고리 ID"""
+  """
+  카테고리 ID
+  """
   id: GlobalID!
 }
 
-"""카테고리 정렬 기준"""
+"""
+카테고리 정렬 기준
+"""
 enum CategorySortBy {
   ID
   LEXICOGRAPHICAL
   CREATED_AT
 
-  """선호 페르소나 수 기준"""
+  """
+  선호 페르소나 수 기준
+  """
   PERSONA_REFERENCE_CNT
 
-  """연결된 게시물 수 기준"""
+  """
+  연결된 게시물 수 기준
+  """
   POST_CONNECTION_CNT
 }
 
-"""카테고리 목록 조회 시 적용할 정렬 방법"""
+"""
+카테고리 목록 조회 시 적용할 정렬 방법
+"""
 input CategorySortingOption {
-  """정렬 기준"""
+  """
+  정렬 기준
+  """
   sortBy: CategorySortBy = ID
 
-  """정렬 방향"""
+  """
+  정렬 방향
+  """
   direction: SortingDirection = ASC
 }
 
 type Challenge implements Node {
   id: GlobalID!
 
-  """제목"""
+  """
+  제목
+  """
   title: String!
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   createdAt: DateTime!
 
-  """갱신 일시"""
+  """
+  갱신 일시
+  """
   updatedAt: DateTime!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type ChallengeConnection {
-  """Pagination data for this connection"""
+  """
+  Pagination data for this connection
+  """
   pageInfo: PageInfo!
 
-  """Contains the nodes in this connection"""
+  """
+  Contains the nodes in this connection
+  """
   edges: [ChallengeEdge!]!
 
-  """Total quantity of existing nodes"""
+  """
+  Total quantity of existing nodes
+  """
   totalCount: Int
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type ChallengeEdge {
-  """A cursor for use in pagination"""
+  """
+  A cursor for use in pagination
+  """
   cursor: String!
 
-  """The item at the end of the edge"""
+  """
+  The item at the end of the edge
+  """
   node: Challenge!
 }
 
 type ChallengeObjective implements Node {
   id: GlobalID!
 
-  """도전과제"""
+  """
+  도전과제
+  """
   challenge: Challenge!
 
-  """제목"""
+  """
+  제목
+  """
   title: String!
 
-  """내용"""
+  """
+  내용
+  """
   content: String!
 
-  """완수 여부"""
+  """
+  완수 여부
+  """
   isDone: Boolean!
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   createdAt: DateTime!
 
-  """갱신 일시"""
+  """
+  갱신 일시
+  """
   updatedAt: DateTime!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type ChallengeObjectiveConnection {
-  """Pagination data for this connection"""
+  """
+  Pagination data for this connection
+  """
   pageInfo: PageInfo!
 
-  """Contains the nodes in this connection"""
+  """
+  Contains the nodes in this connection
+  """
   edges: [ChallengeObjectiveEdge!]!
 
-  """Total quantity of existing nodes"""
+  """
+  Total quantity of existing nodes
+  """
   totalCount: Int
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type ChallengeObjectiveEdge {
-  """A cursor for use in pagination"""
+  """
+  A cursor for use in pagination
+  """
   cursor: String!
 
-  """The item at the end of the edge"""
+  """
+  The item at the end of the edge
+  """
   node: ChallengeObjective!
 }
 
 type ChallengeObjectiveHistory implements Node {
   id: GlobalID!
 
-  """도전과제"""
+  """
+  도전과제
+  """
   challengeObjective: ChallengeObjective!
 
-  """참여 페르소나"""
+  """
+  참여 페르소나
+  """
   persona: Persona!
 
-  """완료 여부"""
+  """
+  완료 여부
+  """
   isDone: Boolean!
 
-  """참여 일시"""
+  """
+  참여 일시
+  """
   createdAt: DateTime!
 }
 
 type Comment implements Node {
   id: GlobalID!
 
-  """대상 게시물"""
+  """
+  대상 게시물
+  """
   post: Post!
 
-  """작성자"""
+  """
+  작성자
+  """
   persona: Persona!
 
-  """댓글 본문"""
+  """
+  댓글 본문
+  """
   body: String!
 
-  """작성 일시"""
+  """
+  작성 일시
+  """
   createdAt: DateTime!
 }
 
-"""항목별 개수 통계"""
+"""
+항목별 개수 통계
+"""
 type CountStatistics {
-  """단위"""
+  """
+  단위
+  """
   unit: String!
 
-  """총 개수"""
+  """
+  총 개수
+  """
   totalCount: Int!
 
-  """단위별 항목 개수"""
+  """
+  단위별 항목 개수
+  """
   elements: [CountStatisticsElement!]!
 }
 
-"""특정 항목의 이름 및 개수"""
+"""
+특정 항목의 이름 및 개수
+"""
 type CountStatisticsElement {
-  """항목 이름"""
+  """
+  항목 이름
+  """
   label: String!
 
-  """항목 집계 횟수"""
+  """
+  항목 집계 횟수
+  """
   count: Int!
 }
 
-union CreateCategoryResult = Category | AdminPermissionRequiredError | CategoryBodyDuplicatedError | CategoryBodyTooShortError | CategoryBodyTooLongError
+union CreateCategoryResult =
+    Category
+  | AdminPermissionRequiredError
+  | CategoryBodyDuplicatedError
+  | CategoryBodyTooShortError
+  | CategoryBodyTooLongError
 
 input CreateChallengeInput {
   title: String!
@@ -312,37 +485,60 @@ input CreateChallengeObjectiveInput {
   kind: ParticipateKind!
 }
 
-union CreatePersonaResult = Persona | AuthInfoRequiredError | PersonaNicknameDuplicatedError
+union CreatePersonaResult =
+    Persona
+  | AuthInfoRequiredError
+  | PersonaNicknameDuplicatedError
 
-"""게시물 생성 input"""
+"""
+게시물 생성 input
+"""
 input CreatePostInput {
-  """새 게시글 제목"""
+  """
+  새 게시글 제목
+  """
   title: String!
 
-  """새 게시글 무료 본문"""
+  """
+  새 게시글 무료 본문
+  """
   content: String!
 
-  """새 게시글 유료 본문"""
+  """
+  새 게시글 유료 본문
+  """
   paidContent: String = null
 
-  """연결할 태그의 body 목록 (insert 됨)"""
+  """
+  연결할 태그의 body 목록 (insert 됨)
+  """
   tagBodies: [String!] = []
 
-  """소속 카테고리"""
+  """
+  소속 카테고리
+  """
   category: NodeInput
 }
 
 union CreatePostResult = Post | AuthInfoRequiredError | ResourceNotFoundError
 
-"""Date with time (isoformat)"""
+"""
+Date with time (isoformat)
+"""
 scalar DateTime
 
-"""특정 날짜/시각 사이의 범위에 해당되는 데이터를 받아 오기 위한 인터페이스"""
+"""
+특정 날짜/시각 사이의 범위에 해당되는 데이터를 받아 오기 위한 인터페이스
+"""
 input DatetimeBetween {
-  """조회 시작 일시"""
+  """
+  조회 시작 일시
+  """
   startDt: DateTime = null
 
-  """조회 종료 일시"""
+  """
+  조회 종료 일시
+  """
   endDt: DateTime = "2023-05-18T20:28:49.186711"
 }
 
@@ -352,22 +548,34 @@ enum DurationType {
   WEEKLY
 }
 
-"""이미 사용 중인 email로 생성/수정을 시도하려는 경우"""
+"""
+이미 사용 중인 email로 생성/수정을 시도하려는 경우
+"""
 type EmailAlreadyUsedError {
-  """중복 필드 이름"""
+  """
+  중복 필드 이름
+  """
   violatedFieldName: String!
 
-  """중복된 email 값"""
+  """
+  중복된 email 값
+  """
   violatedFieldValue: String!
   message: String!
 }
 
-"""특정 항목의 점수를 표시하기 위한 타입"""
+"""
+특정 항목의 점수를 표시하기 위한 타입
+"""
 type FieldScore {
-  """항목의 이름"""
+  """
+  항목의 이름
+  """
   label: String!
 
-  """점수"""
+  """
+  점수
+  """
   score: Int!
 }
 
@@ -376,39 +584,59 @@ enum Gender {
   FEMALE
 }
 
-"""성별 검색 인터페이스"""
+"""
+성별 검색 인터페이스
+"""
 input GenderFilter {
-  """검색할 성별"""
+  """
+  검색할 성별
+  """
   gender: Gender!
 }
 
 input GetFollowingPersonaStatisticsInput {
-  """응답될 항목의 최대 개수"""
+  """
+  응답될 항목의 최대 개수
+  """
   resultLimit: Int = 100
 }
 
 enum GetMembershipAs {
-  """구독자로서 조회"""
+  """
+  구독자로서 조회
+  """
   SUBSCRIBER
 
-  """창작자로서 조회"""
+  """
+  창작자로서 조회
+  """
   CREATOR
 }
 
-"""요청한 사용자가 읽은 게시물에 대한 통계를 내기 위한 입력"""
+"""
+요청한 사용자가 읽은 게시물에 대한 통계를 내기 위한 입력
+"""
 input GetOwnReadPostStatisticsInput {
-  """응답될 항목의 최대 개수"""
+  """
+  응답될 항목의 최대 개수
+  """
   resultLimit: Int = 100
 
-  """조회 기록 날짜 범위"""
+  """
+  조회 기록 날짜 범위
+  """
   datetimeBetween: StatisticsDatetimeBetween!
 }
 
 input GetPersonaFollowerStatisticsInput {
-  """조회 대상 페르소나의 ID"""
+  """
+  조회 대상 페르소나의 ID
+  """
   personaId: GlobalID!
 
-  """응답될 항목의 최대 개수"""
+  """
+  응답될 항목의 최대 개수
+  """
   resultLimit: Int = 100
 }
 
@@ -421,7 +649,9 @@ be accepted as an ID.
 """
 scalar GlobalID
 
-"""사용자 목록 | signup method"""
+"""
+사용자 목록 | signup method
+"""
 enum GraphqlAppUserSignupMethodEnum {
   EM
 }
@@ -431,13 +661,19 @@ type ImageUploadUrl {
   fields: JSON!
 }
 
-"""공인 여부 검색 인터페이스"""
+"""
+공인 여부 검색 인터페이스
+"""
 input IsCertifiedFilter {
-  """공인 여부"""
+  """
+  공인 여부
+  """
   isCertified: Boolean!
 }
 
-"""페르소나 직업"""
+"""
+페르소나 직업
+"""
 enum Job {
   STUDENT
   EDUCATOR
@@ -449,13 +685,19 @@ enum Job {
   ETC
 }
 
-"""직업 검색 인터페이스"""
+"""
+직업 검색 인터페이스
+"""
 input JobFilter {
-  """검색할 직업"""
+  """
+  검색할 직업
+  """
   job: Job!
 }
 
-"""Input data for `joinChallenge` mutation"""
+"""
+Input data for `joinChallenge` mutation
+"""
 input JoinChallengeInput {
   challengeId: GlobalID!
   personaId: GlobalID!
@@ -463,12 +705,18 @@ input JoinChallengeInput {
 
 union JoinChallengePayload = Challenge | OperationInfo
 
-"""멤버쉽 가입 input"""
+"""
+멤버쉽 가입 input
+"""
 input JoinMembershipInput {
-  """구독 대상 페르소나"""
+  """
+  구독 대상 페르소나
+  """
   creator: NodeInput!
 
-  """티어"""
+  """
+  티어
+  """
   tier: Tier!
 }
 
@@ -477,9 +725,13 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
-"""멤버쉽 가입 input"""
+"""
+멤버쉽 가입 input
+"""
 input LeaveMembershipInput {
-  """구독 대상 페르소나"""
+  """
+  구독 대상 페르소나
+  """
   creator: NodeInput!
 }
 
@@ -493,66 +745,110 @@ union LoginResult = User | AnonymousOnlyError | WrongCertInfoError
 type Membership implements Node {
   id: GlobalID!
 
-  """구독자 페르소나"""
+  """
+  구독자 페르소나
+  """
   subscriber: Persona!
 
-  """창작자 페르소나"""
+  """
+  창작자 페르소나
+  """
   creator: Persona!
 
-  """티어"""
+  """
+  티어
+  """
   tier: Tier!
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   createdAt: DateTime!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type MembershipConnection {
-  """Pagination data for this connection"""
+  """
+  Pagination data for this connection
+  """
   pageInfo: PageInfo!
 
-  """Contains the nodes in this connection"""
+  """
+  Contains the nodes in this connection
+  """
   edges: [MembershipEdge!]!
 
-  """Total quantity of existing nodes"""
+  """
+  Total quantity of existing nodes
+  """
   totalCount: Int
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type MembershipEdge {
-  """A cursor for use in pagination"""
+  """
+  A cursor for use in pagination
+  """
   cursor: String!
 
-  """The item at the end of the edge"""
+  """
+  The item at the end of the edge
+  """
   node: Membership!
 }
 
-union MembershipJoinResult = Membership | AuthInfoRequiredError | PersonaContextRequiredError | AlreadyJoinedMembershipError
+union MembershipJoinResult =
+    Membership
+  | AuthInfoRequiredError
+  | PersonaContextRequiredError
+  | AlreadyJoinedMembershipError
 
-"""멤버쉽 정렬 기준"""
+"""
+멤버쉽 정렬 기준
+"""
 enum MembershipSortBy {
-  """ID"""
+  """
+  ID
+  """
   ID
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   CREATED_AT
 
-  """구독자 닉네임"""
+  """
+  구독자 닉네임
+  """
   SUBSCRIBER_NICKNAME
 
-  """창작자 닉네임"""
+  """
+  창작자 닉네임
+  """
   CREATOR_NICKNAME
 
-  """티어"""
+  """
+  티어
+  """
   TIER
 }
 
-"""멤버쉽 목록 조회시 적용할 정렬 방법"""
+"""
+멤버쉽 목록 조회시 적용할 정렬 방법
+"""
 input MembershipSortingOption {
-  """정렬 기준"""
+  """
+  정렬 기준
+  """
   sortBy: MembershipSortBy = ID
 
-  """정렬 방향"""
+  """
+  정렬 방향
+  """
   direction: SortingDirection = ASC
 }
 
@@ -561,15 +857,25 @@ type Mutation {
   username, email, password로 회원 가입을 시도한다.
   단, username, email은 각각 Unique하다.
   """
-  register(username: String!, email: String!, password: String!): RegisterOrLoginResult!
+  register(
+    username: String!
+    email: String!
+    password: String!
+  ): RegisterOrLoginResult!
 
-  """username과 password로 로그인을 시도한다."""
+  """
+  username과 password로 로그인을 시도한다.
+  """
   login(username: String!, password: String!): LoginResult!
 
-  """로그아웃을 수행한다."""
+  """
+  로그아웃을 수행한다.
+  """
   logout: Void
 
-  """새 게시물을 생성한다."""
+  """
+  새 게시물을 생성한다.
+  """
   postCreate(newPostInput: CreatePostInput!): CreatePostResult!
 
   """
@@ -590,11 +896,17 @@ type Mutation {
   """
   writeComment(postId: GlobalID!, body: String!): Comment!
 
-  """새 Persona를 생성한다."""
+  """
+  새 Persona를 생성한다.
+  """
   personaCreate(newPersonaInput: PersonaCreateInput!): CreatePersonaResult!
 
-  """특정 페르소나에 대한 팔로우/언팔로우 토글을 수행한다."""
-  personaFollowToggle(personaFollowInput: PersonaFollowToggleInput!): PersonaFollowToggleResult!
+  """
+  특정 페르소나에 대한 팔로우/언팔로우 토글을 수행한다.
+  """
+  personaFollowToggle(
+    personaFollowInput: PersonaFollowToggleInput!
+  ): PersonaFollowToggleResult!
 
   """
   새 태그를 생성한다.
@@ -602,55 +914,92 @@ type Mutation {
   """
   tagInsert(body: String!): UpsertTagResult!
 
-  """새 카테고리를 생성한다."""
+  """
+  새 카테고리를 생성한다.
+  """
   categoryCreate(body: String!): CreateCategoryResult!
 
-  """특정 페르소나의 멤버쉽에 가입을 요청한다."""
+  """
+  특정 페르소나의 멤버쉽에 가입을 요청한다.
+  """
   joinMembership(joinInput: JoinMembershipInput!): MembershipJoinResult!
 
-  """특정 페르소나의 멤버쉽에서 탈퇴한다."""
-  leaveMembership(leaveInput: LeaveMembershipInput!): PersonaContextRequiredError
+  """
+  특정 페르소나의 멤버쉽에서 탈퇴한다.
+  """
+  leaveMembership(
+    leaveInput: LeaveMembershipInput!
+  ): PersonaContextRequiredError
   createChallenge(input: CreateChallengeInput!): Challenge!
-  createChallengeObjective(input: CreateChallengeObjectiveInput!): ChallengeObjective!
-  toggleChallengeObjective(challengeObjectiveId: GlobalID!, personaId: GlobalID!): ChallengeObjectiveHistory!
+  createChallengeObjective(
+    input: CreateChallengeObjectiveInput!
+  ): ChallengeObjective!
+  toggleChallengeObjective(
+    challengeObjectiveId: GlobalID!
+    personaId: GlobalID!
+  ): ChallengeObjectiveHistory!
   joinChallenge(
-    """Input data for `joinChallenge` mutation"""
+    """
+    Input data for `joinChallenge` mutation
+    """
     input: JoinChallengeInput!
   ): JoinChallengePayload!
 }
 
-"""닉네임 검색 인터페이스"""
+"""
+닉네임 검색 인터페이스
+"""
 input NicknameFilter {
-  """검색 모드"""
+  """
+  검색 모드
+  """
   mode: StringFindMode = EXACTLY
 
-  """검색 문자열"""
+  """
+  검색 문자열
+  """
   token: String!
 }
 
-"""An object with a Globally Unique ID"""
+"""
+An object with a Globally Unique ID
+"""
 interface Node {
-  """The Globally Unique ID of this object"""
+  """
+  The Globally Unique ID of this object
+  """
   id: GlobalID!
 }
 
-"""Input of an object that implements the `Node` interface."""
+"""
+Input of an object that implements the `Node` interface.
+"""
 input NodeInput {
   id: GlobalID!
 }
 
-"""Multiple messages returned by an operation."""
+"""
+Multiple messages returned by an operation.
+"""
 type OperationInfo {
-  """List of messages returned by the operation."""
+  """
+  List of messages returned by the operation.
+  """
   messages: [OperationMessage!]!
 }
 
-"""An error that happened while executing an operation."""
+"""
+An error that happened while executing an operation.
+"""
 type OperationMessage {
-  """The kind of this message."""
+  """
+  The kind of this message.
+  """
   kind: OperationMessageKind!
 
-  """The error message."""
+  """
+  The error message.
+  """
   message: String!
 
   """
@@ -659,7 +1008,9 @@ type OperationMessage {
   field: String
 }
 
-"""The kind of the returned message."""
+"""
+The kind of the returned message.
+"""
 enum OperationMessageKind {
   INFO
   WARNING
@@ -668,18 +1019,28 @@ enum OperationMessageKind {
   VALIDATION
 }
 
-"""Information to aid in pagination."""
+"""
+Information to aid in pagination.
+"""
 type PageInfo {
-  """When paginating forwards, are there more items?"""
+  """
+  When paginating forwards, are there more items?
+  """
   hasNextPage: Boolean!
 
-  """When paginating backwards, are there more items?"""
+  """
+  When paginating backwards, are there more items?
+  """
   hasPreviousPage: Boolean!
 
-  """When paginating backwards, the cursor to continue."""
+  """
+  When paginating backwards, the cursor to continue.
+  """
   startCursor: String
 
-  """When paginating forwards, the cursor to continue."""
+  """
+  When paginating forwards, the cursor to continue.
+  """
   endCursor: String
 }
 
@@ -688,9 +1049,13 @@ enum ParticipateKind {
   GROUP
 }
 
-"""요청된 작업에 대한 권한이 없을 경우 발생하는 에러"""
+"""
+요청된 작업에 대한 권한이 없을 경우 발생하는 에러
+"""
 type PermissionDeniedError {
-  """요구 권한"""
+  """
+  요구 권한
+  """
   requiredPermission: String!
 }
 
@@ -701,361 +1066,593 @@ User : Persona = 1 : N
 type Persona implements Node {
   id: GlobalID!
 
-  """소유자"""
+  """
+  소유자
+  """
   owner: User!
 
-  """닉네임 (unique)"""
+  """
+  닉네임 (unique)
+  """
   nickname: String!
 
-  """소개"""
+  """
+  소개
+  """
   introduction: String!
 
-  """공개 여부"""
+  """
+  공개 여부
+  """
   isPublic: Boolean!
 
-  """성별"""
+  """
+  성별
+  """
   gender: Gender
 
-  """생년"""
+  """
+  생년
+  """
   birthYear: Int
 
-  """직업"""
+  """
+  직업
+  """
   job: String
 
-  """공식 인증 여부"""
+  """
+  공식 인증 여부
+  """
   isCertified: Boolean!
   preferredTags(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
   ): TagConnection!
   preferredCategories(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
   ): CategoryConnection!
   followingPersonas(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
   ): PersonaConnection!
   followerPersonas(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
   ): PersonaConnection!
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   createdAt: DateTime!
 
-  """갱신 일시"""
+  """
+  갱신 일시
+  """
   updatedAt: DateTime!
 
-  """북마크 목록"""
+  """
+  북마크 목록
+  """
   bookmarks: [Bookmark!]!
 
-  """좋아요 한 포스트 목록"""
+  """
+  좋아요 한 포스트 목록
+  """
   likedPosts: [Post!]!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type PersonaConnection {
-  """Pagination data for this connection"""
+  """
+  Pagination data for this connection
+  """
   pageInfo: PageInfo!
 
-  """Contains the nodes in this connection"""
+  """
+  Contains the nodes in this connection
+  """
   edges: [PersonaEdge!]!
 
-  """Total quantity of existing nodes"""
+  """
+  Total quantity of existing nodes
+  """
   totalCount: Int
 }
 
-"""Header 또는 Cookie를 통해 필요한 context를 얻을 수 없는 경우 발생"""
+"""
+Header 또는 Cookie를 통해 필요한 context를 얻을 수 없는 경우 발생
+"""
 type PersonaContextRequiredError {
   message: String!
 
-  """요구되는 Header/Cookie의 key value"""
+  """
+  요구되는 Header/Cookie의 key value
+  """
   requriedKey: String!
 }
 
-"""페르소나 생성에 필요한 정보"""
+"""
+페르소나 생성에 필요한 정보
+"""
 input PersonaCreateInput {
-  """닉네임 (unique)"""
+  """
+  닉네임 (unique)
+  """
   nickname: String!
 
-  """소개"""
+  """
+  소개
+  """
   introduction: String = "자기소개가 없습니다."
 
-  """공개 여부"""
+  """
+  공개 여부
+  """
   isPublic: Boolean = true
 
-  """성별"""
+  """
+  성별
+  """
   gender: Gender = null
 
-  """나이"""
+  """
+  나이
+  """
   birthYear: Int = null
 
-  """직업"""
+  """
+  직업
+  """
   job: Job = null
 
-  """선호하는 태그의 body 목록 (insert 됨)"""
+  """
+  선호하는 태그의 body 목록 (insert 됨)
+  """
   preferredTagBodies: [String!] = []
 
-  """선호 카테고리 목록"""
+  """
+  선호 카테고리 목록
+  """
   preferredCategories: [CategoryIDInput!] = []
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type PersonaEdge {
-  """A cursor for use in pagination"""
+  """
+  A cursor for use in pagination
+  """
   cursor: String!
 
-  """The item at the end of the edge"""
+  """
+  The item at the end of the edge
+  """
   node: Persona!
 }
 
-"""페르소나 팔로우/언팔로우 토글에 필요한 정보"""
+"""
+페르소나 팔로우/언팔로우 토글에 필요한 정보
+"""
 input PersonaFollowToggleInput {
-  """팔로우/언팔로우의 대상이 되는 페르소나의 ID"""
+  """
+  팔로우/언팔로우의 대상이 되는 페르소나의 ID
+  """
   followeePersona: GlobalID!
 }
 
-"""페르소나 팔로우/언팔로우 토글 결과"""
+"""
+페르소나 팔로우/언팔로우 토글 결과
+"""
 type PersonaFollowToggleOutput {
-  """팔로우/언팔로우 토글을 수행한 페르소나의 ID"""
+  """
+  팔로우/언팔로우 토글을 수행한 페르소나의 ID
+  """
   followeePersona: GlobalID!
 
-  """작업 수행 후 팔로우 여부"""
+  """
+  작업 수행 후 팔로우 여부
+  """
   followed: Boolean!
 }
 
-union PersonaFollowToggleResult = PersonaFollowToggleOutput | AuthInfoRequiredError | PermissionDeniedError | SelfFollowError
+union PersonaFollowToggleResult =
+    PersonaFollowToggleOutput
+  | AuthInfoRequiredError
+  | PermissionDeniedError
+  | SelfFollowError
 
-"""이미 사용중인 nickname으로 페르소나 생성/갱신을 시도한 경우 발생"""
+"""
+이미 사용중인 nickname으로 페르소나 생성/갱신을 시도한 경우 발생
+"""
 type PersonaNicknameDuplicatedError {
-  """중복 필드 이름"""
+  """
+  중복 필드 이름
+  """
   violatedFieldName: String!
 
-  """중복된 페르소나 닉네임 값"""
+  """
+  중복된 페르소나 닉네임 값
+  """
   violatedFieldValue: String!
   message: String!
 }
 
-"""페르소나 정렬 기준"""
+"""
+페르소나 정렬 기준
+"""
 enum PersonaSortBy {
-  """ID"""
+  """
+  ID
+  """
   ID
 
-  """닉네임"""
+  """
+  닉네임
+  """
   NICKNAME
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   CREATED_AT
 
-  """게시물 총 조회수"""
+  """
+  게시물 총 조회수
+  """
   TOTAL_POST_READ_CNT
 
-  """팔로워 수"""
+  """
+  팔로워 수
+  """
   FOLLOWER_CNT
 }
 
-"""페르소나 목록 조회 시 적용할 정렬 방법"""
+"""
+페르소나 목록 조회 시 적용할 정렬 방법
+"""
 input PersonaSortingOption {
-  """정렬 기준"""
+  """
+  정렬 기준
+  """
   sortBy: PersonaSortBy = CREATED_AT
 
-  """정렬 방향"""
+  """
+  정렬 방향
+  """
   direction: SortingDirection = DESC
 }
 
-"""게시물 관련 통계 데이터 묶음"""
+"""
+게시물 관련 통계 데이터 묶음
+"""
 type PersonaStatistics {
-  """태그 점수"""
+  """
+  태그 점수
+  """
   tagScores: [FieldScore!]!
 
-  """카테고리 점수"""
+  """
+  카테고리 점수
+  """
   categoryScores: [FieldScore!]!
 
-  """성별 점수"""
+  """
+  성별 점수
+  """
   genderScores: [FieldScore!]!
 
-  """생년 점수"""
+  """
+  생년 점수
+  """
   birthYearScores: [FieldScore!]!
 
-  """직업 점수"""
+  """
+  직업 점수
+  """
   jobScores: [FieldScore!]!
 }
 
 type Post implements Node {
   id: GlobalID!
 
-  """글 제목"""
+  """
+  글 제목
+  """
   title: String!
 
-  """글 내용"""
+  """
+  글 내용
+  """
   content: String!
 
-  """글 내용 미리보기"""
+  """
+  글 내용 미리보기
+  """
   contentPreview: String
 
-  """유료 내용"""
+  """
+  유료 내용
+  """
   paidContent: String
 
-  """작성자"""
+  """
+  작성자
+  """
   author: Persona!
 
-  """공개 여부"""
+  """
+  공개 여부
+  """
   isPublic: Boolean!
   tags(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
   ): TagConnection!
 
-  """소속 카테고리"""
+  """
+  소속 카테고리
+  """
   category: Category
 
-  """조회 요구 티어"""
+  """
+  조회 요구 티어
+  """
   requiredMembershipTier: Tier
 
-  """좋아요 개수"""
+  """
+  좋아요 개수
+  """
   likeCnt: Int!
 
-  """댓글 목록"""
+  """
+  댓글 목록
+  """
   comments: [Comment!]!
 
-  """댓글 갯수"""
+  """
+  댓글 갯수
+  """
   commentCnt: Int!
 
-  """북마크 개수"""
+  """
+  북마크 개수
+  """
   bookmarkCnt: Int!
 
-  """생성 시각"""
+  """
+  생성 시각
+  """
   createdAt: DateTime!
 
-  """갱신 시각"""
+  """
+  갱신 시각
+  """
   updatedAt: DateTime!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type PostConnection {
-  """Pagination data for this connection"""
+  """
+  Pagination data for this connection
+  """
   pageInfo: PageInfo!
 
-  """Contains the nodes in this connection"""
+  """
+  Contains the nodes in this connection
+  """
   edges: [PostEdge!]!
 
-  """Total quantity of existing nodes"""
+  """
+  Total quantity of existing nodes
+  """
   totalCount: Int
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type PostEdge {
-  """A cursor for use in pagination"""
+  """
+  A cursor for use in pagination
+  """
   cursor: String!
 
-  """The item at the end of the edge"""
+  """
+  The item at the end of the edge
+  """
   node: Post!
 }
 
-"""특정 게시물에 대한 독자 페르소나의 주요 특징을 반환 받기 위한 입력"""
+"""
+특정 게시물에 대한 독자 페르소나의 주요 특징을 반환 받기 위한 입력
+"""
 input PostReaderPersonaStatisticsInput {
-  """대상 게시물의 ID"""
+  """
+  대상 게시물의 ID
+  """
   postId: GlobalID!
 
-  """재방문 횟수 하한"""
+  """
+  재방문 횟수 하한
+  """
   minRevisit: Int! = 1
 
-  """응답될 항목의 최대 개수"""
+  """
+  응답될 항목의 최대 개수
+  """
   resultLimit: Int = 100
 }
 
-"""게시물 정렬 기준"""
+"""
+게시물 정렬 기준
+"""
 enum PostSortBy {
-  """ID"""
+  """
+  ID
+  """
   ID
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   CREATED_AT
 
-  """조회수"""
+  """
+  조회수
+  """
   READ_CNT
 }
 
-"""게시물 목록 조회시 적용할 정렬 방법"""
+"""
+게시물 목록 조회시 적용할 정렬 방법
+"""
 input PostSortingOption {
-  """정렬 기준"""
+  """
+  정렬 기준
+  """
   sortBy: PostSortBy = CREATED_AT
 
-  """정렬 방향"""
+  """
+  정렬 방향
+  """
   direction: SortingDirection = DESC
 }
 
-"""게시물 관련 통계 데이터 묶음"""
+"""
+게시물 관련 통계 데이터 묶음
+"""
 type PostStatistics {
-  """태그 점수"""
+  """
+  태그 점수
+  """
   tagScores: [FieldScore!]!
 
-  """카테고리 점수"""
+  """
+  카테고리 점수
+  """
   categoryScores: [FieldScore!]!
 
-  """작성자 페르소나의 주요 특징"""
+  """
+  작성자 페르소나의 주요 특징
+  """
   authorScores: PersonaStatistics!
 }
 
 type Query {
-  """공개된 모든 게시물의 목록"""
+  """
+  공개된 모든 게시물의 목록
+  """
   getPublicPosts(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     sortingOpt: PostSortingOption!
     createdAtFilter: DatetimeBetween = null
@@ -1065,21 +1662,33 @@ type Query {
     tagsFilter: TagFilter = null
   ): PostConnection!
 
-  """게시물 한 건 조회"""
+  """
+  게시물 한 건 조회
+  """
   getPost(postId: GlobalID!): Post!
 
-  """시스템에 등록된 모든 게시물의 목록"""
+  """
+  시스템에 등록된 모든 게시물의 목록
+  """
   getEntirePosts(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     sortingOpt: PostSortingOption!
     createdAtFilter: DatetimeBetween = null
@@ -1090,18 +1699,28 @@ type Query {
   ): PostConnection!
   getImageUploadUrl(imageName: String!): ImageUploadUrl!
 
-  """로그인한 사용자의 페르소나 목록"""
+  """
+  로그인한 사용자의 페르소나 목록
+  """
   getOwnPersonas(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     sortingOpt: PersonaSortingOption!
     createdAtFilter: DatetimeBetween = null
@@ -1112,18 +1731,28 @@ type Query {
     jobFilter: JobFilter = null
   ): PersonaConnection!
 
-  """모든 공개 페르소나의 목록"""
+  """
+  모든 공개 페르소나의 목록
+  """
   getPublicPersonas(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     sortingOpt: PersonaSortingOption!
     createdAtFilter: DatetimeBetween = null
@@ -1134,7 +1763,9 @@ type Query {
     jobFilter: JobFilter = null
   ): PersonaConnection!
 
-  """페르소나 한 건 조회 (Public한 정보만 노출)"""
+  """
+  페르소나 한 건 조회 (Public한 정보만 노출)
+  """
   getPublicPersona(personaId: GlobalID!): Persona!
 
   """
@@ -1143,155 +1774,259 @@ type Query {
   """
   tagInsert(body: String!): UpsertTagResult!
   tag(
-    """The ID of the object."""
+    """
+    The ID of the object.
+    """
     id: GlobalID!
   ): Tag
 
-  """등록된 모든 태그의 목록"""
+  """
+  등록된 모든 태그의 목록
+  """
   getAllTags(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     sortingOpt: TagSortingOption!
     createdAtFilter: DatetimeBetween = null
     bodyFilter: TagBodyFilter = null
   ): TagConnection!
 
-  """시스템에 등록된 모든 카테고리의 목록을 반환"""
+  """
+  시스템에 등록된 모든 카테고리의 목록을 반환
+  """
   getAllCategories(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     sortingOpt: CategorySortingOption!
     createdAtFilter: DatetimeBetween = null
     bodyFilter: CategoryBodyFilter = null
   ): CategoryConnection!
 
-  """요청한 페르소나의 멤버쉽 목록"""
+  """
+  요청한 페르소나의 멤버쉽 목록
+  """
   getOwnMemberships(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     mode: GetMembershipAs!
     sortingOpt: MembershipSortingOption!
   ): MembershipConnection!
 
-  """사용자가 읽은 게시물에 대한 통계 정보를 반환한다."""
+  """
+  사용자가 읽은 게시물에 대한 통계 정보를 반환한다.
+  """
   getOwnReadPostStatistics(opt: GetOwnReadPostStatisticsInput!): PostStatistics!
 
-  """요청한 페르소나가 팔로우 하고 있는 페르소나의 주요 특징을 반환한다."""
-  getFollowingPersonasStatistics(opt: GetFollowingPersonaStatisticsInput!): PersonaStatistics!
+  """
+  요청한 페르소나가 팔로우 하고 있는 페르소나의 주요 특징을 반환한다.
+  """
+  getFollowingPersonasStatistics(
+    opt: GetFollowingPersonaStatisticsInput!
+  ): PersonaStatistics!
 
-  """특정 페르소나의 팔로워 페르소나의 주요 특징을 반환한다."""
-  getPersonaFollowersStatistics(opt: GetPersonaFollowerStatisticsInput!): PersonaStatistics!
+  """
+  특정 페르소나의 팔로워 페르소나의 주요 특징을 반환한다.
+  """
+  getPersonaFollowersStatistics(
+    opt: GetPersonaFollowerStatisticsInput!
+  ): PersonaStatistics!
 
-  """특정 게시물에 대한 독자 페르소나의 주요 특징을 반환한다."""
-  getPostReaderStatistics(opt: PostReaderPersonaStatisticsInput!): PersonaStatistics!
+  """
+  특정 게시물에 대한 독자 페르소나의 주요 특징을 반환한다.
+  """
+  getPostReaderStatistics(
+    opt: PostReaderPersonaStatisticsInput!
+  ): PersonaStatistics!
 
-  """사용자의 일별 읽은 게시물의 수를 반환한다."""
-  getOwnReadPostStatisticsPerDay(between: StatisticsDatetimeBetween!): CountStatistics!
+  """
+  사용자의 일별 읽은 게시물의 수를 반환한다.
+  """
+  getOwnReadPostStatisticsPerDay(
+    between: StatisticsDatetimeBetween!
+  ): CountStatistics!
 
-  """사용자의 시간대별 읽은 게시물의 갯수를 반환한다."""
-  getOwnReadPostStatisticsPerHour(between: StatisticsDatetimeBetween!): CountStatistics!
+  """
+  사용자의 시간대별 읽은 게시물의 갯수를 반환한다.
+  """
+  getOwnReadPostStatisticsPerHour(
+    between: StatisticsDatetimeBetween!
+  ): CountStatistics!
 
-  """사용자의 요일별 읽은 게시물의 갯수를 반환한다."""
-  getOwnReadPostStatisticsPerWeekday(between: StatisticsDatetimeBetween!): CountStatistics!
+  """
+  사용자의 요일별 읽은 게시물의 갯수를 반환한다.
+  """
+  getOwnReadPostStatisticsPerWeekday(
+    between: StatisticsDatetimeBetween!
+  ): CountStatistics!
 
-  """사용자가 일정 기간 동안 읽은 게시물들의 포스트를 기준으로 갯수를 반환한다."""
-  getOwnReadPostStatisticsPerAuthor(between: StatisticsDatetimeBetween!): CountStatistics!
+  """
+  사용자가 일정 기간 동안 읽은 게시물들의 포스트를 기준으로 갯수를 반환한다.
+  """
+  getOwnReadPostStatisticsPerAuthor(
+    between: StatisticsDatetimeBetween!
+  ): CountStatistics!
   getAllChallenges(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
   ): ChallengeConnection!
   getMyChallenges(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     personaId: GlobalID!
   ): ChallengeConnection!
   getMyChallengeObjectives(
-    """Returns the items in the list that come before the specified cursor."""
+    """
+    Returns the items in the list that come before the specified cursor.
+    """
     before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     after: String = null
 
-    """Returns the first n items from the list."""
+    """
+    Returns the first n items from the list.
+    """
     first: Int = null
 
-    """Returns the items in the list that come after the specified cursor."""
+    """
+    Returns the items in the list that come after the specified cursor.
+    """
     last: Int = null
     personaId: GlobalID!
     challengeId: GlobalID!
   ): ChallengeObjectiveConnection!
 }
 
-union RegisterOrLoginResult = User | AnonymousOnlyError | UsernameAlreadyUsedError | EmailAlreadyUsedError
+union RegisterOrLoginResult =
+    User
+  | AnonymousOnlyError
+  | UsernameAlreadyUsedError
+  | EmailAlreadyUsedError
 
-"""요청된 자원을 검색하는데 실패한 경우 발생하는 에러"""
+"""
+요청된 자원을 검색하는데 실패한 경우 발생하는 에러
+"""
 type ResourceNotFoundError {
-  """요청한 자원의 종류"""
+  """
+  요청한 자원의 종류
+  """
   resourceName: String!
 }
 
-"""스스로에 대한 follow를 수행하려 했을 때 발생하는 에러"""
+"""
+스스로에 대한 follow를 수행하려 했을 때 발생하는 에러
+"""
 type SelfFollowError {
   message: String!
 }
 
-"""정렬 오름차순/내림차순"""
+"""
+정렬 오름차순/내림차순
+"""
 enum SortingDirection {
   ASC
   DESC
 }
 
-"""통계에 사용할 데이터의 날짜 범위"""
+"""
+통계에 사용할 데이터의 날짜 범위
+"""
 input StatisticsDatetimeBetween {
-  """조회 시작 일시 (기본값 : 30일 이전)"""
+  """
+  조회 시작 일시 (기본값 : 30일 이전)
+  """
   startDatetime: DateTime = "2023-04-18T20:28:49.266423"
 
-  """조회 종료 일시 (기본값 : 오늘)"""
+  """
+  조회 종료 일시 (기본값 : 오늘)
+  """
   endDatetime: DateTime = "2023-05-18T20:28:49.266442"
 }
 
@@ -1310,112 +2045,182 @@ Post를 설명하거나, Persona의 선호 대상이 되는 태그
 type Tag implements Node {
   id: GlobalID!
 
-  """태그 본문"""
+  """
+  태그 본문
+  """
   body: String!
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   createdAt: DateTime!
 }
 
-"""태그 검색 인터페이스"""
+"""
+태그 검색 인터페이스
+"""
 input TagBodyFilter {
-  """검색 모드"""
+  """
+  검색 모드
+  """
   mode: StringFindMode = EXACTLY
 
-  """검색 문자열"""
+  """
+  검색 문자열
+  """
   token: String!
 }
 
-"""태그 body의 길이가 기준치보다 긴 경우 발생"""
+"""
+태그 body의 길이가 기준치보다 긴 경우 발생
+"""
 type TagBodyTooLongError {
-  """위반 필드 값"""
+  """
+  위반 필드 값
+  """
   violatedFieldName: String!
 
-  """위반 사유 상세"""
+  """
+  위반 사유 상세
+  """
   detail: String
   message: String!
 
-  """전달된 태그 body 값"""
+  """
+  전달된 태그 body 값
+  """
   violatedFieldValue: String!
 }
 
-"""태그 body의 길이가 기준치보다 짧은 경우 발생"""
+"""
+태그 body의 길이가 기준치보다 짧은 경우 발생
+"""
 type TagBodyTooShortError {
-  """위반 필드 값"""
+  """
+  위반 필드 값
+  """
   violatedFieldName: String!
 
-  """위반 사유 상세"""
+  """
+  위반 사유 상세
+  """
   detail: String
   message: String!
 
-  """전달된 태그 body 값"""
+  """
+  전달된 태그 body 값
+  """
   violatedFieldValue: String!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type TagConnection {
-  """Pagination data for this connection"""
+  """
+  Pagination data for this connection
+  """
   pageInfo: PageInfo!
 
-  """Contains the nodes in this connection"""
+  """
+  Contains the nodes in this connection
+  """
   edges: [TagEdge!]!
 
-  """Total quantity of existing nodes"""
+  """
+  Total quantity of existing nodes
+  """
   totalCount: Int
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type TagEdge {
-  """A cursor for use in pagination"""
+  """
+  A cursor for use in pagination
+  """
   cursor: String!
 
-  """The item at the end of the edge"""
+  """
+  The item at the end of the edge
+  """
   node: Tag!
 }
 
-"""태그 검색 인터페이스 (or 적용)"""
+"""
+태그 검색 인터페이스 (or 적용)
+"""
 input TagFilter {
-  """태그 ID 목록"""
+  """
+  태그 ID 목록
+  """
   tagIds: [GlobalID!]!
 }
 
-"""Tag insertion 결과"""
+"""
+Tag insertion 결과
+"""
 type TagInsertionResult {
-  """Upsert된 태그"""
+  """
+  Upsert된 태그
+  """
   tag: Tag!
 
-  """새로 생성된 경우 true, 아닌 경우 false"""
+  """
+  새로 생성된 경우 true, 아닌 경우 false
+  """
   isCreated: Boolean!
 }
 
-"""태그 정렬 기준"""
+"""
+태그 정렬 기준
+"""
 enum TagSortBy {
-  """ID"""
+  """
+  ID
+  """
   ID
 
-  """사전순"""
+  """
+  사전순
+  """
   LEXICOGRAPHICAL
 
-  """생성 일시"""
+  """
+  생성 일시
+  """
   CREATED_AT
 
-  """선호 페르소나 수 기준"""
+  """
+  선호 페르소나 수 기준
+  """
   PERSONA_PREFERENCE_CNT
 
-  """연결된 게시물 수 기준"""
+  """
+  연결된 게시물 수 기준
+  """
   POST_CONNECTION_CNT
 }
 
-"""태그 목록 조회 시 적용할 정렬 방법"""
+"""
+태그 목록 조회 시 적용할 정렬 방법
+"""
 input TagSortingOption {
-  """정렬 기준"""
+  """
+  정렬 기준
+  """
   sortBy: TagSortBy = ID
 
-  """정렬 방향"""
+  """
+  정렬 방향
+  """
   direction: SortingDirection = ASC
 }
 
-"""멤버쉽 티어"""
+"""
+멤버쉽 티어
+"""
 enum Tier {
   TIER_1
   TIER_2
@@ -1425,49 +2230,77 @@ enum Tier {
   TIER_6
 }
 
-"""제목 검색 인터페이스"""
+"""
+제목 검색 인터페이스
+"""
 input TitleFilter {
-  """검색 모드"""
+  """
+  검색 모드
+  """
   mode: StringFindMode = EXACTLY
 
-  """검색 문자열"""
+  """
+  검색 문자열
+  """
   token: String!
 }
 
-union UpsertTagResult = TagInsertionResult | AuthInfoRequiredError | TagBodyTooShortError | TagBodyTooLongError
+union UpsertTagResult =
+    TagInsertionResult
+  | AuthInfoRequiredError
+  | TagBodyTooShortError
+  | TagBodyTooLongError
 
 type User implements Node {
   id: GlobalID!
 
-  """사용자 ID (Unique)"""
+  """
+  사용자 ID (Unique)
+  """
   username: String!
 
-  """사용자 E-mail (Unique)"""
+  """
+  사용자 E-mail (Unique)
+  """
   email: String!
 
-  """로그인 방법"""
+  """
+  로그인 방법
+  """
   signupMethod: GraphqlAppUserSignupMethodEnum!
 
-  """생성 시각"""
+  """
+  생성 시각
+  """
   createdAt: DateTime!
 
-  """갱신 시각"""
+  """
+  갱신 시각
+  """
   updatedAt: DateTime!
 }
 
-"""이미 사용 중인 username으로 User에 대한 생성/수정을 시도하려는 경우"""
+"""
+이미 사용 중인 username으로 User에 대한 생성/수정을 시도하려는 경우
+"""
 type UsernameAlreadyUsedError {
   violatedFieldName: String!
 
-  """중복된 username 값"""
+  """
+  중복된 username 값
+  """
   violatedFieldValue: String!
   message: String!
 }
 
-"""Represents NULL values"""
+"""
+Represents NULL values
+"""
 scalar Void
 
-"""잘못된 인증 정보(email, password 등)이 전달 되어 로그인에 실패한 경우"""
+"""
+잘못된 인증 정보(email, password 등)이 전달 되어 로그인에 실패한 경우
+"""
 type WrongCertInfoError {
   message: String!
 }

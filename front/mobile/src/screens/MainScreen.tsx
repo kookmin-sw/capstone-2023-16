@@ -51,6 +51,33 @@ const CategoryScroll = styled.ScrollView`
   margin-bottom: ${DimensionTheme.width(18)}px;
 `;
 
+const getPublicPostsQuery = graphql`
+  query MainScreenQuery {
+    getPublicPosts(sortingOpt: {}) {
+      edges {
+        node {
+          id
+          contentPreview
+          createdAt
+          tags {
+            edges {
+              node {
+                body
+                id
+              }
+            }
+          }
+          title
+          author {
+            nickname
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 type Props = NavigationData<'Main'>;
 
 const MainScreen: FC<Props> = ({navigation}) => {
