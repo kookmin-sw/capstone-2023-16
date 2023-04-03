@@ -5,7 +5,7 @@ from strawberry.schema.types.base_scalars import Date
 from strawberry.types import Info
 
 from graphql_app.domain.statistics.post import get_read_post_statistics, get_post_read_counts_by_day, \
-    get_post_read_counts_by_hour
+    get_post_read_counts_by_hour, get_post_read_counts_by_weekday
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, GetOwnReadPostStatisticsInput, \
     StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement
@@ -51,7 +51,15 @@ class Query:
         """
         persona_id = info.context.request.persona.id
         result = get_post_read_counts_by_hour(persona_id, opt.start_datetime, opt.end_datetime)
-        # result = [PostReadStatisticsPerDayElement(date=date, count=count) for date, count in result.items()]
-        # result.sort(key=lambda x: x.date)
-        # result = PostReadStatisticsPerDay(elements=result)
+        return -1
+
+    @strawberry.field
+    @requires_persona_context
+    def get_own_read_post_statistics_per_weekday(self, info: Info, opt: StatisticsDatetimeBetween) \
+            -> int:
+        """
+        사용자의 요일별 읽은 게시물의 갯수를 반환한다.
+        """
+        persona_id = info.context.request.persona.id
+        result = get_post_read_counts_by_weekday(persona_id, opt.start_datetime, opt.end_datetime)
         return -1

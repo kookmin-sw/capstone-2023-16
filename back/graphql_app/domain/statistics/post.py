@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Dict, Tuple, List
 
 from graphql_app.models import PostReadingRecord
+from graphql_app.resolvers.statistics.enums import WeekDay
 
 
 def get_read_post_statistics(reader_id: int, record_limit: int, result_limit: int, start_dt: datetime, end_dt: datetime) \
@@ -70,7 +71,7 @@ def get_post_read_counts_by_day(reader_id: int, start_dt: datetime, end_dt: date
     return result
 
 
-def get_post_read_counts_by_hour(reader_id: int, start_dt: datetime, end_dt: datetime) -> Dict[datetime.date, int]:
+def get_post_read_counts_by_hour(reader_id: int, start_dt: datetime, end_dt: datetime) -> Dict[int, int]:
     """
     특정 사용자의 시간대별 읽은 게시물의 수를 반환하는 함수
     :param reader_id: 조회 대상 페르소나의 id
@@ -83,6 +84,25 @@ def get_post_read_counts_by_hour(reader_id: int, start_dt: datetime, end_dt: dat
     updated_dates = list(map(lambda dt: dt['updated_at'].hour, records))
     result = Counter(updated_dates)
     for h in range(0, 24):
+        if h not in result.keys():
+            result[h] = 0
+
+    return result
+
+
+def get_post_read_counts_by_weekday(reader_id: int, start_dt: datetime, end_dt: datetime) -> Dict[int, int]:
+    """
+    특정 사용자의 요일별 읽은 게시물의 수를 반환하는 함수
+    :param reader_id: 조회 대상 페르소나의 id
+    :param start_dt: 조회 시작 일시
+    :param end_dt: 조회 종료 일시
+    :return: {weekday(0은 월요일 ~ 6은 일요일) : 해당 요일에 읽은 게시물의 수
+    """
+    records = PostReadingRecord.objects.filter(persona=reader_id,
+                                               updated_at__gte=start_dt, updated_at__lte=end_dt).values('updated_at')
+    updated_dates = list(map(lambda dt: dt['updated_at'].weekday(), records))
+    result = Counter(updated_dates)
+    for h in range(0, 7):
         if h not in result.keys():
             result[h] = 0
 
