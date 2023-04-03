@@ -34,7 +34,6 @@ export type ParamList = {
   Following: undefined;
   History: undefined;
   Setting: undefined;
-  Detail: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -52,7 +51,7 @@ const AuthNavigator = () => {
         component={SignupScreen}
         options={{title: '회원가입', headerShadowVisible: false}}
       />
-      {/* <StackNavigator.Screen
+      <StackNavigator.Screen
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
@@ -141,7 +140,7 @@ const AuthNavigator = () => {
         name="Setting"
         component={SettingScreen}
         options={{headerShown: false}}
-      /> */}
+      />
     </StackNavigator.Navigator>
   );
 };

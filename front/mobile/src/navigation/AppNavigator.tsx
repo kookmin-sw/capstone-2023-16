@@ -26,7 +26,7 @@ export type ParamList = {
   Following: undefined;
   History: undefined;
   Setting: undefined;
-  Detail: undefined;
+  DetailContent: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();

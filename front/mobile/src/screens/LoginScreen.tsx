@@ -32,6 +32,7 @@ import {useAppDispatch} from '../redux/hooks';
 import {selectUser, setIsLoggedIn, setUser} from '../redux/slices/userSlice';
 import {useAppSelector} from '../redux/hooks';
 import {Alert} from 'react-native';
+import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 const LoginContainer = styled(Container)`
   width: 100%;
@@ -91,7 +92,6 @@ const loginMutation = graphql`
   }
 `;
 
-
 type Props = NavigationData<'Login'>;
 
 // const [commitMutation, isMutationInFlight] = useMutation(
@@ -117,7 +117,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
   const user = useAppSelector(selectUser);
 
   // 로그인
-  // const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
+  const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
 
   return (
     <LoginContainer>
