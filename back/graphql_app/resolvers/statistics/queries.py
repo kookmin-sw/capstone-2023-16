@@ -1,14 +1,14 @@
-from typing import Optional, Dict, List
+from typing import Dict
 
 import strawberry
-from strawberry.schema.types.base_scalars import Date
 from strawberry.types import Info
 
 from graphql_app.domain.statistics.post import get_read_post_statistics, get_post_read_counts_by_day, \
     get_post_read_counts_by_hour, get_post_read_counts_by_weekday
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, GetOwnReadPostStatisticsInput, \
-    StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement
+    StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement, PostReadStatisticsPerWeekday, \
+    PostReadStatisticsPerWeekdayElement, PostReadStatisticsPerHour, PostReadStatisticsPerHourElement
 
 
 @strawberry.type
@@ -45,21 +45,29 @@ class Query:
     @strawberry.field
     @requires_persona_context
     def get_own_read_post_statistics_per_hour(self, info: Info, opt: StatisticsDatetimeBetween) \
-            -> int:
+            -> PostReadStatisticsPerHour:
         """
         사용자의 시간대별 읽은 게시물의 갯수를 반환한다.
         """
         persona_id = info.context.request.persona.id
-        result = get_post_read_counts_by_hour(persona_id, opt.start_datetime, opt.end_datetime)
-        return -1
+        statistics = get_post_read_counts_by_hour(persona_id, opt.start_datetime, opt.end_datetime)
+        result = [PostReadStatisticsPerHourElement(hour=k, count=v) for k, v in statistics.items()]
+        result.sort(key=lambda e: e.hour)
+
+        return PostReadStatisticsPerHour(total_count=sum(statistics.values()),
+                                         elements=result)
 
     @strawberry.field
     @requires_persona_context
     def get_own_read_post_statistics_per_weekday(self, info: Info, opt: StatisticsDatetimeBetween) \
-            -> int:
+            -> PostReadStatisticsPerWeekday:
         """
         사용자의 요일별 읽은 게시물의 갯수를 반환한다.
         """
         persona_id = info.context.request.persona.id
-        result = get_post_read_counts_by_weekday(persona_id, opt.start_datetime, opt.end_datetime)
-        return -1
+        statistics = get_post_read_counts_by_weekday(persona_id, opt.start_datetime, opt.end_datetime)
+        result = [PostReadStatisticsPerWeekdayElement(weekday=k, count=v) for k, v in statistics.items()]
+        result.sort(key=lambda e: e.weekday)
+
+        return PostReadStatisticsPerWeekday(total_count=sum(statistics.values()),
+                                            elements=result)

@@ -5,12 +5,13 @@ import strawberry
 from graphene import Date
 
 from graphql_app.domain.statistics.utils import get_day_before_30_days
+from graphql_app.resolvers.statistics.enums import WeekDay
 
 
 @strawberry.input
 class GetOwnReadPostStatisticsInput:
-    record_limit: Optional[int] = strawberry.field(default=100, description='통계에 사용할 데이터의 최대 갯수')
-    result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 갯수')
+    record_limit: Optional[int] = strawberry.field(default=100, description='통계에 사용할 데이터의 최대 개수')
+    result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 개수')
     start_datetime: Optional[datetime] = strawberry.field(default_factory=get_day_before_30_days,
                                                           description='조회 시작 일시 (기본값 : 30일 이전)')
     end_datetime: Optional[datetime] = strawberry.field(default_factory=datetime.now,
@@ -43,16 +44,54 @@ class PostStatistics:
 @strawberry.type
 class PostReadStatisticsPerDay:
     """
-    일간 읽은 게시물 횟수 통계
+    일별 읽은 게시물 개수 통계
     """
-    elements: List['PostReadStatisticsPerDayElement'] = strawberry.field(description='날짜별 읽은 횟수')
+    elements: List['PostReadStatisticsPerDayElement'] = strawberry.field(description='날짜별 읽은 개수')
 
 
 @strawberry.type
 class PostReadStatisticsPerDayElement:
     """
-    일간 읽은 게시물 횟수 통계 (요소)
+    일별 읽은 게시물 개수 통계 (요소)
     date에 count개의 게시물을 읽었음을 의미함
     """
     date: str = strawberry.field(description='날짜')
+    count: int = strawberry.field(description='읽은 게시물 개수')
+
+
+@strawberry.type
+class PostReadStatisticsPerHour:
+    """
+    시간대별 읽은 게시물 개수 통계
+    """
+    total_count: int = strawberry.field(description='총 읽은 수')
+    elements: List['PostReadStatisticsPerHourElement'] = strawberry.field(description='통계 결과')
+
+
+@strawberry.type
+class PostReadStatisticsPerHourElement:
+    """
+    시간대별 읽은 게시물 개수 통계
+    hour시에 count개의 게시물을 읽었음을 의미함
+    """
+    hour: int = strawberry.field(description='시')
+    count: int = strawberry.field(description='읽은 게시물 개수')
+
+
+@strawberry.type
+class PostReadStatisticsPerWeekday:
+    """
+    요일별 읽은 게시물 개수 통계
+    """
+    total_count: int = strawberry.field(description='총 읽은 수')
+    elements: List['PostReadStatisticsPerWeekdayElement'] = strawberry.field(description='통계 결과')
+
+
+@strawberry.type
+class PostReadStatisticsPerWeekdayElement:
+    """
+    요일별 읽은 게시물 개수 통계 (요소)
+    weekday에 count개의 게시물을 읽었음을 의미함
+    """
+    weekday: WeekDay = strawberry.field(description='요일')
     count: int = strawberry.field(description='읽은 게시물 개수')
