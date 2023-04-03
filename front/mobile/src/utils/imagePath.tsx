@@ -11,4 +11,6 @@ export const imagePath: {[key: string]: any} = {
   editIcon: require('../assets/edit.png'),
   moreIcon: require('../assets/more-image.png'),
   welcome: require('../assets/welcome.png'),
+  reportIcon: require('../assets/report.png'),
+  cancel: require('../assets/cancel.png'),
 };

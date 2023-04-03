@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
 import {Image, Platform} from 'react-native';
@@ -16,6 +16,9 @@ import {imagePath} from '../../utils/imagePath';
 import {personalTagData, TagColor} from '../../constants/tag';
 import {NavigationData} from '../../navigation/AuthNavigator';
 import {ProfileShortDescription} from '../../constants/profile';
+
+import {useLazyLoadQuery} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
 
 const BackgroundSection = styled.ImageBackground`
   flex: 1;
@@ -55,7 +58,7 @@ const ProfileImage = styled.Image`
   height: ${DimensionTheme.height(74)};
   padding: 25px;
   align-items: center;
-  justify-contents: center;
+  justify-content: center;
 `;
 
 const ProfileDescription = styled.View`
@@ -88,7 +91,7 @@ const IntersetTagSection = styled.View`
 const TagChipSection = styled.View`
   margin-top: 10px;
   flex-direction: row;
-  justify-contents: space-between;
+  justify-content: space-between;
   flex-wrap: wrap;
 `;
 
@@ -101,9 +104,48 @@ const FeedStaticSection = styled.View`
   border-radius: 20px;
 `;
 
+const getOwnPersonaQuery = graphql`
+  query MyPageScreenQuery($nickname: String!) {
+    getOwnPersonas(
+      nicknameFilter: {token: $nickname}
+      sortingOpt: {sortBy: ID}
+    ) {
+      edges {
+        node {
+          introduction
+          id
+          isCertified
+          isPublic
+          nickname
+          preferredCategories {
+            edges {
+              node {
+                body
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 type Props = NavigationData<'MyPage'>;
 
 export const MyPageScreen: FC<Props> = ({navigation}) => {
+  const nickname = 'testpersona';
+  const data = useLazyLoadQuery(
+    getOwnPersonaQuery,
+    {nickname},
+    {fetchPolicy: 'store-or-network'},
+  );
+
+  useEffect(() => {
+    console.log('###mypage');
+    console.log(data.getOwnPersonas.edges[0].node);
+  }, [data]);
+
   return (
     <BackgroundSection source={imagePath.background}>
       <MyPageContainer>
@@ -117,7 +159,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
             </SmallText>
             <ProfileDescription>
               <SmallText textStyle={{color: colors.black}}>
-                {ProfileShortDescription}
+                {data.getOwnPersonas.edges[0].node.introduction}
               </SmallText>
             </ProfileDescription>
           </ProfileSection>
@@ -190,7 +232,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
                   fontWeight: '700',
                   color: colors.black,
                 }}>
-                홍현지님을 소개하는 태그
+                {data.getOwnPersonas.edges[0].node.nickname}을 소개하는 태그
               </SmallText>
               <TagChipSection>
                 {personalTagData.map(
@@ -229,7 +271,7 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
                   fontWeight: '700',
                   color: colors.black,
                 }}>
-                홍현지님이 관심있는 태그
+                {data.getOwnPersonas.edges[0].node.nickname}님이 관심있는 태그
               </SmallText>
               <TagChipSection>
                 {personalTagData.map(
@@ -262,6 +304,17 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
               </TagChipSection>
             </IntersetTagSection>
             <StatisticsSection>
+              <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
+                <SmallText
+                  textStyle={{
+                    fontSize: 14,
+                    fontWeight: '700',
+                    color: colors.black,
+                  }}>
+                  홍현지님이 읽은 일일 피드 수
+                </SmallText>
+                <Image source={imagePath.sampleStat} />
+              </FeedStaticSection>
               <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
                 <SmallText
                   textStyle={{

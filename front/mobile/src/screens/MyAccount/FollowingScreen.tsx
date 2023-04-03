@@ -21,7 +21,7 @@ const FollowingContainer = styled(Container)`
 const TopSection = styled.View`
   margin-left: ${DimensionTheme.width(33)};
   flex-direction: row;
-  justify-contents: center;
+  justify-content: center;
 `;
 
 const FollowingCardSection = styled.View`

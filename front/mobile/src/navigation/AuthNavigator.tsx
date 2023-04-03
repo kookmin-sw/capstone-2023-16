@@ -20,6 +20,7 @@ import {MyPageScreen} from '../screens/MyAccount/MyPageScreen';
 import {imagePath} from '../utils/imagePath';
 import {FollowingScreen} from '../screens/MyAccount/FollowingScreen';
 import {MyHistoryScreen} from '../screens/MyHistory/MyHistoryScreen';
+import {SettingScreen} from '../screens/MyAccount/SettingScreen';
 
 export type ParamList = {
   Login: undefined;
@@ -32,6 +33,7 @@ export type ParamList = {
   MyPage: undefined;
   Following: undefined;
   History: undefined;
+  Setting: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -85,7 +87,7 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
-        options={{
+        options={({navigation}) => ({
           headerShadowVisible: false,
           headerTitle: '홍현지',
           headerTransparent: true,
@@ -108,11 +110,13 @@ const AuthNavigator = () => {
               <ImageButton
                 btnStyles={{backgroundColor: 'transparent'}}
                 source={imagePath.settingIcon}
-                onPress={() => {}}
+                onPress={() => {
+                  navigation.navigate('Setting');
+                }}
               />
             </>
           ),
-        }}
+        })}
       />
       <StackNavigator.Screen
         name="Following"
@@ -131,6 +135,11 @@ const AuthNavigator = () => {
           headerShadowVisible: false,
           headerBackTitleVisible: false,
         }}
+      />
+      <StackNavigator.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={{headerShown: false}}
       />
     </StackNavigator.Navigator>
   );

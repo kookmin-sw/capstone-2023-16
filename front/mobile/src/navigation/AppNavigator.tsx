@@ -14,6 +14,9 @@ import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
 import {MyPageScreen} from '../screens/MyAccount/MyPageScreen';
 import {FollowingScreen} from '../screens/MyAccount/FollowingScreen';
+import {MyHistoryScreen} from '../screens/MyHistory/MyHistoryScreen';
+import {SettingScreen} from '../screens/MyAccount/SettingScreen';
+import DetailScreen from '../screens/DetailScreen';
 
 export type ParamList = {
   Main: undefined;
@@ -21,6 +24,9 @@ export type ParamList = {
   InterestTagSetting: undefined;
   MyPage: undefined;
   Following: undefined;
+  History: undefined;
+  Setting: undefined;
+  DetailContent: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -52,11 +58,17 @@ const AppNavigator = () => {
         }}
       />
       <StackNavigator.Screen
+        name="DetailContent"
+        component={DetailScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
-        options={{
+        options={({navigation}) => ({
           headerShadowVisible: false,
           headerTitle: '홍현지',
+          headerTransparent: true,
           headerTitleStyle: {
             fontWeight: '700',
             fontSize: 28,
@@ -65,27 +77,47 @@ const AppNavigator = () => {
             <>
               <ImageButton
                 btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.eye}
+                source={imagePath.shareIcon}
                 onPress={() => {}}
               />
               <ImageButton
                 btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.eye_off}
+                source={imagePath.editIcon}
                 onPress={() => {}}
               />
               <ImageButton
                 btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.eye}
-                onPress={() => {}}
+                source={imagePath.settingIcon}
+                onPress={() => {
+                  navigation.navigate('Setting');
+                }}
               />
             </>
           ),
-        }}
+        })}
       />
       <StackNavigator.Screen
         name="Following"
         component={FollowingScreen}
-        options={{headerShadowVisible: false}}
+        options={{
+          title: '팔로잉',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
+        name="History"
+        component={MyHistoryScreen}
+        options={{
+          title: 'MY HISTORY',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={{headerShown: false}}
       />
     </StackNavigator.Navigator>
   );
