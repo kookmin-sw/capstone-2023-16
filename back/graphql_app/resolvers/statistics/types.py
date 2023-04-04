@@ -114,3 +114,9 @@ class FavoritePersonasStatisticsElement:
     """
     author_id: GlobalID = strawberry.field(description='창작자 ID')
     count: int = strawberry.field(description='읽은 게시물 개수')
+
+
+@strawberry.input
+class GetPostReaderStatisticsInput:
+    post_id: GlobalID = strawberry.field(description='대상 게시물의 ID')
+    result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 개수')

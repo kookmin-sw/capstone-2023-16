@@ -2,7 +2,7 @@ from collections import defaultdict, Counter
 from datetime import datetime
 from typing import Dict, Tuple, List
 
-from graphql_app.models import PostReadingRecord
+from graphql_app.models import PostReadingRecord, Post
 
 
 def get_read_post_statistics(reader_id: int, record_limit: int, result_limit: int, start_dt: datetime, end_dt: datetime) \
@@ -115,3 +115,38 @@ def get_favorite_personas_statistics(reader_id: int, start_dt: datetime, end_dt:
     post_author_ids = list(map(lambda r: r['post__author_id'], records))
     result = Counter(post_author_ids)
     return result
+
+
+def get_post_reader_statistics(post_id: int, result_limit: int) -> int:
+    records = PostReadingRecord.objects.filter(post_id=post_id).values('persona__preferred_tags__body',
+                                                                       'persona__preferred_categories__body',
+                                                                       'read_count',
+                                                                       'persona_id')
+    top_preferred_tags = defaultdict(int)
+    top_preferred_categories = defaultdict(int)
+
+    for record in records:
+        read_count = record['read_count']
+
+        tag = record['persona__preferred_tags__body']
+        if tag:
+            top_preferred_tags[tag] += read_count
+
+        category = record['persona__preferred_categories__body']
+        if category:
+            top_preferred_categories[category] += read_count
+
+    tag_scores = sorted([(k, v) for k, v in top_preferred_tags.items()],
+                        key=lambda p: p[1], reverse=True)[:result_limit]
+
+    category_scores = sorted([(k, v) for k, v in top_preferred_categories.items()],
+                             key=lambda p: p[1], reverse=True)[:result_limit]
+
+    # FieldScore를 kwargs 방식으로 초기화 하기 위해 변환해서 반환
+    tag_scores = [{'label': label, 'score': score} for label, score in tag_scores]
+    category_scores = [{'label': label, 'score': score} for label, score in category_scores]
+
+    return {
+        'tag_scores': tag_scores,
+        'category_scores': category_scores,
+    }

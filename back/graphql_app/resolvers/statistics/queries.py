@@ -5,12 +5,13 @@ from strawberry.types import Info
 from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.domain.statistics.post import get_read_post_statistics, get_post_read_counts_by_day, \
-    get_post_read_counts_by_hour, get_post_read_counts_by_weekday, get_favorite_personas_statistics
+    get_post_read_counts_by_hour, get_post_read_counts_by_weekday, get_favorite_personas_statistics, \
+    get_post_reader_statistics
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, GetOwnReadPostStatisticsInput, \
     StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement, PostReadStatisticsPerWeekday, \
     PostReadStatisticsPerWeekdayElement, PostReadStatisticsPerHour, PostReadStatisticsPerHourElement, \
-    FavoritePersonasStatisticsElement, FavoritePersonasStatistics
+    FavoritePersonasStatisticsElement, FavoritePersonasStatistics, GetPostReaderStatisticsInput
 
 
 @strawberry.type
@@ -89,3 +90,11 @@ class Query:
         result.sort(key=lambda e: e.count, reverse=True)
         return FavoritePersonasStatistics(total_count=sum(statistics.values()),
                                           elements=result)
+
+    @strawberry.field
+    def get_post_reader_statistics(self, info: Info, opt: GetPostReaderStatisticsInput) -> PostStatistics:
+        """
+        특정 게시물에 대한 독자 페르소나의 주요 특징을 반환한다.
+        """
+        statistics = get_post_reader_statistics(opt.post_id.node_id, opt.result_limit)
+        return PostStatistics(**statistics)
