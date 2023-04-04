@@ -4,7 +4,7 @@ from typing import Dict, Tuple, List, Optional
 
 from django.db.models import QuerySet
 
-from graphql_app.models import PostReadingRecord, Post
+from graphql_app.models import PostReadingRecord, Post, Persona
 
 
 def get_read_post_statistics(reader_id: int, record_limit: int, result_limit: int, start_dt: datetime, end_dt: datetime) \
@@ -202,3 +202,67 @@ def get_post_revisited_reader_statistics(post_id: int, result_limit: int, min_re
                                                                        'read_count',
                                                                        'persona_id').filter(read_count__gte=min_revisit)
     return _get_post_reader_statistics(records, result_limit)
+
+
+def _get_personas_statistics(personas: QuerySet[Persona], result_limit: int) -> Dict[str, List[Dict[str, int]]]:
+    tag_score = defaultdict(int)
+    category_score = defaultdict(int)
+    gender_score = defaultdict(int)
+    age_score = defaultdict(int)
+    job_score = defaultdict(int)
+
+    for persona in personas:
+        for tag in persona.preferred_tags.all():
+            tag_score[tag.body] += 1
+
+        for category in persona.preferred_categories.all():
+            category_score[category.body] += 1
+
+        if persona.gender:
+            gender_score[persona.gender] += 1
+
+        if persona.age:
+            age_score[f"{persona.age // 10 * 10}대"] += 1
+
+        if persona.job:
+            job_score[persona.job] += 1
+
+    tag_scores = sorted([(k, v) for k, v in tag_score.items()],
+                        key=lambda p: p[1], reverse=True)[:result_limit]
+
+    category_scores = sorted([(k, v) for k, v in category_score.items()],
+                             key=lambda p: p[1], reverse=True)[:result_limit]
+
+    gender_scores = sorted([(k, v) for k, v in gender_score.items()],
+                           key=lambda p: p[1], reverse=True)[:result_limit]
+
+    age_scores = sorted([(k, v) for k, v in age_score.items()],
+                        key=lambda p: p[1], reverse=True)[:result_limit]
+
+    job_scores = sorted([(k, v) for k, v in job_score.items()],
+                        key=lambda p: p[1], reverse=True)[:result_limit]
+
+    # FieldScore를 kwargs 방식으로 초기화 하기 위해 변환해서 반환
+    tag_scores = [{'label': label, 'score': score} for label, score in tag_scores]
+    category_scores = [{'label': label, 'score': score} for label, score in category_scores]
+    age_scores = [{'label': label, 'score': score} for label, score in age_scores]
+    job_scores = [{'label': label, 'score': score} for label, score in job_scores]
+    gender_scores = [{'label': label, 'score': score} for label, score in gender_scores]
+
+    return {
+        'tag_scores': tag_scores,
+        'category_scores': category_scores,
+        'age_scores': age_scores,
+        'job_scores': job_scores,
+        'gender_scores': gender_scores,
+    }
+
+
+def get_following_personas_statistics(persona_id: int, result_limit: int) -> Dict[str, List[Dict[str, int]]]:
+    following_personas = Persona.objects.filter(following_personas__in=[persona_id])
+    return _get_personas_statistics(following_personas, result_limit)
+
+
+def get_follower_personas_statistics(persona_id: int, result_limit: int) -> Dict[str, List[Dict[str, int]]]:
+    follower_personas = Persona.objects.filter(follower_personas__in=[persona_id])
+    return _get_personas_statistics(follower_personas, result_limit)

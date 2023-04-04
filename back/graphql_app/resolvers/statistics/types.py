@@ -43,7 +43,7 @@ class PostStatistics:
 
 
 @strawberry.type
-class PostReaderStatistics:
+class PersonaStatistics:
     """
     게시물 관련 통계 데이터 묶음
     """
@@ -138,4 +138,15 @@ class GetPostReaderStatisticsInput:
 class GetPostRevisitedReaderStatisticsInput:
     post_id: GlobalID = strawberry.field(description='대상 게시물의 ID')
     min_revisit: int = strawberry.field(default=2, description='재방문 기준 횟수')
+    result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 개수')
+
+
+@strawberry.input
+class GetFollowingPersonaStatisticsInput:
+    result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 개수')
+
+
+@strawberry.input
+class GetPersonaFollowerStatisticsInput:
+    persona_id: GlobalID = strawberry.field(description='조회 대상 페르소나의 ID')
     result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 개수')

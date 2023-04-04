@@ -6,13 +6,15 @@ from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.domain.statistics.post import get_read_post_statistics, get_post_read_counts_by_day, \
     get_post_read_counts_by_hour, get_post_read_counts_by_weekday, get_favorite_personas_statistics, \
-    get_post_reader_statistics, get_post_revisited_reader_statistics
+    get_post_reader_statistics, get_post_revisited_reader_statistics, get_following_personas_statistics, \
+    get_follower_personas_statistics
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, GetOwnReadPostStatisticsInput, \
     StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement, PostReadStatisticsPerWeekday, \
     PostReadStatisticsPerWeekdayElement, PostReadStatisticsPerHour, PostReadStatisticsPerHourElement, \
     FavoritePersonasStatisticsElement, FavoritePersonasStatistics, GetPostReaderStatisticsInput, \
-    GetPostRevisitedReaderStatisticsInput, PostReaderStatistics
+    GetPostRevisitedReaderStatisticsInput, PersonaStatistics, GetFollowingPersonaStatisticsInput, \
+    GetPersonaFollowerStatisticsInput
 
 
 @strawberry.type
@@ -93,25 +95,45 @@ class Query:
                                           elements=result)
 
     @strawberry.field
-    def get_post_reader_statistics(self, info: Info, opt: GetPostReaderStatisticsInput) -> PostReaderStatistics:
+    def get_post_reader_statistics(self, info: Info, opt: GetPostReaderStatisticsInput) -> PersonaStatistics:
         """
         특정 게시물에 대한 독자 페르소나의 주요 특징을 반환한다.
         """
         statistics = get_post_reader_statistics(opt.post_id.node_id, opt.result_limit)
         for field_name, field_scores in statistics.items():
             statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
-        return PostReaderStatistics(**statistics)
+        return PersonaStatistics(**statistics)
 
     @strawberry.field
     def get_post_revisited_reader_statistics(self, info: Info, opt: GetPostRevisitedReaderStatisticsInput) \
-            -> PostReaderStatistics:
+            -> PersonaStatistics:
         """
         특정 게시물에 재방문한 독자 페르소나의 주요 특징을 반환한다.
-        :param info:
-        :param opt:
-        :return:
         """
         statistics = get_post_revisited_reader_statistics(opt.post_id.node_id, opt.result_limit, opt.min_revisit)
         for field_name, field_scores in statistics.items():
             statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
-        return PostReaderStatistics(**statistics)
+        return PersonaStatistics(**statistics)
+
+    @strawberry.field
+    @requires_persona_context
+    def get_following_personas_statistics(self, info: Info,
+                                          opt: GetFollowingPersonaStatisticsInput) -> PersonaStatistics:
+        """
+        요청한 페르소나가 팔로우 하고 있는 페르소나의 주요 특징을 반환한다.
+        """
+        persona_id = info.context.request.persona.id
+        statistics = get_following_personas_statistics(persona_id, opt.result_limit)
+        for field_name, field_scores in statistics.items():
+            statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
+        return PersonaStatistics(**statistics)
+
+    @strawberry.field
+    def get_persona_followers_statistics(self, info: Info, opt: GetPersonaFollowerStatisticsInput) -> PersonaStatistics:
+        """
+        특정 페르소나의 팔로워 페르소나의 주요 특징을 반환한다.
+        """
+        statistics = get_follower_personas_statistics(opt.persona_id.node_id, opt.result_limit)
+        for field_name, field_scores in statistics.items():
+            statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
+        return PersonaStatistics(**statistics)
