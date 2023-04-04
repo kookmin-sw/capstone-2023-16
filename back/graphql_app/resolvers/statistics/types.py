@@ -43,6 +43,18 @@ class PostStatistics:
 
 
 @strawberry.type
+class PostReaderStatistics:
+    """
+    게시물 관련 통계 데이터 묶음
+    """
+    tag_scores: List[FieldScore] = strawberry.field(description='태그 점수')
+    category_scores: List[FieldScore] = strawberry.field(description='카테고리 점수')
+    gender_scores: List[FieldScore] = strawberry.field(description='성별 점수')
+    age_scores: List[FieldScore] = strawberry.field(description='연령대 점수')
+    job_scores: List[FieldScore] = strawberry.field(description='직업 점수')
+
+
+@strawberry.type
 class PostReadStatisticsPerDay:
     """
     일별 읽은 게시물 개수 통계

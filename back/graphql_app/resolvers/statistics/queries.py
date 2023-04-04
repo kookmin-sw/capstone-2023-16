@@ -12,7 +12,7 @@ from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, G
     StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement, PostReadStatisticsPerWeekday, \
     PostReadStatisticsPerWeekdayElement, PostReadStatisticsPerHour, PostReadStatisticsPerHourElement, \
     FavoritePersonasStatisticsElement, FavoritePersonasStatistics, GetPostReaderStatisticsInput, \
-    GetPostRevisitedReaderStatisticsInput
+    GetPostRevisitedReaderStatisticsInput, PostReaderStatistics
 
 
 @strawberry.type
@@ -93,18 +93,18 @@ class Query:
                                           elements=result)
 
     @strawberry.field
-    def get_post_reader_statistics(self, info: Info, opt: GetPostReaderStatisticsInput) -> PostStatistics:
+    def get_post_reader_statistics(self, info: Info, opt: GetPostReaderStatisticsInput) -> PostReaderStatistics:
         """
         특정 게시물에 대한 독자 페르소나의 주요 특징을 반환한다.
         """
         statistics = get_post_reader_statistics(opt.post_id.node_id, opt.result_limit)
         for field_name, field_scores in statistics.items():
             statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
-        return PostStatistics(**statistics)
+        return PostReaderStatistics(**statistics)
 
     @strawberry.field
     def get_post_revisited_reader_statistics(self, info: Info, opt: GetPostRevisitedReaderStatisticsInput) \
-            -> PostStatistics:
+            -> PostReaderStatistics:
         """
         특정 게시물에 재방문한 독자 페르소나의 주요 특징을 반환한다.
         :param info:
@@ -114,4 +114,4 @@ class Query:
         statistics = get_post_revisited_reader_statistics(opt.post_id.node_id, opt.result_limit, opt.min_revisit)
         for field_name, field_scores in statistics.items():
             statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
-        return PostStatistics(**statistics)
+        return PostReaderStatistics(**statistics)
