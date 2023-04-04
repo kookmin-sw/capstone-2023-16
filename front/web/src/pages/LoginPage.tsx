@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { login } from '../redux/slices/loginSlice';
 
+import LoginAPI from '../graphQL/LoginAPI';
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const deviceType = useDeviceType();
@@ -26,6 +28,7 @@ const LoginPage = () => {
         password: pwInput.current.value
       };
       dispatch(login(loginform));
+      LoginAPI.loginPost()
     }
     console.log(loginForm);
     navigate('/personas')
@@ -42,7 +45,7 @@ const LoginPage = () => {
 
           <LoginInput text='ID' ref={idInput} deviceType={deviceType}></LoginInput>
           <LoginInput text='PASSWORD' ref={pwInput} deviceType={deviceType} isPassword></LoginInput>
-          <LoginCheckBox />
+          {/*<LoginCheckBox />*/}
           {/* 비율을 위한 공백 */}
           <EmptyBox deviceType={deviceType} />
 
