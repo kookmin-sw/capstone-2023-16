@@ -120,3 +120,10 @@ class FavoritePersonasStatisticsElement:
 class GetPostReaderStatisticsInput:
     post_id: GlobalID = strawberry.field(description='대상 게시물의 ID')
     result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 개수')
+
+
+@strawberry.input
+class GetPostRevisitedReaderStatisticsInput:
+    post_id: GlobalID = strawberry.field(description='대상 게시물의 ID')
+    min_revisit: int = strawberry.field(default=2, description='재방문 기준 횟수')
+    result_limit: Optional[int] = strawberry.field(default=100, description='응답될 항목의 최대 개수')

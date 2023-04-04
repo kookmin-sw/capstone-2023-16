@@ -6,12 +6,13 @@ from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.domain.statistics.post import get_read_post_statistics, get_post_read_counts_by_day, \
     get_post_read_counts_by_hour, get_post_read_counts_by_weekday, get_favorite_personas_statistics, \
-    get_post_reader_statistics
+    get_post_reader_statistics, get_post_revisited_reader_statistics
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, GetOwnReadPostStatisticsInput, \
     StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement, PostReadStatisticsPerWeekday, \
     PostReadStatisticsPerWeekdayElement, PostReadStatisticsPerHour, PostReadStatisticsPerHourElement, \
-    FavoritePersonasStatisticsElement, FavoritePersonasStatistics, GetPostReaderStatisticsInput
+    FavoritePersonasStatisticsElement, FavoritePersonasStatistics, GetPostReaderStatisticsInput, \
+    GetPostRevisitedReaderStatisticsInput
 
 
 @strawberry.type
@@ -97,4 +98,20 @@ class Query:
         특정 게시물에 대한 독자 페르소나의 주요 특징을 반환한다.
         """
         statistics = get_post_reader_statistics(opt.post_id.node_id, opt.result_limit)
+        for field_name, field_scores in statistics.items():
+            statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
+        return PostStatistics(**statistics)
+
+    @strawberry.field
+    def get_post_revisited_reader_statistics(self, info: Info, opt: GetPostRevisitedReaderStatisticsInput) \
+            -> PostStatistics:
+        """
+        특정 게시물에 재방문한 독자 페르소나의 주요 특징을 반환한다.
+        :param info:
+        :param opt:
+        :return:
+        """
+        statistics = get_post_revisited_reader_statistics(opt.post_id.node_id, opt.result_limit, opt.min_revisit)
+        for field_name, field_scores in statistics.items():
+            statistics[field_name] = list(map(lambda x: FieldScore(**x), statistics[field_name]))
         return PostStatistics(**statistics)
