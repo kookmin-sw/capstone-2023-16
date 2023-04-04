@@ -46,7 +46,7 @@ def create_persona(owner: User, nickname: str, introduction: str, is_public: Opt
     preferred_categories = Category.objects.filter(id__in=preferred_category_ids)
 
     # 태그 처리
-    preferred_tags = Tag.insert_tags(preferred_tag_bodies)
+    preferred_tags = list(map(lambda p: p[0], Tag.insert_tags(preferred_tag_bodies)))
 
     new_persona = Persona.objects.create(owner=owner, nickname=nickname, introduction=introduction,
                                          is_public=is_public, gender=gender, age=age, job=job)
