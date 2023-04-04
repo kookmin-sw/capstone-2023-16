@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, date
 
 import strawberry
 from graphene import Date
+from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.domain.statistics.utils import get_day_before_30_days
 from graphql_app.resolvers.statistics.enums import WeekDay
@@ -94,4 +95,22 @@ class PostReadStatisticsPerWeekdayElement:
     weekday에 count개의 게시물을 읽었음을 의미함
     """
     weekday: WeekDay = strawberry.field(description='요일')
+    count: int = strawberry.field(description='읽은 게시물 개수')
+
+
+@strawberry.type
+class FavoritePersonasStatistics:
+    """
+    가장 게시물을 많이 읽은 창작자 페르소나들과 읽은 게시물의 수 통계
+    """
+    total_count: int = strawberry.field(description='총 읽은 수')
+    elements: List['FavoritePersonasStatisticsElement'] = strawberry.field(description='통계 결과')
+
+
+@strawberry.type
+class FavoritePersonasStatisticsElement:
+    """
+    가장 게시물을 많이 읽은 창작자 페르소나들과 읽은 게시물의 수 통계 (요소)
+    """
+    author_id: GlobalID = strawberry.field(description='창작자 ID')
     count: int = strawberry.field(description='읽은 게시물 개수')

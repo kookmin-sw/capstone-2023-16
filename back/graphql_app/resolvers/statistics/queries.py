@@ -2,13 +2,15 @@ from typing import Dict
 
 import strawberry
 from strawberry.types import Info
+from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.domain.statistics.post import get_read_post_statistics, get_post_read_counts_by_day, \
-    get_post_read_counts_by_hour, get_post_read_counts_by_weekday
+    get_post_read_counts_by_hour, get_post_read_counts_by_weekday, get_favorite_personas_statistics
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.statistics.types import PostStatistics, FieldScore, GetOwnReadPostStatisticsInput, \
     StatisticsDatetimeBetween, PostReadStatisticsPerDay, PostReadStatisticsPerDayElement, PostReadStatisticsPerWeekday, \
-    PostReadStatisticsPerWeekdayElement, PostReadStatisticsPerHour, PostReadStatisticsPerHourElement
+    PostReadStatisticsPerWeekdayElement, PostReadStatisticsPerHour, PostReadStatisticsPerHourElement, \
+    FavoritePersonasStatisticsElement, FavoritePersonasStatistics
 
 
 @strawberry.type
@@ -71,3 +73,19 @@ class Query:
 
         return PostReadStatisticsPerWeekday(total_count=sum(statistics.values()),
                                             elements=result)
+
+    @strawberry.field
+    @requires_persona_context
+    def get_favorite_personas_statistics(self, info: Info,
+                                         opt: StatisticsDatetimeBetween) -> FavoritePersonasStatistics:
+        """
+        사용자가 일정 기간 동안 가장 많이 읽은 창작자 페르소나의 목록과 해당 페르소나의 게시물 중 읽은 게시물의 갯수를 반환한다.
+        """
+        persona_id = info.context.request.persona.id
+        statistics = get_favorite_personas_statistics(persona_id, opt.start_datetime, opt.end_datetime)
+        result = [FavoritePersonasStatisticsElement(author_id=str(GlobalID(type_name='Persona', node_id=str(i))),
+                                                    count=v)
+                  for i, v in statistics.items()]
+        result.sort(key=lambda e: e.count, reverse=True)
+        return FavoritePersonasStatistics(total_count=sum(statistics.values()),
+                                          elements=result)

@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Dict, Tuple, List
 
 from graphql_app.models import PostReadingRecord
-from graphql_app.resolvers.statistics.enums import WeekDay
 
 
 def get_read_post_statistics(reader_id: int, record_limit: int, result_limit: int, start_dt: datetime, end_dt: datetime) \
@@ -96,7 +95,7 @@ def get_post_read_counts_by_weekday(reader_id: int, start_dt: datetime, end_dt: 
     :param reader_id: 조회 대상 페르소나의 id
     :param start_dt: 조회 시작 일시
     :param end_dt: 조회 종료 일시
-    :return: {weekday(0은 월요일 ~ 6은 일요일) : 해당 요일에 읽은 게시물의 수
+    :return: {weekday(0은 월요일 ~ 6은 일요일) : 해당 요일에 읽은 게시물의 수}
     """
     records = PostReadingRecord.objects.filter(persona=reader_id,
                                                updated_at__gte=start_dt, updated_at__lte=end_dt).values('updated_at')
@@ -106,4 +105,13 @@ def get_post_read_counts_by_weekday(reader_id: int, start_dt: datetime, end_dt: 
         if h not in result.keys():
             result[h] = 0
 
+    return result
+
+
+def get_favorite_personas_statistics(reader_id: int, start_dt: datetime, end_dt: datetime) -> Dict[int, int]:
+    records = PostReadingRecord.objects.filter(persona=reader_id,
+                                               updated_at__gte=start_dt, updated_at__lte=end_dt) \
+        .values('post__author_id')
+    post_author_ids = list(map(lambda r: r['post__author_id'], records))
+    result = Counter(post_author_ids)
     return result
