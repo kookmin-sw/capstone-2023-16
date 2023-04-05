@@ -19,6 +19,8 @@ import {ProfileShortDescription} from '../../constants/profile';
 
 import {useLazyLoadQuery} from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
+import {TagCard} from '../../components/common/Cards/TagCard';
+import {StatisticsCard} from '../../components/common/Cards/StatisticsCard';
 
 const BackgroundSection = styled.ImageBackground`
   flex: 1;
@@ -78,24 +80,15 @@ const ScrollSection = styled.ScrollView``;
 
 const RepresentingTagSection = styled.View`
   margin-top: 30px;
-  border-radius: 20px;
-  padding: 10px;
 `;
 
 const IntersetTagSection = styled.View`
   margin-top: 30px;
-  border-radius: 20px;
-  padding: 10px;
 `;
 
-const TagChipSection = styled.View`
-  margin-top: 10px;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
+const StatisticsSection = styled.View`
+  margin-top: 30px;
 `;
-
-const StatisticsSection = styled.View``;
 
 const FeedStaticSection = styled.View`
   padding: 10px;
@@ -175,7 +168,9 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
                 },
               ]}
               textStyles={{fontSize: 12, color: colors.black}}
-              onPress={() => {}}>
+              onPress={() => {
+                navigation.navigate('Follower');
+              }}>
               FOLLOWER
             </SmallButton>
             <SmallButton
@@ -219,113 +214,29 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
                 },
               ]}
               textStyles={{fontSize: 12, color: colors.black}}
-              onPress={() => {}}>
+              onPress={() => {
+                navigation.navigate('Persona');
+              }}>
               PERSONA
             </SmallButton>
           </TabSection>
           <ScrollSection>
-            <RepresentingTagSection
-              style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
-              <SmallText
-                textStyle={{
-                  fontSize: 14,
-                  fontWeight: '700',
-                  color: colors.black,
-                }}>
-                {data.getOwnPersonas.edges[0].node.nickname}을 소개하는 태그
-              </SmallText>
-              <TagChipSection>
-                {personalTagData.map(
-                  (value: {title: string; category: string}) => {
-                    return (
-                      <SmallButton
-                        btnStyles={[
-                          ButtonTheme.whiteBGpurpleSD.btnStyle,
-                          {
-                            height: 30,
-                            minWidth: DimensionTheme.width(26),
-                            paddingTop: 1,
-                            paddingBottom: 2,
-                            borderRadius: 8,
-                            marginBottom: 15,
-                            marginLeft: 10,
-                            backgroundColor: TagColor[value.category],
-                          },
-                        ]}
-                        textStyles={{
-                          color: colors.black,
-                          fontSize: DimensionTheme.fontSize(12),
-                        }}
-                        onPress={() => {}}>
-                        #{value.title}
-                      </SmallButton>
-                    );
-                  },
-                )}
-              </TagChipSection>
+            <RepresentingTagSection>
+              <TagCard
+                tagTitle={`${data.getOwnPersonas.edges[0].node.nickname}님을 소개하는 태그`}
+                tags={personalTagData}
+              />
             </RepresentingTagSection>
-            <IntersetTagSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
-              <SmallText
-                textStyle={{
-                  fontSize: 14,
-                  fontWeight: '700',
-                  color: colors.black,
-                }}>
-                {data.getOwnPersonas.edges[0].node.nickname}님이 관심있는 태그
-              </SmallText>
-              <TagChipSection>
-                {personalTagData.map(
-                  (value: {title: string; category: string}) => {
-                    return (
-                      <SmallButton
-                        btnStyles={[
-                          ButtonTheme.whiteBGpurpleSD.btnStyle,
-                          {
-                            height: 30,
-                            minWidth: DimensionTheme.width(26),
-                            paddingTop: 1,
-                            paddingBottom: 2,
-                            borderRadius: 8,
-                            marginBottom: 15,
-                            marginLeft: 10,
-                            backgroundColor: TagColor[value.category],
-                          },
-                        ]}
-                        textStyles={{
-                          color: colors.black,
-                          fontSize: DimensionTheme.fontSize(12),
-                        }}
-                        onPress={() => {}}>
-                        #{value.title}
-                      </SmallButton>
-                    );
-                  },
-                )}
-              </TagChipSection>
+            <IntersetTagSection>
+              <TagCard
+                tagTitle={`${data.getOwnPersonas.edges[0].node.nickname}님이 관심있는 태그`}
+                tags={personalTagData}
+              />
             </IntersetTagSection>
             <StatisticsSection>
-              <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
-                <SmallText
-                  textStyle={{
-                    fontSize: 14,
-                    fontWeight: '700',
-                    color: colors.black,
-                  }}>
-                  홍현지님이 읽은 일일 피드 수
-                </SmallText>
-                <Image source={imagePath.sampleStat} />
-              </FeedStaticSection>
-              <FeedStaticSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
-                <SmallText
-                  textStyle={{
-                    fontSize: 14,
-                    fontWeight: '700',
-                    color: colors.black,
-                  }}>
-                  홍현지님이 읽은 일일 피드 수
-                </SmallText>
-                <Image source={imagePath.sampleStat} />
-              </FeedStaticSection>
+              <StatisticsCard
+                statisticsTitle={`${data.getOwnPersonas.edges[0].node.nickname}님이 읽은 일일 피드 수`}
+              />
             </StatisticsSection>
           </ScrollSection>
         </RoundSection>
