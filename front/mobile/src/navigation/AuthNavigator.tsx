@@ -51,7 +51,7 @@ const AuthNavigator = () => {
         component={SignupScreen}
         options={{title: '회원가입', headerShadowVisible: false}}
       />
-      <StackNavigator.Screen
+      {/* <StackNavigator.Screen
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
@@ -64,8 +64,8 @@ const AuthNavigator = () => {
           headerShadowVisible: false,
           headerBackTitleVisible: false,
         }}
-      />
-      <StackNavigator.Screen
+      /> */}
+      {/* <StackNavigator.Screen
         name="InterestTagSetting"
         component={InterestTagSettingScreen}
         options={{
@@ -139,8 +139,8 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="Setting"
         component={SettingScreen}
-        options={{headerShown: false}}
-      />
+        options={{headerShown: true}}
+      /> */}
     </StackNavigator.Navigator>
   );
 };

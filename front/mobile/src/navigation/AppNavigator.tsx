@@ -17,6 +17,8 @@ import {FollowingScreen} from '../screens/MyAccount/FollowingScreen';
 import {MyHistoryScreen} from '../screens/MyHistory/MyHistoryScreen';
 import {SettingScreen} from '../screens/MyAccount/SettingScreen';
 import DetailScreen from '../screens/DetailScreen';
+import {FollowerScreen} from '../screens/MyAccount/FollowerScreen';
+import {PersonaScreen} from '../screens/MyAccount/PersonaScreen';
 
 export type ParamList = {
   Main: undefined;
@@ -24,6 +26,8 @@ export type ParamList = {
   InterestTagSetting: undefined;
   MyPage: undefined;
   Following: undefined;
+  Follower: undefined;
+  Persona: undefined;
   History: undefined;
   Setting: undefined;
   DetailContent: undefined;
@@ -106,6 +110,24 @@ const AppNavigator = () => {
         }}
       />
       <StackNavigator.Screen
+        name="Follower"
+        component={FollowerScreen}
+        options={{
+          title: '팔로워',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
+        name="Persona"
+        component={PersonaScreen}
+        options={{
+          title: '페르소나',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
         name="History"
         component={MyHistoryScreen}
         options={{
@@ -117,7 +139,7 @@ const AppNavigator = () => {
       <StackNavigator.Screen
         name="Setting"
         component={SettingScreen}
-        options={{headerShown: false}}
+        options={{headerShown: true, title: 'SETTING'}}
       />
     </StackNavigator.Navigator>
   );
