@@ -14,8 +14,9 @@ from .post.queries import Query as PostQuery
 from .tag.mutations import Mutation as TagMutation
 from .tag.queries import Query as TagQuery
 from .user.mutations import Mutation as UserMutation
+from .statistics.queries import Query as StatisticsQuery
 
-queries = (PostQuery, PersonaQuery, TagMutation, TagQuery, CategoryQuery, MembershipQuery)
+queries = (PostQuery, PersonaQuery, TagMutation, TagQuery, CategoryQuery, MembershipQuery, StatisticsQuery)
 mutations = (UserMutation, PostMutation, PersonaMutation, TagMutation, CategoryMutation, MembershipMutation)
 
 Query = merge_types("Query", queries)

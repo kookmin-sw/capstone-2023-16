@@ -1,5 +1,6 @@
 from typing import Optional, List, Tuple
 
+from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet, Sum, Count
 
 from graphql_app.domain.persona.exceptions import NicknameDupliationException, NotPersonaOwnerException, \
@@ -10,6 +11,7 @@ from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import Job, PersonaSortBy
 from graphql_app.resolvers.persona.types import PersonaSortingOption
+from graphql_app.resolvers.utils import parse_global_id
 
 
 def create_persona(owner: User, nickname: str, introduction: str, is_public: Optional[bool] = True,
@@ -44,7 +46,7 @@ def create_persona(owner: User, nickname: str, introduction: str, is_public: Opt
     preferred_categories = Category.objects.filter(id__in=preferred_category_ids)
 
     # 태그 처리
-    preferred_tags = Tag.insert_tags(preferred_tag_bodies)
+    preferred_tags = list(map(lambda p: p[0], Tag.insert_tags(preferred_tag_bodies)))
 
     new_persona = Persona.objects.create(owner=owner, nickname=nickname, introduction=introduction,
                                          is_public=is_public, gender=gender, age=age, job=job)
@@ -119,3 +121,14 @@ def get_personas(sorting_opt: PersonaSortingOption,
             ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}follower_cnt", 'id')
 
     return personas
+
+
+def get_persona_context(request: WSGIRequest) -> Optional[int]:
+    """
+    Django request 객체의 쿠키로부터 페르소나 id를 받아 오는 함수
+    """
+    if 'persona_id' in request.COOKIES.keys():
+        _, persona_id = parse_global_id(request.COOKIES['persona_id'])
+        return persona_id
+    else:
+        return None

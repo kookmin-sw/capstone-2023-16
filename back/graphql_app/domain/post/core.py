@@ -1,10 +1,10 @@
 import datetime
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, Awaitable
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, F
 
 from graphql_app.domain.post.exceptions import PostNotFoundException
-from graphql_app.models import Post, Persona, WaitFreePersona
+from graphql_app.models import Post, Persona, WaitFreePersona, PostReadingRecord
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.models import Post, Persona, Category, Tag, Membership
@@ -135,3 +135,14 @@ def create_post(author_id: int, requested_user_id: int, title: str, content: str
 
 def get_post(post_id: int) -> Post:
     return Post.objects.get(id=post_id)
+
+
+# TODO : 비동기적으로 실행되도록 리팩토링 필요
+def increase_read_count(post_id: int, persona_id: int) -> None:
+    """
+    게시물의 조회수를 1만큼 올리는 함수
+    """
+    post_reading_record, is_created = PostReadingRecord.objects.get_or_create(post_id=post_id, persona_id=persona_id)
+    post_reading_record.read_count = F('read_count') + 1
+    post_reading_record.updated_at = datetime.datetime.now()
+    post_reading_record.save(update_fields=['read_count', 'updated_at'])
