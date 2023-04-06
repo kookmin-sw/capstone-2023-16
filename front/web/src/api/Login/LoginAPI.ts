@@ -6,7 +6,6 @@ import loginPostMutation from '../../graphQL/Mutations/loginPostMutation';
 import logoutPostMutation from '../../graphQL/Mutations/logoutPostMutation';
 import LoginFormType from '../../graphQL/types/LoginFormType';
 
-
 class LoginAPI {
   public loginPost = (loginform: LoginFormType) => {
 
@@ -16,16 +15,14 @@ class LoginAPI {
         {
           mutation: loginPostMutation,
           variables: loginform,
-          onCompleted: (data, errs) => {
-            console.log(data, errs);
+          onCompleted: (data) => {
+            console.log(data);
             alert("로그인 되었습니다.");
           },
-          onError: (err) => {
-            console.log(err);
-            alert("로그인 과정에서 문제가 발생했습니다.");
+          onError: (error) => {
+              alert(error.message);
           }
-        }
-      );
+        });
     });
   };
   public logoutPost = () => {

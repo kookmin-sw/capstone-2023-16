@@ -2,15 +2,10 @@ import { useRef } from 'react';
 import useDeviceType from '../hooks/useDeviceType';
 import LoginInput from '../components/Login/LoginInput';
 import LoginButton from '../components/Login/LoginButton';
-import LoginCheckBox from '../components/Login/LoginCheckBox';
+//import LoginCheckBox from '../components/Login/LoginCheckBox';
 import LoginContainer from '../components/Login/LoginContainer';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../redux/store';
-import { login } from '../redux/slices/loginSlice';
-
-//import LoginAPI from '../graphQL/api/Login/LoginAPI';
 import LoginApiClient from '../api/Login';
 
 const LoginPage = () => {
@@ -18,8 +13,6 @@ const LoginPage = () => {
   const deviceType = useDeviceType();
   const usernameInput = useRef<HTMLInputElement>(null);
   const pwInput = useRef<HTMLInputElement>(null);
-  //const loginForm = useSelector((state: RootState) => state);
-  const dispatch = useDispatch();
 
   const onLogin = () => {
     if (usernameInput.current && pwInput.current) {
@@ -27,31 +20,31 @@ const LoginPage = () => {
         username: usernameInput.current.value,
         password: pwInput.current.value
       };
-      //dispatch(login(loginform));
-      LoginApiClient.loginPost(loginform);
+      LoginApiClient.loginPost(loginform)
+        .then((res:any) => navigate('/personas'))
+        .catch((err:any) => console.error(err));
     }
   }
-  
 
-    return(
-      <>
-        <LoginContainer>
-          <SignInTitle deviceType={deviceType}>SIGN IN</SignInTitle>
-          <SignUpNav deviceType={deviceType}>PERSONA가 처음이신가요? {deviceType === 'mobile' ? <br /> : null}<Link to='/'>회원가입</Link></SignUpNav>
-          {/* 비율을 위한 공백 */}
-          <EmptyBox deviceType={deviceType}/>
+  return(
+    <>
+      <LoginContainer>
+        <SignInTitle deviceType={deviceType}>SIGN IN</SignInTitle>
+        <SignUpNav deviceType={deviceType}>PERSONA가 처음이신가요? {deviceType === 'mobile' ? <br /> : null}<Link to='/'>회원가입</Link></SignUpNav>
+        {/* 비율을 위한 공백 */}
+        <EmptyBox deviceType={deviceType}/>
 
-          <LoginInput text='username' ref={usernameInput} deviceType={deviceType}></LoginInput>
-          <LoginInput text='PASSWORD' ref={pwInput} deviceType={deviceType} isPassword></LoginInput>
-          {/*<LoginCheckBox />*/}
-          {/* 비율을 위한 공백 */}
-          <EmptyBox deviceType={deviceType} />
+        <LoginInput text='username' ref={usernameInput} deviceType={deviceType}></LoginInput>
+        <LoginInput text='PASSWORD' ref={pwInput} deviceType={deviceType} isPassword></LoginInput>
+        {/*<LoginCheckBox />*/}
+        {/* 비율을 위한 공백 */}
+        <EmptyBox deviceType={deviceType} />
 
-          <LoginButton deviceType={deviceType} onClick={onLogin} />
-        </LoginContainer>
-      </>
-    )
-} ;
+        <LoginButton deviceType={deviceType} onClick={onLogin} />
+      </LoginContainer>
+    </>
+  )
+};
 
 export default LoginPage;
 
