@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface LoginState {
-  id: string,
+  username: string,
   password: string,
 };
 
 const initialState: LoginState = {
-  id: '',
+  username: '',
   password: '',
 };
 

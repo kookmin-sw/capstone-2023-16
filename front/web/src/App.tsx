@@ -7,7 +7,6 @@ import PostDetailPage from './pages/PostDetailPage';
 import BackgroundLayout from './components/commons/BackgroundLayout';
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
-import TempQuery from './TempQuery';
 
 const App = () => {
   return (
@@ -19,7 +18,6 @@ const App = () => {
             <Route path='/personas' element={<PersonaChoice />} />
             <Route path='/posts' element={<MyPostsPage />} />
             <Route path='/posts/:id' element={<PostDetailPage />} />
-            <Route path='/temp' element={<TempQuery />} />
         </Routes>
       </BackgroundLayout>
     </RelayEnvironmentProvider>
