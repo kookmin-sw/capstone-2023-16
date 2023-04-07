@@ -2,9 +2,17 @@ import useDeviceType from '../hooks/useDeviceType';
 import styled from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaList from '../components/PersonaChoice/PersonaList';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { useEffect } from 'react';
 
 const PersonaChoice = () => {
     const deviceType = useDeviceType();
+    const loggedInUser = useSelector((state: RootState) => state.user);
+
+    useEffect(() => {
+        console.log(loggedInUser);
+    })
 
     return (<ContentLayout>            
             <PersonaChoiceContainer>

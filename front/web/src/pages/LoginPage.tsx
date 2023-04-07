@@ -7,12 +7,15 @@ import LoginContainer from '../components/Login/LoginContainer';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import LoginApiClient from '../api/Login';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../redux/slices/userSlice';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const deviceType = useDeviceType();
   const usernameInput = useRef<HTMLInputElement>(null);
   const pwInput = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
 
   const onLogin = () => {
     if (usernameInput.current && pwInput.current) {
@@ -21,7 +24,10 @@ const LoginPage = () => {
         password: pwInput.current.value
       };
       LoginApiClient.loginPost(loginform)
-        .then((res:any) => navigate('/personas'))
+        .then((res: any) => {
+          dispatch(setUser(res.login));
+          navigate('/personas');
+        })
         .catch((err:any) => console.error(err));
     }
   }
@@ -34,7 +40,7 @@ const LoginPage = () => {
         {/* 비율을 위한 공백 */}
         <EmptyBox deviceType={deviceType}/>
 
-        <LoginInput text='username' ref={usernameInput} deviceType={deviceType}></LoginInput>
+        <LoginInput text='USERNAME' ref={usernameInput} deviceType={deviceType}></LoginInput>
         <LoginInput text='PASSWORD' ref={pwInput} deviceType={deviceType} isPassword></LoginInput>
         {/*<LoginCheckBox />*/}
         {/* 비율을 위한 공백 */}
