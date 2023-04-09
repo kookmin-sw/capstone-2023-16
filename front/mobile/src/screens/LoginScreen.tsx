@@ -29,7 +29,7 @@ import {useMutation} from 'react-relay';
 // import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 import {useAppDispatch} from '../redux/hooks';
-import {selectUser, setIsLoggedIn, setUser} from '../redux/slices/userSlice';
+import {login, selectUser} from '../redux/slices/userSlice';
 import {useAppSelector} from '../redux/hooks';
 import {Alert} from 'react-native';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
@@ -134,8 +134,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
               onCompleted(data) {
                 console.log('@login success');
                 console.log(data.login);
-                dispatch(setIsLoggedIn(true));
-                dispatch(setUser(data.login));
+                dispatch(login(data.login));
                 console.log(`update ? : ${JSON.stringify(user)}`);
               },
               onError(error) {
