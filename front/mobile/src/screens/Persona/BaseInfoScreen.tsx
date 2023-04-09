@@ -11,7 +11,6 @@ import {
   Container,
   DimensionTheme,
   ScreenHeight,
-  ScreenWidth,
 } from '../../components/common/shared';
 import RegularText from '../../components/common/Texts/RegularText';
 import {NavigationData} from '../../navigation/AuthNavigator';
@@ -19,15 +18,16 @@ import {imagePath} from '../../utils/imagePath';
 import CheckBox from '../../components/common/CheckBox/CheckBox';
 import KeyboardAvoidingViewContainer from '../../components/common/Containers/KeyboardAvoidingViewContainer';
 import SmallText from '../../components/common/Texts/SmallText';
+import {Dropdown} from '../../components/common/Dropdown/Dropdown';
 
 const BaseInfoContainer = styled(Container)`
   width: 100%;
-  flex: 1;
   align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 const ProfileImageSection = styled.View`
-  flex: 2;
+  margin-left: ${DimensionTheme.width(20)};
 `;
 
 const ProfileImage = styled.Image`
@@ -37,23 +37,39 @@ const ProfileImage = styled.Image`
   border-radius: 100px;
 `;
 const AccountCheckSection = styled.View`
-  margin-left: ${ScreenWidth * 0.6}px;
-  margin-top: -150px;
-  margin-bottom: 20px;
+  margin-left: ${DimensionTheme.width(250)}
+  margin-top: -${DimensionTheme.width(20)};
 `;
 
 const PersonaNickSection = styled.View`
-  flex: 1;
+  width: ${DimensionTheme.width(327)};
+  height: ${DimensionTheme.width(66)};
+  margin-top: ${DimensionTheme.width(20)};
+  margin-left: ${DimensionTheme.width(17)};
 `;
 
 const ExtraInfoSection = styled.View`
-  flex: 1;
+  margin-left: ${DimensionTheme.width(17)};
+`;
+
+const BirthInfoSection = styled.View`
+  margin-top: ${DimensionTheme.width(20)};
+  height: ${DimensionTheme.width(66)};
+  width: ${DimensionTheme.width(327)};
+`;
+
+const BirthDropdownSection = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const GenderInfoSection = styled.View`
   flex-direction: row;
-  margin-top: 20px;
-  margin-left: ${DimensionTheme.width(20)};
+  margin-top: ${DimensionTheme.width(20)};
+  z-index: -1;
+  width: ${DimensionTheme.width(318)};
+  height: ${DimensionTheme.width(43)};
+  align-items: center;
 `;
 
 const RadioButtonSection = styled.View`
@@ -63,12 +79,17 @@ const RadioButtonSection = styled.View`
 
 const OccupationInfoSection = styled.View`
   flex-direction: row;
-  align-items: center;
-  margin-left: ${DimensionTheme.width(20)};
+  margin-top: ${DimensionTheme.width(15)};
+  width: ${DimensionTheme.width(318)};
+  height: ${DimensionTheme.width(43)};
 `;
 
 const PersonaDescriptionSection = styled.View`
-  flex: 3;
+  z-index: -1;
+  margin-top: ${DimensionTheme.width(30)};
+  width: ${DimensionTheme.width(327)};
+  height: ${DimensionTheme.width(140)};
+  margin-left: ${DimensionTheme.width(17)};
 `;
 
 const ButtonSection = styled.View`
@@ -79,12 +100,79 @@ const ButtonSection = styled.View`
   justify-contnet: flex-end;
 `;
 
+let fruits = [
+  {
+    id: 1,
+    name: 'Mango',
+  },
+  {
+    id: 2,
+    name: 'Banana',
+  },
+  {
+    id: 3,
+    name: 'Apple',
+  },
+];
+
 type Props = NavigationData<'BaseInfo'>;
 
 export const BaseInfoScreen: FC<Props> = ({navigation}) => {
   const [isPrivate, setIsPrivate] = useState(false);
+
+  // 생년월일
+  const [birth, setBirth] = useState({year: null, month: null, day: null});
+  const now = new Date();
+  var year = now.getFullYear();
+
+  let years = [];
+  //년도 selectbox만들기
+  for (var i = 1970; i <= year; i++) {
+    years.push({id: i.toString(), name: i.toString()});
+  }
+  let months = [];
+  // 월별 selectbox 만들기
+  for (var i = 1; i <= 12; i++) {
+    var mm = i > 9 ? i : '0' + i;
+    months.push({id: mm.toString(), name: mm.toString()});
+  }
+
+  let days = [];
+  // 일별 selectbox 만들기
+  for (var i = 1; i <= 31; i++) {
+    var dd = i > 9 ? i : '0' + i;
+    days.push({id: dd.toString(), name: dd.toString()});
+  }
+
+  const onSelectBirthY = item => {
+    setBirth({
+      ...birth,
+      year: item,
+    });
+  };
+
+  const onSelectBirthM = item => {
+    setBirth({
+      ...birth,
+      month: item,
+    });
+  };
+
+  const onSelectBirthD = item => {
+    setBirth({
+      ...birth,
+      day: item,
+    });
+  };
+
   // 성별
   const [isMale, setIsMale] = useState(true);
+
+  // 직업
+  const [selectedItem, setSelectedItem] = useState(null);
+  const onSelect = item => {
+    setSelectedItem(item);
+  };
   return (
     <BaseInfoContainer>
       <KeyboardAvoidingViewContainer>
@@ -115,6 +203,36 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
             />
           </PersonaNickSection>
           <ExtraInfoSection>
+            <BirthInfoSection>
+              <SmallText
+                textStyle={{
+                  color: colors.black,
+                  marginBottom: 7,
+                  fontWeight: '700',
+                }}>
+                생년월일
+              </SmallText>
+              <BirthDropdownSection>
+                <Dropdown
+                  data={years}
+                  onSelect={onSelectBirthY}
+                  value={birth.year}
+                  viewStyles={{width: DimensionTheme.width(131)}}
+                />
+                <Dropdown
+                  data={months}
+                  onSelect={onSelectBirthM}
+                  value={birth.month}
+                  viewStyles={{width: DimensionTheme.width(92)}}
+                />
+                <Dropdown
+                  data={days}
+                  onSelect={onSelectBirthD}
+                  value={birth.day}
+                  viewStyles={{width: DimensionTheme.width(92)}}
+                />
+              </BirthDropdownSection>
+            </BirthInfoSection>
             <GenderInfoSection>
               <SmallText
                 textStyle={{
@@ -143,14 +261,22 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
                 textStyle={{
                   color: colors.black,
                   fontWeight: '700',
+                  marginTop: DimensionTheme.width(15),
+                  marginRight: DimensionTheme.width(25),
                 }}>
                 직업
               </SmallText>
-              <StyledTextInput
+              {/* <StyledTextInput
                 viewStyle={{
                   width: DimensionTheme.width(281),
                   marginLeft: DimensionTheme.width(12),
                 }}
+              /> */}
+              <Dropdown
+                data={fruits}
+                onSelect={onSelect}
+                value={selectedItem}
+                viewStyles={{width: DimensionTheme.width(278)}}
               />
             </OccupationInfoSection>
           </ExtraInfoSection>
