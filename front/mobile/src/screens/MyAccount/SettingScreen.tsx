@@ -13,8 +13,8 @@ import {NavigationData} from '../../navigation/AuthNavigator';
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
 
-import {useAppDispatch} from '../../redux/hooks';
-import {setUser, setIsLoggedIn} from '../../redux/slices/userSlice';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {logout, selectAuth} from '../../redux/slices/userSlice';
 
 const SettingContainer = styled(Container)`
   justify-content: flex-start;
@@ -69,6 +69,7 @@ export const SettingScreen: FC<Props> = ({navigation}) => {
   const [commit, isInFlight] = useMutation(logoutMutation);
 
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectAuth);
 
   return (
     <SettingContainer>
@@ -105,7 +106,8 @@ export const SettingScreen: FC<Props> = ({navigation}) => {
               onCompleted(data) {
                 console.log('logout!!');
                 console.log(data);
-                dispatch(setIsLoggedIn(false));
+                dispatch(logout());
+                console.log(`isUPdate ? ${user}`);
               },
               onError(error) {
                 console.log('@logout error:');
