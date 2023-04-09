@@ -55,7 +55,7 @@ const AuthNavigator = () => {
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <StackNavigator.Screen
         name="BaseInfo"
         component={BaseInfoScreen}
@@ -64,8 +64,8 @@ const AuthNavigator = () => {
           headerShadowVisible: false,
           headerBackTitleVisible: false,
         }}
-      /> */}
-      {/* <StackNavigator.Screen
+      />
+      <StackNavigator.Screen
         name="InterestTagSetting"
         component={InterestTagSettingScreen}
         options={{
@@ -74,7 +74,7 @@ const AuthNavigator = () => {
           headerBackTitleVisible: false,
         }}
       />
-      <StackNavigator.Screen
+      {/*<StackNavigator.Screen
         name="DetailContent"
         component={DetailScreen}
         options={{headerShown: false}}

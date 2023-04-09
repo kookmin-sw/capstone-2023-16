@@ -19,6 +19,7 @@ import {SettingScreen} from '../screens/MyAccount/SettingScreen';
 import DetailScreen from '../screens/DetailScreen';
 import {FollowerScreen} from '../screens/MyAccount/FollowerScreen';
 import {PersonaScreen} from '../screens/MyAccount/PersonaScreen';
+import {ChallengeScreen} from '../screens/Challenge/ChallengeScreen';
 
 export type ParamList = {
   Main: undefined;
@@ -31,6 +32,7 @@ export type ParamList = {
   History: undefined;
   Setting: undefined;
   DetailContent: undefined;
+  Challenge: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -38,10 +40,24 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      <StackNavigator.Screen
+      {/* <StackNavigator.Screen
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
+      /> */}
+      <StackNavigator.Screen
+        name="MyPage"
+        component={MyPageScreen}
+        options={({navigation}) => ({
+          headerShown: false,
+          headerShadowVisible: false,
+          headerTitle: '홍현지',
+          headerTransparent: true,
+          headerTitleStyle: {
+            fontWeight: '700',
+            fontSize: 28,
+          },
+        })}
       />
       <StackNavigator.Screen
         name="BaseInfo"
@@ -67,40 +83,6 @@ const AppNavigator = () => {
         options={{headerShown: false}}
       />
       <StackNavigator.Screen
-        name="MyPage"
-        component={MyPageScreen}
-        options={({navigation}) => ({
-          headerShadowVisible: false,
-          headerTitle: '홍현지',
-          headerTransparent: true,
-          headerTitleStyle: {
-            fontWeight: '700',
-            fontSize: 28,
-          },
-          headerRight: () => (
-            <>
-              <ImageButton
-                btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.shareIcon}
-                onPress={() => {}}
-              />
-              <ImageButton
-                btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.editIcon}
-                onPress={() => {}}
-              />
-              <ImageButton
-                btnStyles={{backgroundColor: 'transparent'}}
-                source={imagePath.settingIcon}
-                onPress={() => {
-                  navigation.navigate('Setting');
-                }}
-              />
-            </>
-          ),
-        })}
-      />
-      <StackNavigator.Screen
         name="Following"
         component={FollowingScreen}
         options={{
@@ -122,9 +104,9 @@ const AppNavigator = () => {
         name="Persona"
         component={PersonaScreen}
         options={{
-          title: '페르소나',
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
+          headerShown: false,
+          // headerShadowVisible: false,
+          // headerBackTitleVisible: false,
         }}
       />
       <StackNavigator.Screen
@@ -140,6 +122,11 @@ const AppNavigator = () => {
         name="Setting"
         component={SettingScreen}
         options={{headerShown: true, title: 'SETTING'}}
+      />
+      <StackNavigator.Screen
+        name="Challenge"
+        component={ChallengeScreen}
+        options={{headerShown: false}}
       />
     </StackNavigator.Navigator>
   );
