@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.5",
+    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
@@ -35,11 +36,12 @@
     "react-native-safe-area-context": "^4.5.0",
     "react-native-screens": "^3.20.0",
     "react-native-status-bar-height": "^2.6.0",
-    "react-native-toast-message": "^2.1.6",
     "react-native-tab-view": "^3.5.1",
+    "react-native-toast-message": "^2.1.6",
     "react-redux": "^8.0.5",
     "react-relay": "^15.0.0",
     "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
     "relay-runtime": "^15.0.0",
     "styled-components": "^5.3.8",
     "yup": "^1.0.2"
