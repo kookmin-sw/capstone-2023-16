@@ -113,7 +113,6 @@ class CreatePostInput:
     """
     게시물 생성 input
     """
-    author: gql.auto = strawberry.field(description='작성자 Persona 정보')
     title: str = strawberry.field(description='새 게시글 제목')
     content: str = strawberry.field(description='새 게시글 무료 본문')
     paid_content: Optional[str] = strawberry.field(default=None, description='새 게시글 유료 본문')
