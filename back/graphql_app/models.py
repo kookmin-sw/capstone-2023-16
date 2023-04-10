@@ -227,3 +227,25 @@ class Challenge(models.Model):
         db_table = 'challenges'
         verbose_name = '챌린지'
         verbose_name_plural = '챌린지 목록'
+
+class ChallengeObjective(models.Model):
+    title = models.CharField(max_length=100, null=False, blank=False, verbose_name='목표 제목')
+    kind = models.CharField(max_length=10, null=False, blank=False, verbose_name='종류')
+    challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
+
+class ChallengeHistory(models.Model):
+    challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
+    persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')
+    is_done = models.BooleanField(default=False, verbose_name='완료 여부')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+
+    class Meta:
+        db_table = 'challenge_histories'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['challenge', 'persona'],
+                name='unique challenge history'
+            )
+        ]
+        verbose_name = '챌린지 참여 기록'
+        verbose_name_plural = '챌린지 참여 기록 목록'
