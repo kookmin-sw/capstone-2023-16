@@ -217,9 +217,8 @@ class Challenge(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False, verbose_name='챌린지 제목')
     description = models.TextField(null=False, blank=False, verbose_name='챌린지 설명')
     max_persona_count = models.PositiveIntegerField(null=False, blank=False, verbose_name='최대 참여 인원')
-    duration_type = models.CharField(max_length=10, null=False, blank=False, verbose_name='기간 타입')
+    is_open = models.BooleanField(default=False, verbose_name='모집 여부')
     personas = models.ManyToManyField(Persona, through='ChallengePersona', verbose_name='참여 페르소나 목록')
-    closed_at = models.DateTimeField(null=False, blank=False, verbose_name='종료 시각')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='갱신 시각')
 
@@ -231,6 +230,7 @@ class Challenge(models.Model):
 class ChallengeObjective(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False, verbose_name='목표 제목')
     kind = models.CharField(max_length=10, null=False, blank=False, verbose_name='종류')
+    duration_type = models.CharField(max_length=10, null=False, blank=False, verbose_name='기간 타입')
     challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
 
 class ChallengeHistory(models.Model):
