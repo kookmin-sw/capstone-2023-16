@@ -4,7 +4,7 @@ from typing import Tuple, Optional, List, Awaitable
 from django.db.models import QuerySet, F
 
 from graphql_app.domain.post.exceptions import PostNotFoundException
-from graphql_app.models import Post, Persona, WaitFreePersona, PostReadingRecord
+from graphql_app.models import Post, Persona, WaitFreePersona, PostReadingRecord, PostLike
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.models import Post, Persona, Category, Tag, Membership
@@ -146,3 +146,20 @@ def increase_read_count(post_id: int, persona_id: int) -> None:
     post_reading_record.read_count = F('read_count') + 1
     post_reading_record.updated_at = datetime.datetime.now()
     post_reading_record.save(update_fields=['read_count', 'updated_at'])
+
+
+def post_like_toggle(post_id: int, persona_id: int) -> bool:
+    """
+    특정 게시물에 대한 특정 페르소나의 좋아요 및 좋아요 해제 토글을 수행하는 함수
+    :param post_id: 좋아요 토글을 수행할 게시물의 id
+    :param persona_id: 좋아요 토글을 수행할 페르소나의 id
+    :return: 실행 결과 좋아요 상태가 된 경우 True, 그렇지 않은 경우 False
+    """
+    if not PostLike.objects.filter(persona_id=persona_id, post_id=post_id).exists():
+        PostLike.objects.create(persona_id=persona_id, post_id=post_id)
+        liked = True
+    else:
+        PostLike.objects.get(persona_id=persona_id, post_id=post_id).delete()
+        liked = False
+
+    return liked
