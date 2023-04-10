@@ -212,3 +212,18 @@ class PostReadingRecord(models.Model):
         ]
         verbose_name = '조회 기록'
         verbose_name_plural = '조회 기록 목록'
+
+class Challenge(models.Model):
+    title = models.CharField(max_length=100, null=False, blank=False, verbose_name='챌린지 제목')
+    description = models.TextField(null=False, blank=False, verbose_name='챌린지 설명')
+    max_persona_count = models.PositiveIntegerField(null=False, blank=False, verbose_name='최대 참여 인원')
+    duration_type = models.CharField(max_length=10, null=False, blank=False, verbose_name='기간 타입')
+    personas = models.ManyToManyField(Persona, through='ChallengePersona', verbose_name='참여 페르소나 목록')
+    closed_at = models.DateTimeField(null=False, blank=False, verbose_name='종료 시각')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='갱신 시각')
+
+    class Meta:
+        db_table = 'challenges'
+        verbose_name = '챌린지'
+        verbose_name_plural = '챌린지 목록'
