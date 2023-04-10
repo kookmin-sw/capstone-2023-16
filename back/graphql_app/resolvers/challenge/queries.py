@@ -1,4 +1,5 @@
 from typing import Iterable, cast, Optional
+from back.graphql_app.domain.challenge.core import get_all_challenges
 
 from strawberry.types import Info
 from strawberry_django_plus import gql
@@ -12,10 +13,6 @@ from graphql_app.resolvers.model_types import Challenge
 @gql.type
 class Query:
     @gql.django.connection
-    def get_all_challenges(self, info: Info,
-                           sorting_opt: CategorySortingOption,
-                           created_at_filter: Optional[DatetimeBetween] = None,
-                           body_filter: Optional[CategoryBodyFilter] = None
-                           ) -> Iterable[Challenge]:
-        challenges = []
+    def get_all_challenges(self, info: Info, *args, **kwargs) -> Iterable[Challenge]:
+        challenges = get_all_challenges()
         return cast(Iterable[Challenge], challenges)
