@@ -2,6 +2,7 @@ import datetime
 from typing import Tuple, Optional, List, Awaitable
 
 from django.db.models import QuerySet, F
+from strawberry.types import Info
 
 from graphql_app.domain.post.exceptions import PostNotFoundException
 from graphql_app.models import Post, Persona, WaitFreePersona, PostReadingRecord, PostLike
@@ -163,3 +164,13 @@ def post_like_toggle(post_id: int, persona_id: int) -> bool:
         liked = False
 
     return liked
+
+
+def get_post_like_cnt(root: Post, info: Info) -> int:
+    """
+    특정 게시물의 좋아요 개수를 반환
+    :param post_id: 조회할 게시물의 id
+    :return: 해당 게시물의 좋아요 개수
+    """
+    post_likes = PostLike.objects.filter(post_id=root.id).count()
+    return post_likes

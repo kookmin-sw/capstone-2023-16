@@ -9,6 +9,7 @@ from strawberry_django_plus.gql import relay
 
 from graphql_app import models
 from graphql_app.domain.membership.enums import Tier
+from graphql_app.domain.post.core import get_post_like_cnt
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.post.permissions import IsEligibleForPaidContent, MembershipTierPermission
 
@@ -60,6 +61,7 @@ class Post(relay.Node):
     tags: relay.Connection[Tag] = strawberry.field(description='태그 목록')
     category: Optional[Category] = strawberry.field(description='소속 카테고리')
     required_membership_tier: Optional[Tier] = strawberry.field(description='조회 요구 티어')
+    like_cnt: int = strawberry.field(get_post_like_cnt, description='좋아요 개수')
     created_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
