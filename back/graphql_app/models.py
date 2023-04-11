@@ -218,7 +218,7 @@ class Challenge(models.Model):
     description = models.TextField(null=False, blank=False, verbose_name='챌린지 설명')
     max_persona_count = models.PositiveIntegerField(null=False, blank=False, verbose_name='최대 참여 인원')
     is_open = models.BooleanField(default=False, verbose_name='모집 여부')
-    personas = models.ManyToManyField(Persona, through='ChallengePersona', verbose_name='참여 페르소나 목록')
+    personas = models.ManyToManyField(Persona, verbose_name='참여 페르소나 목록')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='갱신 시각')
 

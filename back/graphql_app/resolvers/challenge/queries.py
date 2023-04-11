@@ -14,5 +14,6 @@ from graphql_app.resolvers.model_types import Challenge
 class Query:
     @gql.django.connection
     def get_all_challenges(self, info: Info, *args, **kwargs) -> Iterable[Challenge]:
+        # get_all_challenges by current user id
         challenges = get_all_challenges()
         return cast(Iterable[Challenge], challenges)
