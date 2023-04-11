@@ -40,6 +40,7 @@ class User(relay.Node):
     username: auto = strawberry.field(description='사용자 ID (Unique)')
     email: auto = strawberry.field(description='사용자 E-mail (Unique)')
     signup_method: auto = strawberry.field(description='로그인 방법')
+    last_used_persona_nickname: Optional[str] = strawberry.field(description='마지막으로 사용한 페르소나의 닉네임')
 
     created_at: auto = strawberry.field(description='생성 시각')
     updated_at: auto = strawberry.field(description='갱신 시각')
