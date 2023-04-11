@@ -16,7 +16,6 @@ class LoginAPI {
           mutation: loginPostMutation,
           variables: loginform,
           onCompleted: (data) => {
-            console.log(data);
             alert("로그인 되었습니다.");
             resolve(data);
           },
