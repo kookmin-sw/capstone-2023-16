@@ -15,4 +15,5 @@ export const imagePath: {[key: string]: any} = {
   cancel: require('../assets/cancel.png'),
   backBtn: require('../assets/back_btn.png'),
   dropdownBtn: require('../assets/dropdownIcon.png'),
+  lockIcon: require('../assets/lockIcon.png'),
 };
