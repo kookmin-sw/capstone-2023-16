@@ -18,6 +18,9 @@ class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='유저의 이메일', unique=True)
     username = models.CharField(max_length=254, unique=True)
     signup_method = models.CharField(max_length=2, choices=SIGN_UP_METHOD_CHOICES, default=EMAIL)
+    # WARNING : 무결성을 보장하지는 않음
+    last_used_persona_nickname = models.CharField(max_length=20, null=True, blank=True, default=None,
+                                                  verbose_name='마지막으로 사용한 페르소나의 닉네임')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
     updated_at = models.DateTimeField(auto_now_add=True, verbose_name='갱신 시각')
 
