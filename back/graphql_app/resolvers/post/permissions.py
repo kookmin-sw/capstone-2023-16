@@ -27,3 +27,10 @@ class MembershipTierPermission(BasePermission):
     def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
         _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
         return has_required_tier(persona_id, source)
+
+
+class OwnerOnlyPermission(BasePermission):
+    message = "페르소나의 소유자만 확인할 수 있습니다."
+
+    def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
+        pass

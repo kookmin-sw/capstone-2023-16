@@ -1,10 +1,10 @@
 import datetime
-from typing import Tuple, Optional, List, Awaitable
+from typing import Tuple, Optional, List
 
 from django.db.models import QuerySet, F
 
 from graphql_app.domain.post.exceptions import PostNotFoundException
-from graphql_app.models import Post, Persona, WaitFreePersona, PostReadingRecord
+from graphql_app.models import WaitFreePersona, PostReadingRecord, Bookmark
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.models import Post, Persona, Category, Tag, Membership
@@ -146,3 +146,21 @@ def increase_read_count(post_id: int, persona_id: int) -> None:
     post_reading_record.read_count = F('read_count') + 1
     post_reading_record.updated_at = datetime.datetime.now()
     post_reading_record.save(update_fields=['read_count', 'updated_at'])
+
+
+def post_bookmark_toggle(persona_id: int, post_id: int) -> bool:
+    bookmark = Bookmark.objects.filter(persona_id=persona_id, post_id=post_id)
+
+    if bookmark.exists():
+        bookmark = bookmark[0]
+        bookmark.delete()
+        bookmarked = False
+    else:
+        Bookmark.objects.create(persona_id=persona_id, post_id=post_id)
+        bookmarked = True
+
+    return bookmarked
+
+
+def get_bookmarks_of_persona(persona_id: int) -> List[Bookmark]:
+    return list(Bookmark.objects.filter(persona_id=persona_id))
