@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 import strawberry
 from strawberry import auto
@@ -9,7 +9,9 @@ from strawberry_django_plus.gql import relay
 
 from graphql_app import models
 from graphql_app.domain.membership.enums import Tier
+from graphql_app.domain.post.core import get_bookmarks_of_persona
 from graphql_app.resolvers.persona.enums import Gender
+from graphql_app.resolvers.persona.permissions import PersonaOwnershipPermission
 from graphql_app.resolvers.post.permissions import IsEligibleForPaidContent, MembershipTierPermission
 
 
@@ -47,6 +49,19 @@ class User(relay.Node):
     @classmethod
     def get_user_with_info(cls, info: Info) -> 'User':
         return models.User.objects.get(id=info.context.request.user.id)
+
+
+@gql.django.type(models.Bookmark)
+class Bookmark(relay.Node):
+    persona: 'Persona' = strawberry.field(description='대상 페르소나')
+    post: 'Post' = strawberry.field(description='대상 게시물')
+    created_at: datetime = strawberry.field(description='북마크 일시')
+
+    @staticmethod
+    def get_bookmarks_of_persona(info: Info) -> List['Bookmark']:
+        persona_id = info.context.request.persona.id
+        bookmarks = get_bookmarks_of_persona(persona_id)
+        return bookmarks
 
 
 @gql.django.type(models.Post)
@@ -93,7 +108,8 @@ class Persona(relay.Node):
     is_certified: bool = strawberry.field(description='공식 인증 여부')
     preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
     preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
-    # bookmarks = strawberry.field()
+    bookmarks = strawberry.field(Bookmark.get_bookmarks_of_persona, description='북마크 목록',
+                                 permission_classes=[PersonaOwnershipPermission])
 
     following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
 

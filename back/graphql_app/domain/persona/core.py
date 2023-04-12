@@ -142,17 +142,3 @@ def get_bookmarks(info: Info) -> QuerySet[Bookmark]:
     persona = info.context.request.persona
     bookmarks = Bookmark.objects.filter(persona=persona)
     return bookmarks
-
-
-def post_bookmark_toggle(persona_id: int, post_id: int) -> bool:
-    bookmark = Bookmark.objects.filter(persona_id=persona_id, post_id=post_id)
-
-    if bookmark.exists():
-        bookmark = bookmark[0]
-        bookmark.delete()
-        bookmarked = False
-    else:
-        Bookmark.objects.create(persona_id=persona_id, post_id=post_id)
-        bookmark = True
-
-    return bookmarked
