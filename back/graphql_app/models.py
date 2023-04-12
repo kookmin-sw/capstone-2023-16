@@ -214,6 +214,24 @@ class PostReadingRecord(models.Model):
         verbose_name_plural = '조회 기록 목록'
 
 
+class PostLike(models.Model):
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, verbose_name='대상 게시물')
+    persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='누른 페르소나')
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='누른 시각')
+
+    class Meta:
+        db_table = 'post_like'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['post', 'persona'],
+                name='unique post persona like'
+            ),
+        ]
+        verbose_name = '좋아요'
+        verbose_name_plural = '좋아요 목록'
+
+
 class Bookmark(models.Model):
     post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, verbose_name='게시물')
     persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')

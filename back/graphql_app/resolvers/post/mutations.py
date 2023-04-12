@@ -5,7 +5,7 @@ from strawberry_django_plus import gql
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.domain.post.core import create_post
-from graphql_app.resolvers.decorators import requires_auth
+from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.errors import AuthInfoRequiredError, ResourceNotFoundError
 from graphql_app.resolvers.model_types import Post
 from graphql_app.resolvers.post.types import CreatePostInput
@@ -15,7 +15,7 @@ from graphql_app.resolvers.post.types import CreatePostInput
 class Mutation:
     # TODO: Type 수정
     @gql.mutation
-    @requires_auth
+    @requires_persona_context
     def post_create(self, info: Info, new_post_input: CreatePostInput) \
             -> strawberry.union('CreatePostResult', (Post,
                                                      AuthInfoRequiredError, ResourceNotFoundError)):
@@ -23,8 +23,7 @@ class Mutation:
         새 게시물을 생성한다.
         """
 
-        # _, author_id =
-        author_id = int(new_post_input.author.id.node_id)
+        author_id = info.context.request.persona.id
         requested_user_id = int(info.context.request.user.id)
         category_id = int(new_post_input.category.id.node_id)
         title = new_post_input.title
@@ -42,3 +41,6 @@ class Mutation:
             raise ResourceNotFoundError('Category')
         else:
             return new_post
+
+    # @gql.mutation
+    # @

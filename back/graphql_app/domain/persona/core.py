@@ -2,10 +2,11 @@ from typing import Optional, List, Tuple
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet, Sum, Count
+from strawberry.types import Info
 
 from graphql_app.domain.persona.exceptions import NicknameDupliationException, NotPersonaOwnerException, \
     SelfFollowException
-from graphql_app.models import Persona, User, Category, Tag
+from graphql_app.models import Persona, User, Category, Tag, Bookmark
 from graphql_app.resolvers.enums import SortingDirection
 from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 from graphql_app.resolvers.persona.enums import Gender
@@ -132,3 +133,26 @@ def get_persona_context(request: WSGIRequest) -> Optional[int]:
         return persona_id
     else:
         return None
+
+
+def get_bookmarks(info: Info) -> QuerySet[Bookmark]:
+    """
+    요청한 사용자의 북마크를 반환하는 resolver
+    """
+    persona = info.context.request.persona
+    bookmarks = Bookmark.objects.filter(persona=persona)
+    return bookmarks
+
+
+def post_bookmark_toggle(persona_id: int, post_id: int) -> bool:
+    bookmark = Bookmark.objects.filter(persona_id=persona_id, post_id=post_id)
+
+    if bookmark.exists():
+        bookmark = bookmark[0]
+        bookmark.delete()
+        bookmarked = False
+    else:
+        Bookmark.objects.create(persona_id=persona_id, post_id=post_id)
+        bookmark = True
+
+    return bookmarked

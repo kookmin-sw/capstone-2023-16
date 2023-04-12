@@ -93,6 +93,7 @@ class Persona(relay.Node):
     is_certified: bool = strawberry.field(description='공식 인증 여부')
     preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
     preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
+    # bookmarks = strawberry.field()
 
     following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
 
