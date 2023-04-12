@@ -108,9 +108,7 @@ class WaitFreePersona(relay.Node):
 
 @gql.django.type(models.Challenge)
 class Challenge(relay.Node):
-    creator: Persona = strawberry.field(description='창작자 페르소나')
     title: str = strawberry.field(description='제목')
-    content: str = strawberry.field(description='내용')
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
     

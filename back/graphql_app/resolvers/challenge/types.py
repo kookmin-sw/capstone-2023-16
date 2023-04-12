@@ -6,6 +6,7 @@ from strawberry_django_plus.relay import GlobalID
 class CreateChallengeInput:
     title: str
     description: str
+    max_persona_count: int
 
 @gql.django.input(models.ChallengeObjective)
 class CreateChallengeObjectiveInput:

@@ -4,9 +4,8 @@ from strawberry.types import Info
 
 from graphql_app.resolvers.challenge.types import CreateChallengeObjectiveInput, CreateChallengeInput, \
     CreateChallengeHistoryInput
-from graphql_app.models import Challenge as ChallengeModel, ChallengeObjective as ChallengeObjectiveModel, \
-    ChallengeObjective, ChallengeHistory as ChallengeHistoryModel
-from graphql_app.resolvers.model_types import Challenge, ChallengeHistory
+from graphql_app.models import Challenge as ChallengeModel, ChallengeObjective as ChallengeObjectiveModel, ChallengeHistory as ChallengeHistoryModel
+from graphql_app.resolvers.model_types import Challenge, ChallengeHistory, ChallengeObjective
 
 
 @gql.type
