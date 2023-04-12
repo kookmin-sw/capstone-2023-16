@@ -229,8 +229,8 @@ class Challenge(models.Model):
 
 class ChallengeObjective(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False, verbose_name='목표 제목')
-    kind = models.CharField(max_length=10, null=False, blank=False, verbose_name='종류')
-    duration_type = models.CharField(max_length=10, null=False, blank=False, verbose_name='기간 타입')
+    kind = models.CharField(max_length=10, null=False, choices=[("IN", "Individual"), ("TO", "Together")], blank=False, verbose_name='종류')
+    duration_type = models.CharField(max_length=10, choices=[("MO", "Monthly"), ("WK", "Weekly"), ("DA", "Daily")], null=False, blank=False, verbose_name='기간 타입')
     challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
 
 class ChallengeHistory(models.Model):

@@ -13,6 +13,8 @@ class CreateChallengeObjectiveInput:
     title: str
     description: str
     challenge: GlobalID
+    duration_type: gql.auto
+    kind: gql.auto
 
 
 @gql.django.input(models.ChallengeHistory)

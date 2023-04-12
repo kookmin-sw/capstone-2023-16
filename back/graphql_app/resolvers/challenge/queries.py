@@ -5,7 +5,7 @@ from strawberry_django_plus import gql
 
 from graphql_app.resolvers.model_types import Challenge
 
-from back.graphql_app.domain.challenge.core import get_all_challenges
+from graphql_app.domain.challenge.core import get_all_challenges
 
 
 @gql.type
