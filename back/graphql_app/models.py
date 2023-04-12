@@ -3,6 +3,7 @@ from typing import List, Tuple, Dict
 
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
+from django_choices_field import TextChoicesField
 
 from utils import dict_to_2d_list
 
@@ -228,9 +229,19 @@ class Challenge(models.Model):
         verbose_name_plural = '챌린지 목록'
 
 class ChallengeObjective(models.Model):
+    class ParticipateKind(models.TextChoices):
+        INDIVIDUAL = "individual", "개인"
+        GROUP = "group", "공동"
+
+    class DurationType(models.TextChoices):
+        MONTHLY = "monthly", "매달"
+        DAILY = "daily", "매일"
+        WEEKLY = "weekly", "매주"
+
+
     title = models.CharField(max_length=100, null=False, blank=False, verbose_name='목표 제목')
-    kind = models.CharField(max_length=10, null=False, choices=[("IN", "Individual"), ("TO", "Together")], blank=False, verbose_name='종류')
-    duration_type = models.CharField(max_length=10, choices=[("MO", "Monthly"), ("WK", "Weekly"), ("DA", "Daily")], null=False, blank=False, verbose_name='기간 타입')
+    kind = TextChoicesField(choices_enum=ParticipateKind)
+    duration_type = TextChoicesField(choices_enum=DurationType)
     challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
 
 class ChallengeHistory(models.Model):
