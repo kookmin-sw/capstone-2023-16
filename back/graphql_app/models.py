@@ -212,3 +212,20 @@ class PostReadingRecord(models.Model):
         ]
         verbose_name = '조회 기록'
         verbose_name_plural = '조회 기록 목록'
+
+
+class Bookmark(models.Model):
+    post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, verbose_name='게시물')
+    persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+
+    class Meta:
+        db_table = 'post_bookmarks'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['post', 'persona'],
+                name='unique post boormark'
+            )
+        ]
+        verbose_name = '북마크'
+        verbose_name_plural = '북마크 목록'
