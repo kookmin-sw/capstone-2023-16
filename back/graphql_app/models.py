@@ -242,6 +242,10 @@ class ChallengeObjective(models.Model):
     duration_type = TextChoicesField(choices_enum=DurationType)
     challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
 
+    class Meta:
+        db_table="challenge_objectives"
+        verbose_name = "챌린지 목표"
+
 class ChallengeHistory(models.Model):
     challenge_objective = models.ForeignKey(ChallengeObjective, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지 목표')
     persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')
@@ -250,11 +254,5 @@ class ChallengeHistory(models.Model):
 
     class Meta:
         db_table = 'challenge_histories'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['challenge', 'persona'],
-                name='unique challenge history'
-            )
-        ]
         verbose_name = '챌린지 참여 기록'
         verbose_name_plural = '챌린지 참여 기록 목록'

@@ -54,8 +54,4 @@ class Migration(migrations.Migration):
                 'db_table': 'challenge_histories',
             },
         ),
-        migrations.AddConstraint(
-            model_name='challengehistory',
-            constraint=models.UniqueConstraint(fields=('challenge', 'persona'), name='unique challenge history'),
-        ),
     ]

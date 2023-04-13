@@ -1,4 +1,4 @@
-from graphql_app.models import Challenge, ChallengeHistory
+from graphql_app.models import Challenge, ChallengeHistory,ChallengeObjective
 
 
 def get_all_challenges():
@@ -15,3 +15,6 @@ def update_challenge_history(challenge_id: int, persona_id: int, is_done: bool):
 
 def get_challenge_history_by_user_id_and_challenge_id(user_id: int, challenge_id: int):
     return ChallengeHistory.objects.filter(challenge_id=challenge_id, persona_id=user_id)
+
+def get_challenge_objects_by_challenge_id(challenge_id: int):
+    return ChallengeObjective.objects.filter(challenge_id=challenge_id)
