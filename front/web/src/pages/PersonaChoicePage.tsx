@@ -6,21 +6,18 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { useEffect } from 'react';
 import PersonaApiClient from '../api/Persona';
-import PersonasGetQuery from '../graphQL/Queries/PersonasGetQuery';
-import { useFragment } from 'react-relay';
-import PersonaConnection from '../graphQL/Components/PersonaConnection';
-import PersonasFragment from '../graphQL/Components/PersonasFragment';
 
 const PersonaChoice = () => {
     const deviceType = useDeviceType();
     const loggedInUser = useSelector((state: RootState) => state.user);
 
     //const personaConnection = useFragment(PersonasGetQuery, PersonaConnection);
-    PersonaApiClient.personaListGet(null);
-
+    PersonaApiClient.personaListGet()
+    console.log(document.cookie);
+    
     useEffect(() => {
         console.log(loggedInUser);
-    })
+    }, [])
 
     return (<ContentLayout>            
             <PersonaChoiceContainer>

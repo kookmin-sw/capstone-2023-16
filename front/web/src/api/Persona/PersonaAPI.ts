@@ -1,20 +1,19 @@
 
 // GraphQl 
-import { commitMutation, useFragment, useMutation, usePaginationFragment } from 'react-relay';
+import { commitMutation, graphql, useFragment, useMutation, usePaginationFragment } from 'react-relay';
 import environment from '../../RelayEnvironment';
-import getOwnPersonasQuery from '../../graphQL/Queries/PersonasGetQuery';
 import PersonasFragment from '../../graphQL/Components/PersonasFragment';
 import PersonaConnection from '../../graphQL/Components/PersonaConnection';
-import type { PersonasFragment$key } from '../../graphQL/Components/__generated__/PersonasFragment.graphql';
-import PersonasGetQuery from '../../graphQL/Queries/PersonasGetQuery';
+import {  PersonasFragmentPersonaList_getOwnPersonas$key as Key} from '../../graphQL/Components/__generated__/PersonasFragmentPersonaList_getOwnPersonas.graphql';
+import { PersonasGetQuery } from '../../graphQL/Components/__generated__/PersonasGetQuery.graphql';
 
 
 class PersonaAPI {
-  public personaListGet = (props: any) => {
-    const { data } = usePaginationFragment(PersonasGetQuery, null);
+  public personaListGet = () => {
+    const {data } = usePaginationFragment<PersonasGetQuery, Key>(
+        PersonasFragment, null)
     console.log('data:', data);
-    return ;
-  
+    return data;
   };
   
 }
