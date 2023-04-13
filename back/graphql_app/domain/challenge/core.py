@@ -1,3 +1,5 @@
+from datetime import timedelta, datetime
+
 from graphql_app.models import Challenge, ChallengeObjectiveHistory,ChallengeObjective
 
 
@@ -22,6 +24,18 @@ def get_challenge_objects_by_challenge_id(challenge_id: int, persona_id: int):
         .filter(challenge_id=challenge_id)
 
     for objective in objectives:
-        objective.is_done = objective.challengeobjectivehistory_set.filter(persona_id=persona_id).exists()
+        history = objective.challengeobjectivehistory_set.filter(persona_id=persona_id).first()
+        if history:
+            duration_type = objective.duration_type.value
+            last_done_at = history.last_done_at
+            # FIXME: 코드 더 이쁘게 리팩터 해야함
+            if duration_type == 'daily':
+                objective.is_done = last_done_at < datetime.now() + timedelta(days=1)
+            elif duration_type == 'monthly':
+                objective.is_done = last_done_at < datetime.now() + timedelta(days=30)
+            elif duration_type == 'weekly':
+                objective.is_done = last_done_at < datetime.now() + timedelta(days=7)
+        else:
+            objective.is_done = False
 
     return objectives
