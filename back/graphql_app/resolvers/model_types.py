@@ -121,9 +121,9 @@ class ChallengeObjective(relay.Node):
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
 
-@gql.django.type(models.ChallengeHistory)
-class ChallengeHistory(relay.Node):
-    challenge: Challenge = strawberry.field(description='도전과제')
+@gql.django.type(models.ChallengeObjectiveHistory)
+class ChallengeObjectiveHistory(relay.Node):
+    challenge_objective: ChallengeObjective = strawberry.field(description='도전과제')
     persona: Persona = strawberry.field(description='참여 페르소나')
     is_done: bool = strawberry.field(description='완료 여부')
     created_at: datetime = strawberry.field(description='참여 일시')

@@ -246,13 +246,20 @@ class ChallengeObjective(models.Model):
         db_table="challenge_objectives"
         verbose_name = "챌린지 목표"
 
-class ChallengeHistory(models.Model):
-    challenge_objective = models.ForeignKey(ChallengeObjective, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지 목표')
+class ChallengeObjectiveHistory(models.Model):
+    challenge_objective_id = models.ForeignKey(ChallengeObjective, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지 목표')
     persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')
+    last_done_at = models.DateTimeField(verbose_name='완료한 시각')
     is_done = models.BooleanField(default=False, verbose_name='완료 여부')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
 
     class Meta:
-        db_table = 'challenge_histories'
+        db_table = 'challenge_objective_histories'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['challenge_objective_id', 'persona'],
+                name='unique challenge_objective and persona'
+            )
+        ]
         verbose_name = '챌린지 참여 기록'
         verbose_name_plural = '챌린지 참여 기록 목록'

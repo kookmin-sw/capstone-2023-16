@@ -17,8 +17,7 @@ class CreateChallengeObjectiveInput:
     kind: gql.auto
 
 
-@gql.django.input(models.ChallengeHistory)
-class CreateChallengeHistoryInput:
-    challenge: GlobalID
+@gql.django.input(models.ChallengeObjectiveHistory)
+class ToggleChallengeObjectiveInput:
+    challenge_objective: GlobalID
     persona: GlobalID
-    is_done: bool

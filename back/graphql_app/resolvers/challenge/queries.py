@@ -26,7 +26,6 @@ class ChallengeQuery:
 
     @gql.django.connection
     def get_my_challenge_objectives(self, info: Info, persona_id: GlobalID, challenge_id: GlobalID) -> Iterable[ChallengeObjective]:
-        # get_all_challenges by current user id
         persona_id: int = int(persona_id.node_id)
         challenge_id: int = int(challenge_id.node_id)
         challenges = get_challenge_objects_by_challenge_id(challenge_id)
