@@ -6,6 +6,9 @@ from graphql_app.resolvers.challenge.types import CreateChallengeObjectiveInput,
     CreateChallengeHistoryInput
 from graphql_app.models import Challenge as ChallengeModel, ChallengeObjective as ChallengeObjectiveModel, ChallengeHistory as ChallengeHistoryModel
 from graphql_app.resolvers.model_types import Challenge, ChallengeHistory, ChallengeObjective
+from strawberry_django_plus.relay import GlobalID
+
+from graphql_app.models import Persona
 
 
 @gql.type
@@ -25,3 +28,12 @@ class ChallengeMutation:
     def create_challenge_history(self, info: Info, input: CreateChallengeHistoryInput) -> ChallengeHistory:
         data = vars(input)
         return resolvers.create(info, ChallengeHistoryModel, resolvers.parse_input(info, data))
+
+    @gql.django.input_mutation
+    def join_challenge(self, info: Info, challenge_id: GlobalID, persona_id: GlobalID) -> Challenge:
+        persona = Persona.objects.get(id=persona_id.node_id)
+
+        challenge = challenge_id.resolve_node(info)
+        challenge.personas.add(persona)
+        challenge.save()
+        return challenge

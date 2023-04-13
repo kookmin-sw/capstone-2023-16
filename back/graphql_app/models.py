@@ -5,8 +5,6 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django_choices_field import TextChoicesField
 
-from utils import dict_to_2d_list
-
 
 class User(AbstractBaseUser):
     EMAIL = 'EM'
@@ -245,7 +243,7 @@ class ChallengeObjective(models.Model):
     challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
 
 class ChallengeHistory(models.Model):
-    challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
+    challenge_objective = models.ForeignKey(ChallengeObjective, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지 목표')
     persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')
     is_done = models.BooleanField(default=False, verbose_name='완료 여부')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')

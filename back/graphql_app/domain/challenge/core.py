@@ -4,8 +4,8 @@ from graphql_app.models import Challenge, ChallengeHistory
 def get_all_challenges():
     return Challenge.objects.all()
 
-def get_challenges_by_user_id(user_id: int):
-    return Challenge.objects.filter(persona=user_id)
+def get_challenges_by_persona_id(persona_id: int):
+    return Challenge.objects.filter(persona_id=persona_id)
 
 def create_challenge_history(challenge_id: int, persona_id: int, is_done: bool):
     return ChallengeHistory.objects.create(challenge_id=challenge_id, persona_id=persona_id, is_done=is_done)
