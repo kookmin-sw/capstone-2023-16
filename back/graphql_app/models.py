@@ -3,8 +3,7 @@ from typing import List, Tuple, Dict
 
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
-
-from utils import dict_to_2d_list
+from django_choices_field import TextChoicesField
 
 
 class User(AbstractBaseUser):
@@ -213,6 +212,57 @@ class PostReadingRecord(models.Model):
         verbose_name = '조회 기록'
         verbose_name_plural = '조회 기록 목록'
 
+class Challenge(models.Model):
+    title = models.CharField(max_length=100, null=False, blank=False, verbose_name='챌린지 제목')
+    description = models.TextField(null=False, blank=False, verbose_name='챌린지 설명')
+    max_persona_count = models.PositiveIntegerField(null=False, blank=False, verbose_name='최대 참여 인원')
+    is_open = models.BooleanField(default=False, verbose_name='모집 여부')
+    personas = models.ManyToManyField(Persona, verbose_name='참여 페르소나 목록')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='갱신 시각')
+
+    class Meta:
+        db_table = 'challenges'
+        verbose_name = '챌린지'
+        verbose_name_plural = '챌린지 목록'
+
+class ChallengeObjective(models.Model):
+    class ParticipateKind(models.TextChoices):
+        INDIVIDUAL = "individual", "개인"
+        GROUP = "group", "공동"
+
+    class DurationType(models.TextChoices):
+        MONTHLY = "monthly", "매달"
+        DAILY = "daily", "매일"
+        WEEKLY = "weekly", "매주"
+
+
+    title = models.CharField(max_length=100, null=False, blank=False, verbose_name='목표 제목')
+    kind = TextChoicesField(choices_enum=ParticipateKind)
+    duration_type = TextChoicesField(choices_enum=DurationType)
+    challenge = models.ForeignKey(Challenge, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지')
+
+    class Meta:
+        db_table="challenge_objectives"
+        verbose_name = "챌린지 목표"
+
+class ChallengeObjectiveHistory(models.Model):
+    challenge_objective = models.ForeignKey(ChallengeObjective, null=False, blank=False, on_delete=models.CASCADE, verbose_name='챌린지 목표')
+    persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')
+    last_done_at = models.DateTimeField(verbose_name='완료한 시각', auto_now_add=True)
+    is_done = models.BooleanField(default=False, verbose_name='완료 여부')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
+
+    class Meta:
+        db_table = 'challenge_objective_histories'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['challenge_objective_id', 'persona'],
+                name='unique challenge_objective and persona'
+            )
+        ]
+        verbose_name = '챌린지 참여 기록'
+        verbose_name_plural = '챌린지 참여 기록 목록'
 
 class PostLike(models.Model):
     post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, verbose_name='대상 게시물')

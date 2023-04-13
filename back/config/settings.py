@@ -66,6 +66,7 @@ GRAPHQL_APPS = [
     "strawberry_django_plus"
 ]
 
+STRAWBERRY_DJANGO_GENERATE_ENUMS_FROM_CHOICES = True
 AUTH_USER_MODEL = 'graphql_app.User'
 
 SERVICE_APPS = [
