@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import PersonaChoice from './pages/PersonaChoicePage';
 import MyPostsPage from './pages/MyPostsPage';
 import PostDetailPage from './pages/PostDetailPage';
+import PostWritingPage from './pages/PostWritingPage';
 import BackgroundLayout from './components/commons/BackgroundLayout';
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
@@ -18,6 +19,7 @@ const App = () => {
             <Route path='/personas' element={<PersonaChoice />} />
             <Route path='/posts' element={<MyPostsPage />} />
             <Route path='/posts/:id' element={<PostDetailPage />} />
+            <Route path='/post/edit/:id' element={<PostWritingPage />} />
         </Routes>
       </BackgroundLayout>
     </RelayEnvironmentProvider>
