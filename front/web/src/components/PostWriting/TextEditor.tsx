@@ -4,7 +4,6 @@ import textpatterns from './properties/textpattern';
 import { useDispatch } from 'react-redux';
 import { partialChange } from '../../redux/slices/newPostSlice';
 
-
 const TINYMCE_API_KEY = process.env.REACT_APP_TINYMCE_API_KEY;
 
 type TextEditorProps = {
@@ -41,16 +40,17 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
         plugins: ['anchor autolink charmap preview textpattern codesample emoticons image imagetools link lists searchreplace checklist casechange export formatpainter pageembed linkchecker permanentpen powerpaste quickbars'],
         // 추후에 추가할 plugins:  autosave
         toolbar: ['undo redo | blocks formatselect forecolor fontsizeselect | bold italic underline strikethrough | link image | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | preview removeformat'],
-        language : 'ko_KR',
+        language: 'ko_KR',
         textpattern_patterns: textpatterns, 
         block_unsupported_drop: false,
         quickbars_insert_toolbar: false,
         quickbars_selection_toolbar: 'bold italic | formatselect | quicklink blockquote',
         quickbars_image_toolbar: 'alignleft aligncenter alignright | rotateleft rotateright | imageoptions',  
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+        content_style: 'body { font-family:"Noto Sans KR", serif; font-size:24px }',
         menubar: 'edit format',
         statusbar: false,
-        images_upload_handler: handlerImageuUpload
+        images_upload_handler: handlerImageuUpload,
+        font_css: './properies/font_css.css',
         /*
          임시저장 기능 good, but 나중에 회원정보를 식별하여 받아올 수 있게 되면 구현
         autosave_interval: '30s', // 30초마다 임시저장, 로컬 스토리지에 tinymce-autosave-/post/edit/{postId}-tiny-react_{id}-draft 로 저장됨.
