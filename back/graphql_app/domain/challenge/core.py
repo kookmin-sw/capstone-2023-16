@@ -16,5 +16,12 @@ def update_challenge_history(challenge_id: int, persona_id: int, is_done: bool):
 def get_challenge_history_by_user_id_and_challenge_id(user_id: int, challenge_id: int):
     return ChallengeObjectiveHistory.objects.filter(challenge_id=challenge_id, persona_id=user_id)
 
-def get_challenge_objects_by_challenge_id(challenge_id: int):
-    return ChallengeObjective.objects.filter(challenge_id=challenge_id)
+def get_challenge_objects_by_challenge_id(challenge_id: int, persona_id: int):
+    objectives = ChallengeObjective.objects\
+        .prefetch_related('challengeobjectivehistory_set')\
+        .filter(challenge_id=challenge_id)
+
+    for objective in objectives:
+        objective.is_done = objective.challengeobjectivehistory_set.filter(persona_id=persona_id).exists()
+
+    return objectives

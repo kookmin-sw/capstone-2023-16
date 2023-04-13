@@ -118,6 +118,7 @@ class ChallengeObjective(relay.Node):
     challenge: Challenge = strawberry.field(description='도전과제')
     title: str = strawberry.field(description='제목')
     content: str = strawberry.field(description='내용')
+    is_done: bool = strawberry.field(description='완수 여부')
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
 

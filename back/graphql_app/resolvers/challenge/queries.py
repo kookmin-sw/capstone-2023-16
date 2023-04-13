@@ -28,5 +28,5 @@ class ChallengeQuery:
     def get_my_challenge_objectives(self, info: Info, persona_id: GlobalID, challenge_id: GlobalID) -> Iterable[ChallengeObjective]:
         persona_id: int = int(persona_id.node_id)
         challenge_id: int = int(challenge_id.node_id)
-        challenges = get_challenge_objects_by_challenge_id(challenge_id)
+        challenges = get_challenge_objects_by_challenge_id(challenge_id, persona_id)
         return cast(Iterable[ChallengeObjective], challenges)
