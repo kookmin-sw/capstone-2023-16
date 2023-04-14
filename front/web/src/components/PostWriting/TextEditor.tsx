@@ -36,7 +36,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
       init={{
         deprecation_warnings: false,
         width: '100%',
-        height: 500,
+        height: 700,
         plugins: ['anchor autolink charmap preview textpattern codesample emoticons image imagetools link lists searchreplace checklist casechange export formatpainter pageembed linkchecker permanentpen powerpaste quickbars'],
         // 추후에 추가할 plugins:  autosave
         toolbar: ['undo redo | blocks formatselect forecolor fontsizeselect | bold italic underline strikethrough | link image | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | preview removeformat'],

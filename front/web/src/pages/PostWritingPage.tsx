@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
+import PersonaCard from '../components/commons/PersonaCard';
 import ButtonGroup from '../components/PostWriting/ButtonGroup';
 import CategoryChoice from '../components/PostWriting/CategoryChoice';
 import PostTitle from '../components/PostWriting/PostTitle';
 import TextEditor from '../components/PostWriting/TextEditor';
 import useDeviceType from '../hooks/useDeviceType';
+import { RootState } from '../redux/store';
 
 const PostWritingPage = () => {
-  const deviceType = useDeviceType();
   const [submitFlag, setSubmitFlag] = useState(false);
 
+  const persona = useSelector((state: RootState) => state.persona);
+  const deviceType = useDeviceType();
+  const navigate = useNavigate();
+
   return <>
+    <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
+      <PersonaCard {...persona} deviceType={deviceType} />
+    </PersonaCardWrapper>
     <ContentLayout>
       <Header deviceType={deviceType}>
         <CategoryChoice />
@@ -24,6 +34,21 @@ const PostWritingPage = () => {
 };
 
 export default PostWritingPage;
+
+const PersonaCardWrapper = styled.section<{ deviceType: string }>`
+  width: ${(props) => (props.deviceType === 'mobile') ? '242px' : '369px'};
+  margin-left: ${(props) => (props.deviceType === 'desktop') ? '10%' : props.deviceType === 'tablet'? '2.5%' : 'none'};
+  margin-bottom: 16px;
+  background-color: #fefefe;
+  border-radius: ${(props) => { return (props.deviceType === 'mobile') ? '15px' : '30px' }};
+  align-self: start;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    cursor: default;
+  }
+`;
 
 const Header = styled.div < { deviceType: string }>`
   width: 100%;
