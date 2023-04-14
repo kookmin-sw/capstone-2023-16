@@ -11,12 +11,12 @@ const PersonaChoice = () => {
     const deviceType = useDeviceType();
     const loggedInUser = useSelector((state: RootState) => state.user);
 
-    //const personaConnection = useFragment(PersonasGetQuery, PersonaConnection);
-    PersonaApiClient.personaListGet()
-    console.log(document.cookie);
+    const { data } = PersonaApiClient.personaListGet()
+
     
     useEffect(() => {
         console.log(loggedInUser);
+        console.log(data);
     }, [])
 
     return (<ContentLayout>            
