@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-interface buttonContent {
+interface buttonContent extends React.ComponentPropsWithoutRef<'button'>{
     deviceType?: string,
     text?:string,
 }
