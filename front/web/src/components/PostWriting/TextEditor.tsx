@@ -60,8 +60,8 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
       /* 
       내용이 바뀔때마다 호출되는 핸들러 속성
       첫번째 인자에는 HTML 구문이, 두번째 인자의 getContent({format: string})를 통해 html, text 등의 포맷형식 지정 추출 가능
-      onEditorChange={(htmlContent, content) => { console.log(htmlContent) }}
       */
+      onEditorChange={(htmlContent, content) => { console.log(htmlContent) }}
     />
     <button>Log editor content</button>
   </>

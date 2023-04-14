@@ -18,7 +18,7 @@ const App = () => {
             <Route path='/' element={<LoginPage />} />
             <Route path='/personas' element={<PersonaChoice />} />
             <Route path='/posts' element={<MyPostsPage />} />
-            <Route path='/posts/:id' element={<PostDetailPage />} />
+            <Route path='/post/:id' element={<PostDetailPage />} />
             <Route path='/post/edit/:id' element={<PostWritingPage />} />
         </Routes>
       </BackgroundLayout>

@@ -10,7 +10,7 @@ const PostList = () => {
   const navigate = useNavigate();
 
   return <PostListContainer deviceType={deviceType} >
-    {postList.map(p => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(p.node.id)} >
+    {postList.map(p => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
         <PostCard deviceType={deviceType} title={p.node.title} content={p.node.content} date={p.node.createdAt} />
       </PostCardWrapper>)}
   </PostListContainer>

@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from './../redux/store';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import SettingButtonGroup from '../components/MyPostsPage/SettingButtonGroup';
 
 const MyPostsPage = () => {
   const deviceType = useDeviceType();
@@ -18,8 +19,11 @@ const MyPostsPage = () => {
       </PersonaCardWrapper>
       <ContentLayout>
         <MyPostsPageContainer>
-          <MyPostsContainer>
+        <MyPostsContainer>
+          <Header  deviceType={deviceType}>
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
+            <SettingButtonGroup />
+          </Header>
             <PostList />
           </MyPostsContainer>
         </MyPostsPageContainer>
@@ -51,6 +55,15 @@ const MyPostsPageContainer = styled.section`
   flex-direction: column;
   border-bottom-left-radius: 0;
 `;
+
+const Header = styled.div<{deviceType:string}>`
+  width: 100%;
+  display: flex;
+  flex-direction: ${props => props.deviceType === 'desktop' ? 'row' : 'column'};
+  justify-content: space-between;
+  margin-bottom: ${props => props.deviceType === 'mobile' ? '10px': '12px'};
+  row-gap: ${(props) => { return (props.deviceType === 'tablet') ? '26px' : '17px' }};
+`
 
 const MyPostsContainer = styled.div`
   width: 100%;

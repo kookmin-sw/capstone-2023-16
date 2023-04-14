@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
-import ButtonGroup from '../components/PostWriting/ButtonGroup';
+import ButtonGroup from '../components/PostWriting/SettingButtonGroup';
 import CategoryChoice from '../components/PostWriting/CategoryChoice';
 import PostTitle from '../components/PostWriting/PostTitle';
 import TextEditor from '../components/PostWriting/TextEditor';
