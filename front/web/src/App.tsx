@@ -18,8 +18,9 @@ const App = () => {
             <Route path='/' element={<LoginPage />} />
             <Route path='/personas' element={<PersonaChoice />} />
             <Route path='/posts' element={<MyPostsPage />} />
-            <Route path='/post/:id' element={<PostDetailPage />} />
-            <Route path='/post/edit/:id' element={<PostWritingPage />} />
+            <Route path='/post/:postId' element={<PostDetailPage />} />
+            <Route path='/post/edit' element={<PostWritingPage />} />
+            <Route path='/post/edit/:postId' element={<PostWritingPage />} />
         </Routes>
       </BackgroundLayout>
     </RelayEnvironmentProvider>

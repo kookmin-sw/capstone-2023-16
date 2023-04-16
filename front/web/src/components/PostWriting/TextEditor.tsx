@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import textpatterns from './properties/textpattern';
 import { useDispatch } from 'react-redux';

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled  from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
-import ButtonGroup from '../components/PostWriting/SettingButtonGroup';
+import PostWritingSetting from '../components/PostWriting/PostWritingSetting';
 import CategoryChoice from '../components/PostWriting/CategoryChoice';
 import PostTitle from '../components/PostWriting/PostTitle';
 import TextEditor from '../components/PostWriting/TextEditor';
@@ -25,7 +25,7 @@ const PostWritingPage = () => {
     <ContentLayout>
       <Header deviceType={deviceType}>
         <CategoryChoice />
-        <ButtonGroup setSubmitFlag={setSubmitFlag} />
+        <PostWritingSetting setSubmitFlag={setSubmitFlag} />
       </Header>
       <PostTitle submitFlag={submitFlag} />
       <TextEditor submitFlag={submitFlag} />

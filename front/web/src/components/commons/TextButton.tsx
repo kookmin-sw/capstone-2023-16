@@ -1,6 +1,7 @@
+import React from "react";
 import styled from "styled-components";
 
-interface buttonContent extends React.ComponentPropsWithoutRef<'button'>{
+interface buttonContent extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     deviceType?: string,
     text?:string,
 }
@@ -30,9 +31,9 @@ const Text = styled.p<{deviceType?:string}>`
     line-height: ${(props) => {return (props.deviceType==='mobile')?'15.5px': '29px'}};
 `;
 
-const TextButton = ({text, deviceType}:buttonContent) => {
+const TextButton = ({text, deviceType, ...res}:buttonContent) => {
     return(
-        <Btn deviceType={deviceType}>
+        <Btn deviceType={deviceType} {...res}>
             <Text deviceType={deviceType}>{text}</Text>
         </Btn>
     )

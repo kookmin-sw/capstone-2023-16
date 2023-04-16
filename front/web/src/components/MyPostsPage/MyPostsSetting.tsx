@@ -1,24 +1,22 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import TextButton from "../commons/TextButton";
 
-const ButtonGroup = () => {
+const MyPostsSetting = () => {
   const deviceType = useDeviceType();
-  const location = useLocation();
   const navigate = useNavigate();
-  console.log(location);
 
-  return <ButtonGroupContainer deviceType={deviceType}>
+  return <MyPostsSettingContainer deviceType={deviceType}>
     <TextButton text='수익' deviceType={deviceType}></TextButton>
     <TextButton text='통계' deviceType={deviceType}></TextButton>
-    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/persona')}></TextButton>
-  </ButtonGroupContainer>
+    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/post/edit')}></TextButton>
+  </MyPostsSettingContainer>
 };
 
-export default ButtonGroup;
+export default MyPostsSetting;
 
-const ButtonGroupContainer = styled.div<{ deviceType: string }>`
+const MyPostsSettingContainer = styled.div<{ deviceType: string }>`
   width: auto;
   display: flex;
   padding: 7px;

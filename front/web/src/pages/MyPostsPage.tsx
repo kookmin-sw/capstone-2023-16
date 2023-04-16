@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from './../redux/store';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import SettingButtonGroup from '../components/MyPostsPage/SettingButtonGroup';
+import MyPostsSetting from '../components/MyPostsPage/MyPostsSetting';
 
 const MyPostsPage = () => {
   const deviceType = useDeviceType();
@@ -22,7 +22,7 @@ const MyPostsPage = () => {
         <MyPostsContainer>
           <Header  deviceType={deviceType}>
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
-            <SettingButtonGroup />
+            <MyPostsSetting />
           </Header>
             <PostList />
           </MyPostsContainer>

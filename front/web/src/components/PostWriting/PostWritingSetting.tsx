@@ -2,10 +2,10 @@ import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import TextButton from "../commons/TextButton";
 
-type ButtonGroupType = {
+type PostWritingSettingType = {
   setSubmitFlag: (b:boolean) => void;
 }
-const ButtonGroup = ({setSubmitFlag}: ButtonGroupType) => {
+const PostWritingSetting = ({setSubmitFlag}: PostWritingSettingType) => {
   const deviceType = useDeviceType();
 
   const onSubmit = () => {
@@ -13,16 +13,16 @@ const ButtonGroup = ({setSubmitFlag}: ButtonGroupType) => {
     // 이후 submitFlag를 0으로 변경하는 코드
   };
 
-  return <ButtonGroupContainer deviceType={deviceType}>
+  return <PostWritingSettingContainer deviceType={deviceType}>
     <TextButton text='미리보기' deviceType={deviceType}></TextButton>
     <TextButton text='임시저장' deviceType={deviceType}></TextButton>
     <TextButton text='포스팅' deviceType={deviceType} onClick={(e:any)=>setSubmitFlag}></TextButton>
-  </ButtonGroupContainer>
+  </PostWritingSettingContainer>
 };
 
-export default ButtonGroup;
+export default PostWritingSetting;
 
-const ButtonGroupContainer = styled.div<{deviceType: string}>`
+const PostWritingSettingContainer = styled.div<{deviceType: string}>`
   width: auto;
   display: flex;
   gap: ${props => props.deviceType === 'mobile' ? '10px': '16px'};
