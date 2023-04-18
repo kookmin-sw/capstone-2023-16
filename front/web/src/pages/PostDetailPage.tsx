@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
@@ -14,10 +14,12 @@ import post from '../components/PostDetail/dummy/post.json';
 const PostDetailPage = () => {
   const deviceType = useDeviceType();
   const persona = useSelector((state: RootState) => state.persona);
+  const { postId } = useParams();
   const navigate = useNavigate();
 
   const onEdit = () => {
     alert('편집모드로 전환합니다.');
+    navigate(`/post/edit/${postId}`);
   };
 
   const onDelete = () => {
