@@ -5,18 +5,13 @@ import PersonaList from '../components/PersonaChoice/PersonaList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { useEffect } from 'react';
-import PersonaApiClient from '../api/Persona';
 
 const PersonaChoice = () => {
     const deviceType = useDeviceType();
     const loggedInUser = useSelector((state: RootState) => state.user);
-
-    const { data } = PersonaApiClient.personaListGet()
-
     
     useEffect(() => {
         console.log(loggedInUser);
-        console.log(data);
     }, [])
 
     return (<ContentLayout>            

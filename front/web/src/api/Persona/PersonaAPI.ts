@@ -9,7 +9,7 @@ import personaListGetQuery from '../../graphQL/Queries/personaListGetQuery';
 class PersonaAPI {
   public personaListGet = () => {
     const queryData = useLazyLoadQuery(personaListGetQuery, []);
-    return usePaginationFragment<PersonaAPIPersonasGetQuery, any>(PersonaPaginationFragment, queryData);;
+    return usePaginationFragment<PersonaAPIPersonasGetQuery, any>(PersonaPaginationFragment, queryData);
   };
 }
 
