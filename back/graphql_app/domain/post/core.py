@@ -5,7 +5,7 @@ from django.db.models import QuerySet, F
 from strawberry.types import Info
 
 from graphql_app.domain.post.exceptions import PostNotFoundException
-from graphql_app.models import Bookmark, WaitFreePersona, PostReadingRecord, PostLike
+from graphql_app.models import Bookmark, WaitFreePersona, PostReadingRecord, PostLike, Comment
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.models import Post, Persona, Category, Tag, Membership
@@ -187,8 +187,17 @@ def post_like_toggle(post_id: int, persona_id: int) -> bool:
 def get_post_like_cnt(root: Post, info: Info) -> int:
     """
     특정 게시물의 좋아요 개수를 반환
-    :param post_id: 조회할 게시물의 id
-    :return: 해당 게시물의 좋아요 개수
     """
     post_likes = PostLike.objects.filter(post_id=root.id).count()
     return post_likes
+
+
+def get_comments_of(root: Post, info: Info) -> List[Comment]:
+    """
+    특정 게시물의 댓글 목록을 작성 일시 내림차순으로 반환
+    """
+    return Comment.objects.filter(post=root)
+
+
+def create_comment_to(post_id: int, persona_id: int, body) -> Comment:
+    return Comment.objects.create(post_id=post_id, persona_id=persona_id, body=body)
