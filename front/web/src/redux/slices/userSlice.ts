@@ -4,19 +4,19 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 export interface UserState {
   id: string;
   email: string;
-  createdAt: Date;
+  createdAt: String;  // String형이지만 실제 값은 Data.toISOString()의 값이 삽입됨.
   username: string;
   signupMethod: string;
-  updatedAt: Date;
+  updatedAt: String;  // String형이지만 실제 값은 Data.toISOString()의 값이 삽입됨.
 };
 
 const initialState: UserState = {
   id: '',
   email: '',
-  createdAt: new Date(),
+  createdAt: '',
   username: '',
   signupMethod: '',
-  updatedAt: new Date(),
+  updatedAt: '',
 };
 
 export const userSlice = createSlice({
