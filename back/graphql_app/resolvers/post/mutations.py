@@ -5,11 +5,11 @@ from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
-from graphql_app.domain.post.core import create_post, post_bookmark_toggle
+from graphql_app.domain.post.core import create_post, post_bookmark_toggle, create_comment_to
 from graphql_app.domain.post.core import create_post, post_like_toggle
 from graphql_app.resolvers.decorators import requires_persona_context
 from graphql_app.resolvers.errors import AuthInfoRequiredError, ResourceNotFoundError
-from graphql_app.resolvers.model_types import Post
+from graphql_app.resolvers.model_types import Post, Comment
 from graphql_app.resolvers.post.types import CreatePostInput
 from graphql_app.resolvers.utils import parse_global_id
 
@@ -69,3 +69,16 @@ class Mutation:
 
         bookmarked = post_bookmark_toggle(persona_id, post_id.node_id)
         return bookmarked
+
+    @gql.mutation
+    @requires_persona_context
+    def write_comment(self, info: Info, post_id: GlobalID, body: str) -> Comment:
+        """
+        특정 게시물에 댓글을 작성한다.
+        :return: 생성된 댓글
+        """
+        persona_id = info.context.request.persona.id
+        post_id = post_id.node_id
+
+        comment = create_comment_to(post_id, persona_id, body)
+        return comment
