@@ -306,6 +306,7 @@ class Bookmark(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, null=False, blank=False, on_delete=models.CASCADE, verbose_name='게시물')
     persona = models.ForeignKey(Persona, null=False, blank=False, on_delete=models.CASCADE, verbose_name='페르소나')
+    body = models.CharField(max_length=200, null=False, blank=False, verbose_name='댓글 본문g')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='생성 시각')
 
     class Meta:
