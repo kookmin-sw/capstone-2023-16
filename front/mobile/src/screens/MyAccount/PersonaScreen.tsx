@@ -14,7 +14,7 @@ import RegularText from '../../components/common/Texts/RegularText';
 import SmallText from '../../components/common/Texts/SmallText';
 import {colors} from '../../components/common/colors';
 import {SearchInput} from '../../components/common/Inputs/SearchInput';
-import {NavigationData} from '../../navigation/AuthNavigator';
+import {NavigationData} from '../../navigation/AppNavigator';
 import CardSection from '../../components/MyAccount/FollowCardSection';
 import {FollowingData} from '../../constants/follow';
 

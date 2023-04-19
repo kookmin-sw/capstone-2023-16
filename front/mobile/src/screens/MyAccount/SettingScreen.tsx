@@ -8,7 +8,7 @@ import {colors} from '../../components/common/colors';
 import {Container, DimensionTheme} from '../../components/common/shared';
 import RegularText from '../../components/common/Texts/RegularText';
 import * as ButtonTheme from '../../components/common/theme';
-import {NavigationData} from '../../navigation/AuthNavigator';
+import {NavigationData} from '../../navigation/AppNavigator';
 
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';

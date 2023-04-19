@@ -16,7 +16,7 @@ import DetailHeader from '../components/Detail/DetailHeader';
 import ReactBtn from '../components/Detail/ReactBtn';
 import CommentInput from '../components/Detail/CommentInput';
 import BookmarkBtn from '../components/Detail/BookmarkBtn';
-import {NavigationData} from '../navigation/AuthNavigator';
+import {NavigationData} from '../navigation/AppNavigator';
 import Comment from '../components/Detail/Comment';
 
 type Props = NavigationData<'DetailContent'>;
