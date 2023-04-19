@@ -68,6 +68,7 @@ export const Tab: FC<TabProps> = ({routes, sceneMap}) => {
 
   return (
     <TabView
+      style={{width: '100%'}}
       navigationState={{index, routes}}
       renderScene={_renderScene}
       renderTabBar={_renderTabBar}
