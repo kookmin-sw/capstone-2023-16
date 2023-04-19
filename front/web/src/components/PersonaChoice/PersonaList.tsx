@@ -7,31 +7,32 @@ import { connect } from '../../redux/slices/personaSlice';
 import { Root } from "./dummy/personalListType";
 import PersonaApiClient from "../../api/Persona";
 import { useEffect } from "react";
+import useThrottle from "../../hooks/useThrottle";
 
-const AVERAGE_LOAD = 5;
+const AVERAGE_LOAD = 20;
 
 const PersonaList = () => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  
   const { data, hasNext, loadNext, isLoadingNext } = PersonaApiClient.personaListGet();
 
   // 스크롤 이벤트 핸들러
-  // TODO: 최적화
   const handleScroll = () => { 
     const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
 
     if (scrollTop + 500 >= scrollHeight - clientHeight) {
       if(!isLoadingNext && hasNext) loadNext(AVERAGE_LOAD);
-//      else if (!hasNext) loadNext(data.getOwnPersonas.totalCount % AVERAGE_LOAD);
     }
   }
 
+  const throttle = useThrottle(handleScroll); // 스크롤 이벤트 핸들러에 대한 쓰로틀링 적용
+
   useEffect(() => {
-      window.addEventListener("scroll", handleScroll, {capture: true});
+      window.addEventListener("scroll", throttle, {capture: true});
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", throttle);
     };
   }, []);
 
