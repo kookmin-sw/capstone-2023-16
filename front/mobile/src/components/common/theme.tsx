@@ -51,8 +51,39 @@ export const whiteBGblackSD = {
   },
 };
 
+export const purpleLightBGblackSD = {
+  btnStyle: {
+    backgroundColor: colors.purplelight,
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+};
+
 export const lightpurpleBG = {
   btnStyle: {
     backgroundColor: colors.purplelight,
+  },
+};
+
+export const purpleBGSD = {
+  btnStyle: {
+    backgroundColor: colors.primary,
+    shadowColor: colors.primary,
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: 0.6,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  textStyle: {
+    color: colors.black,
   },
 };
