@@ -6,9 +6,6 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import ImageButton from '../components/common/Buttons/ImageButton';
-import {imagePath} from '../utils/imagePath';
-
 import MainScreen from '../screens/MainScreen';
 import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
@@ -20,12 +17,17 @@ import DetailScreen from '../screens/DetailScreen';
 import {FollowerScreen} from '../screens/MyAccount/FollowerScreen';
 import {PersonaScreen} from '../screens/MyAccount/PersonaScreen';
 import {ChallengeScreen} from '../screens/Challenge/ChallengeScreen';
+import {ChallengeCreateScreen} from '../screens/Challenge/ChallengeCreateScreen';
+import {ChallengeDetailScreen} from '../screens/Challenge/ChallengeDetailScreen';
+import {MyContentScreen} from '../screens/MyContent/MyContentScreen';
+import {FollowScreen} from '../screens/MyAccount/FollowScreen';
 
 export type ParamList = {
   Main: undefined;
   BaseInfo: undefined;
   InterestTagSetting: undefined;
   MyPage: undefined;
+  Follow: undefined;
   Following: undefined;
   Follower: undefined;
   Persona: undefined;
@@ -33,6 +35,9 @@ export type ParamList = {
   Setting: undefined;
   DetailContent: undefined;
   Challenge: undefined;
+  ChallengeCreate: undefined;
+  ChallengeDetail: undefined;
+  MyContent: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -40,11 +45,11 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      {/* <StackNavigator.Screen
+      <StackNavigator.Screen
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
-      /> */}
+      />
       <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
@@ -83,6 +88,11 @@ const AppNavigator = () => {
         options={{headerShown: false}}
       />
       <StackNavigator.Screen
+        name="Follow"
+        component={FollowScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
         name="Following"
         component={FollowingScreen}
         options={{
@@ -105,17 +115,13 @@ const AppNavigator = () => {
         component={PersonaScreen}
         options={{
           headerShown: false,
-          // headerShadowVisible: false,
-          // headerBackTitleVisible: false,
         }}
       />
       <StackNavigator.Screen
         name="History"
         component={MyHistoryScreen}
         options={{
-          title: 'MY HISTORY',
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
+          headerShown: false,
         }}
       />
       <StackNavigator.Screen
@@ -126,6 +132,21 @@ const AppNavigator = () => {
       <StackNavigator.Screen
         name="Challenge"
         component={ChallengeScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="ChallengeCreate"
+        component={ChallengeCreateScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="ChallengeDetail"
+        component={ChallengeDetailScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="MyContent"
+        component={MyContentScreen}
         options={{headerShown: false}}
       />
     </StackNavigator.Navigator>
