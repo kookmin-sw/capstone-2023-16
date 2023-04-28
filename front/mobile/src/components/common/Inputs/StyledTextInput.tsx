@@ -60,6 +60,7 @@ interface StyledTextInputProps extends TextInputProps {
   touched?: boolean;
   isPassword?: boolean;
   children?: React.ReactNode;
+  errorStyle?: StyleProp<TextStyle>;
 }
 
 const StyledTextInput: FC<StyledTextInputProps> = ({
@@ -70,6 +71,7 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
   error,
   touched,
   children,
+  errorStyle,
   ...props
 }) => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -93,7 +95,9 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
         )}
       </FlexContainer>
 
-      {error && touched ? <ErrorMessage>{error}</ErrorMessage> : null}
+      {error && touched ? (
+        <ErrorMessage style={errorStyle}>{error}</ErrorMessage>
+      ) : null}
     </StyledTextInputContainer>
   );
 };
