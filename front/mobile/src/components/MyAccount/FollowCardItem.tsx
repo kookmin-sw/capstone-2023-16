@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
 
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 import {DimensionTheme} from '../common/shared';
 import * as ButtonTheme from '../common/theme';
@@ -47,7 +47,12 @@ const RightSection = styled.View`
 
 const CardItem: FC<CardProps> = props => {
   const route = useRoute();
-  console.log(props.id);
+  const navigation = useNavigation();
+
+  // console.log(route);
+  // console.log(navigation.getState());
+  // console.log(props.id);
+  // console.log(props.id);
   const [modalVisible, setModalVisible] = useState(false);
 
   const pressButton = () => {

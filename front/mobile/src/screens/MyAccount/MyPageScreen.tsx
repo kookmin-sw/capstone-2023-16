@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
-import {Image, Platform} from 'react-native';
+import {Image, Platform, TouchableOpacity} from 'react-native';
 
 import * as ButtonTheme from '../../components/common/theme';
 import SmallButton from '../../components/common/Buttons/SmallButton';
@@ -13,14 +13,17 @@ import {
 } from '../../components/common/shared';
 import SmallText from '../../components/common/Texts/SmallText';
 import {imagePath} from '../../utils/imagePath';
-import {personalTagData, TagColor} from '../../constants/tag';
-import {NavigationData} from '../../navigation/AuthNavigator';
-import {ProfileShortDescription} from '../../constants/profile';
+import {personalTagData} from '../../constants/tag';
+import {NavigationData} from '../../navigation/AppNavigator';
 
 import {useLazyLoadQuery} from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
 import {TagCard} from '../../components/common/Cards/TagCard';
 import {StatisticsCard} from '../../components/common/Cards/StatisticsCard';
+import {useAppSelector} from '../../redux/hooks';
+import {selectUser} from '../../redux/slices/userSlice';
+import ImageButton from '../../components/common/Buttons/ImageButton';
+import {RoundedTab} from '../../components/common/Tab/RoundedTab';
 
 const BackgroundSection = styled.ImageBackground`
   flex: 1;
@@ -33,6 +36,16 @@ const MyPageContainer = styled(Container)`
   align-items: center;
   width: 100%;
   background-color: transparent;
+`;
+
+const HeaderSection = styled.View`
+  flex: 1;
+  margin-top: ${Platform.OS === 'ios' ? 40 : 10};
+  flex-direction: row;
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  z-index: 9;
 `;
 
 const RoundSection = styled.View`
@@ -70,10 +83,8 @@ const ProfileDescription = styled.View`
 `;
 
 const TabSection = styled.View`
-  flex-direction: row;
-  algin-items: center;
   margin-top: 20px;
-  width: 100%;
+  margin-left: ${DimensionTheme.width(23)};
 `;
 
 const ScrollSection = styled.ScrollView``;
@@ -88,13 +99,6 @@ const IntersetTagSection = styled.View`
 
 const StatisticsSection = styled.View`
   margin-top: 30px;
-`;
-
-const FeedStaticSection = styled.View`
-  padding: 10px;
-  margin-top: 30px;
-  hegiht: 167px;
-  border-radius: 20px;
 `;
 
 const getOwnPersonaQuery = graphql`
@@ -126,7 +130,8 @@ const getOwnPersonaQuery = graphql`
 
 type Props = NavigationData<'MyPage'>;
 
-export const MyPageScreen: FC<Props> = ({navigation}) => {
+export const MyPageScreen: FC<Props> = ({navigation, route}) => {
+  const user = useAppSelector(selectUser);
   const nickname = 'testpersona';
   const data = useLazyLoadQuery(
     getOwnPersonaQuery,
@@ -135,12 +140,49 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
   );
 
   useEffect(() => {
+    // console.log(route.params.name);
     console.log('###mypage');
     console.log(data.getOwnPersonas.edges[0].node);
+    console.log(`user : ${JSON.stringify(user)}`);
   }, [data]);
 
   return (
     <BackgroundSection source={imagePath.background}>
+      <HeaderSection>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.pop();
+          }}>
+          <Image
+            style={{
+              width: DimensionTheme.width(22),
+              height: DimensionTheme.width(22),
+              marginRight: DimensionTheme.width(230),
+            }}
+            source={imagePath.backBtn}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <ImageButton
+          btnStyles={{backgroundColor: 'transparent', marginTop: -10}}
+          source={imagePath.shareIcon}
+          onPress={() => {
+            navigation.navigate('Challenge');
+          }}
+        />
+        <ImageButton
+          btnStyles={{backgroundColor: 'transparent', marginTop: -10}}
+          source={imagePath.editIcon}
+          onPress={() => {}}
+        />
+        <ImageButton
+          btnStyles={{backgroundColor: 'transparent', marginTop: -10}}
+          source={imagePath.settingIcon}
+          onPress={() => {
+            navigation.navigate('Setting');
+          }}
+        />
+      </HeaderSection>
       <MyPageContainer>
         <ProfileImage source={imagePath.avatar} />
         <RoundSection
@@ -157,68 +199,14 @@ export const MyPageScreen: FC<Props> = ({navigation}) => {
             </ProfileDescription>
           </ProfileSection>
           <TabSection>
-            <SmallButton
-              btnStyles={[
-                ButtonTheme.whiteBGpurpleSD.btnStyle,
-                {
-                  minWidth: ScreenWidth * 0.23,
-                  height: 58,
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0,
-                },
+            <RoundedTab
+              tabInfo={[
+                {title: 'MY CONTENT', key: 'MyContent'},
+                {title: 'FOLLOW', key: 'Follow'},
+                {title: 'HISTORY', key: 'History'},
+                {title: 'PERSONA', key: 'Persona'},
               ]}
-              textStyles={{fontSize: 12, color: colors.black}}
-              onPress={() => {
-                navigation.navigate('Follower');
-              }}>
-              FOLLOWER
-            </SmallButton>
-            <SmallButton
-              btnStyles={[
-                ButtonTheme.whiteBGpurpleSD.btnStyle,
-                {
-                  minWidth: ScreenWidth * 0.25,
-                  height: 58,
-                  borderRadius: 0,
-                },
-              ]}
-              textStyles={{fontSize: 12, color: colors.black}}
-              onPress={() => {
-                navigation.navigate('Following');
-              }}>
-              FOLLOWING
-            </SmallButton>
-            <SmallButton
-              btnStyles={[
-                ButtonTheme.whiteBGpurpleSD.btnStyle,
-                {
-                  minWidth: ScreenWidth * 0.2,
-                  height: 58,
-                  borderRadius: 0,
-                },
-              ]}
-              textStyles={{fontSize: 12, color: colors.black}}
-              onPress={() => {
-                navigation.navigate('History');
-              }}>
-              HISTORY
-            </SmallButton>
-            <SmallButton
-              btnStyles={[
-                ButtonTheme.whiteBGpurpleSD.btnStyle,
-                {
-                  minWidth: ScreenWidth * 0.2,
-                  height: 58,
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                },
-              ]}
-              textStyles={{fontSize: 12, color: colors.black}}
-              onPress={() => {
-                navigation.navigate('Persona');
-              }}>
-              PERSONA
-            </SmallButton>
+            />
           </TabSection>
           <ScrollSection>
             <RepresentingTagSection>
