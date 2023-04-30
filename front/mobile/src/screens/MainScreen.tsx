@@ -15,6 +15,7 @@ import styled from 'styled-components/native';
 
 import TopButton from '../components/Main/TopButton';
 import {DimensionTheme} from '../components/common/shared';
+import {imagePath} from '../utils/imagePath';
 import FeedCategory from '../components/Main/FeedCategory';
 import FeedCard from '../components/common/Cards/FeedCard';
 import {NavigationData} from '../navigation/AppNavigator';
