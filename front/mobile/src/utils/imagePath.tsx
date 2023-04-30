@@ -13,4 +13,7 @@ export const imagePath: {[key: string]: any} = {
   welcome: require('../assets/welcome.png'),
   reportIcon: require('../assets/report.png'),
   cancel: require('../assets/cancel.png'),
+  backBtn: require('../assets/back_btn.png'),
+  dropdownBtn: require('../assets/dropdownIcon.png'),
+  lockIcon: require('../assets/lockIcon.png'),
 };

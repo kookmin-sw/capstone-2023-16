@@ -31,7 +31,6 @@ import {useMutation} from 'react-relay';
 import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
 import {Error} from '../relay/Auth/type';
 
-
 const SignupContainer = styled(Container)`
   width: 100%;
   padding-top: 10px;
@@ -68,36 +67,36 @@ const BottomSection = styled.View`
   justify-contnet: flex-end;
 `;
 
-// const signupMutation = graphql`
-//   mutation SignupScreenMutation(
-//     $email: String!
-//     $password: String!
-//     $username: String!
-//   ) {
-//     register(email: $email, password: $password, username: $username) {
-//       ... on User {
-//         id
-//         email
-//         username
-//       }
+const signupMutation = graphql`
+  mutation SignupScreenMutation(
+    $email: String!
+    $password: String!
+    $username: String!
+  ) {
+    register(email: $email, password: $password, username: $username) {
+      ... on User {
+        id
+        email
+        username
+      }
 
-//       ... on UsernameAlreadyUsedError {
-//         violatedFieldName
-//         violatedFieldValue
-//       }
-//       ... on EmailAlreadyUsedError {
-//         violatedFieldValue
-//         violatedFieldName
-//       }
-//     }
-//   }
-// `;
+      ... on UsernameAlreadyUsedError {
+        violatedFieldName
+        violatedFieldValue
+      }
+      ... on EmailAlreadyUsedError {
+        violatedFieldValue
+        violatedFieldName
+      }
+    }
+  }
+`;
 
 type Props = NavigationData<'Signup'>;
 
 export const SignupScreen: FC<Props> = ({navigation}) => {
-  // const [commit, isInFlight] =
-  //   useMutation<SignupScreenMutation>(signupMutation);
+  const [commit, isInFlight] =
+    useMutation<SignupScreenMutation>(signupMutation);
   // 이용약관 모달
   const [show, setShow] = useState(false);
 

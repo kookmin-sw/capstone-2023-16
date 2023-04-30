@@ -1,18 +1,17 @@
 import React, {FC, useState} from 'react';
+import {SceneMap} from 'react-native-tab-view';
 //@ts-ignore
 import styled from 'styled-components/native';
-import {SceneMap} from 'react-native-tab-view';
-
-import {LikeScreen} from './LikeScreen';
-import {Container, DimensionTheme} from '../../components/common/shared';
-import {StatisticsScreen} from './StatisticsScreen';
-import {routeProps, sceneMapProps} from '../../components/common/Tab/type';
 import {Header} from '../../components/common/Header/Header';
+import {Container, DimensionTheme} from '../../components/common/shared';
+import {Tab} from '../../components/common/Tab/Tab';
+import {routeProps, sceneMapProps} from '../../components/common/Tab/type';
 import RegularText from '../../components/common/Texts/RegularText';
 import {NavigationData} from '../../navigation/AppNavigator';
-import {Tab} from '../../components/common/Tab/Tab';
+import {LikeScreen} from '../MyHistory/LikeScreen';
+import {StatisticsScreen} from '../MyHistory/StatisticsScreen';
 
-const HistoryContainer = styled(Container)`
+const ContentContainer = styled(Container)`
   align-items: flex-start;
 `;
 
@@ -21,32 +20,32 @@ const HeaderSection = styled.View`
   margin-left: ${DimensionTheme.width(11)};
 `;
 
-type Props = NavigationData<'History'>;
+type Props = NavigationData<'MyContent'>;
 
-export const MyHistoryScreen: FC<Props> = ({navigation}) => {
+export const MyContentScreen: FC<Props> = ({navigation}) => {
   const [routes] = useState<routeProps[]>([
-    {key: 'like', title: 'LIKE'},
-    {key: 'bookmark', title: 'BOOKMARK'},
-    {key: 'recent', title: 'RECENT'},
-    {key: 'statistics', title: 'STATISTICS'},
+    {key: 'all', title: 'ALL'},
+    {key: 'free', title: 'FREE'},
+    {key: 'waiterm', title: 'WAITERM'},
+    {key: 'membership', title: 'MEMBERSHIP'},
   ]);
 
   const sceneMaps = SceneMap<sceneMapProps>({
-    like: LikeScreen,
-    bookmark: LikeScreen,
-    recent: LikeScreen,
-    statistics: StatisticsScreen,
+    all: LikeScreen,
+    free: LikeScreen,
+    waiterm: LikeScreen,
+    membership: StatisticsScreen,
   });
 
   return (
-    <HistoryContainer>
+    <ContentContainer>
       <HeaderSection>
         <Header navigation={navigation} />
         <RegularText textStyle={{marginLeft: DimensionTheme.width(20)}}>
-          MY HISTORY
+          OOO님의 CONTENT
         </RegularText>
       </HeaderSection>
       <Tab routes={routes} sceneMap={sceneMaps} />
-    </HistoryContainer>
+    </ContentContainer>
   );
 };

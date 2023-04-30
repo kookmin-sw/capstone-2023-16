@@ -4,16 +4,19 @@ import NavContainer from './navigation/NavContainer';
 
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {Provider} from 'react-redux';
-import {store} from './redux/store';
+import {persistor, store} from './redux/store';
+import {PersistGate} from 'redux-persist/integration/react';
 export default function App() {
   return (
-    <GestureHandlerRootView style={{flex:1}}>
+    <GestureHandlerRootView style={{flex: 1}}>
       <RelayEnvironmentProvider environment={RelayEnvironment}>
         <Provider store={store}>
-          <NavContainer />
+          <PersistGate persistor={persistor}>
+            <NavContainer />
+          </PersistGate>
         </Provider>
       </RelayEnvironmentProvider>
     </GestureHandlerRootView>

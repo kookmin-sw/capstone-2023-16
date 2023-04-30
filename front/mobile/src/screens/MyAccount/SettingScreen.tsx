@@ -8,33 +8,49 @@ import {colors} from '../../components/common/colors';
 import {Container, DimensionTheme} from '../../components/common/shared';
 import RegularText from '../../components/common/Texts/RegularText';
 import * as ButtonTheme from '../../components/common/theme';
-import {NavigationData} from '../../navigation/AuthNavigator';
+import {NavigationData} from '../../navigation/AppNavigator';
 
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
 
-import {useAppDispatch} from '../../redux/hooks';
-import {setUser, setIsLoggedIn} from '../../redux/slices/userSlice';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
+import {logout, selectAuth} from '../../redux/slices/userSlice';
 
-const SettingContainer = styled(Container)``;
+const SettingContainer = styled(Container)`
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: ${DimensionTheme.width(22)};
+  margin-right: ${DimensionTheme.width(22)};
+`;
 
 const AccountSection = styled.View`
   width: ${DimensionTheme.width(348)};
-  height: ${DimensionTheme.height(391)};
+  height: ${DimensionTheme.width(370)};
   border-radius: 20px;
-  align-items: center;
-  padding: 18px;
+  align-items: flex-start;
+  padding: 20px;
+  justify-content: center;
+  margin-top: ${DimensionTheme.width(5)};
+  margin-bottom: ${DimensionTheme.width(29)};
 `;
 
 const HorizontalLine = styled.View`
   height: 1px;
   width: ${DimensionTheme.width(310)}
   background-color: ${colors.borderGray};
-  margin-top: ${DimensionTheme.height(15)};
-  margin-bottom: ${DimensionTheme.height(15)};
+  margin-top: ${DimensionTheme.width(13)};
+  margin-bottom: ${DimensionTheme.width(13)};
 `;
 
-const ServiceSection = styled.View``;
+const ServiceSection = styled.View`
+  heigth: ${DimensionTheme.width(226)};
+  width: ${DimensionTheme.width(348)};
+  border-radius: 20px;
+  align-items: flex-start;
+  padding: 20px;
+  margin-top: ${DimensionTheme.width(5)};
+  justify-content: center;
+`;
 
 const textStyle: StyleProp<TextStyle> = {
   color: colors.black,
@@ -53,10 +69,14 @@ export const SettingScreen: FC<Props> = ({navigation}) => {
   const [commit, isInFlight] = useMutation(logoutMutation);
 
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectAuth);
 
   return (
     <SettingContainer>
-      <RegularText textStyle={{textAlign: 'left'}}>ACCOUNT</RegularText>
+      {/* ACCOUNT SECTION */}
+      <RegularText textStyle={{textAlign: 'left', marginTop: 10}}>
+        ACCOUNT
+      </RegularText>
       <AccountSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
         <TextButton textStyles={textStyle} onPress={() => {}}>
           페르소나 수정
@@ -86,7 +106,8 @@ export const SettingScreen: FC<Props> = ({navigation}) => {
               onCompleted(data) {
                 console.log('logout!!');
                 console.log(data);
-                dispatch(setIsLoggedIn(false));
+                dispatch(logout());
+                console.log(`isUPdate ? ${user}`);
               },
               onError(error) {
                 console.log('@logout error:');
@@ -106,7 +127,25 @@ export const SettingScreen: FC<Props> = ({navigation}) => {
           본계정 탈퇴
         </TextButton>
       </AccountSection>
-      <ServiceSection></ServiceSection>
+      {/* SERVICE SECTION */}
+      <RegularText textStyle={{textAlign: 'left'}}>SERVICE</RegularText>
+      <ServiceSection style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
+        <TextButton textStyles={textStyle} onPress={() => {}}>
+          공지사항
+        </TextButton>
+        <HorizontalLine />
+        <TextButton textStyles={textStyle} onPress={() => {}}>
+          1:1 문의하기
+        </TextButton>
+        <HorizontalLine />
+        <TextButton textStyles={textStyle} onPress={() => {}}>
+          이메일 문의하기
+        </TextButton>
+        <HorizontalLine />
+        <TextButton textStyles={textStyle} onPress={() => {}}>
+          광고 문의하기
+        </TextButton>
+      </ServiceSection>
     </SettingContainer>
   );
 };

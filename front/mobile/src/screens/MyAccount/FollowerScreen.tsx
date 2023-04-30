@@ -28,13 +28,13 @@ const FollowingCardSection = styled.View`
   margin-top: 80px;
 `;
 
-type Props = NavigationData<'Following'>;
+type Props = NavigationData<'Follower'>;
 
-export const FollowingScreen: FC<Props> = ({navigation}) => {
+export const FollowerScreen: FC<Props> = ({navigation}) => {
   return (
     <FollowingContainer>
       <TopSection>
-        <RegularText textStyle={{marginRight: 9}}>FOLLOWING</RegularText>
+        <RegularText textStyle={{marginRight: 9}}>FOLLOWER</RegularText>
         <SmallText
           textStyle={{
             marginTop: Platform.OS === 'ios' ? 7 : 3,
@@ -43,7 +43,7 @@ export const FollowingScreen: FC<Props> = ({navigation}) => {
           {FollowingData.length}명
         </SmallText>
       </TopSection>
-      <SearchInput viewStyle={{marginLeft: 20}} placeholder="팔로잉 검색" />
+      <SearchInput viewStyle={{marginLeft: 20}} placeholder="팔로워 검색" />
       <FollowingCardSection>
         <CardSection data={FollowingData} />
       </FollowingCardSection>

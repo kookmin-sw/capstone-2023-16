@@ -2,6 +2,8 @@ import React, {FC, useState} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
 
+import {useNavigation, useRoute} from '@react-navigation/native';
+
 import {DimensionTheme} from '../common/shared';
 import * as ButtonTheme from '../common/theme';
 import {colors} from '../common/colors';
@@ -12,13 +14,14 @@ import {TouchableOpacity, Image} from 'react-native';
 import {imagePath} from '../../utils/imagePath';
 import {BottomSheet} from '../common/BottomSheet/BottomSheet';
 import {BottomSheetContent} from '../common/BottomSheet/BottomSheetContent';
+import {BottomSheetPersona} from '../common/BottomSheet/BottomSheetPersona';
 
 const CardContainer = styled.View`
   height: ${DimensionTheme.height(83)};
   width: ${DimensionTheme.width(330)};
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   border-radius: 18px;
   margin-bottom: 15px;
   padding: 17px;
@@ -35,53 +38,75 @@ const ProfileInfo = styled.View`
   margin-left: 10px;
 `;
 
+const RightSection = styled.View`
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  right: ${DimensionTheme.width(30)};
+`;
+
 const CardItem: FC<CardProps> = props => {
+  const route = useRoute();
+  const navigation = useNavigation();
+
+  // console.log(route);
+  // console.log(navigation.getState());
+  // console.log(props.id);
+  // console.log(props.id);
   const [modalVisible, setModalVisible] = useState(false);
 
   const pressButton = () => {
     setModalVisible(true);
   };
 
+  const bottomSheetType: {[key: string]: JSX.Element} = {
+    Persona: <BottomSheetPersona />,
+    Following: <BottomSheetContent />,
+    Follower: <BottomSheetContent />,
+  };
+
   return (
     <CardContainer style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
-      <ProfileImage source={props.profile} />
+      <ProfileImage source={imagePath.avatar} />
       <ProfileInfo>
         <SmallText
           textStyle={{
             color: colors.black,
             fontSize: DimensionTheme.fontSize(15),
           }}>
-          {props.username}
+          {props.nickname}
         </SmallText>
-        <SmallText>{props.email}</SmallText>
       </ProfileInfo>
-      <SmallButton
-        btnStyles={[
-          ButtonTheme.whiteBGpurpleSD.btnStyle,
-          {
-            width: DimensionTheme.width(53),
-            height: DimensionTheme.height(30),
-            marginLeft: DimensionTheme.width(105),
-            backgroundColor: props.isFollow ? colors.white : colors.purplelight,
-            borderRadius: 8,
-          },
-        ]}
-        textStyles={{
-          fontSize: DimensionTheme.fontSize(12),
-          color: colors.black,
-        }}
-        onPress={() => {}}>
-        {props.isFollow ? '팔로잉' : '팔로우'}
-      </SmallButton>
-      <TouchableOpacity
-        style={{marginLeft: DimensionTheme.width(12)}}
-        onPress={pressButton}>
-        <Image source={imagePath.moreIcon} />
-      </TouchableOpacity>
+      <RightSection>
+        <SmallButton
+          btnStyles={[
+            ButtonTheme.whiteBGpurpleSD.btnStyle,
+            {
+              width: DimensionTheme.width(53),
+              height: DimensionTheme.height(30),
+              // marginLeft: DimensionTheme.width(105),
+              backgroundColor: false ? colors.white : colors.purplelight,
+              borderRadius: 8,
+            },
+          ]}
+          textStyles={{
+            fontSize: DimensionTheme.fontSize(12),
+            color: colors.black,
+          }}
+          onPress={() => {}}>
+          {false ? '팔로잉' : '팔로우'}
+        </SmallButton>
+        <TouchableOpacity
+          style={{marginLeft: DimensionTheme.width(12)}}
+          onPress={pressButton}>
+          <Image source={imagePath.moreIcon} />
+        </TouchableOpacity>
+      </RightSection>
+
       <BottomSheet
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}>
-        <BottomSheetContent />
+        {bottomSheetType[route.name]}
       </BottomSheet>
     </CardContainer>
   );
