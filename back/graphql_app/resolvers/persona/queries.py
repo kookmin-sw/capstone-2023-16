@@ -2,8 +2,9 @@ from typing import Iterable, cast, Optional
 
 from strawberry.types import Info
 from strawberry_django_plus import gql
+from strawberry_django_plus.relay import GlobalID
 
-from graphql_app.domain.persona.core import get_personas
+from graphql_app.domain.persona.core import get_personas, get_persona
 from graphql_app.resolvers.decorators import requires_auth
 from graphql_app.resolvers.helpers import DatetimeBetween
 from graphql_app.resolvers.model_types import Persona
@@ -48,3 +49,13 @@ class Query:
                    gender_filter, is_certified_filter, job_filter)
         personas = get_personas(sorting_opt, filters)
         return cast(Iterable[Persona], personas)
+
+    @gql.field
+    def get_public_persona(self, info: Info, persona_id: GlobalID) -> Persona:
+        """
+        페르소나 한 건 조회 (Public한 정보만 노출)
+        """
+        persona_id: int = int(persona_id.node_id)
+        persona = get_persona(persona_id)
+
+        return persona
