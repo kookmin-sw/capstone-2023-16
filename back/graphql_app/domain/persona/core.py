@@ -142,3 +142,7 @@ def get_bookmarks(info: Info) -> QuerySet[Bookmark]:
     persona = info.context.request.persona
     bookmarks = Bookmark.objects.filter(persona=persona)
     return bookmarks
+
+
+def get_persona(persona_id: int) -> Persona:
+    return Persona.objects.get(id=persona_id)
