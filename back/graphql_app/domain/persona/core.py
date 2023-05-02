@@ -16,7 +16,7 @@ from graphql_app.resolvers.utils import parse_global_id
 
 
 def create_persona(owner: User, nickname: str, introduction: str, is_public: Optional[bool] = True,
-                   gender: Optional[Gender] = None, age: Optional[int] = None, job: Optional[Job] = None,
+                   gender: Optional[Gender] = None, birth_year: Optional[int] = None, job: Optional[Job] = None,
                    preferred_tag_bodies: Optional[List[str]] = [],
                    preferred_category_ids: Optional[List[int]] = []) -> Persona:
     """
@@ -26,7 +26,7 @@ def create_persona(owner: User, nickname: str, introduction: str, is_public: Opt
     :param introduction: 새 페르소나 소개글
     :param is_public: 새 페르소나 공개 여부
     :param gender: 새 페르소나 성별 (Optional)
-    :param age: 새 페르소나 나이 (Optional)
+    :param birth_year: 새 페르소나 생년 (Optional)
     :param job: 새 페르소나 직업 (Optional)
     :param preferred_tag_bodies: 새 페르소나의 선호 태그 body 목록
     :param preferred_category_ids: 새 페르소나의 선호 카테고리의 GlobalID 목록
@@ -50,7 +50,7 @@ def create_persona(owner: User, nickname: str, introduction: str, is_public: Opt
     preferred_tags = list(map(lambda p: p[0], Tag.insert_tags(preferred_tag_bodies)))
 
     new_persona = Persona.objects.create(owner=owner, nickname=nickname, introduction=introduction,
-                                         is_public=is_public, gender=gender, age=age, job=job)
+                                         is_public=is_public, gender=gender, birth_year=birth_year, job=job)
     new_persona.preferred_categories.add(*preferred_categories)
     new_persona.preferred_tags.add(*preferred_tags)
 

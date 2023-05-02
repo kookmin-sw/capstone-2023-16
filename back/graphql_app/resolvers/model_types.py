@@ -106,7 +106,7 @@ class Persona(relay.Node):
     introduction: str = strawberry.field(description='소개')
     is_public: bool = strawberry.field(description='공개 여부')
     gender: Optional[Gender] = strawberry.field(description='성별')
-    age: Optional[int] = strawberry.field(description='연령')
+    birth_year: Optional[int] = strawberry.field(description='생년')
     job: Optional[str] = strawberry.field(description='직업')
     is_certified: bool = strawberry.field(description='공식 인증 여부')
     preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
