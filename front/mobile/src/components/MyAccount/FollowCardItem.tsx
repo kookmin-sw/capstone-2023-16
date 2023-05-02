@@ -10,13 +10,15 @@ import {colors} from '../common/colors';
 import {CardProps} from './types';
 import SmallText from '../common/Texts/SmallText';
 import SmallButton from '../common/Buttons/SmallButton';
-import {TouchableOpacity, Image} from 'react-native';
+import {TouchableOpacity, Image, Alert} from 'react-native';
 import {imagePath} from '../../utils/imagePath';
 import {BottomSheet} from '../common/BottomSheet/BottomSheet';
 import {BottomSheetContent} from '../common/BottomSheet/BottomSheetContent';
 import {BottomSheetPersona} from '../common/BottomSheet/BottomSheetPersona';
+import {useDispatch} from 'react-redux';
+import {setPersona} from '../../redux/slices/userSlice';
 
-const CardContainer = styled.View`
+const CardContainer = styled.TouchableOpacity`
   height: ${DimensionTheme.height(83)};
   width: ${DimensionTheme.width(330)};
   flex-direction: row;
@@ -48,8 +50,9 @@ const RightSection = styled.View`
 const CardItem: FC<CardProps> = props => {
   const route = useRoute();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  // console.log(route);
+  console.log(route);
   // console.log(navigation.getState());
   // console.log(props.id);
   // console.log(props.id);
@@ -61,12 +64,34 @@ const CardItem: FC<CardProps> = props => {
 
   const bottomSheetType: {[key: string]: JSX.Element} = {
     Persona: <BottomSheetPersona />,
-    Following: <BottomSheetContent />,
-    Follower: <BottomSheetContent />,
+    Follow: <BottomSheetContent />,
   };
 
+  const PersonaChange = () => {
+    Alert.alert('페르소나 변경', `${props.nickname}으로 변경하시겠습니까?`, [
+      {
+        text: 'Yes',
+        onPress: () => {
+          dispatch(setPersona({id: props.id, nickname: props.nickname}));
+          navigation.navigate('MyPage');
+        },
+      },
+      {text: 'No', onPress: () => console.log('keep')},
+    ]);
+  };
+
+  const PersonaPage = () => {
+    navigation.navigate('MyPage');
+  };
+
+  const functinoHandler = {
+    Persona: PersonaChange,
+    Follow: PersonaPage,
+  };
   return (
-    <CardContainer style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}>
+    <CardContainer
+      style={[ButtonTheme.whiteBGpurpleSD.btnStyle]}
+      onPress={() => functinoHandler[route.name]()}>
       <ProfileImage source={imagePath.avatar} />
       <ProfileInfo>
         <SmallText
