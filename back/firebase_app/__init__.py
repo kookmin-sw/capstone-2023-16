@@ -1,13 +1,14 @@
 import os
+import base64
 
 import firebase_admin
-from firebase_admin import credentials, messaging
+from firebase_admin import credentials
 
 _cred = {
     "type": "service_account",
     "project_id": "postona-6bfc9",
     "private_key_id": os.environ.get('FIREBASE_PRIVATE_KEY_ID'),
-    "private_key": os.environ.get('FIREBASE_PRIVATE_KEY'),
+    "private_key": base64.decode(os.environ.get('FIREBASE_PRIVATE_KEY')),
     "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
     "client_id": os.environ.get('FIREBASE_CLIENT_ID'),
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
