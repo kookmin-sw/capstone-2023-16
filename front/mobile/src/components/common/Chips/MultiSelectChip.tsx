@@ -21,18 +21,15 @@ type ChipsProps = {
 };
 
 export const MultiSelectChip: FC<ChipsProps> = props => {
-  const inisialState = {
-    list: props.data,
-  };
-  const [state, dispatch] = useReducer(reducer, inisialState);
+  const [state, dispatch] = useReducer(reducer, props);
 
   const selectItem = (item, index) => {
-    state.list[index].flag = !state.list[index].flag;
+    state.data[index].flag = !state.data[index].flag;
     dispatch({
       type: 'ON_SELECT',
-      payload: state.list,
+      payload: state.data,
     });
-    state.list.map(item => {
+    state.data.map(item => {
       item.flag ? console.log(item.title) : null;
     });
   };
@@ -44,7 +41,8 @@ export const MultiSelectChip: FC<ChipsProps> = props => {
           flexWrap: 'wrap',
           flexDirection: 'row',
         }}>
-        {state.list.map((item, index) => {
+        {state.data.map((item, index) => {
+          console.log(index, item);
           return (
             <SmallButton
               key={index}
@@ -63,7 +61,7 @@ export const MultiSelectChip: FC<ChipsProps> = props => {
               ]}
               textStyles={{color: colors.black}}
               onPress={() => selectItem(item, index)}>
-              #{item.title}
+              #{item.body}
             </SmallButton>
           );
         })}

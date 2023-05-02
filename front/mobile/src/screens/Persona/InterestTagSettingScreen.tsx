@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
 import {Platform} from 'react-native';
@@ -17,6 +17,9 @@ import {colors} from '../../components/common/colors';
 import {imagePath} from '../../utils/imagePath';
 
 import {tagData} from '../../constants/tag';
+
+import {useLazyLoadQuery} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
 
 const InterestTagSettingContainer = styled(Container)`
   width: 100%;
@@ -44,7 +47,37 @@ const ButtonSection = styled.View`
   flex: 1;
 `;
 
+const getAllTags = graphql`
+  query InterestTagSettingScreenQuery {
+    getAllTags(sortingOpt: {direction: ASC, sortBy: ID}, first: 20) {
+      edges {
+        node {
+          body
+          id
+        }
+      }
+    }
+  }
+`;
+
 export const InterestTagSettingScreen: FC = () => {
+  const [tags, setTags] = useState([]);
+
+  const data = useLazyLoadQuery(
+    getAllTags,
+    {},
+    {fetchPolicy: 'store-or-network'},
+  );
+
+  useEffect(() => {
+    setTags([]);
+    console.log('##interesttag');
+    console.log(data.getAllTags);
+    data.getAllTags.edges.map(item => {
+      setTags(prev => [...prev, {...item.node, flag: false}]);
+    });
+  }, [data]);
+
   return (
     <InterestTagSettingContainer>
       <KeyboardAvoidingViewContainer>
@@ -79,7 +112,7 @@ export const InterestTagSettingScreen: FC = () => {
             />
           </SearchSection>
           <TagSection>
-            <MultiSelectChip data={tagData} />
+            <MultiSelectChip data={tags} />
           </TagSection>
           <ButtonSection>
             <RegularButton
