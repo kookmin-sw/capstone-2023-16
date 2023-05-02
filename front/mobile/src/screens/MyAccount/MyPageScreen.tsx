@@ -21,7 +21,7 @@ import {graphql} from 'babel-plugin-relay/macro';
 import {TagCard} from '../../components/common/Cards/TagCard';
 import {StatisticsCard} from '../../components/common/Cards/StatisticsCard';
 import {useAppSelector} from '../../redux/hooks';
-import {selectUser} from '../../redux/slices/userSlice';
+import {selectUser, selectPersona} from '../../redux/slices/userSlice';
 import ImageButton from '../../components/common/Buttons/ImageButton';
 import {RoundedTab} from '../../components/common/Tab/RoundedTab';
 
@@ -102,7 +102,7 @@ const StatisticsSection = styled.View`
 `;
 
 const getOwnPersonaQuery = graphql`
-  query MyPageScreenQuery($nickname: String!) {
+  query MyPageScreenQuery($nickname: String!, $personaId: GlobalID!) {
     getOwnPersonas(
       nicknameFilter: {token: $nickname}
       sortingOpt: {sortBy: ID}
@@ -125,6 +125,12 @@ const getOwnPersonaQuery = graphql`
         }
       }
     }
+    getPublicPersona(personaId: $personaId) {
+      nickname
+      job
+      id
+      introduction
+    }
   }
 `;
 
@@ -132,17 +138,24 @@ type Props = NavigationData<'MyPage'>;
 
 export const MyPageScreen: FC<Props> = ({navigation, route}) => {
   const user = useAppSelector(selectUser);
-  const nickname = 'testpersona';
+  const persona = useAppSelector(selectPersona);
+  const nickname = persona.nickname;
+  const personaId = persona.id;
+
+  console.log('persona : ');
+  console.log(persona);
+
   const data = useLazyLoadQuery(
     getOwnPersonaQuery,
-    {nickname},
+    {nickname, personaId},
     {fetchPolicy: 'store-or-network'},
   );
 
   useEffect(() => {
-    // console.log(route.params.name);
+    console.log(route.params.isMine);
+    console.log(route.params.nickname);
     console.log('###mypage');
-    console.log(data.getOwnPersonas.edges[0].node);
+    console.log(data);
     console.log(`user : ${JSON.stringify(user)}`);
   }, [data]);
 
@@ -194,36 +207,59 @@ export const MyPageScreen: FC<Props> = ({navigation, route}) => {
             </SmallText>
             <ProfileDescription>
               <SmallText textStyle={{color: colors.black}}>
-                {data.getOwnPersonas.edges[0].node.introduction}
+                {route.params.isMine
+                  ? data.getOwnPersonas.edges[0].node.introduction
+                  : data.getPublicPersona.introduction}
               </SmallText>
             </ProfileDescription>
           </ProfileSection>
           <TabSection>
             <RoundedTab
-              tabInfo={[
-                {title: 'MY CONTENT', key: 'MyContent'},
-                {title: 'FOLLOW', key: 'Follow'},
-                {title: 'HISTORY', key: 'History'},
-                {title: 'PERSONA', key: 'Persona'},
-              ]}
+              tabInfo={
+                route.params.isMine
+                  ? [
+                      {title: 'MY CONTENT', key: 'MyContent'},
+                      {title: 'FOLLOW', key: 'Follow'},
+                      {title: 'HISTORY', key: 'History'},
+                      {title: 'PERSONA', key: 'Persona'},
+                    ]
+                  : [
+                      {title: 'CONTENT', key: 'MyContent'},
+                      {title: 'FOLLOW', key: 'Follow'},
+                      {title: 'MEMBERSHIP', key: 'History'},
+                      {title: 'DONATE', key: 'Persona'},
+                    ]
+              }
             />
           </TabSection>
           <ScrollSection>
             <RepresentingTagSection>
               <TagCard
-                tagTitle={`${data.getOwnPersonas.edges[0].node.nickname}님을 소개하는 태그`}
+                tagTitle={`${
+                  route.params.isMine
+                    ? data.getOwnPersonas.edges[0].node.nickname
+                    : data.getPublicPersona.nickname
+                }님을 소개하는 태그`}
                 tags={personalTagData}
               />
             </RepresentingTagSection>
             <IntersetTagSection>
               <TagCard
-                tagTitle={`${data.getOwnPersonas.edges[0].node.nickname}님이 관심있는 태그`}
+                tagTitle={`${
+                  route.params.isMine
+                    ? data.getOwnPersonas.edges[0].node.nickname
+                    : data.getPublicPersona.nickname
+                }님이 관심있는 태그`}
                 tags={personalTagData}
               />
             </IntersetTagSection>
             <StatisticsSection>
               <StatisticsCard
-                statisticsTitle={`${data.getOwnPersonas.edges[0].node.nickname}님이 읽은 일일 피드 수`}
+                statisticsTitle={`${
+                  route.params.isMine
+                    ? data.getOwnPersonas.edges[0].node.nickname
+                    : data.getPublicPersona.nickname
+                }님이 읽은 일일 피드 수`}
               />
             </StatisticsSection>
           </ScrollSection>
