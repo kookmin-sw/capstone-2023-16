@@ -35,7 +35,6 @@ autopep8 = "^2.0.2"
 django-debug-toolbar = "^3.8.1"
 sentry-sdk = "^1.18.0"
 django-choices-field = "^2.1"
-django-crontab = "^0.7.1"
 
 [tool.autopep8]
 max_line_length = 120
