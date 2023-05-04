@@ -21,12 +21,13 @@ import {ChallengeCreateScreen} from '../screens/Challenge/ChallengeCreateScreen'
 import {ChallengeDetailScreen} from '../screens/Challenge/ChallengeDetailScreen';
 import {MyContentScreen} from '../screens/MyContent/MyContentScreen';
 import {FollowScreen} from '../screens/MyAccount/FollowScreen';
+import {PersonaInfo, PersonaPage} from './type';
 
 export type ParamList = {
   Main: undefined;
   BaseInfo: undefined;
-  InterestTagSetting: undefined;
-  MyPage: undefined;
+  InterestTagSetting: {personaInfo: PersonaInfo};
+  MyPage: {personaPage: PersonaPage};
   Follow: undefined;
   Following: undefined;
   Follower: undefined;
@@ -45,14 +46,19 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      <StackNavigator.Screen
+      {/* <StackNavigator.Screen
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
+        initialParams={{
+          isMine: true,
+          nickname: 'testpersona',
+          id: 'UGVyc29uYToxMg==',
+        }}
         options={({navigation}) => ({
           headerShown: false,
           headerShadowVisible: false,
@@ -63,6 +69,11 @@ const AppNavigator = () => {
             fontSize: 28,
           },
         })}
+      />
+      <StackNavigator.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={{headerShown: true, title: 'SETTING'}}
       />
       <StackNavigator.Screen
         name="BaseInfo"
@@ -123,11 +134,6 @@ const AppNavigator = () => {
         options={{
           headerShown: false,
         }}
-      />
-      <StackNavigator.Screen
-        name="Setting"
-        component={SettingScreen}
-        options={{headerShown: true, title: 'SETTING'}}
       />
       <StackNavigator.Screen
         name="Challenge"

@@ -22,3 +22,9 @@ export type PersonaInfo = {
   isPublic: boolean;
   job: Job;
 };
+
+export type PersonaPage = {
+  isMine: boolean;
+  nickname: string;
+  id: string;
+};

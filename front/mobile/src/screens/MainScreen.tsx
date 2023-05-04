@@ -21,6 +21,8 @@ import {NavigationData} from '../navigation/AppNavigator';
 import {useLazyLoadQuery} from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
 import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
+import {selectPersona} from '../redux/slices/userSlice';
+import {useAppSelector} from '../redux/hooks';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -74,6 +76,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
     {},
     {fetchPolicy: 'store-or-network'},
   );
+  const persona = useAppSelector(selectPersona);
 
   useEffect(() => {
     console.log('##main');
@@ -252,7 +255,11 @@ const MainScreen: FC<Props> = ({navigation}) => {
             width={28}
             height={28}
             onPress={() => {
-              navigation.navigate('MyPage');
+              navigation.navigate('MyPage', {
+                isMine: true,
+                nickname: persona.nickname,
+                id: persona.id,
+              });
             }}
             img={String(require('../assets/profileImg.png'))}
           />
