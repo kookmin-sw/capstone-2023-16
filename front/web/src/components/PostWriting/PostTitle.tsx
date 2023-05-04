@@ -29,7 +29,7 @@ const TitleInput = styled.input<{ deviceType: string }>`
   margin: ${props => props.deviceType === 'desktop' ? '14px' : props.deviceType === 'tablet' ? '8px' : '5px'} 0;
   padding: ${props => props.deviceType === 'mobile' ? '5px' : '10px'};
   background-color: transparent;
-  box-shadow: 0px 0.2778vw 0px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 0.2778vw 0px rgba(0, 0, 0, 0.12);
   border: 0;
   font-size: ${props => props.deviceType === 'mobile' ? '24px' : '40px'};
   align-self: start;
