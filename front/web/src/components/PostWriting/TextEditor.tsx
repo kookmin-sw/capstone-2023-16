@@ -3,7 +3,8 @@ import { Editor } from '@tinymce/tinymce-react';
 import textpatterns from './properties/textpattern';
 import { useDispatch } from 'react-redux';
 import { partialChange } from '../../redux/slices/newPostSlice';
-
+import codesample_languages from './properties/codesample_languages';
+import './properties/font.css';
 const TINYMCE_API_KEY = process.env.REACT_APP_TINYMCE_API_KEY;
 
 type TextEditorProps = {
@@ -25,7 +26,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
     // 추후에 s3로 전송?
     //setFormData(formData => { formData.append('file', blobInfo.blob(), blobInfo.filename()); return formData; });
     return new Promise<string>(res => setTimeout(() => {
-      res('hi!');
+      res(blobInfo);
     }, 200));
   };
 
@@ -37,20 +38,39 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
         deprecation_warnings: false,
         width: '100%',
         height: 700,
-        plugins: ['anchor autolink charmap preview textpattern codesample emoticons image imagetools link lists searchreplace checklist casechange export formatpainter pageembed linkchecker permanentpen powerpaste quickbars'],
-        // 추후에 추가할 plugins:  autosave
-        toolbar: ['undo redo | blocks formatselect forecolor fontsizeselect | bold italic underline strikethrough | link image | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | preview removeformat'],
+        plugins: [
+          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+          'anchor', 'codesample', 'fullscreen', 'emoticons',
+          'insertdatetime', 'media', 'save', 'visualchars', 'quickbars', 'print', 'autosave'
+        ],
+        toolbar1: 'undo redo blocks fontfamily fontsize | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify lineheight| link emoticons blockquote codesample image |',
+        toolbar2: 'bullist numlist | outdent indent | fullscreen restoredraft save print | help',
+        toolbar_mode: 'wrap',
+        save_onsavecallback: () => {
+          console.log('Saved');
+        },
+        block_formats: 'Paragraph=p; 제목=h1; 부제목=h2; 본문1=h3; 본문2=h4; 본문3=h5;',
+        file_picker_types: 'image media',
+        images_file_types: 'jpg, gif, png, svg, webp',
+        image_caption: true,
+        codesample_content_css: "http://ourcodeworld.com/material/css/prism.css",
+        link_default_target: '_blank',
+        codesample_languages: codesample_languages,
+        a11y_advanced_options: true,
         language: 'ko_KR',
         textpattern_patterns: textpatterns, 
         block_unsupported_drop: false,
         quickbars_insert_toolbar: false,
-        quickbars_selection_toolbar: 'bold italic | formatselect | quicklink blockquote',
+        quickbars_selection_toolbar: 'bold italic forecolor backcolor | quicklink blockquote',
         quickbars_image_toolbar: 'alignleft aligncenter alignright | rotateleft rotateright | imageoptions',  
-        content_style: 'body { font-family:"Noto Sans KR", serif; font-size:24px }',
+        content_style: "@import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);",
+        content_css: 'default',
         menubar: 'edit format',
         statusbar: false,
+        automatic_uploads: true,
         images_upload_handler: handlerImageuUpload,
-        font_css: './properies/font_css.css',
+        font_css: 'font.css',
+        font_family_formats: 'Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats; 나눔명조=Nanum Myeongjo; serif=Noto Serif KR',
         /*
          임시저장 기능 good, but 나중에 회원정보를 식별하여 받아올 수 있게 되면 구현
         autosave_interval: '30s', // 30초마다 임시저장, 로컬 스토리지에 tinymce-autosave-/post/edit/{postId}-tiny-react_{id}-draft 로 저장됨.
