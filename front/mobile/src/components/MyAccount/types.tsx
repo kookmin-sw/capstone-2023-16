@@ -1,5 +1,5 @@
 export interface CardProps {
-  id: number;
+  id: string;
   // username: string;
   nickname: string;
   // email: string;

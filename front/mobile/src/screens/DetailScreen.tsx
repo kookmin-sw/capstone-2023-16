@@ -126,6 +126,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
               feed_id={props.feed_id}
               title={props.title}
               author={props.author}
+              author_id={props.author_id}
               author_img={props.author_img}
             />
             <Text style={style.Text}>{props.content}</Text>
