@@ -20,6 +20,7 @@ import {tagData} from '../../constants/tag';
 
 import {useLazyLoadQuery} from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
+import {NavigationData} from '../../navigation/AppNavigator';
 
 const InterestTagSettingContainer = styled(Container)`
   width: 100%;
@@ -59,8 +60,13 @@ const getAllTags = graphql`
     }
   }
 `;
+type Props = NavigationData<'InterestTagSetting'>;
 
-export const InterestTagSettingScreen: FC = () => {
+export const InterestTagSettingScreen: FC<Props> = ({
+  navigation,
+  route,
+}: Props) => {
+  console.log(route.params);
   const [tags, setTags] = useState([]);
 
   const data = useLazyLoadQuery(
