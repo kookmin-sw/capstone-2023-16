@@ -21,7 +21,6 @@ import {FollowingData} from '../../constants/follow';
 import {graphql} from 'babel-plugin-relay/macro';
 import {useLazyLoadQuery} from 'react-relay';
 import SmallButton from '../../components/common/Buttons/SmallButton';
-import ImageButton from '../../components/common/Buttons/ImageButton';
 import {imagePath} from '../../utils/imagePath';
 
 const FollowingContainer = styled(Container)`
