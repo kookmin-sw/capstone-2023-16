@@ -3,27 +3,50 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import PersonaCard from "../commons/PersonaCard";
-import dummy from './dummy/personaList';
 import { connect } from '../../redux/slices/personaSlice';
-import { PersonaListType, Root } from "./dummy/personalListType";
+import { Root } from "./dummy/personalListType";
+import PersonaApiClient from "../../api/Persona";
+import { useEffect } from "react";
+import useThrottle from "../../hooks/useThrottle";
+
+const AVERAGE_LOAD = 20;
 
 const PersonaList = () => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  const { data, hasNext, loadNext, isLoadingNext } = PersonaApiClient.personaListGet();
 
-  const personaList: PersonaListType = JSON.parse(dummy);
+  // 스크롤 이벤트 핸들러
+  const handleScroll = () => { 
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
 
+    if (scrollTop + 500 >= scrollHeight - clientHeight) {
+      if(!isLoadingNext && hasNext) loadNext(AVERAGE_LOAD);
+    }
+  }
+
+  const throttle = useThrottle(handleScroll); // 스크롤 이벤트 핸들러에 대한 쓰로틀링 적용
+
+  useEffect(() => {
+      window.addEventListener("scroll", throttle, {capture: true});
+    return () => {
+      window.removeEventListener("scroll", throttle);
+    };
+  }, []);
+
+  
   // 페르소나 클릭 이벤트 핸들러
   const onClick = (n: any) => {
     dispatch(connect(n));
     navigate('/posts');
   };
 
-  return <PersonaListWrapper deviceType={deviceType}>
-    {personaList.map((p:Root) => (
-      <PersonaCardWrapper deviceType={deviceType} key={p.node.id} onClick={() => onClick(p.node)}>
-        <PersonaCard src='' nickname={p.node.nickname} deviceType={deviceType} usageType='choice' />
+  return <PersonaListWrapper id='scroll' deviceType={deviceType}>
+    {data?.getOwnPersonas?.edges.map((e:Root) => (
+      <PersonaCardWrapper deviceType={deviceType} key={e.node.id} onClick={() => onClick(e.node)}>
+        <PersonaCard src='' nickname={e.node.nickname} deviceType={deviceType} usageType='choice' />
       </PersonaCardWrapper>))}
   </PersonaListWrapper>
 };

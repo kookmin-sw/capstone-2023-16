@@ -9,10 +9,10 @@ import { useEffect } from 'react';
 const PersonaChoice = () => {
     const deviceType = useDeviceType();
     const loggedInUser = useSelector((state: RootState) => state.user);
-
+    
     useEffect(() => {
         console.log(loggedInUser);
-    })
+    }, [])
 
     return (<ContentLayout>            
             <PersonaChoiceContainer>
