@@ -79,6 +79,11 @@ class Query:
                                  aws_secret_access_key=os.environ.get("S3_SECRET_ACCESS_KEY"))
         response = s3_client.generate_presigned_post("postona-images",
                                                      image_name,
+                                                     Fields={'acl': 'public-read'},
+                                                     Conditions=[
+                                                         {"acl": "public-read"},
+                                                         ["starts-with", "$Content-Type", "image/"]
+                                                     ],
                                                      ExpiresIn=30 * 60)
 
         return ImageUploadUrl(**response)
