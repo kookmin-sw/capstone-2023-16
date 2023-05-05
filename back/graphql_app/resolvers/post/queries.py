@@ -1,5 +1,7 @@
+import os
 from typing import Optional, Iterable, cast
 
+import boto3
 from strawberry.types import Info
 from strawberry_django_plus import gql
 from strawberry_django_plus.relay import GlobalID
@@ -11,6 +13,8 @@ from graphql_app.resolvers.helpers import DatetimeBetween
 from graphql_app.resolvers.model_types import Post
 from graphql_app.resolvers.post.types import PostSortingOption, AuthorFilter, TitleFilter, CategoryFilter, TagFilter, \
     IsPublicFilter, IsDeletedFilter
+
+from back.graphql_app.types.post.post import ImageUploadUrl
 
 
 @gql.type
@@ -66,3 +70,15 @@ class Query:
         filters = (created_at_filter, author_filter, title_filter, category_filter, tags_filter)
         posts = get_posts(sorting_opt, filters)
         return cast(Iterable[Post], posts)
+
+    @gql.field
+    def get_image_upload_url(self, info: Info, image_name: str) -> ImageUploadUrl:
+        s3_client = boto3.client('s3',
+                                 region_name="ap-northeast-2",
+                                 aws_access_key_id=os.environ.get("S3_ACCESS_KEY"),
+                                 aws_secret_access_key=os.environ.get("S3_SECRET_ACCESS_KEY"))
+        response = s3_client.generate_presigned_post("postona-images",
+                                                     image_name,
+                                                     ExpiresIn=30 * 60)
+
+        return ImageUploadUrl(**response)
