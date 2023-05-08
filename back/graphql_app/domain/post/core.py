@@ -134,6 +134,53 @@ def create_post(author_id: int, requested_user_id: int, title: str, content: str
         return new_post
 
 
+def update_post(post_id: int, author_id: int, requested_user_id: int, title: str, content: str, category_id: int,
+              paid_content: Optional[str] = None, tag_bodies: Optional[List[str]] = []) -> Post:
+    """
+    :param post_id: 게시물 ID
+    :param author_id: 게시물 생성을 요청한 페르소나의 ID
+    :param requested_user_id: 게시물 생성을 요청한 사용자의 ID
+    :param title: 게시물 제목
+    :param content: 게시물 본문
+    :param paid_content: 게시물 본문 (유료) (Optional)
+    :param category_id: 소속 카테고리의 ID
+    :param tag_bodies: 태그의 body 값이 담긴 list
+    :return: 수정된 Post
+    :raises PersonaNotFoundException: 요청된 페르소나를 찾을 수 없거나, 요청한 사용자가 페르소나의 소유자가 아닌 경우
+    :raises CategoryNotFoundException: category_id를 가지는 카테고리를 찾을 수 없는 경우
+    :raises PostNotFoundException: post_id를 가지는 게시물을 찾을 수 없는 경우
+    """
+
+    try:
+        post_to_edit: Post = Post.objects.get(id=post_id)
+        author: Persona = Persona.objects.get(id=author_id)
+        category: Category = Category.objects.get(id=category_id)
+
+        if author.owner.id != requested_user_id:
+            raise Persona.DoesNotExist
+    except Persona.DoesNotExist:
+        raise PersonaNotFoundException
+    except Category.DoesNotExist:
+        raise CategoryNotFoundException
+    except Post.DoesNotExist:
+        raise PostNotFoundException
+    else:
+        post_to_edit.author = author
+        post_to_edit.title = title
+        post_to_edit.content = content
+        post_to_edit.paid_content = paid_content
+        post_to_edit.category = category
+        post_to_edit.save()
+
+        # 태그 연결 처리
+        post_to_edit.tags.clear()
+        tag_pairs = Tag.insert_tags(tag_bodies)
+        tags = list(map(lambda p: p[0], tag_pairs))
+        post_to_edit.tags.add(*tags)
+
+        return post_to_edit
+
+
 def get_post(post_id: int) -> Post:
     return Post.objects.get(id=post_id)
 
