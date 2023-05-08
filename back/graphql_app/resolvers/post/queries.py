@@ -14,7 +14,7 @@ from graphql_app.resolvers.model_types import Post
 from graphql_app.resolvers.post.types import PostSortingOption, AuthorFilter, TitleFilter, CategoryFilter, TagFilter, \
     IsPublicFilter, IsDeletedFilter
 
-from back.graphql_app.types.post.post import ImageUploadUrl
+from graphql_app.types.post.post import ImageUploadUrl
 
 
 @gql.type
