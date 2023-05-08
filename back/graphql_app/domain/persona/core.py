@@ -57,6 +57,36 @@ def create_persona(owner: User, nickname: str, introduction: str, is_public: Opt
     return new_persona
 
 
+def update_persona(persona_id: int, owner: User, nickname: str, introduction: str, is_public: bool, gender: str,
+                   age: int, job: str, preferred_tag_bodies: List[str], preferred_category_ids: List[int]) -> Persona:
+    if Persona.objects.filter(nickname=nickname).exists():
+        raise NicknameDupliationException
+
+    persona = Persona.objects.get(id=persona_id, owner=owner)
+
+    # Update persona fields
+    persona.nickname = nickname
+    persona.introduction = introduction
+    persona.is_public = is_public
+    persona.gender = gender
+    persona.age = age
+    persona.job = job
+    persona.save()
+
+    # Update preferred tags
+    persona.preferred_tags.clear()
+    tag_pairs = Tag.insert_tags(preferred_tag_bodies)
+    tags = list(map(lambda p: p[0], tag_pairs))
+    persona.preferred_tags.add(*tags)
+
+    # Update preferred categories
+    persona.preferred_categories.clear()
+    preferred_categories = Category.objects.filter(id__in=preferred_category_ids)
+    persona.preferred_categories.add(*preferred_categories)
+
+    return persona
+
+
 def persona_follow_toggle(requested_user: User, follower_persona: Persona, followee_persona: Persona) -> bool:
     """
     특정 페르소나에 대한 팔로우/언팔로우를 수행하는 함수
