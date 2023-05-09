@@ -8,6 +8,7 @@ import PostWritingPage from './pages/PostWritingPage';
 import BackgroundLayout from './components/commons/BackgroundLayout';
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
+import PersonaCreationPage from './pages/PersonaCreationPage';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path='/post/:postId' element={<PostDetailPage />} />
             <Route path='/post/edit' element={<PostWritingPage />} />
             <Route path='/post/edit/:postId' element={<PostWritingPage />} />
+            <Route path='/create' element={<PersonaCreationPage />} />
         </Routes>
       </BackgroundLayout>
     </RelayEnvironmentProvider>
