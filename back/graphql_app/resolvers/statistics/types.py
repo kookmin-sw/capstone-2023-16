@@ -60,7 +60,7 @@ class PersonaStatistics:
     tag_scores: List[FieldScore] = strawberry.field(description='태그 점수')
     category_scores: List[FieldScore] = strawberry.field(description='카테고리 점수')
     gender_scores: List[FieldScore] = strawberry.field(description='성별 점수')
-    age_scores: List[FieldScore] = strawberry.field(description='연령대 점수')
+    birth_year_scores: List[FieldScore] = strawberry.field(description='생년 점수')
     job_scores: List[FieldScore] = strawberry.field(description='직업 점수')
 
 
