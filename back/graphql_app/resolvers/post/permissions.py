@@ -4,6 +4,7 @@ from strawberry import BasePermission
 from strawberry.types import Info
 
 from graphql_app.domain.post.core import is_eligible_for_paid_content, has_required_tier
+from graphql_app.models import Persona
 from graphql_app.resolvers.errors import CookieContextRequiredError
 from graphql_app.resolvers.utils import parse_global_id
 
@@ -25,8 +26,16 @@ class MembershipTierPermission(BasePermission):
     message = '요구되는 멤버쉽 티어 조건을 만족하지 않습니다.'
 
     def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
-        _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
-        return has_required_tier(persona_id, source)
+        if 'persona_id' not in info.context.request.COOKIES:
+            return False
+        else:
+            _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
+            try:
+                persona = Persona.objects.get(owner=info.context.request.user, id=persona_id)
+            except Persona.DoesNotExist:
+                return has_required_tier(persona_id, source)
+            else:
+                return persona.id == source.author.id
 
 
 class OwnerOnlyPermission(BasePermission):
