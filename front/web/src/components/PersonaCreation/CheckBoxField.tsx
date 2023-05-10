@@ -27,7 +27,6 @@ const Container = styled.div`
 
 `;
 
-
 const FieldLabel = styled.label<{ deviceType: string }>`
   margin-bottom: 10px;
   font-size: ${props => props.deviceType === 'mobile' ? '14px' : '18px'};

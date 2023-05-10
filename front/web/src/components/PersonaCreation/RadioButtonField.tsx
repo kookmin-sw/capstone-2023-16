@@ -12,8 +12,8 @@ const RadioButtonField = ({fieldname, label, elements}: RadioButtonFieldType) =>
   const deviceType = useDeviceType();
 
   return <Container>
-    <FieldLabel deviceType={deviceType}>{label}</FieldLabel>
-    <RadioButtonContainer deviceType={deviceType}>
+    <label className='field__label'>{label}</label>
+    <RadioButtonContainer deviceType={deviceType} className='field__container'>
       {Object.entries(elements)
         .map(e =>
         <div>
@@ -34,30 +34,9 @@ const Container = styled.div`
   
 `;
 
-const FieldLabel = styled.label<{ deviceType: string }>`
-  min-width: 60px;
-  margin-bottom: 10px;
-  font-size: ${props => props.deviceType === 'mobile' ? '16px' : '20px'};
-  font-weight: bold;
-`;
-
 const RadioButtonContainer = styled.div<{ deviceType: string }>`
-  width: ${props=>props.deviceType === 'mobile'? '318px': '464px'};
-  height: ${props => props.deviceType === 'mobile' ? '50px' : '66px'};
   display: flex;
-  background-color: #fff;
-  border: 0;
-  border-radius: 10px;
-  box-shadow: 0px 0.2778vw 2.0833vw 0px rgba(0, 0, 0, 0.12);
-  font-size: ${props => props.deviceType === 'mobile' ? '14px' : '20px'};
-
   // input 중 Radio Button 개별 속성
   justify-content: space-around;
-  align-items: center;
-
-  &:focus {
-    outline: 0;
-    box-shadow: 0px 0.2778vw 2.0833vw 0px rgba(211, 140, 255, 0.5);
-  }
-  
+  align-items: center;  
 `

@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckBoxField, ImageField, RadioButtonField, TextAreaField, TextField } from '../../components/PersonaCreation';
-  
+import '../../components/PersonaCreation/style.css';
+
 const GENDER = { 'MALE': '남성', 'FEMALE': '여성' };
 
 const PersonaCreationContainer = () => {
