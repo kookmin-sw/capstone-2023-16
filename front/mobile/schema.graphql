@@ -9,15 +9,6 @@ type AdminPermissionRequiredError {
   message: String!
 }
 
-"""일정 나이 구간의 데이터를 받아 오기 위한 인터페이스"""
-input AgeFilter {
-  """최소 나이"""
-  minAge: Int = 0
-
-  """최대 나이"""
-  maxAge: Int = 100
-}
-
 """이미 멤버쉽에 가입 되어 있으나 다시 멤버쉽 가입을 요청한 경우 발생"""
 type AlreadyJoinedMembershipError {
   message: String!
@@ -37,6 +28,15 @@ type AuthInfoRequiredError {
 input AuthorFilter {
   """작성자 페르소나의 ID"""
   id: GlobalID!
+}
+
+"""일정 생년 구간의 데이터를 받아 오기 위한 인터페이스"""
+input BirthYearFilter {
+  """최소 생년"""
+  minBirthYear: Int = 0
+
+  """최대 생년"""
+  maxBirthYear: Int = 100
 }
 
 type Bookmark implements Node {
@@ -351,7 +351,7 @@ input DatetimeBetween {
   startDt: DateTime = null
 
   """조회 종료 일시"""
-  endDt: DateTime = "2023-05-02T00:15:56.301181"
+  endDt: DateTime = "2023-05-11T22:04:46.431306"
 }
 
 enum DurationType {
@@ -434,6 +434,11 @@ enum GraphqlAppUserSignupMethodEnum {
   EM
 }
 
+type ImageUploadUrl {
+  url: String!
+  fields: JSON!
+}
+
 """공인 여부 검색 인터페이스"""
 input IsCertifiedFilter {
   """공인 여부"""
@@ -474,6 +479,11 @@ input JoinMembershipInput {
   """티어"""
   tier: Tier!
 }
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
 
 """멤버쉽 가입 input"""
 input LeaveMembershipInput {
@@ -714,8 +724,8 @@ type Persona implements Node {
   """성별"""
   gender: Gender
 
-  """연령"""
-  age: Int
+  """생년"""
+  birthYear: Int
 
   """직업"""
   job: String
@@ -799,7 +809,7 @@ input PersonaCreateInput {
   gender: Gender = null
 
   """나이"""
-  age: Int = null
+  birthYear: Int = null
 
   """직업"""
   job: Job = null
@@ -885,8 +895,8 @@ type PersonaStatistics {
   """성별 점수"""
   genderScores: [FieldScore!]!
 
-  """연령대 점수"""
-  ageScores: [FieldScore!]!
+  """생년 점수"""
+  birthYearScores: [FieldScore!]!
 
   """직업 점수"""
   jobScores: [FieldScore!]!
@@ -1056,6 +1066,7 @@ type Query {
     categoryFilter: CategoryFilter = null
     tagsFilter: TagFilter = null
   ): PostConnection!
+  getImageUploadUrl(imageName: String!): ImageUploadUrl!
 
   """로그인한 사용자의 페르소나 목록"""
   getOwnPersonas(
@@ -1072,7 +1083,7 @@ type Query {
     last: Int = null
     sortingOpt: PersonaSortingOption!
     createdAtFilter: DatetimeBetween = null
-    ageFilter: AgeFilter = null
+    birthYearFilter: BirthYearFilter = null
     nicknameFilter: NicknameFilter = null
     genderFilter: GenderFilter = null
     isCertifiedFilter: IsCertifiedFilter = null
@@ -1094,7 +1105,7 @@ type Query {
     last: Int = null
     sortingOpt: PersonaSortingOption!
     createdAtFilter: DatetimeBetween = null
-    ageFilter: AgeFilter = null
+    birthYearFilter: BirthYearFilter = null
     nicknameFilter: NicknameFilter = null
     genderFilter: GenderFilter = null
     isCertifiedFilter: IsCertifiedFilter = null
@@ -1256,10 +1267,10 @@ enum SortingDirection {
 """통계에 사용할 데이터의 날짜 범위"""
 input StatisticsDatetimeBetween {
   """조회 시작 일시 (기본값 : 30일 이전)"""
-  startDatetime: DateTime = "2023-04-02T00:15:56.579738"
+  startDatetime: DateTime = "2023-04-11T22:04:46.528352"
 
   """조회 종료 일시 (기본값 : 오늘)"""
-  endDatetime: DateTime = "2023-05-02T00:15:56.579769"
+  endDatetime: DateTime = "2023-05-11T22:04:46.528391"
 }
 
 enum StringFindMode {
