@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 import { useNavigate } from 'react-router-dom';
 import TagList from '../../components/PersonaCreation/TagList';
+import SearchField from '../../components/PersonaCreation/SearchField';
 
 const TagAndCategoryContainer = () => {
   const navigate = useNavigate();
@@ -11,7 +12,10 @@ const TagAndCategoryContainer = () => {
   
 
   return <Container deviceType={deviceType}><></>
+    <div>
+      <SearchField />
       <TagList />
+    </div>
     {/*<CreateButton deviceType={deviceType} onClick={()=>navigate('/personas')}>생성</CreateButton>*/}
     </Container>
 };

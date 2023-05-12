@@ -9,7 +9,7 @@ const TagList = () => {
   const deviceType = useDeviceType();
 
   return <Container deviceType={deviceType}>
-    {data?.getAllTags?.edges?.map((d: any) => <TagCard id={d.node.id} body={d.node.body} />)}
+    {data?.getAllTags?.edges?.map((d: any) => <TagCard id={d.node.id} body={d.node.body} key={d.node.id} />)}
   </Container>
 };
 
