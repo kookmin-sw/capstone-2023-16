@@ -21,8 +21,9 @@ import {NavigationData} from '../navigation/AppNavigator';
 import {useLazyLoadQuery} from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
 import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
-import {selectPersona} from '../redux/slices/userSlice';
-import {useAppSelector} from '../redux/hooks';
+import {setPersona, selectPersona} from '../redux/slices/userSlice';
+import {useAppDispatch, useAppSelector} from '../redux/hooks';
+import {getInitPersona} from '../relay/Persona/getInitPersona';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -48,7 +49,6 @@ const getPublicPostsQuery = graphql`
         node {
           id
           contentPreview
-          createdAt
           tags {
             edges {
               node {
@@ -77,11 +77,35 @@ const MainScreen: FC<Props> = ({navigation}) => {
     {fetchPolicy: 'store-or-network'},
   );
   const persona = useAppSelector(selectPersona);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     console.log('##main');
     console.log(data.getPublicPosts.edges[0]);
   }, [data]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getInitPersona();
+        // Process the response data here
+        console.log('hhh');
+        console.log(response);
+        // console.log(response[0].node);
+        if (response.length === 0) navigation.navigate('BaseInfo');
+        dispatch(
+          setPersona({
+            id: response[0].node.id,
+            nickname: response[0].node.nickname,
+          }),
+        );
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [feedChoice1, setFeedChoice1] = useState(true);
   const [feedChoice2, setFeedChoice2] = useState(false);

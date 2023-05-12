@@ -27,7 +27,7 @@ export type ParamList = {
   Main: undefined;
   BaseInfo: undefined;
   InterestTagSetting: {personaInfo: PersonaInfo};
-  MyPage: {personaPage: PersonaPage};
+  MyPage: undefined;
   Follow: undefined;
   Following: undefined;
   Follower: undefined;
@@ -46,19 +46,19 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      {/* <StackNavigator.Screen
+      <StackNavigator.Screen
         name="Main"
         component={MainScreen}
         options={{headerShown: false}}
-      /> */}
+      />
       <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
-        initialParams={{
-          isMine: true,
-          nickname: 'testpersona',
-          id: 'UGVyc29uYToxMg==',
-        }}
+        // initialParams={{
+        //   isMine: true,
+        //   nickname: 'testpersona',
+        //   id: 'UGVyc29uYToxMg==',
+        // }}
         options={({navigation}) => ({
           headerShown: false,
           headerShadowVisible: false,
