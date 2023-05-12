@@ -11,22 +11,19 @@ type TextFieldType = {
 const TextField = ({ fieldname, label, required=false }: TextFieldType) => {
   const deviceType = useDeviceType();
 
-  return <div>
-    <Container>
+  return <Container>
       {deviceType !== 'mobile'&&required && <RequiredSpan deviceType={deviceType}>필수</RequiredSpan>}
       <label htmlFor={fieldname} className='field__label'>{label}</label>
       <input id={fieldname} type='text' className='field__container' />
     </Container>
-
-  </div>
 };
 
 export default TextField;
 
 const Container = styled.div`
+  width: 100%;
   position: relative;
   display: flex;
-  margin: 15px 0;
   align-items: center;
 `;
 

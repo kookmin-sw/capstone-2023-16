@@ -28,8 +28,8 @@ const RadioButtonField = ({fieldname, label, elements}: RadioButtonFieldType) =>
 export default RadioButtonField;
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
-  margin: 15px 0;
   align-items: center;
   
 `;

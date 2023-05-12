@@ -17,6 +17,7 @@ const TextAreaField = ({ fieldname, label }: TextAreaField) => {
 export default TextAreaField;
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,8 +26,9 @@ const Container = styled.div`
 `;
 
 const FieldTextArea = styled.textarea`
-  display: block;
-  box-sizing: content-box;
+  min-height: 200px;
+  display: block; 
+  line-height: 150%;
   &:focus{
     outline: 0;
     box-shadow: 0px 0.2778vw 2.0833vw 0px rgba(211, 140, 255, 0.5);

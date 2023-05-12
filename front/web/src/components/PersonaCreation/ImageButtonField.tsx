@@ -9,16 +9,15 @@ const ProfileImgButton = () => {
 };
 
 const ProfileButton = styled.button`
-  width: 200px;
-  height: 200px;
+  padding: 10px;
   background-color: #fff;
   border: 0;
   border-radius: 50%;
 `
 
 const ProfileImg = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
 `;

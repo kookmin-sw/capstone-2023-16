@@ -13,8 +13,8 @@ const CheckBoxField = ({fieldname, label}: CheckBoxFieldType) => {
   
   return <Container>
     <FieldLabel deviceType={deviceType}></FieldLabel>
-    <input id={fieldname} type='checkbox' />
     <label htmlFor={fieldname}>{label}</label>
+    <input id={fieldname} type='checkbox' />
   </Container>
 };
 
