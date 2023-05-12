@@ -9,7 +9,7 @@ from strawberry_django_plus.gql import relay
 
 from graphql_app import models
 from graphql_app.domain.membership.enums import Tier
-from graphql_app.domain.post.core import get_post_like_cnt, get_comments_of
+from graphql_app.domain.post.core import get_post_like_cnt, get_comments_of, get_comments_count
 from graphql_app.domain.post.core import get_bookmarks_of_persona
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.permissions import PersonaOwnershipPermission
@@ -78,6 +78,7 @@ class Post(relay.Node):
     required_membership_tier: Optional[Tier] = strawberry.field(description='조회 요구 티어')
     like_cnt: int = strawberry.field(get_post_like_cnt, description='좋아요 개수')
     comments: List['Comment'] = strawberry.field(get_comments_of, description='댓글 목록')
+    comment_cnt: int = strawberry.field(get_comments_count, description='댓글 갯수')
     created_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
