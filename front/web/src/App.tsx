@@ -8,8 +8,9 @@ import PostWritingPage from './pages/PostWritingPage';
 import BackgroundLayout from './components/commons/BackgroundLayout';
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
-import PersonaCreationPage from './pages/PersonaCreationPage';
-import PersonaCreationContainer from './containers/PersonaCreation/PersonaCreationContainer';
+import PersonaCreationPage from './pages/PersonaCreation/PersonaCreationPage';
+import UserInfoContainer from './pages/PersonaCreation/UserInfoContainer';
+import TagAndCategoryContainer from './pages/PersonaCreation/TagAndCategoryContainer';
 
 const App = () => {
   return (
@@ -24,7 +25,8 @@ const App = () => {
             <Route path='/post/edit' element={<PostWritingPage />} />
             <Route path='/post/edit/:postId' element={<PostWritingPage />} />
             <Route path='/create' element={<PersonaCreationPage />} >
-              <Route path='' element={<PersonaCreationContainer/>} />
+              <Route path='' element={<UserInfoContainer/>} />
+              <Route path='2' element={<TagAndCategoryContainer />} />
             </Route>
         </Routes>
       </BackgroundLayout>

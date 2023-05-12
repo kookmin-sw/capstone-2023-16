@@ -6,7 +6,7 @@ import tagPaginationFragment from '../../graphQL/Components/tagPaginationFragmen
 
 
 class TagAPI {
-  public TagAllGet = () => {
+  public tagAllGet = () => {
     const queryData = useLazyLoadQuery(tagAllGetQuery, []);
     return usePaginationFragment<pagination_tagAllGetQuery, any>(tagPaginationFragment, queryData);
   };

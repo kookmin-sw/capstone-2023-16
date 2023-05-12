@@ -10,14 +10,18 @@ type TagCard = {
 const TagCard = ({id, body}: TagCard) => {
   const deviceType = useDeviceType();
 
-  return <div>
+  return <Container deviceType={deviceType}>
     <HiddenInput type='checkbox' id={id} />
     <Label htmlFor={id} className='field__container' deviceType={deviceType}>{body}</Label>
-  </div>
+  </Container>
 };
 
 export default TagCard;
 
+const Container = styled.div<{ deviceType: string }>`
+  width: auto;
+  margin: ${props => props.deviceType === 'mobile' ? '10px 8px' : '13px 12px'};
+`
 const HiddenInput = styled.input`
   display: none;
   &:checked {

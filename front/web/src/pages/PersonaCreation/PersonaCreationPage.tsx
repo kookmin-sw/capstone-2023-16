@@ -1,7 +1,7 @@
 import React from 'react';
-import ContentLayout from '../components/commons/ContentLayout';
+import ContentLayout from '../../components/commons/ContentLayout';
 import styled from 'styled-components';
-import useDeviceType from '../hooks/useDeviceType';
+import useDeviceType from '../../hooks/useDeviceType';
 import { Outlet } from 'react-router-dom';
 
 const PersonaCreationPage = () => {
