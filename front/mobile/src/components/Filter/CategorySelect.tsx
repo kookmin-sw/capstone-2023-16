@@ -11,6 +11,22 @@ interface CategorySelectProps{
     categoryEvent: Dispatch<SetStateAction<any>>;
 }
 
+// const getAllTagQuery = graphql`
+//   query SearchQuery($search: String!) {
+//     getAllTags(
+//         sortingOpt: {}, 
+//         bodyFilter: {mode:CONTAINS ,token: $search}
+//     ) {
+//       edges {
+//         node {
+//           id
+//           body
+//         }
+//       }
+//     }
+//   }
+// `;
+
 const CategorySelect = (props:CategorySelectProps) => {
     const [category, setCategory] = useState(tagData);
     const [render, setRender] = useState(true);

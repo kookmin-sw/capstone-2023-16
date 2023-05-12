@@ -7,20 +7,20 @@ import {
   StyleSheet,
   View,
   ImageBackground,
+  RefreshControl
 } from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
 
 import TopButton from '../components/Main/TopButton';
 import {DimensionTheme} from '../components/common/shared';
-import {imagePath} from '../utils/imagePath';
 import FeedCategory from '../components/Main/FeedCategory';
 import FeedCard from '../components/common/Cards/FeedCard';
 import {NavigationData} from '../navigation/AppNavigator';
 
 import {useLazyLoadQuery} from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
-import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
+import {imagePath} from '../utils/imagePath';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -34,9 +34,9 @@ const HeaderBox = styled.View`
 const CategoryScroll = styled.ScrollView`
   display: flex;
   flex-direction: row;
-  width: ${DimensionTheme.width(333)};
-  padding-bottom: ${DimensionTheme.width(5)};
-  margin-bottom: ${DimensionTheme.height(18)};
+  width: ${DimensionTheme.width(333)}px;
+  padding-bottom: ${DimensionTheme.width(5)}px;
+  margin-bottom: ${DimensionTheme.width(18)}px;
 `;
 
 const getPublicPostsQuery = graphql`
@@ -45,21 +45,21 @@ const getPublicPostsQuery = graphql`
       edges {
         node {
           id
+          author {
+            id
+            nickname
+          }
           contentPreview
-          createdAt
           tags {
             edges {
               node {
                 body
-                id
               }
             }
           }
+          likeCnt
+          paidContent
           title
-          author {
-            nickname
-            id
-          }
         }
       }
     }
@@ -69,163 +69,29 @@ const getPublicPostsQuery = graphql`
 type Props = NavigationData<'Main'>;
 
 const MainScreen: FC<Props> = ({navigation}) => {
-  const data: MainScreenQuery$data = useLazyLoadQuery(
+  const data = useLazyLoadQuery(
     getPublicPostsQuery,
     {},
     {fetchPolicy: 'store-or-network'},
   );
 
   useEffect(() => {
-    console.log('##main');
-    console.log(data.getPublicPosts.edges[0]);
+    console.log('main:', data.getPublicPosts.edges[0].node);
   }, [data]);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
 
   const [feedChoice1, setFeedChoice1] = useState(true);
   const [feedChoice2, setFeedChoice2] = useState(false);
   const [feedChoice3, setFeedChoice3] = useState(false);
-  // const example = [
-  //   {
-  //     feed_id: 1,
-  //     title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  //   {
-  //     feed_id: 2,
-  //     title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  //   {
-  //     feed_id: 3,
-  //     title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  // ];
-
-  // const example2 = [
-  //   {
-  //     feed_id: 1,
-  //     title: '2반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  //   {
-  //     feed_id: 2,
-  //     title: '2반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  //   {
-  //     feed_id: 3,
-  //     title: '2반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  // ];
-
-  // const example3 = [
-  //   {
-  //     feed_id: 1,
-  //     title: '3반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  //   {
-  //     feed_id: 2,
-  //     title: '3반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  //   {
-  //     feed_id: 3,
-  //     title: '3반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-  //     author: '홍현지',
-  //     author_id: '@hongs_0430',
-  //     author_img: String(require('../assets/profileImg.png')),
-  //     content:
-  //       "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-  //     like: 16,
-  //     bookmark: 16,
-  //     comment: 3,
-  //     hash_tag: ['대학', '조별과제'],
-  //     like_check: true,
-  //     bookmark_check: false,
-  //   },
-  // ];
 
   navigation.reset;
 
@@ -246,7 +112,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
             onPress={() => {
               navigation.navigate('FilterContent');
             }}
-            img={String(require('../assets/search-black.png'))}
+            img={require('../assets/search-black.png')}
           />
           <TopButton
             width={28}
@@ -254,7 +120,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
             onPress={() => {
               navigation.navigate('MyPage');
             }}
-            img={String(require('../assets/profileImg.png'))}
+            img={require('../assets/profileImg.png')}
           />
         </HeaderBox>
         <View style={style.LibraryTool}>
@@ -291,13 +157,16 @@ const MainScreen: FC<Props> = ({navigation}) => {
               </FeedCategory>
             </CategoryScroll>
             <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+              }
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
               {feedChoice1 &&
-                data.getPublicPosts.edges.map(value => (
+                data.getPublicPosts.edges.map((value:any, index?:number) => (
                   <FeedCard
-                    key={value.node.id}
+                    key={index}
                     title={value.node.title}
                     feed_id={value.node.id}
                     author={value.node.author.nickname}
@@ -313,9 +182,9 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice2 &&
-                data.getPublicPosts.edges.map(value => (
+                data.getPublicPosts.edges.map((value:any, index?:number) => (
                   <FeedCard
-                    key={value.node.id}
+                    key={index}
                     title={value.node.title}
                     feed_id={value.node.id}
                     author={value.node.author.nickname}
@@ -331,9 +200,9 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice3 &&
-                data.getPublicPosts.edges.map(value => (
+                data.getPublicPosts.edges.map((value:any, index?:number) => (
                   <FeedCard
-                    key={value.node.id}
+                    key={index}
                     title={value.node.title}
                     feed_id={value.node.id}
                     author={value.node.author.nickname}

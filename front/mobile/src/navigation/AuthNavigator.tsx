@@ -13,6 +13,7 @@ import {SignupScreen} from '../screens/SignupScreen';
 import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
 import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
 import {WelcomeScreen} from '../screens/WelcomScreen';
+import { testlogoutScreen } from '../screens/testlogoutScreen';
 
 export type ParamList = {
   Welcome: undefined;
@@ -20,6 +21,7 @@ export type ParamList = {
   Signup: undefined;
   BaseInfo: undefined;
   InterestTagSetting: undefined;
+  TestSetting: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -54,6 +56,15 @@ const AuthNavigator = () => {
       <StackNavigator.Screen
         name="InterestTagSetting"
         component={InterestTagSettingScreen}
+        options={{
+          title: '페르소나 생성',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
+        name="TestSetting"
+        component={testlogoutScreen}
         options={{
           title: '페르소나 생성',
           headerShadowVisible: false,

@@ -21,6 +21,7 @@ import {ChallengeCreateScreen} from '../screens/Challenge/ChallengeCreateScreen'
 import {ChallengeDetailScreen} from '../screens/Challenge/ChallengeDetailScreen';
 import {MyContentScreen} from '../screens/MyContent/MyContentScreen';
 import {FollowScreen} from '../screens/MyAccount/FollowScreen';
+import FilterScreen from '../screens/FilterScreen';
 
 export type ParamList = {
   Main: undefined;
@@ -38,6 +39,7 @@ export type ParamList = {
   ChallengeCreate: undefined;
   ChallengeDetail: undefined;
   MyContent: undefined;
+  FilterContent: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -45,6 +47,11 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
+      <StackNavigator.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={{headerShown: true, title: 'SETTING'}}
+      />
       <StackNavigator.Screen
         name="Main"
         component={MainScreen}
@@ -125,11 +132,6 @@ const AppNavigator = () => {
         }}
       />
       <StackNavigator.Screen
-        name="Setting"
-        component={SettingScreen}
-        options={{headerShown: true, title: 'SETTING'}}
-      />
-      <StackNavigator.Screen
         name="Challenge"
         component={ChallengeScreen}
         options={{headerShown: false}}
@@ -147,6 +149,11 @@ const AppNavigator = () => {
       <StackNavigator.Screen
         name="MyContent"
         component={MyContentScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="FilterContent"
+        component={FilterScreen}
         options={{headerShown: false}}
       />
     </StackNavigator.Navigator>

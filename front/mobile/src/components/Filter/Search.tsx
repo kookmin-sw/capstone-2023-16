@@ -1,11 +1,17 @@
 /* eslint-disable prettier/prettier */
-import React, { SetStateAction, useState, Dispatch } from 'react';
+import React, { SetStateAction, useState, Dispatch, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, Image, TextInput, View } from 'react-native';
 import { DimensionTheme } from '../common/shared';
 import { colors } from '../common/colors';
 import SmallButton from '../common/Buttons/SmallButton';
 import { whiteBGpurpleSD } from '../common/theme';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+
+import {useLazyLoadQuery} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+import node from './__generated__/SearchQuery.graphql';
+
+import { tagItem } from '../common/type';
 
 interface FoldFilterProps{
     searchText: Dispatch<SetStateAction<string>>;
@@ -14,9 +20,27 @@ interface FoldFilterProps{
     searchEvent: Dispatch<SetStateAction<boolean>>;
 }
 
+// const getAllTagQuery = graphql`
+//   query SearchQuery($tagSearch: GlobalID!) {
+//     getAllTags(
+//         sortingOpt: {}, 
+//         bodyFilter: {mode:CONTAINS ,token: $tagSearch}
+//     ) {
+//       edges {
+//         node {
+//           id
+//           body
+//         }
+//       }
+//     }
+//   }
+// `;
+
+
 const Search = (props:FoldFilterProps) => {
     const [search, setSearch] = useState('');
     const [render, setRender] = useState(true);
+    // const [tagSearch, setTagSearch] = useState('');
     const [searchTypeList, setSearchTypeList] = useState([
         {
             'type':'제목만',
@@ -35,11 +59,42 @@ const Search = (props:FoldFilterProps) => {
             'state':false,
         },
     ]);
+
+    const tagSearch = (search.length > 1 && search.charAt(0) === '#') ? search.substring(1) : '';
+
+    const tagData = useLazyLoadQuery(
+        getAllTagQuery,
+        {tagSearch},
+        {fetchPolicy: 'store-or-network'},
+    );
+
+    var tagList = [];
+
+    // console.log(tagData.getALLTags.edges[0].node);
+    useEffect(() => {
+        console.log('Search', Object.values(tagData.getAllTags.edges));
+        tagData.getAllTags.edges.map((value: any, index?:number) => {
+            var tmp : tagItem = {
+                node: value.node,
+                state: false,
+            };
+            tagList.push(tmp);
+        })
+        console.log('tagList', tagList);
+    }, [tagData]);
+
+
     return (
         <View style={style.SearchSection}>
             <View style={style.SearchBox}>
                 <TextInput style={style.TextInput} placeholder="#으로 시작하면 태그 검색이 됩니다." placeholderTextColor={colors.graydark2} onChangeText={(text)=>{
                     setSearch(text);
+                    // setTagSearch(text);
+                    // if (text.charAt(0) === '#'){
+                    //     setTagSearch(text.substring(1));
+                    // } else {
+                    //     setTagSearch('');
+                    // }
                 }}/>
                 <TouchableOpacity
                     style={style.SearchBtn}
@@ -65,7 +120,7 @@ const Search = (props:FoldFilterProps) => {
                     <Image style={style.SearchBtnImg} source={require('../../assets/search-white.png')}/>
                 </TouchableOpacity>
             </View>
-            {!search.includes('#') &&
+            {(search.charAt(0) !== '#') &&
                 <View style={style.SearchTypes}>
                     {
                         searchTypeList.map((value: {type:string; state:boolean;}, index?:number) => {
@@ -97,6 +152,9 @@ const Search = (props:FoldFilterProps) => {
                         })
                     }
                 </View>
+            }
+            {(search.charAt(0) === '#') &&
+                <View/>
             }
         </View>
     );

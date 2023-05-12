@@ -9,7 +9,7 @@
     "start": "yarn run relay && react-native start",
     "test": "jest",
     "build": "yarn run relay && react-scripts build",
-    "relay": "relay-compiler $@",
+    "relay": "relay-compiler",
     "app:relay": "yarn workspace app relay"
   },
   "relay": {
@@ -28,6 +28,7 @@
     "get-graphql-schema": "^2.1.2",
     "graphql": "^16.6.0",
     "react": "18.2.0",
+    "react-cookie": "^4.1.1",
     "react-native": "0.71.3",
     "react-native-dotenv": "^3.4.8",
     "react-native-gesture-handler": "^2.9.0",

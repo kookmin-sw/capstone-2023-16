@@ -19,6 +19,41 @@ import BookmarkBtn from '../components/Detail/BookmarkBtn';
 import {NavigationData} from '../navigation/AppNavigator';
 import Comment from '../components/Detail/Comment';
 
+import {useLazyLoadQuery} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
+
+const getPostQuery = graphql`
+  query DetailScreenQuery($id: GlobalID!) {
+    getPost(postId: $id) {
+      id
+      contentPreview
+      content
+      createdAt
+      likeCnt
+      paidContent
+      requiredMembershipTier
+      title
+      tags {
+        edges {
+          node {
+            body
+          }
+        }
+      }
+      comments {
+        id
+      }
+      category {
+        body
+      }
+      author {
+        nickname
+        id
+      }
+    }
+  }
+`;
+
 type Props = NavigationData<'DetailContent'>;
 
 const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
