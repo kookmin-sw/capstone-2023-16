@@ -57,7 +57,6 @@ const LoginInputBox = styled(GrayShadowBox) <{ deviceType: string }>`
 
 const Input = styled.input<{ deviceType: string }>`
   width: 100%;
-  padding: 7px;
   border: 0;
   font-size: ${(props) => { return props.deviceType === 'mobile'? '14px': '20px'}};
   flex: 10;

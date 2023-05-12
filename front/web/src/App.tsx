@@ -9,6 +9,7 @@ import BackgroundLayout from './components/commons/BackgroundLayout';
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
 import PersonaCreationPage from './pages/PersonaCreationPage';
+import PersonaCreationContainer from './containers/PersonaCreation/PersonaCreationContainer';
 
 const App = () => {
   return (
@@ -22,7 +23,9 @@ const App = () => {
             <Route path='/post/:postId' element={<PostDetailPage />} />
             <Route path='/post/edit' element={<PostWritingPage />} />
             <Route path='/post/edit/:postId' element={<PostWritingPage />} />
-            <Route path='/create' element={<PersonaCreationPage />} />
+            <Route path='/create' element={<PersonaCreationPage />} >
+              <Route path='' element={<PersonaCreationContainer/>} />
+            </Route>
         </Routes>
       </BackgroundLayout>
     </RelayEnvironmentProvider>

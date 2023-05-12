@@ -9,7 +9,7 @@ type TextAreaField = {
 const TextAreaField = ({ fieldname, label }: TextAreaField) => {
 
   return <Container>
-    <label className='field__label'>{label}</label>
+    <Label className='field__label'>{label}</Label>
     <FieldTextArea className='field__container' rows={10} />
   </Container>
 };
@@ -21,14 +21,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 15px 0;
+`;
 
+const Label = styled.div`
+  margin-bottom: 10px;
 `;
 
 const FieldTextArea = styled.textarea`
   min-height: 200px;
   display: block; 
   line-height: 150%;
+  resize: none;
+  padding: 1rem;
   &:focus{
     outline: 0;
     box-shadow: 0px 0.2778vw 2.0833vw 0px rgba(211, 140, 255, 0.5);
