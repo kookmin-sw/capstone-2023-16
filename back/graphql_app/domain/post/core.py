@@ -200,7 +200,7 @@ def get_comments_of(root: Post, info: Info) -> List[Comment]:
 
 def get_comments_count(root: Post, info: Info) -> int:
     """
-    특정 게시물의 댓글 목록을 작성 일시 내림차순으로 반환
+    특정 게시물의 댓글 갯수를 반환
     """
     return Comment.objects.filter(post=root).count
 
