@@ -33,7 +33,7 @@ const HiddenInput = styled.input`
 
 const Label = styled.label<{ deviceType: string }>`
   width: auto;
-  height: ${props => props.deviceType === 'mobile' ? '26px' : '42px'};
+  height: ${props => props.deviceType === 'mobile' ? '26px' : '42px'} !important;
   padding: ${props => props.deviceType === 'mobile' ? '8px' : '15px'};
   font-size: ${props => props.deviceType === 'mobile' ? '12px' : '20px'};
   &:hover {

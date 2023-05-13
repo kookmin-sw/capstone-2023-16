@@ -2,12 +2,7 @@ import React, { Suspense } from 'react';
 import TagCard from './TagCard';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
-import LoadingSpinner from '../../pages/LoadingSpinnerPage';
 import TagApiClient from '../../api/TagAndCategory';
-
-type TaglistType = {
-
-};
 
 const TagList = () => {
   const deviceType = useDeviceType();
