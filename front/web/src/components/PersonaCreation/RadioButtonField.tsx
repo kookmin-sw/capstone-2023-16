@@ -16,7 +16,7 @@ const RadioButtonField = ({fieldname, label, elements}: RadioButtonFieldType) =>
     <RadioButtonContainer deviceType={deviceType} className='field__container'>
       {Object.entries(elements)
         .map(e =>
-        <div>
+        <div key={e[0]}>
           <input id={e[0]} type='radio' name={fieldname} />
           <label htmlFor={e[0]}>{e[1]}</label>
         </div>)

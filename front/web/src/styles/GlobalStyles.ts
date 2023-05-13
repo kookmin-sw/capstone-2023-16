@@ -68,6 +68,6 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   input {  
-    padding: 7px;
+    padding: 7px 20px;
   }
 `;

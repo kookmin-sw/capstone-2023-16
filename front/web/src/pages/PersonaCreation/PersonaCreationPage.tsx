@@ -17,8 +17,8 @@ export default PersonaCreationPage;
 
 const Header = styled.h2<{ deviceType: string }>`
     align-self: start;
-    font-size: ${(props) => (props.deviceType === 'desktop') ? '32px' : (props.deviceType === 'tablet') ? '28px': '16px'};
+    font-size: ${(props) => (props.deviceType === 'desktop') ? '32px' : (props.deviceType === 'tablet') ? '28px': '24px'};
     font-weight: 700;
-    margin-bottom: 30px;
+    margin:  ${(props) => (props.deviceType === 'mobile') ? '16px 0' : '30px 0'};
 `;
 
