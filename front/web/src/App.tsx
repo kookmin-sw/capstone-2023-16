@@ -9,8 +9,10 @@ import BackgroundLayout from './components/commons/BackgroundLayout';
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
 import PersonaCreationPage from './pages/PersonaCreation/PersonaCreationPage';
-import UserInfoContainer from './pages/PersonaCreation/UserInfoContainer';
-import TagAndCategoryContainer from './pages/PersonaCreation/TagAndCategoryContainer';
+import UserInfoPage from './pages/PersonaCreation/UserInfoPage';
+import TagAndCategoryPage from './pages/PersonaCreation/TagAndCategoryPage';
+import { Suspense } from 'react';
+import LoadingSpinnerPage from './pages/LoadingSpinnerPage';
 
 const App = () => {
   return (
@@ -24,9 +26,9 @@ const App = () => {
             <Route path='/post/:postId' element={<PostDetailPage />} />
             <Route path='/post/edit' element={<PostWritingPage />} />
             <Route path='/post/edit/:postId' element={<PostWritingPage />} />
-            <Route path='/create' element={<PersonaCreationPage />} >
-              <Route path='' element={<UserInfoContainer/>} />
-              <Route path='2' element={<TagAndCategoryContainer />} />
+            <Route path='/create' element={<Suspense fallback={<LoadingSpinnerPage />}><PersonaCreationPage /></Suspense>} >
+              <Route path='' element={<UserInfoPage />} />
+              <Route path='2' element={<TagAndCategoryPage />} />
             </Route>
         </Routes>
       </BackgroundLayout>
