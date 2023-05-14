@@ -19,6 +19,7 @@ const App = () => {
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <BackgroundLayout>
         <GlobalStyles />
+        <Suspense fallback={<LoadingSpinnerPage />}>
         <Routes>
             <Route path='/' element={<LoginPage />} />
             <Route path='/personas' element={<PersonaChoice />} />
@@ -26,11 +27,12 @@ const App = () => {
             <Route path='/post/:postId' element={<PostDetailPage />} />
             <Route path='/post/edit' element={<PostWritingPage />} />
             <Route path='/post/edit/:postId' element={<PostWritingPage />} />
-            <Route path='/create' element={<Suspense fallback={<LoadingSpinnerPage />}><PersonaCreationPage /></Suspense>} >
+            <Route path='/create' element={<PersonaCreationPage />} >
               <Route path='' element={<UserInfoPage />} />
               <Route path='2' element={<TagAndCategoryPage />} />
             </Route>
-        </Routes>
+          </Routes>
+          </Suspense>
       </BackgroundLayout>
     </RelayEnvironmentProvider>
   );  
