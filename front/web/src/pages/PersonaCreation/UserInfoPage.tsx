@@ -4,29 +4,52 @@ import '../../components/PersonaCreation/style.css';
 import styled, { css } from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { enter } from '../../redux/slices/newPersonaSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 const GENDER = { 'MALE': '남성', 'FEMALE': '여성' };
 
-const PersonaCreationContainer = () => {
+const UserInfoPage = () => {
   const navigate = useNavigate();
   const deviceType = useDeviceType();
+
+  const form = useSelector((state: RootState) => state.newPersona);
+  const dispatch = useDispatch();
+
+  const onSave = (e: any) => {
+    switch (e.currentTarget.type) {
+      case 'checkbox':
+        dispatch(enter({ key: e.currentTarget.id, value: !e.currentTarget.checked }));
+        break;
+      case 'radio':
+        dispatch(enter({ key: e.currentTarget.name, value: e.currentTarget.id }));
+        break;
+      case 'text':
+        dispatch(enter({ key: e.currentTarget.id, value: e.currentTarget.value }));
+        break;
+    }
+  };
+
+  const isValid = () => form.nickname !== '';
 
   return <Container deviceType={deviceType}>
         <div>
           <ImageButtonField />
-          <CheckBoxField fieldname={'isPublic'} label='비공계 계정'/>
+      <CheckBoxField fieldname={'isPublic'} label='비공계 계정' onSave={onSave} />
       </div>
-      <TextField fieldname='nickname' label='닉네임' required />
-    <TextField fieldname='age' label='생년' />
+      <TextField fieldname='nickname' label='닉네임' onSave={onSave} required />
+    <TextField fieldname='age' label='생년' type='number' onSave={onSave} />
     <div></div>
-      <RadioButtonField fieldname={'gender'} label={'성별'} elements={GENDER} />
-      <TextField fieldname='job' label='직업' />
-    <TextAreaField fieldname='introduction' label='페르소나 소개' />
-    <NextButton deviceType={deviceType} onClick={()=>navigate('2')}>다음</NextButton>
+      <RadioButtonField fieldname={'gender'} label={'성별'} elements={GENDER} onSave={onSave} />
+      <TextField fieldname='job' label='직업' onSave={onSave} />
+    <TextAreaField fieldname='introduction' label='페르소나 소개' onSave={onSave} />
+    <NextButton deviceType={deviceType} onClick={()=>isValid()?navigate('2'):alert('닉네임은 필수 입력항목입니다.')}>다음</NextButton>
     </Container>
 };
 
-export default PersonaCreationContainer;
+export default UserInfoPage;
 
 const Container = styled.div<{deviceType: string}>`
   width: 100%;
@@ -57,6 +80,7 @@ const Container = styled.div<{deviceType: string}>`
 const NextButton = styled.button<{deviceType: string}>`
   width: 100%;
   padding: 10px;
+  margin-bottom: 10px;
   border: 0;
   border-radius: 15px;
   background: #FFFFFF;  

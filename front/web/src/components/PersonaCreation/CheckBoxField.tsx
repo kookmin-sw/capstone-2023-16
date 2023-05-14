@@ -5,16 +5,16 @@ import useDeviceType from '../../hooks/useDeviceType';
 type CheckBoxFieldType = {
   fieldname: string,
   label: string,
-  required?: boolean,
+  onSave: (e:any) => void,
 };
 
-const CheckBoxField = ({fieldname, label}: CheckBoxFieldType) => {
+const CheckBoxField = ({fieldname, label, onSave}: CheckBoxFieldType) => {
   const deviceType = useDeviceType();
   
   return <Container>
     <FieldLabel deviceType={deviceType}></FieldLabel>
     <label htmlFor={fieldname}>{label}</label>
-    <input id={fieldname} type='checkbox' />
+    <input id={fieldname} type='checkbox' onBlur={onSave} />
   </Container>
 };
 

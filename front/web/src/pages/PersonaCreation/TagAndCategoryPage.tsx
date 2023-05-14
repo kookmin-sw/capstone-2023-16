@@ -7,7 +7,7 @@ import BadgeList from '../../components/PersonaCreation/BadgeList';
 import SearchField from '../../components/PersonaCreation/SearchField';
 import Subtitle from '../../components/PersonaCreation/Subtitle';
 
-const TagAndCategoryContainer = () => {
+const TagAndCategoryPage = () => {
   const navigate = useNavigate();
   const deviceType = useDeviceType();
   
@@ -26,7 +26,7 @@ const TagAndCategoryContainer = () => {
   </>
 };
 
-export default TagAndCategoryContainer;
+export default TagAndCategoryPage;
 
 const Container = styled.div<{ deviceType: string }>`
   width: 100%;

@@ -5,16 +5,18 @@ import useDeviceType from '../../hooks/useDeviceType';
 type TextFieldType = {
   fieldname: string,
   label?: string,
+  type?: string,
   required?: boolean,
+  onSave?: (e:any) => void,
 }
 
-const TextField = ({ fieldname, label, required=false }: TextFieldType) => {
+const TextField = ({ fieldname, label, type='text', required=false, onSave }: TextFieldType) => {
   const deviceType = useDeviceType();
 
   return <Container deviceType={deviceType}>
       {deviceType !== 'mobile'&&required && <RequiredSpan>필수</RequiredSpan>}
       {label&&<label htmlFor={fieldname} className='field__label'>{label}</label>}
-      <input id={fieldname} type='text' className='field__container' />
+    <input id={fieldname} name={label} type={type} className='field__container' onBlur={onSave} />
     </Container>
 };
 

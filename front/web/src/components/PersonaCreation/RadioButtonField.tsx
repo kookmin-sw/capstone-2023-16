@@ -6,9 +6,10 @@ type RadioButtonFieldType = {
   fieldname: string,    // api 요청할 fieldname
   label: string,        // 실제로 보여질 label
   elements: object,     // {api 요청할 속성: 사용자에게 보여질 속성 이름, ...}
+  onSave: (e:any) => void
 }
 
-const RadioButtonField = ({fieldname, label, elements}: RadioButtonFieldType) => {
+const RadioButtonField = ({fieldname, label, elements, onSave}: RadioButtonFieldType) => {
   const deviceType = useDeviceType();
 
   return <Container>
@@ -17,7 +18,7 @@ const RadioButtonField = ({fieldname, label, elements}: RadioButtonFieldType) =>
       {Object.entries(elements)
         .map(e =>
         <div key={e[0]}>
-          <input id={e[0]} type='radio' name={fieldname} />
+            <input id={e[0]} type='radio' name={fieldname} onBlur={onSave} />
           <label htmlFor={e[0]}>{e[1]}</label>
         </div>)
       }

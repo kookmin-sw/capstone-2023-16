@@ -4,13 +4,14 @@ import styled from 'styled-components';
 type TextAreaField = {
   fieldname: string,
   label: string,
+  onSave: (e:any) => void,
 };
 
-const TextAreaField = ({ fieldname, label }: TextAreaField) => {
+const TextAreaField = ({ fieldname, label, onSave }: TextAreaField) => {
 
   return <Container>
     <Label className='field__label'>{label}</Label>
-    <FieldTextArea className='field__container' rows={10} />
+    <FieldTextArea id={fieldname} className='field__container' rows={10} onBlur={onSave} />
   </Container>
 };
 

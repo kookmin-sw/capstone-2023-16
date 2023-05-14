@@ -14,7 +14,7 @@ export default SearchField;
 
 const Container = styled.div`
   display: flex;
-  margin: 10px 2vw;
+  margin: 10px 1.5vw;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
