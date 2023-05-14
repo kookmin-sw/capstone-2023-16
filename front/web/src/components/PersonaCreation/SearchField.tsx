@@ -14,10 +14,8 @@ export default SearchField;
 
 const Container = styled.div`
   display: flex;
-  margin: -20px -20px;
-  padding: 40px 40px;
+  margin: 10px 2vw;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  z-index: 1;
 `

@@ -3,7 +3,7 @@ import '../../components/PersonaCreation/style.css';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 import { useNavigate } from 'react-router-dom';
-import TagList from '../../components/PersonaCreation/TagList';
+import BadgeList from '../../components/PersonaCreation/BadgeList';
 import SearchField from '../../components/PersonaCreation/SearchField';
 import Subtitle from '../../components/PersonaCreation/Subtitle';
 
@@ -15,11 +15,11 @@ const TagAndCategoryContainer = () => {
     <Section>
       <Subtitle>선호 태그 설정</Subtitle>
       <SearchField />
-      <TagList />
+      <BadgeList type='tag'/>
     </Section>
     <Section>
       <Subtitle>선호 카테고리 설정</Subtitle>
-      <TagList />
+      <BadgeList type='category'/>
       <CreateButton deviceType={deviceType} onClick={() => navigate('/personas')}>생성</CreateButton>
     </Section>
     </Container>
@@ -33,7 +33,7 @@ const Container = styled.div<{ deviceType: string }>`
   height: 100%;
   display: flex;
   flex-direction: ${(props) => { return props.deviceType === 'desktop' ? 'row' : 'column' }}; 
-  gap: ${(props) => { return props.deviceType === 'mobile' ? '30px' : '50px' }};
+  gap: ${(props) => { return props.deviceType === 'mobile' ? '0' : '50px' }};
   overflow-y: auto;
   `;
 
@@ -49,6 +49,7 @@ const Section = styled.section`
 
 const CreateButton = styled.button<{ deviceType: string }>`
   width: 100%;
+  margin: 10px 0;
   padding: 10px;
   border: 0;
   border-radius: 15px;

@@ -11,7 +11,7 @@ const Subtitle = ({children}: PropsWithChildren) => {
 export default Subtitle;
 
 const SubtitleDiv = styled.div<{ deviceType: string }>`
-  margin: 20px 0;
+  margin: ${props => props.deviceType === 'mobile' ? '10px' : '20px'} 0;
   font-size: ${props => props.deviceType === 'mobile' ? '18px' : '24px'};
   font-weight: 700;
 `
