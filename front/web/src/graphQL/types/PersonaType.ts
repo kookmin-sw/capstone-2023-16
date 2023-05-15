@@ -3,19 +3,19 @@ import Relay from './Relay';
 import {PageInfoType} from './PageInfoType';
 
 export type PersonaType = {
-  id: string
-  owner: User
+  id?: string
+  owner?: User
   nickname: string
-  introduction: boolean
-  isPublic: boolean
-  gender?: number
-  age?: number
+  introduction?: string
+  isPublic?: boolean
+  gender?: string
+  birthYear?: number
   job?: string
-  isCertified: boolean
-  preferredTags: Relay
-  preferredCategories: Relay
-  createdAt: Date
-  updatedAt: Date
+  isCertified?: boolean
+  preferredTags?: ""
+  preferredCategories?: {"id": string}[]|JSON
+  createdAt?: Date
+  updatedAt?: Date
 };
 
 export type PersonaEdgeType = {

@@ -2,21 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 
-type TagCard = {
+type BadgeType = {
   id: string,
   body: string,
-}
+  name: string,
+  onChecked: (e: any) => void,
+};
 
-const TagCard = ({id, body}: TagCard) => {
+const Badge = ({id, body, name, onChecked}: BadgeType) => {
   const deviceType = useDeviceType();
 
   return <Container deviceType={deviceType}>
-    <HiddenInput type='checkbox' id={id} />
+    <HiddenInput type='checkbox' id={id} name={name} onChange={onChecked} value={body} />
     <Label htmlFor={id} className='field__container' deviceType={deviceType}>{body}</Label>
   </Container>
 };
 
-export default TagCard;
+export default Badge;
 
 const Container = styled.div<{ deviceType: string }>`
   width: auto;

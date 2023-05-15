@@ -39,11 +39,14 @@ const UserInfoPage = () => {
       case 'text':
         dispatch(enter({ key: id, value: value }));
         break;
+      case 'number':
+        dispatch(enter({ key: id, value: parseInt(value) }));
+        break;
     }
     if (tagName === "SELECT") dispatch(enter({ key: id, value: value }));
   };
 
-  const isValid = () => form.nickname !== '';
+  const isValid = () => { console.log(form);  return form.nickname !== '';}
 
   return <Container deviceType={deviceType}>
         <div>
@@ -51,7 +54,7 @@ const UserInfoPage = () => {
       <CheckBoxField fieldname={'isPublic'} label='비공계 계정' onSave={onSave} />
       </div>
       <TextField fieldname='nickname' label='닉네임' onSave={onSave} required />
-    <TextField fieldname='age' label='생년' type='number' onSave={onSave} />
+    <TextField fieldname='birthYear' label='생년' type='number' onSave={onSave} />
     <div></div>
       <RadioButtonField fieldname={'gender'} label={'성별'} elements={GENDER} onSave={onSave} />
     <SelectFieldBox fieldname='job' label='직업' labelsAndValues={JOBS} onSave={onSave} />

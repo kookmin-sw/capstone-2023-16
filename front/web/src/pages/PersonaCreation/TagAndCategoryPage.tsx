@@ -6,11 +6,27 @@ import { useNavigate } from 'react-router-dom';
 import BadgeList from '../../components/PersonaCreation/BadgeList';
 import SearchField from '../../components/PersonaCreation/SearchField';
 import Subtitle from '../../components/PersonaCreation/Subtitle';
+import PersonaApiClient from '../../api/Persona';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { reset } from '../../redux/slices/newPersonaSlice';
 
 const TagAndCategoryPage = () => {
   const navigate = useNavigate();
   const deviceType = useDeviceType();
-  
+  const form: any = useSelector((state: RootState) => state.newPersona);
+  const dispatch = useDispatch();
+
+  const onCreate = () => {
+    console.log(form);
+    PersonaApiClient.personaCreate(form)
+      .then((res: any) => {
+        navigate('/personas');
+        dispatch(reset());
+      })
+      .catch((err: any) => console.error(err));
+  };
+
   return <><Container deviceType={deviceType}>
     <Section>
       <Subtitle>선호 태그 설정</Subtitle>
@@ -20,7 +36,7 @@ const TagAndCategoryPage = () => {
     <Section>
       <Subtitle>선호 카테고리 설정</Subtitle>
       <BadgeList type='category'/>
-      <CreateButton deviceType={deviceType} onClick={() => navigate('/personas')}>생성</CreateButton>
+      <CreateButton deviceType={deviceType} onClick={onCreate}>생성</CreateButton>
     </Section>
     </Container>
   </>

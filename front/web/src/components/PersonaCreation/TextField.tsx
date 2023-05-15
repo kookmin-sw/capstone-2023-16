@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 type TextFieldType = {
   fieldname: string,
@@ -10,13 +12,14 @@ type TextFieldType = {
   onSave?: (e:any) => void,
 }
 
-const TextField = ({ fieldname, label, type='text', required=false, onSave }: TextFieldType) => {
+const TextField = ({ fieldname, label, type = 'text', required = false, onSave }: TextFieldType) => {
   const deviceType = useDeviceType();
+  const form: any = useSelector((state: RootState) => state.newPersona);
 
   return <Container deviceType={deviceType}>
       {deviceType !== 'mobile'&&required && <RequiredSpan>필수</RequiredSpan>}
       {label&&<label htmlFor={fieldname} className='field__label'>{label}</label>}
-    <input id={fieldname} name={label} type={type} className='field__container' onBlur={onSave} />
+      <input id={fieldname} name={label} type={type} className='field__container' onBlur={onSave} defaultValue={form[fieldname]} />
     </Container>
 };
 

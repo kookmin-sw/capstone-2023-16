@@ -1,38 +1,38 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-interface PartialKeyValue {
+interface PartialKey {
   key: string;
-  value: string|boolean|number;
+};
+
+interface PartialKeyValue extends PartialKey {
+  value: string|boolean|number|string[];
 };
 
 type CreationFormType = {
-  age?: number,
+  birthYear?: number,
   gender?: string,
   introduction?: string,
-  isPublic: boolean,
+  isPublic?: boolean
   job?: string,
   nickname: string,
-  preferredCategories?: string,
+  preferredCategories?: {id: string} [],
   preferredTagBodies?: string,
 }
 
 const initialState:CreationFormType = {
-  age: 0,
-  gender: '',
-  introduction: '',
-  isPublic: true,
-  job: '',
-  nickname: '',
-  preferredCategories: '',
-  preferredTagBodies: '',
+  nickname: "",
 }
 
 export const newPersonaSlice = createSlice({
   name: 'newPersona',
   initialState,
   reducers: {
-    enter: (state, action: PayloadAction<PartialKeyValue>) => ({...state, [action.payload.key]: action.payload.value}),
+    enter: (state, action: PayloadAction<PartialKeyValue>) => ({ ...state, [action.payload.key]: action.payload.value }),
+    delete: (state, action: PayloadAction<PartialKey>) => {
+      delete state[action.payload.key as keyof CreationFormType];
+      return state;
+    },
     reset: (state) => ({ ...initialState }),
   },
 });

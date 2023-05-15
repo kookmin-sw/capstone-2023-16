@@ -14,7 +14,7 @@ const CheckBoxField = ({fieldname, label, onSave}: CheckBoxFieldType) => {
   return <Container>
     <FieldLabel deviceType={deviceType}></FieldLabel>
     <label htmlFor={fieldname}>{label}</label>
-    <input id={fieldname} type='checkbox' onBlur={onSave} />
+    <input id={fieldname} type='checkbox' onChange={onSave} defaultChecked={false} />
   </Container>
 };
 
@@ -24,7 +24,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   margin: 15px 0;
-
 `;
 
 const FieldLabel = styled.label<{ deviceType: string }>`
