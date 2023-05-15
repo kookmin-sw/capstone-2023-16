@@ -8,8 +8,17 @@ import { useDispatch } from 'react-redux';
 import { enter } from '../../redux/slices/newPersonaSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import SelectFieldBox from '../../components/PersonaCreation/SelectFieldBox';
 
 const GENDER = { 'MALE': '남성', 'FEMALE': '여성' };
+const JOBS: any = [{ label: "학생", value: "STUDENT" },
+  { label: "교육자", value: "EDUCATOR" },
+  { label: "구직자", value: "JOB_SEEKER" },
+  { label: "피고용인", value: "EMPLOYEE" },
+  { label: "IT관련 업계", value: "IT" },
+  { label: "금융업계", value: "FINANCE" },
+  { label: "예술업계", value: "ART" },
+  { label: "기타", value: "ETC" }];
 
 const UserInfoPage = () => {
   const navigate = useNavigate();
@@ -19,17 +28,19 @@ const UserInfoPage = () => {
   const dispatch = useDispatch();
 
   const onSave = (e: any) => {
-    switch (e.currentTarget.type) {
+    const { type, id, name, value, checked, tagName } = e.currentTarget;
+    switch (type) {
       case 'checkbox':
-        dispatch(enter({ key: e.currentTarget.id, value: !e.currentTarget.checked }));
+        dispatch(enter({ key: id, value: !checked }));
         break;
       case 'radio':
-        dispatch(enter({ key: e.currentTarget.name, value: e.currentTarget.id }));
+        dispatch(enter({ key: name, value: id }));
         break;
       case 'text':
-        dispatch(enter({ key: e.currentTarget.id, value: e.currentTarget.value }));
+        dispatch(enter({ key: id, value: value }));
         break;
     }
+    if (tagName === "SELECT") dispatch(enter({ key: id, value: value }));
   };
 
   const isValid = () => form.nickname !== '';
@@ -43,7 +54,7 @@ const UserInfoPage = () => {
     <TextField fieldname='age' label='생년' type='number' onSave={onSave} />
     <div></div>
       <RadioButtonField fieldname={'gender'} label={'성별'} elements={GENDER} onSave={onSave} />
-      <TextField fieldname='job' label='직업' onSave={onSave} />
+    <SelectFieldBox fieldname='job' label='직업' labelsAndValues={JOBS} onSave={onSave} />
     <TextAreaField fieldname='introduction' label='페르소나 소개' onSave={onSave} />
     <NextButton deviceType={deviceType} onClick={()=>isValid()?navigate('2'):alert('닉네임은 필수 입력항목입니다.')}>다음</NextButton>
     </Container>
