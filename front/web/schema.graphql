@@ -830,7 +830,7 @@ input PersonaCreateInput {
   """
   나이
   """
-  age: Int = null
+  birthYear: Int = null
 
   """
   직업
