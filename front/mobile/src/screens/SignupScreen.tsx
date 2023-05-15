@@ -29,7 +29,7 @@ import {termsAndConditions} from '../constants/terms';
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
 import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
-import {Error} from '../relay/Auth/type';
+import {Error} from '../relay/type';
 
 const SignupContainer = styled(Container)`
   width: 100%;
@@ -257,7 +257,11 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
                 <RegularButton
                   btnStyles={ButtonTheme.whiteBG.btnStyle}
                   onPress={() => {
-                    handleSubmit();
+                    if (agree) {
+                      handleSubmit();
+                    } else {
+                      Alert.alert('약관 동의를 해주세요!');
+                    }
                   }}>
                   다음
                 </RegularButton>
