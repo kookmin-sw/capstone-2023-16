@@ -6,7 +6,7 @@ interface PartialKey {
 };
 
 interface PartialKeyValue extends PartialKey {
-  value: string|boolean|number|string[];
+  value: string|boolean|number|string[]|null;
 };
 
 type CreationFormType = {

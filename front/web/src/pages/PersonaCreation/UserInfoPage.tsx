@@ -40,10 +40,11 @@ const UserInfoPage = () => {
         dispatch(enter({ key: id, value: value }));
         break;
       case 'number':
-        dispatch(enter({ key: id, value: parseInt(value) }));
+        value === "" ? dispatch(enter({ key: id, value: null })): dispatch(enter({ key: id, value: parseInt(value) }));
         break;
     }
-    if (tagName === "SELECT") dispatch(enter({ key: id, value: value }));
+    if (tagName === "SELECT")
+      (value === "")? dispatch(enter({ key: id, value: null })) : dispatch(enter({ key: id, value: value }));
   };
 
   const isValid = () => { console.log(form);  return form.nickname !== '';}
