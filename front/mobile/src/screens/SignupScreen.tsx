@@ -1,32 +1,32 @@
 import React, {FC, useState} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
+import {ScrollView, View, Alert} from 'react-native';
 
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
 import RegularButton from '../components/common/Buttons/RegularButton';
-import SmallButton from '../components/common/Buttons/SmallButton';
 import {colors} from '../components/common/colors';
 import * as ButtonTheme from '../components/common/theme';
 import KeyboardAvoidingViewContainer from '../components/common/Containers/KeyboardAvoidingViewContainer';
 import StyledTextInput from '../components/common/Inputs/StyledTextInput';
+import CheckBox from '../components/common/CheckBox/CheckBox';
+import SmallText from '../components/common/Texts/SmallText';
+import Modal from '../components/common/Modal/Modal';
+import RegularText from '../components/common/Texts/RegularText';
+import {termsAndConditions} from '../constants/terms';
 import {
   Container,
   DimensionTheme,
   ScreenHeight,
-  ScreenWidth,
 } from '../components/common/shared';
 
 import {NavigationData} from '../navigation/AuthNavigator';
-import CheckBox from '../components/common/CheckBox/CheckBox';
-import SmallText from '../components/common/Texts/SmallText';
-import Modal from '../components/common/Modal/Modal';
-import {ScrollView, View, Alert} from 'react-native';
-import RegularText from '../components/common/Texts/RegularText';
-import {termsAndConditions} from '../constants/terms';
 
+// @ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
+
 import {useMutation} from 'react-relay';
 import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
 import {Error} from '../relay/type';
@@ -148,10 +148,6 @@ export const SignupScreen: FC<Props> = ({navigation}) => {
                       `${username} 은(는)이미 사용중인 아이디입니다.`,
                     );
               },
-              // updater(store) {
-              //   const payload = store.getRootField('login');
-              //   store.getRoot().setLinkedRecord(payload, 'currentUser');
-              // },
             });
           }}>
           {({
