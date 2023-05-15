@@ -1,8 +1,9 @@
+// @ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
 import {fetchQuery} from 'relay-runtime';
 import RelayEnvironment from '../../RelayEnvironment';
-import {getOwnPersonas} from './getOwnPersonas';
 
+// 로그인 시 초기 페르소나 셋팅
 export const getInitPersona = async () => {
   const query = graphql`
     query getInitPersonaQuery {
