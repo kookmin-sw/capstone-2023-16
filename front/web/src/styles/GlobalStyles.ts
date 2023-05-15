@@ -66,4 +66,8 @@ export const GlobalStyles = createGlobalStyle`
   html, body{
     height: 100%;
   }
+
+  input {  
+    padding: 7px 20px;
+  }
 `;

@@ -2,13 +2,19 @@ import { configureStore } from '@reduxjs/toolkit'
 import userSlice from './slices/userSlice'
 import personaReducer from './slices/personaSlice'
 import newPostReducer from './slices/newPostSlice'
+import newPersonaReducer from './slices/newPersonaSlice'
 
 export const store = configureStore({
   reducer: {
     user: userSlice,
     persona: personaReducer,
-    newPost: newPostReducer
+    newPost: newPostReducer,
+    newPersona: newPersonaReducer
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    immutableCheck: false,
+    serializableCheck: false,
+  })
 })
 
 export type RootState = ReturnType<typeof store.getState>
