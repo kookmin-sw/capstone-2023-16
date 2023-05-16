@@ -50,9 +50,9 @@ const UserInfoPage = () => {
   const isValid = () => { console.log(form);  return form.nickname !== '';}
 
   return <Container deviceType={deviceType}>
-        <div>
-          <ImageButtonField />
-      <CheckBoxField fieldname={'isPublic'} label='비공계 계정' onSave={onSave} />
+      <div>
+        <ImageButtonField />
+        <CheckBoxField fieldname={'isPublic'} label='비공계 계정' onSave={onSave} />
       </div>
       <TextField fieldname='nickname' label='닉네임' onSave={onSave} required />
     <TextField fieldname='birthYear' label='생년' type='number' onSave={onSave} />
@@ -87,7 +87,7 @@ const Container = styled.div<{deviceType: string}>`
     `: css`
       row-gap: 20px;
       div:nth-child(1){
-      grid-row: 1 / 3;
+      grid-row: 1 / 1;
     }
   `}
 `;
