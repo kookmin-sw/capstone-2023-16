@@ -9,6 +9,7 @@ import PersonaApiClient from "../../api/Persona";
 import { useEffect } from "react";
 import useThrottle from "../../hooks/useThrottle";
 import { ReactComponent as DeleteIcon } from '../../assets/icons/x.svg';
+import { setCookie } from "../../utils/cookieUtils";
 
 type PersonaListType = {
   mode: string,
@@ -45,6 +46,7 @@ const PersonaList = ({mode}: PersonaListType) => {
   const onClick = (n: any) => {
     if (mode==="default"){
       dispatch(connect(n));
+      setCookie('persona_id', n.key, 3);
       navigate('/posts');
     } else {
       const answer = window.confirm('정말 삭제하시겠습니까?');
