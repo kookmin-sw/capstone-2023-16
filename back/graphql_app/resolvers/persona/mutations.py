@@ -35,7 +35,7 @@ class Mutation:
         birth_year = new_persona_input['birth_year']
         preferred_tag_bodies = new_persona_input['preferred_tag_bodies']
         preferred_categories = new_persona_input['preferred_categories']
-        _, preferred_category_ids = parse_global_ids(preferred_categories)
+        preferred_category_ids = list(map(lambda x: x['id'].id, preferred_categories))
 
         try:
             new_persona = create_persona(owner, nickname, introduction, is_public, gender, birth_year, job,
