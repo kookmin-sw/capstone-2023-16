@@ -8,10 +8,15 @@ import { Root } from "./dummy/personalListType";
 import PersonaApiClient from "../../api/Persona";
 import { useEffect } from "react";
 import useThrottle from "../../hooks/useThrottle";
+import { ReactComponent as DeleteIcon } from '../../assets/icons/x.svg';
+
+type PersonaListType = {
+  mode: string,
+};
 
 const AVERAGE_LOAD = 20;
 
-const PersonaList = () => {
+const PersonaList = ({mode}: PersonaListType) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,18 +40,23 @@ const PersonaList = () => {
       window.removeEventListener("scroll", throttle);
     };
   }, []);
-
   
   // 페르소나 클릭 이벤트 핸들러
   const onClick = (n: any) => {
-    dispatch(connect(n));
-    navigate('/posts');
+    if (mode==="default"){
+      dispatch(connect(n));
+      navigate('/posts');
+    } else {
+      const answer = window.confirm('정말 삭제하시겠습니까?');
+      answer && alert("삭제되었습니다.");
+    }
   };
 
   return <PersonaListWrapper id='scroll' deviceType={deviceType}>
     {data?.getOwnPersonas?.edges.map((e:Root) => (
       <PersonaCardWrapper deviceType={deviceType} key={e.node.id} onClick={() => onClick(e.node)}>
         <PersonaCard src='' nickname={e.node.nickname} deviceType={deviceType} usageType='choice' />
+        {mode==="setting"&&<DeleteButton devicetype={deviceType}/>}
       </PersonaCardWrapper>))}
   </PersonaListWrapper>
 };
@@ -66,6 +76,7 @@ const PersonaListWrapper = styled.div<{ deviceType: string }>`
 `;
 
 const PersonaCardWrapper = styled.div < { deviceType: string }>`
+  position: relative;
     width: 90%;
     display: flex;
     margin: 0 auto;
@@ -78,3 +89,11 @@ const PersonaCardWrapper = styled.div < { deviceType: string }>`
         cursor: default;
     }
 `;
+
+const DeleteButton = styled(DeleteIcon) < { devicetype: string }>`
+    width: ${(props) => { return props.devicetype === 'mobile' ? '20px' : '50px'; }};
+    position: absolute;
+    top: ${(props) => { return props.devicetype === 'mobile' ? '20px' : '50px'; }};
+    right:  ${(props) => { return props.devicetype === 'mobile' ? '20px' : '40px'; }};
+    z-index: 1;
+`
