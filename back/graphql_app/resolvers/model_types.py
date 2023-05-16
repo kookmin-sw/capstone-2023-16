@@ -67,6 +67,10 @@ class Bookmark(relay.Node):
 
 @gql.django.type(models.Post)
 class Post(relay.Node):
+    @staticmethod
+    def bookmark_cnt_resolver(root: 'Post', info: Info) -> int:
+        return root.bookmark_set.all().count()
+
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용', permission_classes=[MembershipTierPermission])
     content_preview: Optional[str] = strawberry.field(description='글 내용 미리보기')
@@ -79,6 +83,7 @@ class Post(relay.Node):
     like_cnt: int = strawberry.field(get_post_like_cnt, description='좋아요 개수')
     comments: List['Comment'] = strawberry.field(get_comments_of, description='댓글 목록')
     comment_cnt: int = strawberry.field(get_comments_count, description='댓글 갯수')
+    bookmark_cnt: int = strawberry.field(bookmark_cnt_resolver, description='북마크 개수')
     created_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
