@@ -8,7 +8,6 @@ from strawberry_django_plus.relay import GlobalID
 from graphql_app import models
 from graphql_app.resolvers.enums import StringFindMode, SortingDirection
 from graphql_app.resolvers.RetreiveFilter import RetreiveFilter, StringRetrieveFilter
-from graphql_app.resolvers.model_types import User
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import PersonaSortBy, Job
 
@@ -134,9 +133,9 @@ class OwnerFilter(RetreiveFilter):
     """
     소유자 기준 검색 인터페이스
     """
-    owner: User = strawberry.field(description='소유자')
+    owner: 'User' = strawberry.field(description='소유자')
 
-    def __init__(self, owner: User, *args, **kwargs):
+    def __init__(self, owner: 'User', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.owner = owner
 

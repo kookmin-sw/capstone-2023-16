@@ -146,3 +146,6 @@ def get_bookmarks(info: Info) -> QuerySet[Bookmark]:
 
 def get_persona(persona_id: int) -> Persona:
     return Persona.objects.get(id=persona_id)
+
+def get_follower_personas(persona_id) -> List['Persona']:
+    return []

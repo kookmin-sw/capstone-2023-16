@@ -31,5 +31,4 @@ class PersonaOwnershipPermission(PersonaContextPermission):
         if not super().has_permission(source, info, **kwargs):
             return False
         else:
-            print(source)
             return True

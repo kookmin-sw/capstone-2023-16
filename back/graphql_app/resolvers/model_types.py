@@ -115,20 +115,11 @@ class Persona(relay.Node):
     bookmarks = strawberry.field(Bookmark.get_bookmarks_of_persona, description='북마크 목록',
                                  permission_classes=[PersonaOwnershipPermission])
 
-    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
+    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나 목록')
+    follower_personas: relay.Connection['Persona'] = strawberry.field(description='팔로워 페르소나 목록')
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
-
-
-@gql.django.type(models.Persona)
-class PublicPersona(relay.Node):
-    nickname: str = strawberry.field(description='닉네임 (unique)')
-    introduction: str = strawberry.field(description='소개')
-    is_public: bool = strawberry.field(description='공개 여부')
-    preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
-    preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
-    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
 
 
 @gql.django.type(models.WaitFreePersona)
