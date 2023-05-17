@@ -3,7 +3,7 @@ import useDeviceType from '../hooks/useDeviceType';
 import { Container, Input, SubmitButton } from '../components/Account';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import LoginApiClient from '../api/Login';
+import AccountApiClient from '../api/Account';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/slices/userSlice';
 import '../components/Account/style.css';
@@ -21,7 +21,7 @@ const LoginPage = () => {
         username: usernameInput.current.value,
         password: pwInput.current.value
       };
-      LoginApiClient.loginPost(loginform)
+      AccountApiClient.loginPost(loginform)
         .then((res: any) => {
           dispatch(setUser(res.login));
           navigate('/personas');

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {Container, Input, SubmitButton, TermField} from '../components/Account';
 import useDeviceType from '../hooks/useDeviceType';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import AccountApiClient from '../api/Account';
 
 const SignUpPage = () => {
   const deviceType = useDeviceType();
+  const navigate = useNavigate();
   const [termChecked, setTermChecked] = useState<boolean>(false);
   const [misMatchError, setMisMatchError] = useState<boolean>(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
@@ -20,10 +22,16 @@ const SignUpPage = () => {
     console.log(nullErrors);
     return (nullErrors.length === 0 && !misMatchError) ?    // + password mismatch check
       termChecked ?                                         // + term check
-        console.log("회원가입 성공!") :
+        AccountApiClient.register(
+          inputRefs.current[0].value.toString(),  // username
+          inputRefs.current[1].value.toString(),  // email
+          inputRefs.current[2].value.toString()   // password
+        ).then(res => navigate('/personas')) :
         alert("이용약관 동의는 필수입니다."):
         alert(nullErrors.map(e => e.id) + "은 필수 항목입니다."); 
   };
+
+  
 
   return <>
     <Container>
