@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import './styles.css';
 
 const StyleReset = `
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -69,5 +70,8 @@ export const GlobalStyles = createGlobalStyle`
 
   input {  
     padding: 7px 20px;
+    &:focus{
+      outline: 0;
+    }
   }
 `;

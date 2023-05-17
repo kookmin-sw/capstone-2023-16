@@ -1,14 +1,12 @@
 import { useRef } from 'react';
 import useDeviceType from '../hooks/useDeviceType';
-import LoginInput from '../components/Login/LoginInput';
-import LoginButton from '../components/Login/LoginButton';
-//import LoginCheckBox from '../components/Login/LoginCheckBox';
-import LoginContainer from '../components/Login/LoginContainer';
+import { Container, Input, SubmitButton } from '../components/Account';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import LoginApiClient from '../api/Login';
+import AccountApiClient from '../api/Account';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/slices/userSlice';
+import '../components/Account/style.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -23,7 +21,7 @@ const LoginPage = () => {
         username: usernameInput.current.value,
         password: pwInput.current.value
       };
-      LoginApiClient.loginPost(loginform)
+      AccountApiClient.loginPost(loginform)
         .then((res: any) => {
           dispatch(setUser(res.login));
           navigate('/personas');
@@ -34,40 +32,25 @@ const LoginPage = () => {
 
   return(
     <>
-      <LoginContainer>
-        <SignInTitle deviceType={deviceType}>SIGN IN</SignInTitle>
-        <SignUpNav deviceType={deviceType}>PERSONA가 처음이신가요? {deviceType === 'mobile' ? <br /> : null}<Link to='/'>회원가입</Link></SignUpNav>
+      <Container>
+        <h2 className='title'>SIGN IN</h2>
+        <p className='nav'>PERSONA가 처음이신가요? {deviceType === 'mobile' ? <br /> : null}<Link to='/signup'>회원가입</Link></p>
         {/* 비율을 위한 공백 */}
         <EmptyBox deviceType={deviceType}/>
 
-        <LoginInput text='USERNAME' ref={usernameInput} deviceType={deviceType}></LoginInput>
-        <LoginInput text='PASSWORD' ref={pwInput} deviceType={deviceType} isPassword></LoginInput>
+        <Input text='아이디' ref={usernameInput} deviceType={deviceType}></Input>
+        <Input text='비밀번호' ref={pwInput} deviceType={deviceType} isPassword></Input>
         {/*<LoginCheckBox />*/}
         {/* 비율을 위한 공백 */}
         <EmptyBox deviceType={deviceType} />
 
-        <LoginButton deviceType={deviceType} onClick={onLogin} />
-      </LoginContainer>
+        <SubmitButton text='SIGN IN' deviceType={deviceType} onClick={onLogin} />
+      </Container>
     </>
   )
 };
 
 export default LoginPage;
-
-const SignInTitle = styled.h2<{ deviceType: string }>`
-  margin-bottom: 15px;
-  font-size: ${(props) => { return props.deviceType === 'mobile'? '24px': '36px'}};
-  font-weight: 700;
-`
-
-const SignUpNav = styled.p<{ deviceType: string }>`
-font-size: ${(props) => { return props.deviceType === 'mobile' ? '12px' : '16px' }};
-line-height: 140%;
-  & a{
-    font-weight: 700;
-    text-decoration: none;
-  }
-`
 
 const EmptyBox = styled.div<{ deviceType: string }>`
   height: 44px;
