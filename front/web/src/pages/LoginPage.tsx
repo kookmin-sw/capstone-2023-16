@@ -38,8 +38,8 @@ const LoginPage = () => {
         {/* 비율을 위한 공백 */}
         <EmptyBox deviceType={deviceType}/>
 
-        <Input text='아이디' ref={usernameInput} devicetype={deviceType}></Input>
-        <Input text='비밀번호' ref={pwInput} devicetype={deviceType} isPassword></Input>
+        <Input text='아이디' ref={usernameInput} deviceType={deviceType}></Input>
+        <Input text='비밀번호' ref={pwInput} deviceType={deviceType} isPassword></Input>
         {/*<LoginCheckBox />*/}
         {/* 비율을 위한 공백 */}
         <EmptyBox deviceType={deviceType} />

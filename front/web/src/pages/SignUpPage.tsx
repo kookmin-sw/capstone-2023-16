@@ -10,11 +10,20 @@ const SignUpPage = () => {
   const [misMatchError, setMisMatchError] = useState<boolean>(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
   
-  useEffect(() => {
-    (inputRefs?.current[2].value !== inputRefs?.current[3].value)?
-      setMisMatchError(true)
-      : setMisMatchError(false);
-  }, [inputRefs.current[3].value])
+  const matchPassword = (e: any) => {
+    console.log(e.currentTarget.value, inputRefs.current[2].value);
+    setMisMatchError(e.currentTarget.value !== inputRefs.current[2].value)
+  };
+
+  const valid = () => {
+    const nullErrors = inputRefs.current.filter(input => input.value === ""); // null check
+    console.log(nullErrors);
+    return (nullErrors.length === 0 && !misMatchError) ?    // + password mismatch check
+      termChecked ?                                         // + term check
+        console.log("회원가입 성공!") :
+        alert("이용약관 동의는 필수입니다."):
+        alert(nullErrors.map(e => e.id) + "은 필수 항목입니다."); 
+  };
 
   return <>
     <Container>
@@ -23,13 +32,14 @@ const SignUpPage = () => {
         <p className='nav'>계정이 이미 있으신가요? &nbsp;<Link to='/'>로그인</Link></p>
       </div>
       <FieldContainer>
-        <Input text='아이디' ref={(ref:HTMLInputElement)=>inputRefs.current[0]} devicetype={deviceType} />
-        <Input text='이메일' ref={(ref:HTMLInputElement)=>inputRefs.current[1]} devicetype={deviceType} />
-        <Input text='비밀번호' ref={(ref:HTMLInputElement)=>inputRefs.current[2]} devicetype={deviceType} />
-        <Input text='비밀번호 확인' ref={(ref: HTMLInputElement) => inputRefs.current[3]} devicetype={deviceType} />
+        <Input text='아이디' ref={(ref:HTMLInputElement)=>inputRefs.current[0]=ref} deviceType={deviceType} />
+        <Input text='이메일' ref={(ref:HTMLInputElement)=>inputRefs.current[1]=ref} deviceType={deviceType} />
+        <Input text='비밀번호' ref={(ref:HTMLInputElement)=>inputRefs.current[2]=ref} deviceType={deviceType} onChange={matchPassword} isPassword/>
+        <Input text='비밀번호 확인' ref={(ref: HTMLInputElement) => inputRefs.current[3] = ref} deviceType={deviceType} onChange={matchPassword} isPassword/>
+        {misMatchError && <ErrorMessage deviceType={deviceType}>비밀번호가 일치하지 않습니다</ErrorMessage>}
         <TermField checked={termChecked} onChange={() => setTermChecked(!termChecked)} />
       </FieldContainer>
-      <SubmitButton text='SIGN UP'deviceType={deviceType} onClick={()=>console.log('회원가입!')} />
+      <SubmitButton text='SIGN UP' deviceType={deviceType} onClick={valid} />
       
     </Container>
   </>
@@ -40,3 +50,8 @@ export default SignUpPage;
 const FieldContainer = styled.div`
   width: 100%;
 `;
+
+const ErrorMessage = styled.span<{ deviceType: string }>`
+  color: red;
+  font-size: ${props => props.deviceType === "mobile" ? '12px' : '16px' };
+`

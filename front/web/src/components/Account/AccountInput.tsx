@@ -6,19 +6,19 @@ import styled from 'styled-components';
 
 interface AccountInputProps extends React.ComponentPropsWithoutRef<'input'>{
   text: string,
-  devicetype: string,
+  deviceType: string,
   isPassword?: boolean,
 }
 
-const AccountInput = ({ text, isPassword=false, devicetype }: AccountInputProps, ref: ForwardedRef<HTMLInputElement>) => {
+const AccountInput = ({ text, isPassword=false, deviceType, onChange }: AccountInputProps, ref: ForwardedRef<HTMLInputElement>) => {
   const [visibility, setVisibility] = useState<boolean>(isPassword? false : true);
 
   const onToggleVisibility = () => setVisibility(!visibility);
 
-  return (<AccountInputContainer devicetype={devicetype}>
-    <InputLabel htmlFor={text} devicetype={devicetype}>{text}</InputLabel>
-    <AccountInputBox devicetype={devicetype}>
-      <Input id={text} ref={ref} type={visibility ? 'text' : 'password'} devicetype={devicetype} />
+  return (<AccountInputContainer deviceType={deviceType}>
+    <InputLabel htmlFor={text} deviceType={deviceType}>{text}</InputLabel>
+    <AccountInputBox deviceType={deviceType}>
+      <Input id={text} ref={ref} type={visibility ? 'text' : 'password'} deviceType={deviceType} onChange={onChange}/>
       {isPassword ?
         visibility ?
           <VisibleIcon onClick={onToggleVisibility} />
@@ -32,20 +32,20 @@ const AccountInput = ({ text, isPassword=false, devicetype }: AccountInputProps,
 
 export default React.forwardRef(AccountInput);
 
-const AccountInputContainer = styled.div<{ devicetype: string }>`
+const AccountInputContainer = styled.div<{ deviceType: string }>`
   width: 100%;
   height: auto;
-  margin:  ${(props) => { return props.devicetype === 'mobile'? '10px': '20px' }} 0;
+  margin:  ${(props) => { return props.deviceType === 'mobile'? '10px': '20px' }} 0 5px 0;
   border-radius: 10px;
 `
 
-const InputLabel = styled.label<{ devicetype: string }>`
-  font-size: ${(props) => { return props.devicetype === 'mobile'? '16px': '20px'}};
+const InputLabel = styled.label<{ deviceType: string }>`
+  font-size: ${(props) => { return props.deviceType === 'mobile'? '16px': '20px'}};
   font-weight: 700; 
 `
-const AccountInputBox = styled(GrayShadowBox) <{ devicetype: string }>`
-  width: ${(props) => { return props.devicetype === 'mobile'? '100%': '464px' }};
-  height: ${(props) => { return props.devicetype === 'mobile' ? '40px' : '66px' }};
+const AccountInputBox = styled(GrayShadowBox) <{ deviceType: string }>`
+  width: ${(props) => { return props.deviceType === 'mobile'? '100%': '464px' }};
+  height: ${(props) => { return props.deviceType === 'mobile' ? '40px' : '66px' }};
   display: flex;
   margin-top: 9px;
   padding: 5px;
@@ -55,10 +55,10 @@ const AccountInputBox = styled(GrayShadowBox) <{ devicetype: string }>`
   align-items: center;
 `
 
-const Input = styled.input<{ devicetype: string }>`
+const Input = styled.input<{ deviceType: string }>`
   width: 100%;
   border: 0;
-  font-size: ${(props) => { return props.devicetype === 'mobile'? '14px': '20px'}};
+  font-size: ${(props) => { return props.deviceType === 'mobile'? '14px': '20px'}};
   flex: 10;
 `
 
