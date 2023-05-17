@@ -1,12 +1,12 @@
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
-import PostList from '../components/MyPostsPage/PostList';
 import useDeviceType from '../hooks/useDeviceType';
 import { useSelector } from 'react-redux';
 import { RootState } from './../redux/store';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import MyPostsSetting from '../components/MyPostsPage/MyPostsSetting';
+import PostListContainer from '../containers/PostListContainer';
 
 const MyPostsPage = () => {
   const deviceType = useDeviceType();
@@ -24,7 +24,7 @@ const MyPostsPage = () => {
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
             <MyPostsSetting />
           </Header>
-            <PostList />
+            <PostListContainer />
           </MyPostsContainer>
         </MyPostsPageContainer>
         </ContentLayout>
