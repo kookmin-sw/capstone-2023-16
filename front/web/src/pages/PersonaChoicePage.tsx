@@ -11,10 +11,6 @@ const PersonaChoice = () => {
     const deviceType = useDeviceType();
     const loggedInUser = useSelector((state: RootState) => state.user);
     const [mode, setMode] = useState('default');
-    
-    useEffect(() => {
-        console.log(loggedInUser);
-    }, [])
 
     return (<ContentLayout>            
             <PersonaChoiceContainer>
@@ -22,7 +18,6 @@ const PersonaChoice = () => {
                 <HeaderSpan deviceType={deviceType}>페르소나 선택</HeaderSpan>
                 <SettingButton mode={mode} setMode={setMode} />
             </PersonaChoiceHeader>
-
             <PersonaList mode={mode} />
             </PersonaChoiceContainer>
         </ContentLayout>
