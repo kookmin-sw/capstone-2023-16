@@ -1,0 +1,25 @@
+.title {
+  margin-bottom: 15px;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.nav {
+  font-size: 16px;
+  line-height: 140%;
+}
+
+.nav a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media (max-width: 743px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .nav {
+    font-size: 12px;
+  }
+}

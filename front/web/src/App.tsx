@@ -13,6 +13,7 @@ import UserInfoPage from './pages/PersonaCreation/UserInfoPage';
 import TagAndCategoryPage from './pages/PersonaCreation/TagAndCategoryPage';
 import { Suspense } from 'react';
 import LoadingSpinnerPage from './pages/LoadingSpinnerPage';
+import SignUpPage from './pages/SignUpPage';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Suspense fallback={<LoadingSpinnerPage />}>
         <Routes>
             <Route path='/' element={<LoginPage />} />
+            <Route path='/signup' element={<SignUpPage />} />
             <Route path='/personas' element={<PersonaChoice />} />
             <Route path='/posts' element={<MyPostsPage />} />
             <Route path='/post/:postId' element={<PostDetailPage />} />

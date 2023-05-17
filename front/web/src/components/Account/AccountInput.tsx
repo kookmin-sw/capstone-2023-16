@@ -1,41 +1,41 @@
-import React, { ForwardedRef, useState } from 'react';
+import React, { ForwardedRef, InsHTMLAttributes, useState } from 'react';
 import { GrayShadowBox } from '../commons/GrayShadowBox';
 import { ReactComponent as Visible } from '../../assets/icons/visibility.svg';
 import { ReactComponent as Invisible } from '../../assets/icons/visibility-off.svg';
 import styled from 'styled-components';
 
-type LoginInputProps = {
+interface AccountInputProps extends React.ComponentPropsWithoutRef<'input'>{
   text: string,
   deviceType: string,
   isPassword?: boolean,
 }
 
-const LoginInput = ({ text, isPassword, deviceType }: LoginInputProps, ref: ForwardedRef<HTMLInputElement>) => {
+const AccountInput = ({ text, isPassword=false, deviceType, onChange }: AccountInputProps, ref: ForwardedRef<HTMLInputElement>) => {
   const [visibility, setVisibility] = useState<boolean>(isPassword? false : true);
 
   const onToggleVisibility = () => setVisibility(!visibility);
 
-  return (<LoginInputContainer deviceType={deviceType}>
+  return (<AccountInputContainer deviceType={deviceType}>
     <InputLabel htmlFor={text} deviceType={deviceType}>{text}</InputLabel>
-    <LoginInputBox deviceType={deviceType}>
-      <Input id={text} ref={ref} type={visibility ? 'text' : 'password'} deviceType={deviceType} />
+    <AccountInputBox deviceType={deviceType}>
+      <Input id={text} ref={ref} type={visibility ? 'text' : 'password'} deviceType={deviceType} onChange={onChange}/>
       {isPassword ?
         visibility ?
           <VisibleIcon onClick={onToggleVisibility} />
           : <InvisibleIcon onClick={onToggleVisibility} />
           : null
           }
-    </LoginInputBox>
-    </LoginInputContainer>
+    </AccountInputBox>
+    </AccountInputContainer>
   )
 };
 
-export default React.forwardRef(LoginInput);
+export default React.forwardRef(AccountInput);
 
-const LoginInputContainer = styled.div<{ deviceType: string }>`
+const AccountInputContainer = styled.div<{ deviceType: string }>`
   width: 100%;
   height: auto;
-  margin: 29px 0;
+  margin:  ${(props) => { return props.deviceType === 'mobile'? '10px': '20px' }} 0 5px 0;
   border-radius: 10px;
 `
 
@@ -43,9 +43,9 @@ const InputLabel = styled.label<{ deviceType: string }>`
   font-size: ${(props) => { return props.deviceType === 'mobile'? '16px': '20px'}};
   font-weight: 700; 
 `
-const LoginInputBox = styled(GrayShadowBox) <{ deviceType: string }>`
-  width: ${(props) => { return props.deviceType === 'mobile'? '318px': '464px' }};
-  height: ${(props) => { return props.deviceType === 'mobile'? '50px': '66px' }};
+const AccountInputBox = styled(GrayShadowBox) <{ deviceType: string }>`
+  width: ${(props) => { return props.deviceType === 'mobile'? '100%': '464px' }};
+  height: ${(props) => { return props.deviceType === 'mobile' ? '40px' : '66px' }};
   display: flex;
   margin-top: 9px;
   padding: 5px;
@@ -66,11 +66,16 @@ const VisibleIcon = styled(Visible)`
   height: 60% !important;
   flex: 1;
   margin: 10px;
+  &:hover{
+    cursor: pointer;
+  }
 `
 
 const InvisibleIcon = styled(Invisible)`
   height: 60% !important;
   flex: 1;
   margin: 10px;
-
+  &:hover{
+    cursor: pointer;
+  }
 `
