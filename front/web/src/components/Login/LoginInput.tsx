@@ -44,7 +44,7 @@ const InputLabel = styled.label<{ deviceType: string }>`
   font-weight: 700; 
 `
 const LoginInputBox = styled(GrayShadowBox) <{ deviceType: string }>`
-  width: ${(props) => { return props.deviceType === 'mobile'? '318px': '464px' }};
+  width: ${(props) => { return props.deviceType === 'mobile'? '100%': '464px' }};
   height: ${(props) => { return props.deviceType === 'mobile'? '50px': '66px' }};
   display: flex;
   margin-top: 9px;

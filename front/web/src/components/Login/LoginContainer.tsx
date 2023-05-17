@@ -6,7 +6,7 @@ import { GrayShadowBox } from '../commons/GrayShadowBox';
 const LoginContainer = ({ children }: PropsWithChildren) => {
   const deviceType = useDeviceType();
   return <LoginContainerWrapper deviceType={deviceType}>
-    <InnerContainer deviceType={deviceType} >{children}</InnerContainer>
+      <InnerContainer deviceType={deviceType} >{children}</InnerContainer>
   </LoginContainerWrapper>
 };
 
@@ -31,13 +31,13 @@ const LoginContainerWrapper = styled.div<{ deviceType: string }>`
 `
 
 const InnerContainer = styled(GrayShadowBox) <{ deviceType: string }>`
-  width: auto;
-  height: ${(props) => { return props.deviceType !== 'mobile'? '780px' : '60%'}};
+  width: 100%;
+  height: ${(props) => { return props.deviceType !== 'mobile'? '780px' : '100%'}};
   display: flex;
   padding: ${(props) => { return props.deviceType !== 'mobile' ? '79px' : '21px' }};
   padding-top: ${(props) => { return props.deviceType !== 'mobile' ? '116px' : '40px' }};
   background-color: #fefefe;
-  border-radius: 50px;
+  border-radius: ${(props) => { return props.deviceType !== 'mobile' ? '50px' : '20px' }};;
   flex-direction: column;
   align-items: start;
   box-sizing: border-box;
