@@ -351,7 +351,7 @@ input DatetimeBetween {
   startDt: DateTime = null
 
   """조회 종료 일시"""
-  endDt: DateTime = "2023-05-11T22:04:46.431306"
+  endDt: DateTime = "2023-05-16T20:27:34.071437"
 }
 
 enum DurationType {
@@ -771,6 +771,19 @@ type Persona implements Node {
     """Returns the items in the list that come after the specified cursor."""
     last: Int = null
   ): PersonaConnection!
+  followerPersonas(
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+
+    """Returns the first n items from the list."""
+    first: Int = null
+
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): PersonaConnection!
 
   """생성 일시"""
   createdAt: DateTime!
@@ -947,6 +960,12 @@ type Post implements Node {
 
   """댓글 목록"""
   comments: [Comment!]!
+
+  """댓글 갯수"""
+  commentCnt: Int!
+
+  """북마크 개수"""
+  bookmarkCnt: Int!
 
   """생성 시각"""
   createdAt: DateTime!
@@ -1267,10 +1286,10 @@ enum SortingDirection {
 """통계에 사용할 데이터의 날짜 범위"""
 input StatisticsDatetimeBetween {
   """조회 시작 일시 (기본값 : 30일 이전)"""
-  startDatetime: DateTime = "2023-04-11T22:04:46.528352"
+  startDatetime: DateTime = "2023-04-16T20:27:34.151867"
 
   """조회 종료 일시 (기본값 : 오늘)"""
-  endDatetime: DateTime = "2023-05-11T22:04:46.528391"
+  endDatetime: DateTime = "2023-05-16T20:27:34.151887"
 }
 
 enum StringFindMode {

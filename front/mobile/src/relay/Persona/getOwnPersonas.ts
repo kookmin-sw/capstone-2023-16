@@ -14,11 +14,14 @@ export const getOwnPersonas = async (nickname: string) => {
       ) {
         edges {
           node {
-            introduction
-            id
-            isCertified
-            isPublic
-            nickname
+            preferredTags {
+              edges {
+                node {
+                  id
+                  body
+                }
+              }
+            }
             preferredCategories {
               edges {
                 node {
@@ -27,6 +30,28 @@ export const getOwnPersonas = async (nickname: string) => {
                 }
               }
             }
+            birthYear
+            followingPersonas {
+              edges {
+                node {
+                  id
+                  nickname
+                }
+              }
+            }
+            followerPersonas {
+              edges {
+                node {
+                  id
+                  nickname
+                }
+              }
+            }
+            introduction
+            job
+            nickname
+            id
+            gender
           }
         }
       }

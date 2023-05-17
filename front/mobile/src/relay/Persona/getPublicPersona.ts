@@ -9,10 +9,46 @@ export const getPublicPersona = async (personaId: string) => {
   const query = graphql`
     query getPublicPersonaQuery($personaId: GlobalID!) {
       getPublicPersona(personaId: $personaId) {
-        nickname
-        job
+        followerPersonas {
+          edges {
+            node {
+              id
+              nickname
+            }
+          }
+        }
+        birthYear
+        followingPersonas {
+          edges {
+            node {
+              id
+              nickname
+            }
+          }
+        }
+        gender
         id
         introduction
+        isCertified
+        isPublic
+        job
+        nickname
+        preferredCategories {
+          edges {
+            node {
+              body
+              id
+            }
+          }
+        }
+        preferredTags {
+          edges {
+            node {
+              body
+              id
+            }
+          }
+        }
       }
     }
   `;
