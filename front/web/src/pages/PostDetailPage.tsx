@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,13 +9,31 @@ import { RootState } from '../redux/store';
 import editIcon from "../assets/imgs/post.png"
 import deleteIcon from "../assets/imgs/trashcan.png"
 import post from '../components/PostDetail/dummy/post.json';
+import PostApiClient from '../api/Post';
 
+type PostType = {
+  title: string,
+  content: string,
+  createdAt: string,
+};
+
+const initialPost = {
+  title: "",
+  content: "",
+  createdAt: "",
+};
 
 const PostDetailPage = () => {
   const deviceType = useDeviceType();
   const persona = useSelector((state: RootState) => state.persona);
+  const [post, setPost] = useState<PostType>(initialPost);
   const { postId } = useParams();
   const navigate = useNavigate();
+
+  if(postId){
+    const queryData:any = PostApiClient.postGet(postId);
+    console.log(queryData?.data?.getPost?.title);
+  }  
 
   const onEdit = () => {
     alert('편집모드로 전환합니다.');
@@ -35,10 +53,10 @@ const PostDetailPage = () => {
       </PersonaCardWrapper>}
     <ContentLayout>
       <Header deviceType={deviceType}>
-          <div>
-            <Title deviceType={deviceType}>{post.title}</Title>
-            <Date deviceType={deviceType}>{post.createdAt.toString()}</Date>
-          </div>
+        <div>
+          <Title deviceType={deviceType}>{post.title}</Title>
+          <Date deviceType={deviceType}>{post.createdAt.toString()}</Date>
+        </div>
         <ButtonSet deviceType={deviceType}>
           <ImgButton deviceType={deviceType} src={editIcon} onClick={onEdit}></ImgButton>
           <ImgButton deviceType={deviceType} src={deleteIcon} onClick={onDelete}></ImgButton>

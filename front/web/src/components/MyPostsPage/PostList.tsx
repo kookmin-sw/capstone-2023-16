@@ -11,7 +11,7 @@ const PostList = () => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
   const connected_persona = useSelector((state: RootState) => state.persona);
-  const { data:postList } = PostApiClient.postOwnget(connected_persona.id);
+  const { data:postList } = PostApiClient.postListGet(connected_persona.id);
 
   return <PostListContainer deviceType={deviceType} >
     {postList?.getPublicPosts.edges.map((p:any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >

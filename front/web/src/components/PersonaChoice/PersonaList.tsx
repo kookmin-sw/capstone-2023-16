@@ -46,7 +46,7 @@ const PersonaList = ({mode}: PersonaListType) => {
   const onClick = (n: any) => {
     if (mode==="default"){
       dispatch(connect(n));
-      setCookie('persona_id', n.key, 3);
+      setCookie('persona_id', n.id, 3);
       navigate('/posts');
     } else {
       const answer = window.confirm('정말 삭제하시겠습니까?');
