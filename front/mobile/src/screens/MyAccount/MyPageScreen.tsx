@@ -1,29 +1,25 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
 import {Image, Platform, TouchableOpacity} from 'react-native';
 
 import * as ButtonTheme from '../../components/common/theme';
-import SmallButton from '../../components/common/Buttons/SmallButton';
 import {colors} from '../../components/common/colors';
-import {
-  Container,
-  DimensionTheme,
-  ScreenWidth,
-} from '../../components/common/shared';
+import {Container, DimensionTheme} from '../../components/common/shared';
 import SmallText from '../../components/common/Texts/SmallText';
 import {imagePath} from '../../utils/imagePath';
-import {personalTagData} from '../../constants/tag';
 import {NavigationData} from '../../navigation/AppNavigator';
 
-import {useLazyLoadQuery} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
 import {TagCard} from '../../components/common/Cards/TagCard';
 import {StatisticsCard} from '../../components/common/Cards/StatisticsCard';
 import {useAppSelector} from '../../redux/hooks';
-import {selectUser, selectPersona} from '../../redux/slices/userSlice';
+import {selectPersona} from '../../redux/slices/userSlice';
 import ImageButton from '../../components/common/Buttons/ImageButton';
 import {RoundedTab} from '../../components/common/Tab/RoundedTab';
+import {CustomLineChart} from '../../components/common/Charts/CustomLineChart';
+import {getPublicPersona} from '../../relay/Persona/getPublicPersona';
+import {getOwnPersonas} from '../../relay/Persona/getOwnPersonas';
+import {getOwnReadPostStatistics} from '../../relay/Statistics/getOwnReadPostStatistics';
 
 const BackgroundSection = styled.ImageBackground`
   flex: 1;
@@ -42,6 +38,7 @@ const HeaderSection = styled.View`
   flex: 1;
   margin-top: ${Platform.OS === 'ios' ? 40 : 10};
   flex-direction: row;
+  justfiy-conent: space-between;
   position: absolute;
   left: 10px;
   top: 5px;
@@ -89,10 +86,6 @@ const TabSection = styled.View`
 
 const ScrollSection = styled.ScrollView``;
 
-const RepresentingTagSection = styled.View`
-  margin-top: 30px;
-`;
-
 const IntersetTagSection = styled.View`
   margin-top: 30px;
 `;
@@ -101,63 +94,54 @@ const StatisticsSection = styled.View`
   margin-top: 30px;
 `;
 
-const getOwnPersonaQuery = graphql`
-  query MyPageScreenQuery($nickname: String!, $personaId: GlobalID!) {
-    getOwnPersonas(
-      nicknameFilter: {token: $nickname}
-      sortingOpt: {sortBy: ID}
-    ) {
-      edges {
-        node {
-          introduction
-          id
-          isCertified
-          isPublic
-          nickname
-          preferredCategories {
-            edges {
-              node {
-                body
-                id
-              }
-            }
-          }
-        }
-      }
-    }
-    getPublicPersona(personaId: $personaId) {
-      nickname
-      job
-      id
-      introduction
-    }
-  }
-`;
-
 type Props = NavigationData<'MyPage'>;
 
 export const MyPageScreen: FC<Props> = ({navigation, route}) => {
-  const user = useAppSelector(selectUser);
   const persona = useAppSelector(selectPersona);
-  const nickname = persona.nickname;
-  const personaId = persona.id;
-
-  console.log('persona : ');
-  console.log(persona);
-
-  const data = useLazyLoadQuery(
-    getOwnPersonaQuery,
-    {nickname, personaId},
-    {fetchPolicy: 'store-or-network'},
-  );
+  const [data, setData] = useState();
 
   useEffect(() => {
-    console.log(route.params.isMine);
-    console.log(route.params.nickname);
-    console.log('###mypage');
-    console.log(data);
-    console.log(`user : ${JSON.stringify(user)}`);
-  }, [data]);
+    // const fetchStatisticsData = async () => {
+    //   try {
+    //     const response = await getOwnReadPostStatistics(persona.id, {
+    //       datetimeBetween: {
+    //         endDatetime: '2023-05-11T15:20:27.999983',
+    //         startDatetime: '2023-04-11T15:20:27.999955',
+    //       },
+    //     });
+    //     console.log('stat', response);
+    //   } catch (error) {
+    //     console.log('error on stat : ', error);
+    //   }
+    // };
+    console.log('current persona_id : ', persona.id);
+    const fetchPulicData = async () => {
+      try {
+        const response = await getPublicPersona(route.params.id);
+        console.log('pulbic persona : ');
+        setData(response);
+        console.log(data);
+      } catch (error) {
+        console.error('Error on public data:', error);
+      }
+    };
+
+    const fetchMyData = async () => {
+      try {
+        const response = await getOwnPersonas(persona.nickname);
+        setData(response);
+        console.log('my persona : ', response);
+      } catch (error) {
+        console.log('Error on my data: ', error);
+      }
+    };
+
+    if (route.params.isMine) {
+      fetchMyData();
+    } else {
+      fetchPulicData();
+    }
+  }, [persona.id, persona.nickname, route.params.id, route.params.isMine]);
 
   return (
     <BackgroundSection source={imagePath.background}>
@@ -207,9 +191,7 @@ export const MyPageScreen: FC<Props> = ({navigation, route}) => {
             </SmallText>
             <ProfileDescription>
               <SmallText textStyle={{color: colors.black}}>
-                {route.params.isMine
-                  ? data.getOwnPersonas.edges[0].node.introduction
-                  : data.getPublicPersona.introduction}
+                {data ? data.introduction : null}
               </SmallText>
             </ProfileDescription>
           </ProfileSection>
@@ -219,13 +201,25 @@ export const MyPageScreen: FC<Props> = ({navigation, route}) => {
                 route.params.isMine
                   ? [
                       {title: 'MY CONTENT', key: 'MyContent'},
-                      {title: 'FOLLOW', key: 'Follow'},
+                      {
+                        title: 'FOLLOW',
+                        key: 'Follow',
+                        isMine: true,
+                        followingList: data?.followingPersonas,
+                        followerList: data?.followerPersonas,
+                      },
                       {title: 'HISTORY', key: 'History'},
                       {title: 'PERSONA', key: 'Persona'},
                     ]
                   : [
                       {title: 'CONTENT', key: 'MyContent'},
-                      {title: 'FOLLOW', key: 'Follow'},
+                      {
+                        title: 'FOLLOW',
+                        key: 'Follow',
+                        isMine: false,
+                        followingList: data?.followingPersonas,
+                        followerList: data?.followerPersonas,
+                      },
                       {title: 'MEMBERSHIP', key: 'History'},
                       {title: 'DONATE', key: 'Persona'},
                     ]
@@ -233,34 +227,19 @@ export const MyPageScreen: FC<Props> = ({navigation, route}) => {
             />
           </TabSection>
           <ScrollSection>
-            <RepresentingTagSection>
-              <TagCard
-                tagTitle={`${
-                  route.params.isMine
-                    ? data.getOwnPersonas.edges[0].node.nickname
-                    : data.getPublicPersona.nickname
-                }님을 소개하는 태그`}
-                tags={personalTagData}
-              />
-            </RepresentingTagSection>
             <IntersetTagSection>
               <TagCard
-                tagTitle={`${
-                  route.params.isMine
-                    ? data.getOwnPersonas.edges[0].node.nickname
-                    : data.getPublicPersona.nickname
-                }님이 관심있는 태그`}
-                tags={personalTagData}
+                tagTitle={`${data && data.nickname}님이 선호하는 태그`}
+                tags={data && data?.preferredTags.edges}
               />
             </IntersetTagSection>
             <StatisticsSection>
               <StatisticsCard
                 statisticsTitle={`${
-                  route.params.isMine
-                    ? data.getOwnPersonas.edges[0].node.nickname
-                    : data.getPublicPersona.nickname
-                }님이 읽은 일일 피드 수`}
-              />
+                  data && data.nickname
+                }님이 읽은 일일 피드 수`}>
+                {/* <CustomLineChart />  */}
+              </StatisticsCard>
             </StatisticsSection>
           </ScrollSection>
         </RoundSection>
