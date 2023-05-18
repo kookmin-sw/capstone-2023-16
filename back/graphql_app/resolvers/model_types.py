@@ -107,6 +107,12 @@ class Persona(relay.Node):
     구독자, 구독 대상, 컨텐츠 작성자에 해당되는 페르소나
     User : Persona = 1 : N
     """
+
+    @staticmethod
+    def liked_posts_resolver(root: 'Persona', info: Info) -> List['Post']:
+        persona = models.Persona.objects.get(id=root.id)
+        return list(map(lambda like: like.post, persona.postlike_set.all()))
+
     owner: User = strawberry.field(User.get_user_with_info, description='소유자')
     nickname: str = strawberry.field(description='닉네임 (unique)')
     introduction: str = strawberry.field(description='소개')
@@ -119,6 +125,7 @@ class Persona(relay.Node):
     preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
     bookmarks = strawberry.field(Bookmark.get_bookmarks_of_persona, description='북마크 목록',
                                  permission_classes=[PersonaOwnershipPermission])
+    liked_posts = strawberry.field(liked_posts_resolver, description='좋아요 한 포스트 목록')
 
     following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나 목록')
     follower_personas: relay.Connection['Persona'] = strawberry.field(description='팔로워 페르소나 목록')
