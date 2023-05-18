@@ -17,7 +17,7 @@ type CreationFormType = {
   job?: string,
   nickname: string,
   preferredCategories?: {id: string} [],
-  preferredTagBodies?: string,
+  preferredTagBodies?: string [],
 }
 
 const initialState:CreationFormType = {
