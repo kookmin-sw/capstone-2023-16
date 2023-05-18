@@ -52,10 +52,6 @@ const CardItem: FC<CardProps> = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  console.log(route);
-  // console.log(navigation.getState());
-  // console.log(props.id);
-  // console.log(props.id);
   const [modalVisible, setModalVisible] = useState(false);
 
   const pressButton = () => {
@@ -73,7 +69,11 @@ const CardItem: FC<CardProps> = props => {
         text: 'Yes',
         onPress: () => {
           dispatch(setPersona({id: props.id, nickname: props.nickname}));
-          navigation.navigate('MyPage');
+          navigation.navigate('MyPage', {
+            isMine: true,
+            nickname: props.nickname,
+            id: props.id,
+          });
         },
       },
       {text: 'No', onPress: () => console.log('keep')},
@@ -81,7 +81,11 @@ const CardItem: FC<CardProps> = props => {
   };
 
   const PersonaPage = () => {
-    navigation.navigate('MyPage');
+    navigation.navigate('MyPage', {
+      isMine: false,
+      nickname: props.nickname,
+      id: props.id,
+    });
   };
 
   const functinoHandler = {
@@ -103,24 +107,26 @@ const CardItem: FC<CardProps> = props => {
         </SmallText>
       </ProfileInfo>
       <RightSection>
-        <SmallButton
-          btnStyles={[
-            ButtonTheme.whiteBGpurpleSD.btnStyle,
-            {
-              width: DimensionTheme.width(53),
-              height: DimensionTheme.height(30),
-              // marginLeft: DimensionTheme.width(105),
-              backgroundColor: false ? colors.white : colors.purplelight,
-              borderRadius: 8,
-            },
-          ]}
-          textStyles={{
-            fontSize: DimensionTheme.fontSize(12),
-            color: colors.black,
-          }}
-          onPress={() => {}}>
-          {false ? '팔로잉' : '팔로우'}
-        </SmallButton>
+        {route.name !== 'Persona' ? (
+          <SmallButton
+            btnStyles={[
+              ButtonTheme.whiteBGpurpleSD.btnStyle,
+              {
+                width: DimensionTheme.width(53),
+                height: DimensionTheme.height(30),
+                // marginLeft: DimensionTheme.width(105),
+                backgroundColor: false ? colors.white : colors.purplelight,
+                borderRadius: 8,
+              },
+            ]}
+            textStyles={{
+              fontSize: DimensionTheme.fontSize(12),
+              color: colors.black,
+            }}
+            onPress={() => {}}>
+            {false ? '팔로잉' : '팔로우'}
+          </SmallButton>
+        ) : null}
         <TouchableOpacity
           style={{marginLeft: DimensionTheme.width(12)}}
           onPress={pressButton}>

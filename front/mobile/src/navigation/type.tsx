@@ -25,6 +25,6 @@ export type PersonaInfo = {
 
 export type PersonaPage = {
   isMine: boolean;
-  nickname: string;
-  id: string;
+  nickname: any;
+  id: any;
 };
