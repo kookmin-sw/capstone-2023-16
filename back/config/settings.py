@@ -19,6 +19,28 @@ DEBUG = True
 ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost", "persona-backend.herokuapp.com"]
 APPEND_SLASH = False
 
+# PROD, DEV
+env = os.environ.get('ENV', 'DEV').upper()
+if env == 'PROD':
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn="https://6fde7017efda4d799ea24165d7d04a7c@o4504932139270144.ingest.sentry.io/4504932140253184",
+        integrations=[
+            DjangoIntegration(),
+        ],
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
+
 # Application definition
 
 DJANGO_DEFAULT_APPS = [
@@ -44,6 +66,7 @@ GRAPHQL_APPS = [
     "strawberry_django_plus"
 ]
 
+STRAWBERRY_DJANGO_GENERATE_ENUMS_FROM_CHOICES = True
 AUTH_USER_MODEL = 'graphql_app.User'
 
 SERVICE_APPS = [
@@ -100,7 +123,7 @@ DATABASES = {
         'USER': os.environ.get('MYSQL_USER'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
         'HOST': os.environ.get('MYSQL_HOST'),
-        'PORT': '3306',
+        'PORT': os.environ.get('MYSQL_PORT', '3306'),
     }
 }
 

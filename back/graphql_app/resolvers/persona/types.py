@@ -8,7 +8,6 @@ from strawberry_django_plus.relay import GlobalID
 from graphql_app import models
 from graphql_app.resolvers.enums import StringFindMode, SortingDirection
 from graphql_app.resolvers.RetreiveFilter import RetreiveFilter, StringRetrieveFilter
-from graphql_app.resolvers.model_types import User
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import PersonaSortBy, Job
 
@@ -27,7 +26,7 @@ class PersonaCreateInput:
     introduction: Optional[str] = strawberry.field(default='자기소개가 없습니다.', description='소개')
     is_public: Optional[bool] = strawberry.field(default=True, description='공개 여부')
     gender: Optional[Gender] = strawberry.field(default=None, description='성별')
-    age: Optional[int] = strawberry.field(default=None, description='나이')
+    birth_year: Optional[int] = strawberry.field(default=None, description='나이')
     job: Optional[Job] = strawberry.field(default=None, description='직업')
     preferred_tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
                                                                  description='선호하는 태그의 body 목록 (insert 됨)')
@@ -45,18 +44,18 @@ class PersonaSortingOption:
 
 
 @strawberry.input
-class AgeFilter(RetreiveFilter):
+class BirthYearFilter(RetreiveFilter):
     """
-    일정 나이 구간의 데이터를 받아 오기 위한 인터페이스
+    일정 생년 구간의 데이터를 받아 오기 위한 인터페이스
     """
-    min_age: Optional[int] = strawberry.field(default=0, description='최소 나이')
-    max_age: Optional[int] = strawberry.field(default=100, description='최대 나이')
+    min_birth_year: Optional[int] = strawberry.field(default=0, description='최소 생년')
+    max_birth_year: Optional[int] = strawberry.field(default=100, description='최대 생년')
 
     def apply(self, qs: QuerySet):
-        if self.min_age:
-            qs = qs.filter(age__isnull=False, age__gte=self.min_age)
-        if self.max_age:
-            qs = qs.filter(age__isnull=False, age__lte=self.max_age)
+        if self.min_birth_year:
+            qs = qs.filter(birth_year__isnull=False, birth_year__gte=self.min_birth_year)
+        if self.max_birth_year:
+            qs = qs.filter(birth_year__isnull=False, birth_year__lte=self.max_birth_year)
 
         return qs
 
@@ -134,9 +133,9 @@ class OwnerFilter(RetreiveFilter):
     """
     소유자 기준 검색 인터페이스
     """
-    owner: User = strawberry.field(description='소유자')
+    owner: 'User' = strawberry.field(description='소유자')
 
-    def __init__(self, owner: User, *args, **kwargs):
+    def __init__(self, owner: 'User', *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.owner = owner
 
