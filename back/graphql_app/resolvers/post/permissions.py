@@ -41,9 +41,9 @@ class MembershipTierPermission(BasePermission):
         try:
             persona = Persona.objects.get(owner=info.context.request.user, id=persona_id)
         except Persona.DoesNotExist:
-            return has_required_tier(persona_id, source)
+            return False
         else:
-            return persona.id == source.author.id
+            return persona.id == source.author.id or has_required_tier(persona_id, source)
 
 
 class OwnerOnlyPermission(BasePermission):
