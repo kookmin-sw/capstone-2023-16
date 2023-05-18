@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {StyleProp, ViewStyle} from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
-import {TagColor} from '../../../constants/tag';
 
 import * as ButtonTheme from '../../common/theme';
 import SmallButton from '../Buttons/SmallButton';
@@ -22,7 +21,6 @@ const TagTitleSection = styled.View``;
 const TagSection = styled.View`
   margin-top: 10px;
   flex-direction: row;
-  justify-content: space-between;
   flex-wrap: wrap;
 `;
 
@@ -47,7 +45,7 @@ export const TagCard: FC<TagProps> = props => {
         </SmallText>
       </TagTitleSection>
       <TagSection>
-        {props.tags.map((value: {title: string; category: string}) => {
+        {props.tags?.map((value: {node: {body: string; id: string}}) => {
           return (
             <SmallButton
               btnStyles={[
@@ -60,8 +58,7 @@ export const TagCard: FC<TagProps> = props => {
                   borderRadius: 8,
                   marginBottom: 15,
                   marginLeft: 10,
-                  // tag 분야에 따라 다른 색으로...
-                  backgroundColor: TagColor[value.category],
+                  backgroundColor: colors.purplelight,
                 },
               ]}
               textStyles={{
@@ -69,7 +66,7 @@ export const TagCard: FC<TagProps> = props => {
                 fontSize: DimensionTheme.fontSize(12),
               }}
               onPress={() => {}}>
-              #{value.title}
+              #{value.node?.body}
             </SmallButton>
           );
         })}
