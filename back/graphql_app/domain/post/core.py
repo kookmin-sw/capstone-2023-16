@@ -63,7 +63,7 @@ def has_required_tier(requested_persona_id: int, post: int | Post):
         post: Post = Post.objects.get(id=post)
 
     if post.required_membership_tier is None:
-        return None
+        return True
     else:
         membership = Membership.objects.filter(creator=post.author, subscriber=requested_persona_id)
         if not membership:
