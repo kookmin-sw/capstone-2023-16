@@ -26,21 +26,12 @@ import {NavigationData} from '../navigation/AuthNavigator';
 import {graphql} from 'babel-plugin-relay/macro';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
-import {useAppDispatch, useAppSelector} from '../redux/hooks';
-import {login, setPersona} from '../redux/slices/userSlice';
+import {useAppDispatch} from '../redux/hooks';
 // import { useMutation } from 'react-relay';
 import {commitMutation, useLazyLoadQuery, useMutation} from 'react-relay';
 // import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+import {login} from '../redux/slices/userSlice';
 
-import {
-  login,
-  selectUser,
-  logout,
-  selectAuth,
-  setPersona,
-} from '../redux/slices/userSlice';
-
-import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 import {CookieSetting} from '../graphQL/CookieSetting/CookieSetting';
 // import {GetPersonaQuery} from '../graphQL/CookieSetting/__generated__/GetPersonaQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
@@ -128,6 +119,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
               onCompleted(data) {
                 console.log('@login success');
                 console.log(data.login);
+                dispatch(login(data.login));
                 console.log(`data ? : ${JSON.stringify(data)}`);
               },
               onError(error) {

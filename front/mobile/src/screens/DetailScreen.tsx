@@ -20,41 +20,45 @@ import {NavigationData} from '../navigation/AppNavigator';
 import Comment from '../components/Detail/Comment';
 
 import {useLazyLoadQuery, useMutation} from 'react-relay';
-import { detail_getPostQuery } from '../graphQL/Post/DetailPost';
-import { PostLikeMutation } from '../graphQL/Post/__generated__/PostLikeMutation.graphql';
-import { Post_likeMutation } from '../graphQL/Post/PostLike';
-import { CommentInputMutation } from '../graphQL/Post/__generated__/CommentInputMutation.graphql';
-import { comments_inputMutation } from '../graphQL/Post/CommentInput';
-import { persona_LBQuery } from '../graphQL/Post/PersonaLBGet';
-import { useAppSelector } from '../redux/hooks';
-import { selectPersona } from '../redux/slices/userSlice';
-import { PostBookmarkMutation } from '../graphQL/Post/__generated__/PostBookmarkMutation.graphql';
-import { Post_bookmarkMutation } from '../graphQL/Post/PostBookmark';
-import { Alert } from 'react-native';
+import {detail_getPostQuery} from '../graphQL/Post/DetailPost';
+import {PostLikeMutation} from '../graphQL/Post/__generated__/PostLikeMutation.graphql';
+import {Post_likeMutation} from '../graphQL/Post/PostLike';
+import {CommentInputMutation} from '../graphQL/Post/__generated__/CommentInputMutation.graphql';
+import {comments_inputMutation} from '../graphQL/Post/CommentInput';
+import {persona_LBQuery} from '../graphQL/Post/PersonaLBGet';
+import {useAppSelector} from '../redux/hooks';
+import {selectPersona} from '../redux/slices/userSlice';
+import {PostBookmarkMutation} from '../graphQL/Post/__generated__/PostBookmarkMutation.graphql';
+import {Post_bookmarkMutation} from '../graphQL/Post/PostBookmark';
+import {Alert} from 'react-native';
 import CommentContent from '../components/Detail/CommentContent';
 
 type Props = NavigationData<'DetailContent'>;
 
 type bookmarkPost = {
-  post:{
-    id:string
-  }
-}
+  post: {
+    id: string;
+  };
+};
 
 type likePost = {
-  id:string
-}
+  id: string;
+};
 
-const isBookmark = (bookmark:Array<bookmarkPost>, feed_id:string) => {
-  for (let i = 0; i < bookmark.length; i++){
-    if (bookmark[i].post.id === feed_id) {return true;}
+const isBookmark = (bookmark: Array<bookmarkPost>, feed_id: string) => {
+  for (let i = 0; i < bookmark.length; i++) {
+    if (bookmark[i].post.id === feed_id) {
+      return true;
+    }
   }
   return false;
 };
 
-const isLike = (like:Array<likePost>, feed_id:string) => {
-  for (let i = 0; i < like.length; i++){
-    if (like[i].id === feed_id) {return true;}
+const isLike = (like: Array<likePost>, feed_id: string) => {
+  for (let i = 0; i < like.length; i++) {
+    if (like[i].id === feed_id) {
+      return true;
+    }
   }
   return false;
 };
@@ -63,33 +67,39 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const feed_id: string = route.params as unknown as string;
   console.log(`post_id: ${feed_id}`);
   const persona_id = useAppSelector(selectPersona);
-  
+
   const [render, setRender] = useState(false);
 
   const data = useLazyLoadQuery(
     detail_getPostQuery,
     {id: feed_id},
-    {fetchPolicy: 'store-or-network'}
+    {fetchPolicy: 'store-or-network'},
   );
 
   const personaData = useLazyLoadQuery(
     persona_LBQuery,
     {id: persona_id},
-    {fetchPolicy: 'store-or-network'}
+    {fetchPolicy: 'store-or-network'},
   );
 
   console.log('DetailPost:', data);
   console.log('PersonaData:', personaData.getPublicPersona.likedPosts);
 
   const [like, setLike] = useState(data.getPost.likeCnt);
-  const [likeCheck, setLikeCheck] = useState(isLike(personaData.getPublicPersona.likedPosts, feed_id));
+  const [likeCheck, setLikeCheck] = useState(
+    isLike(personaData.getPublicPersona.likedPosts, feed_id),
+  );
   const [bookmark, setBookmark] = useState(data.getPost.bookmarkCnt);
-  const [bookmarkCheck, setBookmarkCheck] = useState(isBookmark(personaData.getPublicPersona.bookmarks, feed_id));
+  const [bookmarkCheck, setBookmarkCheck] = useState(
+    isBookmark(personaData.getPublicPersona.bookmarks, feed_id),
+  );
   const [commentCount, setCommentCount] = useState(data.getPost.commentCnt);
-  const [commitLike, isInFlightLike] = useMutation<PostLikeMutation>(Post_likeMutation);
+  const [commitLike, isInFlightLike] =
+    useMutation<PostLikeMutation>(Post_likeMutation);
   // const [commitComment, isInFlightComment] = useMutation<CommentInputMutation>(comments_inputMutation);
-  const [commitBookmark, isInFlightlike] = useMutation<PostBookmarkMutation>(Post_bookmarkMutation);
-
+  const [commitBookmark, isInFlightlike] = useMutation<PostBookmarkMutation>(
+    Post_bookmarkMutation,
+  );
 
   return (
     <SafeAreaView>
@@ -115,32 +125,32 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
             onPress={() => {
               if (!likeCheck) {
                 commitLike({
-                  variables:{
-                    postId:feed_id,
+                  variables: {
+                    postId: feed_id,
                   },
-                  onCompleted(likedata){
-                    if (likedata.postLikeToggle === true){
+                  onCompleted(likedata) {
+                    if (likedata.postLikeToggle === true) {
                       setLikeCheck(true);
                       setLike(like + 1);
                     }
                   },
-                  onError(error){
+                  onError(error) {
                     console.log(`@likeToggle error: ${error}`);
                     Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                   },
                 });
               } else {
                 commitLike({
-                  variables:{
-                    postId:feed_id,
+                  variables: {
+                    postId: feed_id,
                   },
-                  onCompleted(likedata){
-                    if (likedata.postLikeToggle === false){
+                  onCompleted(likedata) {
+                    if (likedata.postLikeToggle === false) {
                       setLikeCheck(false);
                       setLike(like - 1);
                     }
                   },
-                  onError(error){
+                  onError(error) {
                     console.log(`@likeToggle error: ${error}`);
                     Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                   },
@@ -159,32 +169,32 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
             onPress={() => {
               if (!bookmarkCheck) {
                 commitBookmark({
-                  variables:{
-                    postId:feed_id,
+                  variables: {
+                    postId: feed_id,
                   },
-                  onCompleted(bookmarkdata){
-                    if (bookmarkdata.postBookmarkToggle === true){
+                  onCompleted(bookmarkdata) {
+                    if (bookmarkdata.postBookmarkToggle === true) {
                       setBookmarkCheck(true);
                       setBookmark(like + 1);
                     }
                   },
-                  onError(error){
+                  onError(error) {
                     console.log(`@likeToggle error: ${error}`);
                     Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                   },
                 });
               } else {
                 commitBookmark({
-                  variables:{
-                    postId:feed_id,
+                  variables: {
+                    postId: feed_id,
                   },
-                  onCompleted(bookmarkdata){
-                    if (!bookmarkdata.postBookmarkToggle){
+                  onCompleted(bookmarkdata) {
+                    if (!bookmarkdata.postBookmarkToggle) {
                       setBookmarkCheck(false);
                       setBookmark(like - 1);
                     }
                   },
-                  onError(error){
+                  onError(error) {
                     console.log(`@likeToggle error: ${error}`);
                     Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                   },
@@ -215,6 +225,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
               feed_id={data.getPost.id}
               title={data.getPost.title}
               author={data.getPost.author.nickname}
+              author_id={data.getPost.author.id}
               author_img={String(require('../assets/profileImg.png'))}
             />
             <Text style={style.Text}>{data.getPost.content}</Text>
@@ -233,32 +244,32 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
                 onPress={() => {
                   if (!likeCheck) {
                     commitLike({
-                      variables:{
-                        postId:feed_id,
+                      variables: {
+                        postId: feed_id,
                       },
-                      onCompleted(likedata){
-                        if (likedata.postLikeToggle){
+                      onCompleted(likedata) {
+                        if (likedata.postLikeToggle) {
                           setLikeCheck(true);
                           setLike(like + 1);
                         }
                       },
-                      onError(error){
+                      onError(error) {
                         console.log(`@likeToggle error: ${error}`);
                         Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                       },
                     });
                   } else {
                     commitLike({
-                      variables:{
-                        postId:feed_id,
+                      variables: {
+                        postId: feed_id,
                       },
-                      onCompleted(likedata){
-                        if (!likedata.postLikeToggle){
+                      onCompleted(likedata) {
+                        if (!likedata.postLikeToggle) {
                           setLikeCheck(false);
                           setLike(like - 1);
                         }
                       },
-                      onError(error){
+                      onError(error) {
                         console.log(`@likeToggle error: ${error}`);
                         Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                       },
@@ -277,32 +288,32 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
                 onPress={() => {
                   if (!bookmarkCheck) {
                     commitBookmark({
-                      variables:{
-                        postId:feed_id,
+                      variables: {
+                        postId: feed_id,
                       },
-                      onCompleted(bookmarkdata){
-                        if (bookmarkdata.postBookmarkToggle){
+                      onCompleted(bookmarkdata) {
+                        if (bookmarkdata.postBookmarkToggle) {
                           setBookmarkCheck(true);
                           setBookmark(like + 1);
                         }
                       },
-                      onError(error){
+                      onError(error) {
                         console.log(`@likeToggle error: ${error}`);
                         Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                       },
                     });
                   } else {
                     commitBookmark({
-                      variables:{
-                        postId:feed_id,
+                      variables: {
+                        postId: feed_id,
                       },
-                      onCompleted(bookmarkdata){
-                        if (!bookmarkdata.postBookmarkToggle){
+                      onCompleted(bookmarkdata) {
+                        if (!bookmarkdata.postBookmarkToggle) {
                           setBookmarkCheck(false);
                           setBookmark(like - 1);
                         }
                       },
-                      onError(error){
+                      onError(error) {
                         console.log(`@likeToggle error: ${error}`);
                         Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
                       },
@@ -314,7 +325,9 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
               />
               <ReactBtn
                 img={String(require('../assets/shared.png'))}
-                onPress={() => {Alert.alert('아직 구현되지 않은 기능입니다.');}}
+                onPress={() => {
+                  Alert.alert('아직 구현되지 않은 기능입니다.');
+                }}
                 width={26}
                 height={26}
               />
@@ -329,7 +342,11 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
               <Text style={style.ReactText}>북마크 {bookmark}개</Text>
               <Text style={style.ReactText}>댓글 {commentCount}개</Text>
             </View>
-            <CommentContent feed_id={feed_id} render={setRender} state={render}/>
+            <CommentContent
+              feed_id={feed_id}
+              render={setRender}
+              state={render}
+            />
             <View style={{height: DimensionTheme.width(100)}} />
           </ScrollView>
         </View>

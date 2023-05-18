@@ -7,7 +7,7 @@ import {
   StyleSheet,
   View,
   ImageBackground,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
@@ -19,19 +19,18 @@ import FeedCard from '../components/common/Cards/FeedCard';
 import {NavigationData} from '../navigation/AppNavigator';
 import {imagePath} from '../utils/imagePath';
 
-// @ts-ignore
+//@ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
-import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
-import {getInitPersona} from '../relay/Persona/getInitPersona';
 import {useLazyLoadQuery, usePaginationFragment} from 'react-relay';
-import { MainScreenQuery } from './__generated__/MainScreenQuery.graphql';
+import {MainScreenQuery} from './__generated__/MainScreenQuery.graphql';
 import PostPaginationFragment from '../graphQL/Main/PostPaginationFragment';
 import PostListGetQuery from '../graphQL/Main/PostListGetQuery';
+import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
-        
-import { useDispatch, useSelector } from 'react-redux';
+
+import {selectPersona, setPersona} from '../redux/slices/userSlice';
 import {useAppDispatch, useAppSelector} from '../redux/hooks';
-import {setPersona, selectPersona} from '../redux/slices/userSlice';
+import {getInitPersona} from '../relay/Persona/getInitPersona';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -45,9 +44,9 @@ const HeaderBox = styled.View`
 const CategoryScroll = styled.ScrollView`
   display: flex;
   flex-direction: row;
-  width: ${DimensionTheme.width(333)};
-  padding-bottom: ${DimensionTheme.width(5)};
-  margin-bottom: ${DimensionTheme.height(18)};
+  width: ${DimensionTheme.width(333)}px;
+  padding-bottom: ${DimensionTheme.width(5)}px;
+  margin-bottom: ${DimensionTheme.width(18)}px;
 `;
 
 type Props = NavigationData<'Main'>;
@@ -58,12 +57,14 @@ const MainScreen: FC<Props> = ({navigation}) => {
     {},
     {fetchPolicy: 'store-or-network'},
   );
-
-  const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(PostPaginationFragment, tmpData);
-  const data = tmpAPI.data;
-  
   const persona = useAppSelector(selectPersona);
   const dispatch = useAppDispatch();
+
+  const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(
+    PostPaginationFragment,
+    tmpData,
+  );
+  const data = tmpAPI.data;
 
   useEffect(() => {
     console.log('main:', data.getPublicPosts.edges[0].node);
@@ -172,13 +173,13 @@ const MainScreen: FC<Props> = ({navigation}) => {
             </CategoryScroll>
             <ScrollView
               refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
               {feedChoice1 &&
-                data.getPublicPosts.edges.map((value:any, index?:number) => (
+                data.getPublicPosts.edges.map((value: any, index?: number) => (
                   <FeedCard
                     key={index}
                     title={value.node.title}
@@ -196,7 +197,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice2 &&
-                data.getPublicPosts.edges.map((value:any, index?:number) => (
+                data.getPublicPosts.edges.map((value: any, index?: number) => (
                   <FeedCard
                     key={index}
                     title={value.node.title}
@@ -214,7 +215,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice3 &&
-                data.getPublicPosts.edges.map((value:any, index?:number) => (
+                data.getPublicPosts.edges.map((value: any, index?: number) => (
                   <FeedCard
                     key={index}
                     title={value.node.title}
