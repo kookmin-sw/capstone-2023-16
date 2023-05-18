@@ -36,6 +36,7 @@ import {CookieSetting} from '../graphQL/CookieSetting/CookieSetting';
 // import {GetPersonaQuery} from '../graphQL/CookieSetting/__generated__/GetPersonaQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
 import LoginEnvironment from '../LoginEnvironment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginContainer = styled(Container)`
   width: 100%;
@@ -103,6 +104,8 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
   const dispatch = useAppDispatch();
 
   const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
+
+  AsyncStorage.removeItem('persona_id');
 
   return (
     <LoginContainer>

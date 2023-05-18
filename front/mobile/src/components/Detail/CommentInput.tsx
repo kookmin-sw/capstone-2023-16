@@ -8,7 +8,7 @@ import { useMutation } from 'react-relay';
 import { CommentInputMutation } from '../../graphQL/Post/__generated__/CommentInputMutation.graphql';
 
 interface CommentInputProps{
-    feed_id: number;
+    feed_id: string;
     render: Dispatch<SetStateAction<boolean>>;
     state: boolean;
 }

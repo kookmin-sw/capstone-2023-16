@@ -66,7 +66,7 @@ const isLike = (like: Array<likePost>, feed_id: string) => {
 const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const feed_id: string = route.params as unknown as string;
   console.log(`post_id: ${feed_id}`);
-  const persona_id = useAppSelector(selectPersona);
+  const persona = useAppSelector(selectPersona);
 
   const [render, setRender] = useState(false);
 
@@ -78,7 +78,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
 
   const personaData = useLazyLoadQuery(
     persona_LBQuery,
-    {id: persona_id},
+    {id: persona.id},
     {fetchPolicy: 'store-or-network'},
   );
 

@@ -23,7 +23,7 @@ import {MyContentScreen} from '../screens/MyContent/MyContentScreen';
 import {FollowScreen} from '../screens/MyAccount/FollowScreen';
 import {PersonaInfo, PersonaPage} from './type';
 import FilterScreen from '../screens/FilterScreen';
-import LoadingScreen from '../screens/LoadingScreen';
+// import LoadingScreen from '../screens/LoadingScreen';
 
 export type ParamList = {
   Main: undefined;
@@ -42,7 +42,7 @@ export type ParamList = {
   ChallengeDetail: undefined;
   MyContent: undefined;
   FilterContent: undefined;
-  Loading: undefined;
+  // Loading: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -50,11 +50,11 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      <StackNavigator.Screen
+      {/* <StackNavigator.Screen
         name="Loading"
         component={LoadingScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <StackNavigator.Screen
         name="Main"
         component={MainScreen}

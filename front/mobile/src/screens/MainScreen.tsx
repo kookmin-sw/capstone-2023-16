@@ -8,6 +8,7 @@ import {
   View,
   ImageBackground,
   RefreshControl,
+  Text,
 } from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
@@ -31,6 +32,7 @@ import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
 import {selectPersona, setPersona} from '../redux/slices/userSlice';
 import {useAppDispatch, useAppSelector} from '../redux/hooks';
 import {getInitPersona} from '../relay/Persona/getInitPersona';
+import { storeData } from '../asyncstorage';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -52,13 +54,46 @@ const CategoryScroll = styled.ScrollView`
 type Props = NavigationData<'Main'>;
 
 const MainScreen: FC<Props> = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const persona = useAppSelector(selectPersona);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+      if (persona.id === ''){
+        const fetchData = async () => {
+          try {
+            const response = await getInitPersona();
+            console.log('cur : ', response[0].node);
+            if (response.length === 0) navigation.navigate('BaseInfo');
+            storeData('persona_id', response[0].node.id);
+            dispatch(
+              setPersona({
+                id: response[0].node.id,
+                nickname: response[0].node.nickname,
+              }),
+            );
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+
+        fetchData();
+      }
+      storeData('persona_id', persona.id);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   const tmpData = useLazyLoadQuery(
     PostListGetQuery,
     {},
     {fetchPolicy: 'store-or-network'},
   );
-  const persona = useAppSelector(selectPersona);
-  const dispatch = useAppDispatch();
 
   const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(
     PostPaginationFragment,
@@ -69,27 +104,6 @@ const MainScreen: FC<Props> = ({navigation}) => {
   useEffect(() => {
     console.log('main:', data.getPublicPosts.edges[0].node);
   }, [data]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getInitPersona();
-        console.log('cur : ', response[0].node);
-        // Process the response data here
-        if (response.length === 0) navigation.navigate('BaseInfo');
-        dispatch(
-          setPersona({
-            id: response[0].node.id,
-            nickname: response[0].node.nickname,
-          }),
-        );
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -105,6 +119,27 @@ const MainScreen: FC<Props> = ({navigation}) => {
   const [feedChoice3, setFeedChoice3] = useState(false);
 
   navigation.reset;
+
+  if (isLoading){
+    return (
+      <SafeAreaView>
+        <ImageBackground
+          style={style.BackgroundView}
+          source={require('../assets/background1.png')} >
+            <HeaderBox>
+              <Image
+                style={style.HearderTitle}
+                source={require('../assets/logoText.png')}
+                resizeMode="contain"
+              />
+              <View style={style.LibraryTool}>
+                <Text>Loading..</Text>
+              </View>
+            </HeaderBox>
+          </ImageBackground>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView>
