@@ -500,6 +500,180 @@ input CreatePostInput {
   title: String!
 
   """
+  내용
+  """
+  content: String!
+
+  """
+  완수 여부
+  """
+  isDone: Boolean!
+
+  """
+  생성 일시
+  """
+  createdAt: DateTime!
+
+  """
+  갱신 일시
+  """
+  updatedAt: DateTime!
+}
+
+"""
+A connection to a list of items.
+"""
+type ChallengeObjectiveConnection {
+  """
+  Pagination data for this connection
+  """
+  pageInfo: PageInfo!
+
+  """
+  Contains the nodes in this connection
+  """
+  edges: [ChallengeObjectiveEdge!]!
+
+  """
+  Total quantity of existing nodes
+  """
+  totalCount: Int
+}
+
+"""
+An edge in a connection.
+"""
+type ChallengeObjectiveEdge {
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+
+  """
+  The item at the end of the edge
+  """
+  node: ChallengeObjective!
+}
+
+type ChallengeObjectiveHistory implements Node {
+  id: GlobalID!
+
+  """
+  도전과제
+  """
+  challengeObjective: ChallengeObjective!
+
+  """
+  참여 페르소나
+  """
+  persona: Persona!
+
+  """
+  완료 여부
+  """
+  isDone: Boolean!
+
+  """
+  참여 일시
+  """
+  createdAt: DateTime!
+}
+
+type Comment implements Node {
+  id: GlobalID!
+
+  """
+  대상 게시물
+  """
+  post: Post!
+
+  """
+  작성자
+  """
+  persona: Persona!
+
+  """
+  댓글 본문
+  """
+  body: String!
+
+  """
+  작성 일시
+  """
+  createdAt: DateTime!
+}
+
+"""
+항목별 개수 통계
+"""
+type CountStatistics {
+  """
+  단위
+  """
+  unit: String!
+
+  """
+  총 개수
+  """
+  totalCount: Int!
+
+  """
+  단위별 항목 개수
+  """
+  elements: [CountStatisticsElement!]!
+}
+
+"""
+특정 항목의 이름 및 개수
+"""
+type CountStatisticsElement {
+  """
+  항목 이름
+  """
+  label: String!
+
+  """
+  항목 집계 횟수
+  """
+  count: Int!
+}
+
+union CreateCategoryResult =
+    Category
+  | AdminPermissionRequiredError
+  | CategoryBodyDuplicatedError
+  | CategoryBodyTooShortError
+  | CategoryBodyTooLongError
+
+input CreateChallengeInput {
+  title: String!
+  description: String!
+  maxPersonaCount: Int!
+}
+
+input CreateChallengeObjectiveInput {
+  title: String!
+  description: String!
+  challenge: GlobalID!
+  durationType: DurationType!
+  kind: ParticipateKind!
+}
+
+union CreatePersonaResult =
+    Persona
+  | AuthInfoRequiredError
+  | PersonaNicknameDuplicatedError
+
+"""
+게시물 생성 input
+"""
+input CreatePostInput {
+  """
+  새 게시글 제목
+  """
+  title: String!
+
+  """
   새 게시글 무료 본문
   """
   content: String!
@@ -540,6 +714,12 @@ input DatetimeBetween {
   조회 종료 일시
   """
   endDt: DateTime = "2023-05-18T20:28:49.186711"
+}
+
+enum DurationType {
+  MONTHLY
+  DAILY
+  WEEKLY
 }
 
 enum DurationType {
@@ -726,7 +906,7 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 scalar JSON
 
 """
-멤버쉽 가입 input
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 input LeaveMembershipInput {
   """
