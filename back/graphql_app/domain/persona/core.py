@@ -126,11 +126,13 @@ def get_personas(sorting_opt: PersonaSortingOption,
 
 def get_persona_context(request: WSGIRequest) -> Optional[int]:
     """
-    Django request 객체의 쿠키로부터 페르소나 id를 받아 오는 함수
+    Django request 객체의 Header 또는 Cookie로부터 페르소나 id를 받아 오는 함수
     """
     if 'persona_id' in request.COOKIES.keys():
         _, persona_id = parse_global_id(request.COOKIES['persona_id'])
         return persona_id
+    elif 'persona_id' in request.headers.keys():
+        _, persona_id = parse_global_id(request.headers['persona_id'])
     else:
         return None
 
@@ -146,6 +148,3 @@ def get_bookmarks(info: Info) -> QuerySet[Bookmark]:
 
 def get_persona(persona_id: int) -> Persona:
     return Persona.objects.get(id=persona_id)
-
-def get_follower_personas(persona_id) -> List['Persona']:
-    return []

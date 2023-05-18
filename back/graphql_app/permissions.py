@@ -9,12 +9,11 @@ from graphql_app.models import Persona
 
 def has_weak_persona_context(request: WSGIRequest) -> Tuple[bool, Optional[int]]:
     """
-    Request cookie에 유효한 Session key와 페르소나의 ID(persona_id)가 저장되어 있는지 확인하는 함수
+    Request header, 또는 Cookie에 유효한 Session key와 페르소나의 ID(persona_id)가 저장되어 있는지 확인하는 함수
     실제 존재하는 페르소나인지는 확인하지 않는다.
     :param request: Django 요청 객체
     :return: (존재 여부, persona_id)
     """
-    cookies = request.COOKIES
 
     persona_id: Optional[int] = get_persona_context(request)
 
@@ -26,7 +25,7 @@ def has_weak_persona_context(request: WSGIRequest) -> Tuple[bool, Optional[int]]
 
 def has_persona_context(request: WSGIRequest):
     """
-    Request cookie에 페르소나의 ID(persona_id)가 저장되어 있으며,
+    Request header 또는 Cookie에 페르소나의 ID(persona_id)가 저장되어 있으며,
     실제 DB에 페르소나가 존재하고, 요청한 사용자의 소유인지 확인하는 함수
     True를 반환하는 경우, request.persona에 해당 페르소나를 연결한다.
     :param request: Django 요청 객체
