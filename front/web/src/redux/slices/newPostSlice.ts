@@ -3,23 +3,22 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 interface PartialKeyValue {
   key: string;
-  value: string;
+  value: string|object|undefined;
 };
 
 interface NewPostState {
-  category?: string;
+  category?: {id: string};
   content: string;
   paidContent?: string;
   tagBodies?: string;
   title: string;
+  length: number;
 };
 
 const initialState: NewPostState = {
-    category: "",
-    content: "",
-    paidContent: "",
-    tagBodies: "",
-    title: "",
+  title: "",
+  content: "",
+  length: 0,
 };
 
 export const newPostSlice = createSlice({

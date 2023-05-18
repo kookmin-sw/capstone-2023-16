@@ -14,10 +14,12 @@ const PostTitle = ({ submitFlag }: PostTitleProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (titleRef.current)
-    {
-      const title = { key: 'title', value: titleRef.current.value.toString() };
+    if (submitFlag&&titleRef.current){
+      const title = {
+        key: 'title', value: titleRef.current.value.toString()
+      };
       dispatch(partialChange(title));
+      if (title.value === "") alert("제목은 필수로 입력해야합니다.");
     }
   }, [submitFlag]);
   

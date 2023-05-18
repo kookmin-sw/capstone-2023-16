@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled  from 'styled-components';
@@ -13,10 +13,17 @@ import { RootState } from '../redux/store';
 
 const PostWritingPage = () => {
   const [submitFlag, setSubmitFlag] = useState(false);
-
   const persona = useSelector((state: RootState) => state.persona);
+  const newPost = useSelector((state: RootState) => state.newPost);
   const deviceType = useDeviceType();
   const navigate = useNavigate();
+ 
+  useEffect(() => {
+    if (submitFlag) {
+      if ((newPost.title !== "") && (newPost.length >= 20)) console.log(newPost);
+    }
+    setSubmitFlag(false);
+   }, [submitFlag])
 
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
@@ -24,11 +31,12 @@ const PostWritingPage = () => {
     </PersonaCardWrapper>
     <ContentLayout>
       <Header deviceType={deviceType}>
-        <CategoryChoice />
+        <CategoryChoice submitFlag={submitFlag} />
         <PostWritingSetting setSubmitFlag={setSubmitFlag} />
       </Header>
       <PostTitle submitFlag={submitFlag} />
       <TextEditor submitFlag={submitFlag} />
+      <button onClick={()=>setSubmitFlag(true)}>Log editor content</button>
     </ContentLayout>
   </>
 };
