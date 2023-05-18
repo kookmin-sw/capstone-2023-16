@@ -275,14 +275,6 @@ type Comment implements Node {
   createdAt: DateTime!
 }
 
-"""Cookie를 통해 필요한 context를 얻을 수 없는 경우 발생"""
-type CookieContextRequiredError {
-  message: String!
-
-  """요구되는 Cookie의 key value"""
-  requriedKey: String!
-}
-
 """항목별 개수 통계"""
 type CountStatistics {
   """단위"""
@@ -351,7 +343,7 @@ input DatetimeBetween {
   startDt: DateTime = null
 
   """조회 종료 일시"""
-  endDt: DateTime = "2023-05-16T20:27:34.071437"
+  endDt: DateTime = "2023-05-18T20:28:49.186711"
 }
 
 enum DurationType {
@@ -535,7 +527,7 @@ type MembershipEdge {
   node: Membership!
 }
 
-union MembershipJoinResult = Membership | AuthInfoRequiredError | CookieContextRequiredError | AlreadyJoinedMembershipError
+union MembershipJoinResult = Membership | AuthInfoRequiredError | PersonaContextRequiredError | AlreadyJoinedMembershipError
 
 """멤버쉽 정렬 기준"""
 enum MembershipSortBy {
@@ -617,7 +609,7 @@ type Mutation {
   joinMembership(joinInput: JoinMembershipInput!): MembershipJoinResult!
 
   """특정 페르소나의 멤버쉽에서 탈퇴한다."""
-  leaveMembership(leaveInput: LeaveMembershipInput!): CookieContextRequiredError
+  leaveMembership(leaveInput: LeaveMembershipInput!): PersonaContextRequiredError
   createChallenge(input: CreateChallengeInput!): Challenge!
   createChallengeObjective(input: CreateChallengeObjectiveInput!): ChallengeObjective!
   toggleChallengeObjective(challengeObjectiveId: GlobalID!, personaId: GlobalID!): ChallengeObjectiveHistory!
@@ -793,6 +785,9 @@ type Persona implements Node {
 
   """북마크 목록"""
   bookmarks: [Bookmark!]!
+
+  """좋아요 한 포스트 목록"""
+  likedPosts: [Post!]!
 }
 
 """A connection to a list of items."""
@@ -805,6 +800,14 @@ type PersonaConnection {
 
   """Total quantity of existing nodes"""
   totalCount: Int
+}
+
+"""Header 또는 Cookie를 통해 필요한 context를 얻을 수 없는 경우 발생"""
+type PersonaContextRequiredError {
+  message: String!
+
+  """요구되는 Header/Cookie의 key value"""
+  requriedKey: String!
 }
 
 """페르소나 생성에 필요한 정보"""
@@ -1286,10 +1289,10 @@ enum SortingDirection {
 """통계에 사용할 데이터의 날짜 범위"""
 input StatisticsDatetimeBetween {
   """조회 시작 일시 (기본값 : 30일 이전)"""
-  startDatetime: DateTime = "2023-04-16T20:27:34.151867"
+  startDatetime: DateTime = "2023-04-18T20:28:49.266423"
 
   """조회 종료 일시 (기본값 : 오늘)"""
-  endDatetime: DateTime = "2023-05-16T20:27:34.151887"
+  endDatetime: DateTime = "2023-05-18T20:28:49.266442"
 }
 
 enum StringFindMode {

@@ -9,7 +9,6 @@ import * as ButtonTheme from '../../components/common/theme';
 import RegularButton from '../../components/common/Buttons/RegularButton';
 import {colors} from '../../components/common/colors';
 import StyledTextInput from '../../components/common/Inputs/StyledTextInput';
-
 import {
   Container,
   DimensionTheme,
@@ -98,6 +97,7 @@ const ButtonSection = styled.View`
   justify-contnet: flex-end;
 `;
 
+// 페르소나 직업군
 const occupations = [
   {
     id: 'STUDENT',
@@ -108,7 +108,7 @@ const occupations = [
     name: '교육자',
   },
   {
-    id: 'JOB_SEEKR',
+    id: 'JOB_SEEKER',
     name: '취준생',
   },
   {
@@ -136,7 +136,7 @@ const occupations = [
 type Props = NavigationData<'BaseInfo'>;
 
 export const BaseInfoScreen: FC<Props> = ({navigation}) => {
-  const [isPublic, setIsPublic] = useState(false);
+  const [isPublic, setIsPublic] = useState(true);
 
   const PersonaSchema = Yup.object().shape({
     nickname: Yup.string().required('닉네임은 필수입니다.'),
@@ -153,7 +153,6 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
   // 직업
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = item => {
-    console.log('11', item);
     setSelectedItem(item);
   };
   return (
@@ -170,7 +169,7 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
             console.log(nickname, birth, description);
             navigation.navigate('InterestTagSetting', {
               nickname: nickname,
-              age: birth,
+              birthYear: birth,
               gender: isMale ? 'MALE' : 'FEMALE',
               introduction: description,
               isPublic: isPublic,
@@ -196,7 +195,7 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
               <AccountCheckSection>
                 <CheckBox
                   onPress={() => setIsPublic(!isPublic)}
-                  isChecked={isPublic}
+                  isChecked={!isPublic}
                   labelStyle={{marginRight: 30, color: colors.graydark}}
                   label={'비공개 계정'}
                 />
@@ -269,12 +268,6 @@ export const BaseInfoScreen: FC<Props> = ({navigation}) => {
                     }}>
                     직업
                   </SmallText>
-                  {/* <StyledTextInput
-                viewStyle={{
-                  width: DimensionTheme.width(281),
-                  marginLeft: DimensionTheme.width(12),
-                }}
-              /> */}
                   <Dropdown
                     data={occupations}
                     onSelect={onSelect}
