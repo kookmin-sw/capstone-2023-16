@@ -1,9 +1,8 @@
 import React, {FC} from 'react';
-import {Image, ViewStyle} from 'react-native';
+import {ViewStyle} from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
 
-import {imagePath} from '../../../utils/imagePath';
 import {colors} from '../colors';
 import {DimensionTheme} from '../shared';
 import * as ButtonTheme from '../../common/theme';
@@ -14,7 +13,7 @@ const StatisticsContainer = styled.View`
   border-radius: 20px;
   padding: 10px;
   max-width: ${DimensionTheme.width(348)};
-  max-height: ${DimensionTheme.width(167)};
+  max-height: ${DimensionTheme.width(210)};
 `;
 
 const StatisticsTitle = styled.View``;
@@ -24,6 +23,7 @@ const StatisticsSection = styled.View``;
 type StatisticsCardProps = {
   statisticsTitle: string;
   viewStyles?: StyleProp<ViewStyle>;
+  children: React.ReactNode;
 };
 
 export const StatisticsCard: FC<StatisticsCardProps> = props => {
@@ -40,9 +40,7 @@ export const StatisticsCard: FC<StatisticsCardProps> = props => {
           {props.statisticsTitle}
         </SmallText>
       </StatisticsTitle>
-      <StatisticsSection>
-        <Image source={imagePath.sampleStat} />
-      </StatisticsSection>
+      <StatisticsSection>{props.children}</StatisticsSection>
     </StatisticsContainer>
   );
 };
