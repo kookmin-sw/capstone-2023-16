@@ -10,6 +10,7 @@ import RegularText from '../../components/common/Texts/RegularText';
 import * as ButtonTheme from '../../components/common/theme';
 import {NavigationData} from '../../navigation/AppNavigator';
 
+//@ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
 import {useMutation} from 'react-relay';
 
@@ -103,21 +104,16 @@ export const SettingScreen: FC<Props> = ({navigation}) => {
           onPress={() => {
             commit({
               variables: {},
-              onCompleted(data) {
+              onCompleted() {
                 console.log('logout!!');
-                console.log(data);
                 dispatch(logout());
-                console.log(`isUPdate ? ${user}`);
+                console.log(`logout update ? ${user}`);
               },
               onError(error) {
                 console.log('@logout error:');
                 console.log(error);
                 console.log(error.message);
               },
-              // updater(store) {
-              //   const payload = store.getRootField('login');
-              //   store.getRoot().setLinkedRecord(payload, 'currentUser');
-              // },
             });
           }}>
           본계정 로그아웃

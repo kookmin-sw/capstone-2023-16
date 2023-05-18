@@ -54,21 +54,11 @@ const AppNavigator = () => {
       <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
-        // initialParams={{
-        //   isMine: true,
-        //   nickname: 'testpersona',
-        //   id: 'UGVyc29uYToxMg==',
-        // }}
-        options={({navigation}) => ({
+        options={{
           headerShown: false,
           headerShadowVisible: false,
-          headerTitle: '홍현지',
           headerTransparent: true,
-          headerTitleStyle: {
-            fontWeight: '700',
-            fontSize: 28,
-          },
-        })}
+        }}
       />
       <StackNavigator.Screen
         name="Setting"
