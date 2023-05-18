@@ -3,12 +3,7 @@ import React, {FC, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, Platform, TouchableOpacity} from 'react-native';
 
-import {
-  Container,
-  DimensionTheme,
-  ScreenHeight,
-  StatusBarHeight,
-} from '../../components/common/shared';
+import {Container, DimensionTheme} from '../../components/common/shared';
 import * as ButtomTheme from '../../components/common/theme';
 import RegularText from '../../components/common/Texts/RegularText';
 import SmallText from '../../components/common/Texts/SmallText';
@@ -16,8 +11,8 @@ import {colors} from '../../components/common/colors';
 import {SearchInput} from '../../components/common/Inputs/SearchInput';
 import {NavigationData} from '../../navigation/AppNavigator';
 import CardSection from '../../components/MyAccount/FollowCardSection';
-import {FollowingData} from '../../constants/follow';
 
+//@ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
 import {useLazyLoadQuery} from 'react-relay';
 import SmallButton from '../../components/common/Buttons/SmallButton';
@@ -70,7 +65,7 @@ export const PersonaScreen: FC<Props> = ({navigation}) => {
   useEffect(() => {
     SetPersonas([]);
     console.log('###personaList');
-    console.log(data.getOwnPersonas.edges);
+    console.log(data.getOwnPersonas);
     data.getOwnPersonas.edges.map(item => {
       SetPersonas(prev => [...prev, item.node]);
     });
