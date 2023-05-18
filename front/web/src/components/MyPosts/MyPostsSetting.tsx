@@ -10,7 +10,7 @@ const MyPostsSetting = () => {
   return <MyPostsSettingContainer deviceType={deviceType}>
     <TextButton text='수익' deviceType={deviceType}></TextButton>
     <TextButton text='통계' deviceType={deviceType}></TextButton>
-    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/post/edit')}></TextButton>
+    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/write')}></TextButton>
   </MyPostsSettingContainer>
 };
 

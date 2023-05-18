@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { GlobalStyles } from './styles/GlobalStyles';
 import LoginPage from './pages/LoginPage';
-import PersonaChoice from './pages/PersonaChoicePage';
+import PersonaChoice from './pages/MyPersonasPage';
 import MyPostsPage from './pages/MyPostsPage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostWritingPage from './pages/PostWritingPage';
@@ -14,6 +14,8 @@ import TagAndCategoryPage from './pages/PersonaCreation/TagAndCategoryPage';
 import { Suspense } from 'react';
 import LoadingSpinnerPage from './pages/LoadingSpinnerPage';
 import SignUpPage from './pages/SignUpPage';
+import MyPersonaPage from './pages/MyPersonasPage';
+import MyPersonasPage from './pages/MyPersonasPage';
 
 const App = () => {
   return (
@@ -24,10 +26,10 @@ const App = () => {
         <Routes>
             <Route path='/' element={<LoginPage />} />
             <Route path='/signup' element={<SignUpPage />} />
-            <Route path='/personas' element={<PersonaChoice />} />
+            <Route path='/personas' element={<MyPersonasPage />} />
             <Route path='/posts' element={<MyPostsPage />} />
             <Route path='/post/:postId' element={<PostDetailPage />} />
-            <Route path='/post/edit' element={<PostWritingPage />} />
+            <Route path='/write' element={<PostWritingPage />} />
             <Route path='/post/edit/:postId' element={<PostWritingPage />} />
             <Route path='/create' element={<PersonaCreationPage />} >
               <Route path='' element={<UserInfoPage />} />
