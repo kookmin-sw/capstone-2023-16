@@ -6,7 +6,7 @@ import { RootState } from './../redux/store';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import MyPostsSetting from '../components/MyPostsPage/MyPostsSetting';
-import PostListContainer from '../containers/PostListContainer';
+import PostList from '../components/MyPostsPage/PostList';
 
 const MyPostsPage = () => {
   const deviceType = useDeviceType();
@@ -24,7 +24,7 @@ const MyPostsPage = () => {
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
             <MyPostsSetting />
           </Header>
-            <PostListContainer />
+            <PostList />
           </MyPostsContainer>
         </MyPostsPageContainer>
         </ContentLayout>
