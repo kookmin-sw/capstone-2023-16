@@ -16,6 +16,7 @@ import LoadingSpinnerPage from './pages/LoadingSpinnerPage';
 import SignUpPage from './pages/SignUpPage';
 import MyPersonaPage from './pages/MyPersonasPage';
 import MyPersonasPage from './pages/MyPersonasPage';
+import RevenuePage from './pages/RevenuePage';
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
               <Route path='' element={<UserInfoPage />} />
               <Route path='2' element={<TagAndCategoryPage />} />
             </Route>
+            <Route path='/revenue' element={<RevenuePage />} />
           </Routes>
           </Suspense>
       </BackgroundLayout>
