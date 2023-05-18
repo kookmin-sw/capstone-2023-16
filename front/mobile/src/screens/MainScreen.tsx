@@ -7,24 +7,31 @@ import {
   StyleSheet,
   View,
   ImageBackground,
+  RefreshControl
 } from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
 
 import TopButton from '../components/Main/TopButton';
 import {DimensionTheme} from '../components/common/shared';
-import {imagePath} from '../utils/imagePath';
 import FeedCategory from '../components/Main/FeedCategory';
 import FeedCard from '../components/common/Cards/FeedCard';
 import {NavigationData} from '../navigation/AppNavigator';
+import {imagePath} from '../utils/imagePath';
 
 // @ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
-import {useLazyLoadQuery} from 'react-relay';
 import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
-import {setPersona, selectPersona} from '../redux/slices/userSlice';
-import {useAppDispatch, useAppSelector} from '../redux/hooks';
 import {getInitPersona} from '../relay/Persona/getInitPersona';
+import {useLazyLoadQuery, usePaginationFragment} from 'react-relay';
+import { MainScreenQuery } from './__generated__/MainScreenQuery.graphql';
+import PostPaginationFragment from '../graphQL/Main/PostPaginationFragment';
+import PostListGetQuery from '../graphQL/Main/PostListGetQuery';
+import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
+        
+import { useDispatch, useSelector } from 'react-redux';
+import {useAppDispatch, useAppSelector} from '../redux/hooks';
+import {setPersona, selectPersona} from '../redux/slices/userSlice';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -43,47 +50,23 @@ const CategoryScroll = styled.ScrollView`
   margin-bottom: ${DimensionTheme.height(18)};
 `;
 
-const getPublicPostsQuery = graphql`
-  query MainScreenQuery {
-    getPublicPosts(sortingOpt: {}) {
-      edges {
-        node {
-          id
-          contentPreview
-          tags {
-            edges {
-              node {
-                body
-                id
-              }
-            }
-          }
-          title
-          author {
-            nickname
-            id
-          }
-        }
-      }
-    }
-  }
-`;
-
 type Props = NavigationData<'Main'>;
 
 const MainScreen: FC<Props> = ({navigation}) => {
-  const data: MainScreenQuery$data = useLazyLoadQuery(
-    getPublicPostsQuery,
+  const tmpData = useLazyLoadQuery(
+    PostListGetQuery,
     {},
     {fetchPolicy: 'store-or-network'},
   );
+
+  const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(PostPaginationFragment, tmpData);
+  const data = tmpAPI.data;
+  
   const persona = useAppSelector(selectPersona);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('##main');
-    console.log(data.getPublicPosts.edges[0]);
-    console.log(persona.nickname);
+    console.log('main:', data.getPublicPosts.edges[0].node);
   }, [data]);
 
   useEffect(() => {
@@ -105,6 +88,15 @@ const MainScreen: FC<Props> = ({navigation}) => {
     };
 
     fetchData();
+  }, []);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   }, []);
 
   const [feedChoice1, setFeedChoice1] = useState(true);
@@ -130,7 +122,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
             onPress={() => {
               navigation.navigate('FilterContent');
             }}
-            img={String(require('../assets/search-black.png'))}
+            img={require('../assets/search-black.png')}
           />
           <TopButton
             width={28}
@@ -142,7 +134,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
                 id: persona.id,
               });
             }}
-            img={String(require('../assets/profileImg.png'))}
+            img={require('../assets/profileImg.png')}
           />
         </HeaderBox>
         <View style={style.LibraryTool}>
@@ -179,13 +171,16 @@ const MainScreen: FC<Props> = ({navigation}) => {
               </FeedCategory>
             </CategoryScroll>
             <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+              }
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
               {feedChoice1 &&
-                data.getPublicPosts.edges.map(value => (
+                data.getPublicPosts.edges.map((value:any, index?:number) => (
                   <FeedCard
-                    key={value.node.id}
+                    key={index}
                     title={value.node.title}
                     feed_id={value.node.id}
                     author={value.node.author.nickname}
@@ -201,9 +196,9 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice2 &&
-                data.getPublicPosts.edges.map(value => (
+                data.getPublicPosts.edges.map((value:any, index?:number) => (
                   <FeedCard
-                    key={value.node.id}
+                    key={index}
                     title={value.node.title}
                     feed_id={value.node.id}
                     author={value.node.author.nickname}
@@ -219,9 +214,9 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice3 &&
-                data.getPublicPosts.edges.map(value => (
+                data.getPublicPosts.edges.map((value:any, index?:number) => (
                   <FeedCard
-                    key={value.node.id}
+                    key={index}
                     title={value.node.title}
                     feed_id={value.node.id}
                     author={value.node.author.nickname}

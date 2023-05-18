@@ -8,6 +8,10 @@ import AppNavigator from './AppNavigator';
 
 import {selectAuth} from '../redux/slices/userSlice';
 import {useAppSelector} from '../redux/hooks';
+import {RelayEnvironmentProvider} from 'react-relay';
+import RelayEnvironment from '../RelayEnvironment';
+import LoginEnvironment from '../LoginEnvironment';
+import {getData} from '../asyncstorage';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -18,11 +22,22 @@ const MyTheme = {
 };
 
 const NavContainer: FC = () => {
+  const {cookie, setCookie} = useState('');
+  // const {cookies, setCookie} = useState('');
   let auth = useAppSelector(selectAuth);
   console.log(`!!!!!!!!nav : ${JSON.stringify(auth)}`);
+
   return (
     <NavigationContainer theme={MyTheme}>
-      {auth.isLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+      {auth.isLoggedIn ? (
+        <RelayEnvironmentProvider environment={RelayEnvironment}>
+          <AppNavigator />
+        </RelayEnvironmentProvider>
+      ) : (
+        <RelayEnvironmentProvider environment={LoginEnvironment}>
+          <AuthNavigator />
+        </RelayEnvironmentProvider>
+      )}
     </NavigationContainer>
   );
 };

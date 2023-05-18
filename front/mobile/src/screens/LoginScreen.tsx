@@ -24,11 +24,27 @@ import {NavigationData} from '../navigation/AuthNavigator';
 
 //@ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
-import {useMutation} from 'react-relay';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
-import {useAppDispatch} from '../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../redux/hooks';
 import {login, setPersona} from '../redux/slices/userSlice';
+// import { useMutation } from 'react-relay';
+import {commitMutation, useLazyLoadQuery, useMutation} from 'react-relay';
+// import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+
+import {
+  login,
+  selectUser,
+  logout,
+  selectAuth,
+  setPersona,
+} from '../redux/slices/userSlice';
+
+import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+import {CookieSetting} from '../graphQL/CookieSetting/CookieSetting';
+// import {GetPersonaQuery} from '../graphQL/CookieSetting/__generated__/GetPersonaQuery.graphql';
+import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
+import LoginEnvironment from '../LoginEnvironment';
 
 const LoginContainer = styled(Container)`
   width: 100%;
@@ -95,7 +111,6 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
 
   const dispatch = useAppDispatch();
 
-  // 로그인
   const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
 
   return (
@@ -112,10 +127,8 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
               },
               onCompleted(data) {
                 console.log('@login success');
-                dispatch(login(data.login));
-                dispatch(
-                  setPersona({id: 'UGVyc29uYToxMg==', nickname: 'testpersona'}),
-                );
+                console.log(data.login);
+                console.log(`data ? : ${JSON.stringify(data)}`);
               },
               onError(error) {
                 console.log('@login error:');
@@ -173,7 +186,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <TextButton
                     textStyles={{color: colors.black}}
                     onPress={() => {
-                      navigation.navigate('BaseInfo');
+                      navigation.navigate('TestSetting');
                     }}>
                     비밀번호 찾기
                   </TextButton>
