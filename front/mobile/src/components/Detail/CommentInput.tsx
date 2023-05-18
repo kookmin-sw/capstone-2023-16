@@ -1,24 +1,43 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, Dispatch, SetStateAction} from 'react';
-import { TextInput, StyleSheet, GestureResponderEvent, TouchableOpacity, View, Image } from 'react-native';
+import { TextInput, StyleSheet, GestureResponderEvent, TouchableOpacity, View, Image, Alert } from 'react-native';
 import { DimensionTheme } from '../common/shared';
 import { colors } from '../common/colors';
+import { comments_inputMutation } from '../../graphQL/Post/CommentInput';
+import { useMutation } from 'react-relay';
+import { CommentInputMutation } from '../../graphQL/Post/__generated__/CommentInputMutation.graphql';
 
 interface CommentInputProps{
-    user_id: number;
-    board_id: number;
+    feed_id: number;
     render: Dispatch<SetStateAction<boolean>>;
     state: boolean;
 }
 
 const CommentInput = (props:CommentInputProps) => {
     const [comment, setComment] = useState('');
+    const [commitCommnet, isInFlightComment] = useMutation<CommentInputMutation>(
+        comments_inputMutation,
+    );
 
     return (
         <View style={{display: 'flex', flexDirection: 'row'}}>
             <TextInput style={style.InputStyel} placeholder="댓글을 남겨주세요." placeholderTextColor={colors.graytext} value={comment} onChangeText={setComment}/>
             <TouchableOpacity style={style.BtnStyle} onPress={()=>{
-                props.render(!props.state);
+                // props.render(!props.state);
+                commitCommnet({
+                    variables:{
+                        postId:props.feed_id,
+                        body:comment,
+                    },
+                    onCompleted(data){
+                        setComment('');
+                        props.render(!props.state);
+                    },
+                    onError(error){
+                        console.log(`@CommentInputError: ${error}`);
+                        Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                })
             }}>
                 <Image style={style.ImgStyle} source={require('../../assets/comment_purple.png')} resizeMode='contain'/>
             </TouchableOpacity>

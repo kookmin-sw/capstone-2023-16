@@ -21,18 +21,26 @@ import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
 
-// import { graphql } from 'babel-plugin-relay/macro';
-
 // import { useMutation } from 'react-relay';
 import {graphql} from 'babel-plugin-relay/macro';
-import {useMutation} from 'react-relay';
+import {commitMutation, useLazyLoadQuery, useMutation} from 'react-relay';
 // import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 import {useAppDispatch} from '../redux/hooks';
-import {login, selectUser} from '../redux/slices/userSlice';
+import {
+  login,
+  selectUser,
+  logout,
+  selectAuth,
+  setPersona,
+} from '../redux/slices/userSlice';
 import {useAppSelector} from '../redux/hooks';
 import {Alert} from 'react-native';
 import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+import {CookieSetting} from '../graphQL/CookieSetting/CookieSetting';
+// import {GetPersonaQuery} from '../graphQL/CookieSetting/__generated__/GetPersonaQuery.graphql';
+import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
+import LoginEnvironment from '../LoginEnvironment';
 
 const LoginContainer = styled(Container)`
   width: 100%;
@@ -94,29 +102,12 @@ const loginMutation = graphql`
 
 type Props = NavigationData<'Login'>;
 
-// const [commitMutation, isMutationInFlight] = useMutation(
-//   graphql`
-//     mutation LoginScreenMutation($username: String!, $password: String!) {
-//       login(username: $username, password: $password) {
-//         ... on User {
-//           id
-//           signupMethod
-//           createdAt
-//           email
-//           username
-//         }
-//     }
-// }`);
-
-// const commitMutation = {};
-
 export const LoginScreen: FC<Props> = ({navigation}) => {
   const [autoLogin, setAutoLogin] = useState(false);
 
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
-  // 로그인
   const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
 
   return (
@@ -134,6 +125,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
               onCompleted(data) {
                 console.log('@login success');
                 console.log(data.login);
+                console.log(`data ? : ${JSON.stringify(data)}`);
                 dispatch(login(data.login));
                 console.log(`update ? : ${JSON.stringify(user)}`);
               },
@@ -196,7 +188,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                   <TextButton
                     textStyles={{color: colors.black}}
                     onPress={() => {
-                      navigation.navigate('BaseInfo');
+                      navigation.navigate('TestSetting');
                     }}>
                     비밀번호 찾기
                   </TextButton>

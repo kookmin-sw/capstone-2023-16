@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, Text, TouchableOpacity, Alert } from "react-native";
 import { colors } from '../common/colors';
 import { DimensionTheme } from '../common/shared';
 
@@ -25,7 +25,7 @@ const Comment = (props:CommentProps) => {
                 <Text style={style.text1}>{props.comment}</Text>
                 <Text style={{...style.text2, marginTop:DimensionTheme.width(1)}}>{props.date}</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{Alert.alert('아직 구현되지 않은 기능입니다.');}}>
                 <Text style={style.text2}>신고</Text>
             </TouchableOpacity>
         </View>

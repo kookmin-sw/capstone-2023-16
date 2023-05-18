@@ -12,3 +12,9 @@ export interface FeedProps {
     like_check: boolean;
     bookmark_check: boolean;
 }
+
+export interface tagItem {
+    node: any;
+    state: boolean|undefined;
+}
+
