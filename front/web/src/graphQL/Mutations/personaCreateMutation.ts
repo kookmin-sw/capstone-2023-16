@@ -9,7 +9,7 @@ const personaCreateMutation = graphql`
     $isPublic: Boolean=true, 
     $job: Job, 
     $preferredTagBodies: [String!]=[]
-    $preferredCategories: [CategoryIDInput!]
+    $preferredCategories: [CategoryIDInput!]=[]
   ) {
     personaCreate(
       newPersonaInput: {nickname: $nickname, birthYear: $birthYear, gender: $gender, introduction: $introduction, isPublic: $isPublic, job: $job, preferredTagBodies: $preferredTagBodies, preferredCategories: $preferredCategories}
