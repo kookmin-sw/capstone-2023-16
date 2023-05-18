@@ -11,8 +11,11 @@ class PersonaContextPermission(BasePermission):
     message = "Persona context가 필요합니다."
 
     def has_permission(self, source: Any, info: Info, **kwargs) -> bool:
-        persona_id = info.context.request.COOKIES.get('persona_id')
-        if not persona_id:
+        if 'persona_id' in info.context.request.COOKIES.keys():
+            persona_id = info.context.request.COOKIES.get('persona_id')
+        elif 'persona_id' in info.context.request.headers.keys():
+            persona_id = info.context.request.headers.get('persona_id')
+        else:
             return False
 
         _, persona_id = parse_global_id(persona_id)
