@@ -9,7 +9,7 @@
     "start": "yarn run relay && react-native start",
     "test": "jest",
     "build": "yarn run relay && react-scripts build",
-    "relay": "relay-compiler $@",
+    "relay": "relay-compiler",
     "app:relay": "yarn workspace app relay"
   },
   "relay": {
@@ -24,6 +24,7 @@
     "@react-navigation/native-stack": "^6.9.12",
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.3",
+    "axios": "^1.4.0",
     "formik": "^2.2.9",
     "get-graphql-schema": "^2.1.2",
     "graphql": "^16.6.0",
