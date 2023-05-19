@@ -163,6 +163,7 @@ def get_persona_context(request: WSGIRequest) -> Optional[int]:
         return persona_id
     elif 'X-Persona-Id' in request.headers.keys():
         _, persona_id = parse_global_id(request.headers['X-Persona-Id'])
+        return persona_id
     else:
         return None
 

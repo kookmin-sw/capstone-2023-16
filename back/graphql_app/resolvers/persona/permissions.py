@@ -13,8 +13,10 @@ class PersonaContextPermission(BasePermission):
     def has_permission(self, source: Any, info: Info, **kwargs) -> bool:
         if 'persona_id' in info.context.request.COOKIES.keys():
             persona_id = info.context.request.COOKIES.get('persona_id')
+            return persona_id
         elif 'X-Persona-Id' in info.context.request.headers.keys():
             persona_id = info.context.request.headers.get('X-Persona-Id')
+            return persona_id
         else:
             return False
 
