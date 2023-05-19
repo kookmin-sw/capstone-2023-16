@@ -1,12 +1,12 @@
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
+import PostList from '../components/MyPosts/PostList';
 import useDeviceType from '../hooks/useDeviceType';
 import { useSelector } from 'react-redux';
 import { RootState } from './../redux/store';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import MyPostsSetting from '../components/MyPostsPage/MyPostsSetting';
-import PostList from '../components/MyPostsPage/PostList';
+import MyPostsSetting from '../components/MyPosts/MyPostsSetting';
 
 const MyPostsPage = () => {
   const deviceType = useDeviceType();

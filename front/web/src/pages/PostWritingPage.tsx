@@ -5,7 +5,7 @@ import styled  from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
 import PostWritingSetting from '../components/PostWriting/PostWritingSetting';
-import CategoryChoice from '../components/PostWriting/CategoryChoice';
+import CategorySelector from '../components/PostWriting/CategorySelector';
 import PostTitle from '../components/PostWriting/PostTitle';
 import TextEditor from '../components/PostWriting/TextEditor';
 import useDeviceType from '../hooks/useDeviceType';
@@ -31,7 +31,7 @@ const PostWritingPage = () => {
     </PersonaCardWrapper>
     <ContentLayout>
       <Header deviceType={deviceType}>
-        <CategoryChoice submitFlag={submitFlag} />
+        <CategorySelector submitFlag={submitFlag} />
         <PostWritingSetting setSubmitFlag={setSubmitFlag} />
       </Header>
       <PostTitle submitFlag={submitFlag} />
