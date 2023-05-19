@@ -131,8 +131,8 @@ def get_persona_context(request: WSGIRequest) -> Optional[int]:
     if 'persona_id' in request.COOKIES.keys():
         _, persona_id = parse_global_id(request.COOKIES['persona_id'])
         return persona_id
-    elif 'persona_id' in request.headers.keys():
-        _, persona_id = parse_global_id(request.headers['persona_id'])
+    elif 'X-Persona-Id' in request.headers.keys():
+        _, persona_id = parse_global_id(request.headers['X-Persona-Id'])
     else:
         return None
 

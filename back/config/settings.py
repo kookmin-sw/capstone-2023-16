@@ -145,6 +145,7 @@ CORS_ALLOW_HEADERS = [
     'origin',
     'user-agent',
     'persona_id',
+    'X-Persona-Id'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
