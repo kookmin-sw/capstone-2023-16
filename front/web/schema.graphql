@@ -255,10 +255,6 @@ union CreatePersonaResult =
 게시물 생성 input
 """
 input CreatePostInput {
-  """
-  작성자 Persona 정보
-  """
-  author: NodeInput!
 
   """
   새 게시글 제목
@@ -283,7 +279,7 @@ input CreatePostInput {
   """
   소속 카테고리
   """
-  category: NodeInput
+  category: NodeInput!
 }
 
 union CreatePostResult = Post | AuthInfoRequiredError | ResourceNotFoundError

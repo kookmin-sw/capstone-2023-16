@@ -10,6 +10,7 @@ import PostTitle from '../components/PostWriting/PostTitle';
 import TextEditor from '../components/PostWriting/TextEditor';
 import useDeviceType from '../hooks/useDeviceType';
 import { RootState } from '../redux/store';
+import PostApiClient from '../api/Post';
 
 const PostWritingPage = () => {
   const [submitFlag, setSubmitFlag] = useState(false);
@@ -20,10 +21,21 @@ const PostWritingPage = () => {
  
   useEffect(() => {
     if (submitFlag) {
-      if ((newPost.title !== "") && (newPost.length >= 20)) console.log(newPost);
+      if ((newPost.title !== "") && (newPost.length >= 20)) {
+        if (!newPost.category || newPost.category.id === "default") {
+          alert("카테고리 선택은 필수입니다.");
+        } else {
+          const newPostInput: any = { ...newPost };
+          delete newPostInput.length;
+          console.log(newPostInput);
+          PostApiClient.postCreate(newPostInput)
+            .then(() => navigate('/posts'))
+            .catch(e => console.log(e));
+        }
+      }
     }
     setSubmitFlag(false);
-   }, [submitFlag])
+  }, [submitFlag]);
 
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>

@@ -1,7 +1,8 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
 async function fetchQuery(operation: any, variables: object) {
-	return await fetch("https://persona-backend.herokuapp.com/graphql", {
+
+	return await fetch("http://localhost:8000/graphql", {
 		method: "POST",
 		mode: "cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
