@@ -1,13 +1,13 @@
 import useDeviceType from '../hooks/useDeviceType';
 import styled from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
-import PersonaList from '../components/PersonaChoice/PersonaList';
+import PersonaList from '../components/MyPersonas/PersonaList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { useEffect, useState } from 'react';
-import SettingButton from '../components/PersonaChoice/SettingButton';
+import { useState } from 'react';
+import SettingButton from '../components/MyPersonas/SettingButton';
 
-const PersonaChoice = () => {
+const MyPersonasPage = () => {
     const deviceType = useDeviceType();
     const loggedInUser = useSelector((state: RootState) => state.user);
     const [mode, setMode] = useState('default');
@@ -24,7 +24,7 @@ const PersonaChoice = () => {
     )
 };
 
-export default PersonaChoice;
+export default MyPersonasPage;
 
 const PersonaChoiceContainer = styled.div`
     width: 100%;

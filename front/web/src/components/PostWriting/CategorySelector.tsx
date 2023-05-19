@@ -2,14 +2,14 @@ import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import dummy from './dummy/dummy.json';
 
-const CategoryChoice = () => {
+const CategorySelector = () => {
   const deviceType = useDeviceType();
   return <CategoryChoiceContainer deviceType={deviceType}>
     {dummy.map((n: any) => <option key={n.node.id} value={n.node.id}>{n.node.body}</option>)}
   </CategoryChoiceContainer>
 };
 
-export default CategoryChoice;
+export default CategorySelector;
 
   const CategoryChoiceContainer = styled.select<{ deviceType: string }>`
   width: ${(props) => {return (props.deviceType==='mobile')?'122px': '244px'}};
