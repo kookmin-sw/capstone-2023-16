@@ -31,7 +31,9 @@ import {useMutation} from 'react-relay';
 import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
 import {Error} from '../relay/type';
 
+// @ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
+
 import {useMutation} from 'react-relay';
 import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
 

@@ -122,7 +122,6 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
               onCompleted(data) {
                 console.log('@login success');
                 console.log(data.login);
-                console.log(`data ? : ${JSON.stringify(data)}`);
                 dispatch(login(data.login));
                 console.log(`data ? : ${JSON.stringify(data)}`);
               },

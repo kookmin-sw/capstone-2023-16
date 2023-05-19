@@ -99,7 +99,7 @@ const OccupationInfoSection = styled.View`
   flex-direction: row;
   margin-top: ${DimensionTheme.width(15)};
   width: ${DimensionTheme.width(318)};
-  height: ${DimensionTheme.width(43)};
+  height: ${DimensionTheme.width(43)};x
 `;
 
 const PersonaDescriptionSection = styled.View`

@@ -22,8 +22,6 @@ const MyTheme = {
 };
 
 const NavContainer: FC = () => {
-  const {cookie, setCookie} = useState('');
-  // const {cookies, setCookie} = useState('');
   let auth = useAppSelector(selectAuth);
   console.log(`!!!!!!!!nav : ${JSON.stringify(auth)}`);
 
