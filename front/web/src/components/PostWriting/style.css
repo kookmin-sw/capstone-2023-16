@@ -1,0 +1,26 @@
+.tag {
+  display: inline-block;
+  text-align: center;
+  height: 2rem;
+  padding: .3rem .5rem;
+  margin: auto;
+  font-size: .9rem;
+  background-color: rgba(29, 212, 105, 0.719);
+  color: white;
+  font-weight: 700;
+  border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
+  -moz-border-radius: 0.3rem;
+  -ms-border-radius: 0.3rem;
+  -o-border-radius: 0.3rem;
+  margin: 0.2rem;
+  transition: .5s ease;
+  -webkit-transition: .5s ease;
+  -moz-transition: .5s ease;
+  -ms-transition: .5s ease;
+  -o-transition: .5s ease;
+}
+
+.tag .close{
+  cursor: pointer;
+}

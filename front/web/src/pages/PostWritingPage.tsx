@@ -11,6 +11,7 @@ import TextEditor from '../components/PostWriting/TextEditor';
 import useDeviceType from '../hooks/useDeviceType';
 import { RootState } from '../redux/store';
 import PostApiClient from '../api/Post';
+import TagInput from '../components/PostWriting/TagInput';
 
 const PostWritingPage = () => {
   const [submitFlag, setSubmitFlag] = useState(false);
@@ -48,6 +49,7 @@ const PostWritingPage = () => {
       </Header>
       <PostTitle submitFlag={submitFlag} />
       <TextEditor submitFlag={submitFlag} />
+      <TagInput />
     </ContentLayout>
   </>
 };
