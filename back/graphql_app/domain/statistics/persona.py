@@ -8,7 +8,7 @@ def get_following_personas_statistics(persona_id: int, result_limit: int) -> Dic
     following_personas = Persona.objects.filter(following_personas__in=[persona_id]) \
         .values('id',
                 'gender',
-                'age',
+                'birth_year',
                 'job',
                 'preferred_tags__body',
                 'preferred_categories__body')
@@ -17,14 +17,13 @@ def get_following_personas_statistics(persona_id: int, result_limit: int) -> Dic
 
     io_labels = {
         'gender': 'gender_scores',
-        'age': 'age_scores',
+        'birth_year': 'birth_year_scores',
         'job': 'job_scores',
         'preferred_tags__body': 'tag_scores',
         'preferred_categories__body': 'category_scores'
     }
 
     input_resolvers = {
-        'age': lambda age: f"{age // 10 * 10}대"
     }
 
     statistics = get_statistics_from_records(following_personas, pp_resolver, result_limit,
@@ -36,7 +35,7 @@ def get_follower_personas_statistics(persona_id: int, result_limit: int) -> Dict
     follower_personas = Persona.objects.filter(follower_personas__in=[persona_id]) \
         .values('id',
                 'gender',
-                'age',
+                'birth_year',
                 'job',
                 'preferred_tags__body',
                 'preferred_categories__body')
@@ -45,14 +44,13 @@ def get_follower_personas_statistics(persona_id: int, result_limit: int) -> Dict
 
     io_labels = {
         'gender': 'gender_scores',
-        'age': 'age_scores',
+        'birth_year': 'birth_year_scores',
         'job': 'job_scores',
         'preferred_tags__body': 'tag_scores',
         'preferred_categories__body': 'category_scores'
     }
 
     input_resolvers = {
-        'age': lambda age: f"{age // 10 * 10}대"
     }
 
     statistics = get_statistics_from_records(follower_personas, pp_resolver, result_limit,

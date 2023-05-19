@@ -83,7 +83,7 @@ def get_post_reader_statistics(post_id: int, min_revisit: int, result_limit: int
                 'persona_id',
                 'post_id',
                 'persona__gender',
-                'persona__age',
+                'persona__birth_year',
                 'persona__job',
                 'persona__preferred_tags__body',
                 'persona__preferred_categories__body')
@@ -92,14 +92,13 @@ def get_post_reader_statistics(post_id: int, min_revisit: int, result_limit: int
 
     io_labels = {
         'persona__gender': 'gender_scores',
-        'persona__age': 'age_scores',
+        'persona__birth_year': 'birth_year_scores',
         'persona__job': 'job_scores',
         'persona__preferred_tags__body': 'tag_scores',
         'persona__preferred_categories__body': 'category_scores',
     }
 
     input_resolvers = {
-        'persona__age': lambda age: f"{age // 10 * 10}대"
     }
 
     statistics = get_statistics_from_records(records, pp_resolver, result_limit, io_labels, input_resolvers)
@@ -113,7 +112,7 @@ def get_read_post_statistics(reader_id: int, result_limit: int, start_dt: dateti
         .values('read_count', 'persona_id', 'post_id',
                 'post__tags__body', 'post__category__body',
                 'post__author__preferred_tags__body', 'post__author__preferred_categories__body',
-                'post__author__gender', 'post__author__age', 'post__author__job')
+                'post__author__gender', 'post__author__birth_year', 'post__author__job')
 
     pp_resolver = lambda x: (x['persona_id'], x['post_id'])
 
@@ -123,12 +122,11 @@ def get_read_post_statistics(reader_id: int, result_limit: int, start_dt: dateti
         'post__author__preferred_tags__body': 'author_tag_scores',
         'post__author__preferred_categories__body': 'author_category_scores',
         'post__author__gender': 'author_gender_scores',
-        'post__author__age': 'author_age_scores',
+        'post__author__birth_year': 'author_birth_year_scores',
         'post__author__job': 'author_job_scores',
     }
 
     input_resolvers = {
-        'post__author__age': lambda age: f"{age // 10 * 10}대"
     }
 
     statistics = get_statistics_from_records(records, pp_resolver, result_limit, io_labels, input_resolvers)

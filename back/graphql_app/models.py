@@ -73,7 +73,7 @@ class Persona(models.Model):
     picture_url = models.URLField(verbose_name='이미지 파일 주소')
 
     gender = models.CharField('성별', max_length=2, null=True, blank=True, default=None)
-    age = models.PositiveIntegerField('연령대', null=True, blank=True, default=None)
+    birth_year = models.PositiveIntegerField('생년', null=True, blank=True, default=None)
     job = models.CharField('직업', max_length=15, null=True, blank=True, default=None)
     is_certified = models.BooleanField('공인 여부', default=False)
 

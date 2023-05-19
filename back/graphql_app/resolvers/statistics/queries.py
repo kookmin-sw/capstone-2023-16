@@ -26,8 +26,6 @@ class Query:
         statistics: Dict[str, Dict[str, int]] = get_read_post_statistics(persona_id, opt.result_limit,
                                                                          opt.datetime_between.start_datetime,
                                                                          opt.datetime_between.end_datetime)
-        print(statistics)
-
         # Author 통계 처리
         for author_label in statistics['author_statistics'].keys():
             statistics['author_statistics'][author_label] = list(map(lambda x: FieldScore(**x),

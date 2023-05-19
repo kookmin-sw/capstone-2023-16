@@ -9,7 +9,7 @@ from strawberry_django_plus.gql import relay
 
 from graphql_app import models
 from graphql_app.domain.membership.enums import Tier
-from graphql_app.domain.post.core import get_post_like_cnt, get_comments_of
+from graphql_app.domain.post.core import get_post_like_cnt, get_comments_of, get_comments_count
 from graphql_app.domain.post.core import get_bookmarks_of_persona
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.permissions import PersonaOwnershipPermission
@@ -67,6 +67,10 @@ class Bookmark(relay.Node):
 
 @gql.django.type(models.Post)
 class Post(relay.Node):
+    @staticmethod
+    def bookmark_cnt_resolver(root: 'Post', info: Info) -> int:
+        return root.bookmark_set.all().count()
+
     title: str = strawberry.field(description='글 제목')
     content: str = strawberry.field(description='글 내용', permission_classes=[MembershipTierPermission])
     content_preview: Optional[str] = strawberry.field(description='글 내용 미리보기')
@@ -78,6 +82,8 @@ class Post(relay.Node):
     required_membership_tier: Optional[Tier] = strawberry.field(description='조회 요구 티어')
     like_cnt: int = strawberry.field(get_post_like_cnt, description='좋아요 개수')
     comments: List['Comment'] = strawberry.field(get_comments_of, description='댓글 목록')
+    comment_cnt: int = strawberry.field(get_comments_count, description='댓글 갯수')
+    bookmark_cnt: int = strawberry.field(bookmark_cnt_resolver, description='북마크 개수')
     created_at: datetime = strawberry.field(description='생성 시각')
     updated_at: datetime = strawberry.field(description='갱신 시각')
 
@@ -101,33 +107,31 @@ class Persona(relay.Node):
     구독자, 구독 대상, 컨텐츠 작성자에 해당되는 페르소나
     User : Persona = 1 : N
     """
+
+    @staticmethod
+    def liked_posts_resolver(root: 'Persona', info: Info) -> List['Post']:
+        persona = models.Persona.objects.get(id=root.id)
+        return list(map(lambda like: like.post, persona.postlike_set.all()))
+
     owner: User = strawberry.field(User.get_user_with_info, description='소유자')
     nickname: str = strawberry.field(description='닉네임 (unique)')
     introduction: str = strawberry.field(description='소개')
     is_public: bool = strawberry.field(description='공개 여부')
     gender: Optional[Gender] = strawberry.field(description='성별')
-    age: Optional[int] = strawberry.field(description='연령')
+    birth_year: Optional[int] = strawberry.field(description='생년')
     job: Optional[str] = strawberry.field(description='직업')
     is_certified: bool = strawberry.field(description='공식 인증 여부')
     preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
     preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
     bookmarks = strawberry.field(Bookmark.get_bookmarks_of_persona, description='북마크 목록',
                                  permission_classes=[PersonaOwnershipPermission])
+    liked_posts = strawberry.field(liked_posts_resolver, description='좋아요 한 포스트 목록')
 
-    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
+    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나 목록')
+    follower_personas: relay.Connection['Persona'] = strawberry.field(description='팔로워 페르소나 목록')
 
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
-
-
-@gql.django.type(models.Persona)
-class PublicPersona(relay.Node):
-    nickname: str = strawberry.field(description='닉네임 (unique)')
-    introduction: str = strawberry.field(description='소개')
-    is_public: bool = strawberry.field(description='공개 여부')
-    preferred_tags: relay.Connection['Tag'] = strawberry.field(description='선호 태그 목록')
-    preferred_categories: relay.Connection['Category'] = strawberry.field(description='선호 카테고리 목록')
-    following_personas: relay.Connection['Persona'] = strawberry.field(description='팔로잉 페르소나')
 
 
 @gql.django.type(models.WaitFreePersona)

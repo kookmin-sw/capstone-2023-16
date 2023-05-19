@@ -63,7 +63,7 @@ def has_required_tier(requested_persona_id: int, post: int | Post):
         post: Post = Post.objects.get(id=post)
 
     if post.required_membership_tier is None:
-        return None
+        return True
     else:
         membership = Membership.objects.filter(creator=post.author, subscriber=requested_persona_id)
         if not membership:
@@ -244,6 +244,12 @@ def get_comments_of(root: Post, info: Info) -> List[Comment]:
     특정 게시물의 댓글 목록을 작성 일시 내림차순으로 반환
     """
     return Comment.objects.filter(post=root)
+
+def get_comments_count(root: Post, info: Info) -> int:
+    """
+    특정 게시물의 댓글 갯수를 반환
+    """
+    return Comment.objects.filter(post=root).count
 
 
 def create_comment_to(post_id: int, persona_id: int, body) -> Comment:

@@ -4,7 +4,8 @@ from strawberry import BasePermission
 from strawberry.types import Info
 
 from graphql_app.domain.post.core import is_eligible_for_paid_content, has_required_tier
-from graphql_app.resolvers.errors import CookieContextRequiredError
+from graphql_app.models import Persona
+from graphql_app.resolvers.errors import PersonaContextRequiredError
 from graphql_app.resolvers.utils import parse_global_id
 
 
@@ -14,19 +15,35 @@ class IsEligibleForPaidContent(BasePermission):
     def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
         post_id = source.id if source else info.variable_values['postId'].node_id
 
-        if 'persona_id' not in info.context.request.COOKIES:
-            raise CookieContextRequiredError('persona_id')
+        if 'persona_id' in info.context.request.COOKIES.keys():
+            persona_id = info.context.request.COOKIES.get('persona_id')
+        elif 'X-Persona-Id' in info.context.request.headers.keys():
+            persona_id = info.context.request.headers.get('X-Persona-Id')
         else:
-            _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
-            return is_eligible_for_paid_content(persona_id, post_id, info.context.request.user.id)
+            raise PersonaContextRequiredError('persona_id')
+
+        _, persona_id = parse_global_id(persona_id)
+        return is_eligible_for_paid_content(persona_id, post_id, info.context.request.user.id)
 
 
 class MembershipTierPermission(BasePermission):
     message = '요구되는 멤버쉽 티어 조건을 만족하지 않습니다.'
 
     def has_permission(self, source: typing.Any, info: Info, **kwargs) -> bool:
-        _, persona_id = parse_global_id(info.context.request.COOKIES['persona_id'])
-        return has_required_tier(persona_id, source)
+        if 'persona_id' in info.context.request.COOKIES.keys():
+            persona_id = info.context.request.COOKIES.get('persona_id')
+        elif 'X-Persona-Id' in info.context.request.headers.keys():
+            persona_id = info.context.request.headers.get('X-Persona-Id')
+        else:
+            raise PersonaContextRequiredError('persona_id')
+
+        _, persona_id = parse_global_id(persona_id)
+        try:
+            persona = Persona.objects.get(owner=info.context.request.user, id=persona_id)
+        except Persona.DoesNotExist:
+            return False
+        else:
+            return persona.id == source.author.id or has_required_tier(persona_id, source)
 
 
 class OwnerOnlyPermission(BasePermission):
