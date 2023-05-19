@@ -343,7 +343,7 @@ input DatetimeBetween {
   startDt: DateTime = null
 
   """조회 종료 일시"""
-  endDt: DateTime = "2023-05-18T17:23:24.370479"
+  endDt: DateTime = "2023-05-18T20:28:49.186711"
 }
 
 enum DurationType {
@@ -1289,10 +1289,10 @@ enum SortingDirection {
 """통계에 사용할 데이터의 날짜 범위"""
 input StatisticsDatetimeBetween {
   """조회 시작 일시 (기본값 : 30일 이전)"""
-  startDatetime: DateTime = "2023-04-18T17:23:24.484828"
+  startDatetime: DateTime = "2023-04-18T20:28:49.266423"
 
   """조회 종료 일시 (기본값 : 오늘)"""
-  endDatetime: DateTime = "2023-05-18T17:23:24.484857"
+  endDatetime: DateTime = "2023-05-18T20:28:49.266442"
 }
 
 enum StringFindMode {

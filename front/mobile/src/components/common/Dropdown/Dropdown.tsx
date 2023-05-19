@@ -27,7 +27,10 @@ const DropdownCover = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const DropdownItems = styled.View``;
+const DropdownItems = styled.View`
+  z-index: 9;
+  height: ${DimensionTheme.height(200)};
+`;
 
 const DropdownItem = styled.TouchableOpacity``;
 
@@ -49,9 +52,6 @@ export const Dropdown: FC<DropdownProps> = ({
   onSelect,
   viewStyles,
 }) => {
-  console.log(`selected! : ${value?.name}`);
-  console.log(data);
-
   const [showOption, setShowOption] = useState(false);
   const onSelectedItem = val => {
     setShowOption(false);

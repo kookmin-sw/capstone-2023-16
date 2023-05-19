@@ -1,6 +1,4 @@
-import React, {useReducer, FC} from 'react';
-//@ts-ignore
-import styled from 'styled-components/native';
+import React, {useReducer, FC, useEffect, useState} from 'react';
 
 import * as ButtonTheme from '../theme';
 import {View} from 'react-native';
@@ -9,8 +7,15 @@ import {colors} from '../colors';
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'INITIALIZE':
+      return [...action.payload];
     case 'ON_SELECT':
-      return {...state, ...action.payload};
+      return state.map((item, index) => {
+        if (index === action.index) {
+          return {...item, flag: !item.flag};
+        }
+        return item;
+      });
     default:
       return state;
   }
@@ -18,23 +23,30 @@ const reducer = (state, action) => {
 
 type ChipsProps = {
   data: any;
+  getTagInfo: any;
 };
 
 export const MultiSelectChip: FC<ChipsProps> = props => {
-  const inisialState = {
-    list: props.data,
-  };
-  const [state, dispatch] = useReducer(reducer, inisialState);
+  const [state, dispatch] = useReducer(reducer, []);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  useEffect(() => {
+    dispatch({type: 'INITIALIZE', payload: props.data});
+  }, [props.data]);
 
   const selectItem = (item, index) => {
-    state.list[index].flag = !state.list[index].flag;
-    dispatch({
-      type: 'ON_SELECT',
-      payload: state.list,
-    });
-    state.list.map(item => {
+    dispatch({type: 'ON_SELECT', index});
+    const updatedData = [...state];
+    updatedData[index].flag = !updatedData[index].flag;
+    dispatch({type: 'INITIALIZE', payload: updatedData});
+    updatedData.map(item => {
       item.flag ? console.log(item.title) : null;
     });
+    const selected = updatedData
+      .filter(item => item.flag)
+      .map(item => item.body);
+    setSelectedItems(selected);
+    props.getTagInfo(selectedItems);
   };
 
   return (
@@ -44,7 +56,7 @@ export const MultiSelectChip: FC<ChipsProps> = props => {
           flexWrap: 'wrap',
           flexDirection: 'row',
         }}>
-        {state.list.map((item, index) => {
+        {state.map((item, index) => {
           return (
             <SmallButton
               key={index}
@@ -63,7 +75,7 @@ export const MultiSelectChip: FC<ChipsProps> = props => {
               ]}
               textStyles={{color: colors.black}}
               onPress={() => selectItem(item, index)}>
-              #{item.title}
+              #{item.body}
             </SmallButton>
           );
         })}

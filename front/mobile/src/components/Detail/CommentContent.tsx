@@ -9,7 +9,7 @@ import Comment from './Comment';
 import {DimensionTheme} from '../common/shared';
 
 interface CommentContentProps {
-  feed_id: number;
+  feed_id: string;
   render: Dispatch<SetStateAction<boolean>>;
   state: boolean;
 }

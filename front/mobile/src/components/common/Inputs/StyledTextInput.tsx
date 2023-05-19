@@ -18,6 +18,10 @@ const StyledTextInputContainer = styled.View`
   margin-bottom: 10px;
 `;
 
+const LabelContainer = styled.View`
+  flex-direction: row;
+`;
+
 const FlexContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -56,6 +60,7 @@ interface StyledTextInputProps extends TextInputProps {
   viewStyle?: StyleProp<ViewStyle>;
   label?: string;
   labelStyle?: StyleProp<TextStyle>;
+  labelExtra?: string;
   error?: string | boolean;
   touched?: boolean;
   isPassword?: boolean;
@@ -67,6 +72,7 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
   viewStyle,
   label,
   labelStyle,
+  labelExtra,
   isPassword,
   error,
   touched,
@@ -77,7 +83,13 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
   const [hidePassword, setHidePassword] = useState(true);
   return (
     <StyledTextInputContainer style={viewStyle}>
-      <SmallText textStyle={labelStyle}>{label}</SmallText>
+      <LabelContainer>
+        <SmallText textStyle={labelStyle}>{label}</SmallText>
+        <SmallText
+          textStyle={{marginLeft: 20, fontSize: DimensionTheme.fontSize(10)}}>
+          {labelExtra}
+        </SmallText>
+      </LabelContainer>
       <FlexContainer>
         <InputField
           style={viewStyle}

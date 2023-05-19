@@ -1,6 +1,7 @@
 import React, {FC, useState} from 'react';
 //@ts-ignore
 import styled from 'styled-components/native';
+import {Alert} from 'react-native';
 
 import {Formik} from 'formik';
 
@@ -21,26 +22,21 @@ import SmallText from '../components/common/Texts/SmallText';
 
 import {NavigationData} from '../navigation/AuthNavigator';
 
-// import { useMutation } from 'react-relay';
+//@ts-ignore
 import {graphql} from 'babel-plugin-relay/macro';
-import {commitMutation, useLazyLoadQuery, useMutation} from 'react-relay';
-// import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
 
 import {useAppDispatch} from '../redux/hooks';
-import {
-  login,
-  selectUser,
-  logout,
-  selectAuth,
-  setPersona,
-} from '../redux/slices/userSlice';
-import {useAppSelector} from '../redux/hooks';
-import {Alert} from 'react-native';
-import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+// import { useMutation } from 'react-relay';
+import {commitMutation, useLazyLoadQuery, useMutation} from 'react-relay';
+// import {LoginScreenMutation} from './__generated__/LoginScreenMutation.graphql';
+import {login} from '../redux/slices/userSlice';
+
 import {CookieSetting} from '../graphQL/CookieSetting/CookieSetting';
 // import {GetPersonaQuery} from '../graphQL/CookieSetting/__generated__/GetPersonaQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
 import LoginEnvironment from '../LoginEnvironment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginContainer = styled(Container)`
   width: 100%;
@@ -106,9 +102,10 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
   const [autoLogin, setAutoLogin] = useState(false);
 
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
 
   const [commit, isInFlight] = useMutation<LoginScreenMutation>(loginMutation);
+
+  AsyncStorage.removeItem('persona_id');
 
   return (
     <LoginContainer>
@@ -125,9 +122,8 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
               onCompleted(data) {
                 console.log('@login success');
                 console.log(data.login);
-                console.log(`data ? : ${JSON.stringify(data)}`);
                 dispatch(login(data.login));
-                console.log(`update ? : ${JSON.stringify(user)}`);
+                console.log(`data ? : ${JSON.stringify(data)}`);
               },
               onError(error) {
                 console.log('@login error:');
@@ -135,10 +131,7 @@ export const LoginScreen: FC<Props> = ({navigation}) => {
                 console.log(error.message);
                 Alert.alert('존재하지 않는 계정입니다.');
               },
-              // updater(store) {
-              // const payload = store.getRootField('login');
-              // store.getRoot().setLinkedRecord(payload, 'currentUser');
-              // },
+              async updater() {},
             });
           }}>
           {({values, handleChange, handleBlur, handleSubmit, isSubmitting}) => (

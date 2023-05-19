@@ -21,13 +21,14 @@ import {ChallengeCreateScreen} from '../screens/Challenge/ChallengeCreateScreen'
 import {ChallengeDetailScreen} from '../screens/Challenge/ChallengeDetailScreen';
 import {MyContentScreen} from '../screens/MyContent/MyContentScreen';
 import {FollowScreen} from '../screens/MyAccount/FollowScreen';
+import {PersonaInfo, PersonaPage} from './type';
 import FilterScreen from '../screens/FilterScreen';
-import LoadingScreen from '../screens/LoadingScreen';
+// import LoadingScreen from '../screens/LoadingScreen';
 
 export type ParamList = {
   Main: undefined;
   BaseInfo: undefined;
-  InterestTagSetting: undefined;
+  InterestTagSetting: {personaInfo: PersonaInfo};
   MyPage: undefined;
   Follow: undefined;
   Following: undefined;
@@ -41,7 +42,7 @@ export type ParamList = {
   ChallengeDetail: undefined;
   MyContent: undefined;
   FilterContent: undefined;
-  Loading: undefined;
+  // Loading: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -49,11 +50,11 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      <StackNavigator.Screen
+      {/* <StackNavigator.Screen
         name="Loading"
         component={LoadingScreen}
         options={{headerShown: false}}
-      />
+      /> */}
       <StackNavigator.Screen
         name="Main"
         component={MainScreen}
@@ -62,16 +63,11 @@ const AppNavigator = () => {
       <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
-        options={({navigation}) => ({
+        options={{
           headerShown: false,
           headerShadowVisible: false,
-          headerTitle: '홍현지',
           headerTransparent: true,
-          headerTitleStyle: {
-            fontWeight: '700',
-            fontSize: 28,
-          },
-        })}
+        }}
       />
       <StackNavigator.Screen
         name="Setting"

@@ -7,7 +7,8 @@ import {
   StyleSheet,
   View,
   ImageBackground,
-  RefreshControl
+  RefreshControl,
+  Text,
 } from 'react-native';
 //@ts-ignore
 import styled from 'styled-components/native';
@@ -17,16 +18,21 @@ import {DimensionTheme} from '../components/common/shared';
 import FeedCategory from '../components/Main/FeedCategory';
 import FeedCard from '../components/common/Cards/FeedCard';
 import {NavigationData} from '../navigation/AppNavigator';
-
-import {useLazyLoadQuery, usePaginationFragment} from 'react-relay';
-import {graphql} from 'babel-plugin-relay/macro';
 import {imagePath} from '../utils/imagePath';
-import { MainScreenQuery } from './__generated__/MainScreenQuery.graphql';
+
+//@ts-ignore
+import {graphql} from 'babel-plugin-relay/macro';
+import {useLazyLoadQuery, usePaginationFragment} from 'react-relay';
+import {MainScreenQuery} from './__generated__/MainScreenQuery.graphql';
 import PostPaginationFragment from '../graphQL/Main/PostPaginationFragment';
 import PostListGetQuery from '../graphQL/Main/PostListGetQuery';
+import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
-import { selectPersona, setPersona } from '../redux/slices/userSlice';
-import { useDispatch, useSelector } from 'react-redux';
+
+import {selectPersona, setPersona} from '../redux/slices/userSlice';
+import {useAppDispatch, useAppSelector} from '../redux/hooks';
+import {getInitPersona} from '../relay/Persona/getInitPersona';
+import { storeData } from '../asyncstorage';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -48,13 +54,51 @@ const CategoryScroll = styled.ScrollView`
 type Props = NavigationData<'Main'>;
 
 const MainScreen: FC<Props> = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const persona = useAppSelector(selectPersona);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+      if (persona.id === ''){
+        const fetchData = async () => {
+          try {
+            const response = await getInitPersona();
+            console.log('cur : ', response[0].node);
+            if (response.length === 0) navigation.navigate('BaseInfo');
+            storeData('persona_id', response[0].node.id);
+            dispatch(
+              setPersona({
+                id: response[0].node.id,
+                nickname: response[0].node.nickname,
+              }),
+            );
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+
+        fetchData();
+      }
+      storeData('persona_id', persona.id);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   const tmpData = useLazyLoadQuery(
     PostListGetQuery,
     {},
     {fetchPolicy: 'store-or-network'},
   );
 
-  const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(PostPaginationFragment, tmpData);
+  const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(
+    PostPaginationFragment,
+    tmpData,
+  );
   const data = tmpAPI.data;
 
   useEffect(() => {
@@ -70,12 +114,32 @@ const MainScreen: FC<Props> = ({navigation}) => {
     }, 2000);
   }, []);
 
-
   const [feedChoice1, setFeedChoice1] = useState(true);
   const [feedChoice2, setFeedChoice2] = useState(false);
   const [feedChoice3, setFeedChoice3] = useState(false);
 
   navigation.reset;
+
+  if (isLoading){
+    return (
+      <SafeAreaView>
+        <ImageBackground
+          style={style.BackgroundView}
+          source={require('../assets/background1.png')} >
+            <HeaderBox>
+              <Image
+                style={style.HearderTitle}
+                source={require('../assets/logoText.png')}
+                resizeMode="contain"
+              />
+              <View style={style.LibraryTool}>
+                <Text>Loading..</Text>
+              </View>
+            </HeaderBox>
+          </ImageBackground>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView>
@@ -100,7 +164,11 @@ const MainScreen: FC<Props> = ({navigation}) => {
             width={28}
             height={28}
             onPress={() => {
-              navigation.navigate('MyPage');
+              navigation.navigate('MyPage', {
+                isMine: true,
+                nickname: persona.nickname,
+                id: persona.id,
+              });
             }}
             img={require('../assets/profileImg.png')}
           />
@@ -140,13 +208,13 @@ const MainScreen: FC<Props> = ({navigation}) => {
             </CategoryScroll>
             <ScrollView
               refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
               {feedChoice1 &&
-                data.getPublicPosts.edges.map((value:any, index?:number) => (
+                data.getPublicPosts.edges.map((value: any, index?: number) => (
                   <FeedCard
                     key={index}
                     title={value.node.title}
@@ -164,7 +232,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice2 &&
-                data.getPublicPosts.edges.map((value:any, index?:number) => (
+                data.getPublicPosts.edges.map((value: any, index?: number) => (
                   <FeedCard
                     key={index}
                     title={value.node.title}
@@ -182,7 +250,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   />
                 ))}
               {feedChoice3 &&
-                data.getPublicPosts.edges.map((value:any, index?:number) => (
+                data.getPublicPosts.edges.map((value: any, index?: number) => (
                   <FeedCard
                     key={index}
                     title={value.node.title}

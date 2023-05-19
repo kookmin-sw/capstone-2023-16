@@ -11,6 +11,9 @@ import {NavigationData} from '../../navigation/AppNavigator';
 import {LikeScreen} from '../MyHistory/LikeScreen';
 import {StatisticsScreen} from '../MyHistory/StatisticsScreen';
 
+import {selectPersona} from '../../redux/slices/userSlice';
+import {useAppSelector} from '../../redux/hooks';
+
 const ContentContainer = styled(Container)`
   align-items: flex-start;
 `;
@@ -23,6 +26,9 @@ const HeaderSection = styled.View`
 type Props = NavigationData<'MyContent'>;
 
 export const MyContentScreen: FC<Props> = ({navigation}) => {
+  const persona = useAppSelector(selectPersona);
+  console.log(persona);
+
   const [routes] = useState<routeProps[]>([
     {key: 'all', title: 'ALL'},
     {key: 'free', title: 'FREE'},
@@ -42,7 +48,7 @@ export const MyContentScreen: FC<Props> = ({navigation}) => {
       <HeaderSection>
         <Header navigation={navigation} />
         <RegularText textStyle={{marginLeft: DimensionTheme.width(20)}}>
-          OOO님의 CONTENT
+          {persona.nickname}님의 CONTENT
         </RegularText>
       </HeaderSection>
       <Tab routes={routes} sceneMap={sceneMaps} />

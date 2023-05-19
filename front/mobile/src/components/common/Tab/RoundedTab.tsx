@@ -52,7 +52,11 @@ export const RoundedTab: FC<RoundedTabProps> = ({tabInfo}) => {
         ]}
         textStyles={{fontSize: 12, color: colors.black}}
         onPress={() => {
-          navigation.navigate(tabInfo[1].key);
+          navigation.navigate(tabInfo[1].key, {
+            isMine: tabInfo[1].isMine,
+            followingList: tabInfo[1].followingList,
+            followerList: tabInfo[1].followerList,
+          });
         }}>
         {tabInfo[1].title}
       </SmallButton>
