@@ -33,6 +33,23 @@ class PersonaCreateInput:
     preferred_categories: Optional[List[CategoryIDInput]] = strawberry.field(default_factory=list,
                                                                              description='선호 카테고리 목록')
 
+@gql.django.input(models.Persona)
+class PersonaUpdateInput:
+    """
+    페르소나 수정에 필요한 정보
+    """
+    persona_id: GlobalID = strawberry.field(description="수정하려는 persona id")
+    nickname: str = strawberry.field(description='닉네임 (unique)')
+    introduction: Optional[str] = strawberry.field(default='자기소개가 없습니다.', description='소개')
+    is_public: Optional[bool] = strawberry.field(default=True, description='공개 여부')
+    gender: Optional[Gender] = strawberry.field(default=None, description='성별')
+    age: Optional[int] = strawberry.field(default=None, description='나이')
+    job: Optional[Job] = strawberry.field(default=None, description='직업')
+    preferred_tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
+                                                                 description='선호하는 태그의 body 목록 (insert 됨)')
+    preferred_categories: Optional[List[CategoryIDInput]] = strawberry.field(default_factory=list,
+                                                                             description='선호 카테고리 목록')
+
 
 @strawberry.input
 class PersonaSortingOption:

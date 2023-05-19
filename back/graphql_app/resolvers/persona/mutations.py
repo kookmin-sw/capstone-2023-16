@@ -4,14 +4,16 @@ from strawberry_django_plus import gql
 from strawberry_django_plus.mutations import resolvers
 
 from graphql_app import models
-from graphql_app.domain.persona.core import create_persona, persona_follow_toggle
-from graphql_app.domain.persona.exceptions import NicknameDupliationException, SelfFollowException
+from graphql_app.domain.persona.core import create_persona, persona_follow_toggle, update_persona
+from graphql_app.domain.persona.exceptions import NicknameDupliationException, SelfFollowException, PersonaNotFoundException
 from graphql_app.resolvers.decorators import requires_auth, requires_persona_context
 from graphql_app.resolvers.errors import AuthInfoRequiredError, PermissionDeniedError
 from graphql_app.resolvers.model_types import Persona
 from graphql_app.resolvers.persona.errors import PersonaNicknameDuplicatedError, SelfFollowError
-from graphql_app.resolvers.persona.types import PersonaCreateInput, PersonaFollowToggleOutput, PersonaFollowToggleInput
+from graphql_app.resolvers.persona.types import PersonaCreateInput, PersonaUpdateInput, PersonaFollowToggleOutput, PersonaFollowToggleInput
 from graphql_app.resolvers.utils import parse_global_ids
+
+from graphql_app.resolvers.utils import parse_global_id
 
 
 @gql.type
@@ -44,6 +46,36 @@ class Mutation:
             raise PersonaNicknameDuplicatedError(given_nickname=new_persona_input['nickname'])
         else:
             return new_persona
+
+
+    @strawberry.mutation
+    @requires_auth
+    def persona_update(self, info: Info, update_persona_input: PersonaUpdateInput) \
+            -> strawberry.union("UpdatePersonaResult", (Persona,
+                                                        AuthInfoRequiredError,
+                                                        PersonaNicknameDuplicatedError)):
+        _, persona_id = parse_global_id(str(update_persona_input.persona_id))
+        update_persona_input = resolvers.parse_input(info, update_persona_input)
+        owner = info.context.request.user
+        nickname = update_persona_input['nickname']
+        introduction = update_persona_input['introduction']
+        is_public = update_persona_input['is_public']
+        gender = update_persona_input['gender']
+        job = update_persona_input['job']
+        age = update_persona_input['age']
+        preferred_tag_bodies = update_persona_input['preferred_tag_bodies']
+        preferred_categories = update_persona_input['preferred_categories']
+        _, preferred_category_ids = parse_global_ids(preferred_categories)
+
+        try:
+            updated_persona = update_persona(persona_id, owner, nickname, introduction, is_public, gender, age, job,
+                                             preferred_tag_bodies, preferred_category_ids)
+        except Persona.DoesNotExist:
+            raise PersonaNotFoundException(given_persona_id=persona_id)
+        except NicknameDupliationException:
+            raise PersonaNicknameDuplicatedError(given_nickname=update_persona_input['nickname'])
+        else:
+            return updated_persona
 
     @strawberry.mutation
     @requires_persona_context
