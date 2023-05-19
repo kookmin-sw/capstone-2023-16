@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -8,8 +8,8 @@ import useDeviceType from '../hooks/useDeviceType';
 import { RootState } from '../redux/store';
 import editIcon from "../assets/imgs/post.png"
 import deleteIcon from "../assets/imgs/trashcan.png"
-import post from '../components/PostDetail/dummy/post.json';
 import PostApiClient from '../api/Post';
+import LoadingSpinnerPage from './LoadingSpinnerPage';
 
 type PostType = {
   title: string,
@@ -29,11 +29,11 @@ const PostDetailPage = () => {
   const [post, setPost] = useState<PostType>(initialPost);
   const { postId } = useParams();
   const navigate = useNavigate();
+  const queryData: any = PostApiClient.postGet(postId);
 
-  if(postId){
-    const queryData:any = PostApiClient.postGet(postId);
-    console.log(queryData?.data?.getPost?.title);
-  }  
+  useEffect(() => {
+    setPost(queryData.getPost);
+  }, []);
 
   const onEdit = () => {
     alert('편집모드로 전환합니다.');
@@ -52,10 +52,11 @@ const PostDetailPage = () => {
         <PersonaCard {...persona} deviceType={deviceType} />
       </PersonaCardWrapper>}
     <ContentLayout>
-      <Header deviceType={deviceType}>
-        <div>
+      <Suspense fallback={<LoadingSpinnerPage />}>
+        <Header deviceType={deviceType}>
+          <div>
           <Title deviceType={deviceType}>{post.title}</Title>
-          <Date deviceType={deviceType}>{post.createdAt.toString()}</Date>
+          <Date deviceType={deviceType}>{post.createdAt}</Date>
         </div>
         <ButtonSet deviceType={deviceType}>
           <ImgButton deviceType={deviceType} src={editIcon} onClick={onEdit}></ImgButton>
@@ -64,7 +65,8 @@ const PostDetailPage = () => {
       </Header>
       <Content deviceType={deviceType}>
         <p>{JSON.parse(JSON.stringify(post.content).replace(/\n/gi,"\\r\\n"))}</p>
-      </Content>
+        </Content>
+      </Suspense>
     </ContentLayout>
     </>)
 };

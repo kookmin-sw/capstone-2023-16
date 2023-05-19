@@ -1,7 +1,6 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
 
 async function fetchQuery(operation: any, variables: object) {
-
 	return await fetch("http://localhost:8000/graphql", {
 		method: "POST",
 		mode: "cors", // no-cors, *cors, same-origin

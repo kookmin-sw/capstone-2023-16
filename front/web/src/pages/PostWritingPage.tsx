@@ -48,7 +48,6 @@ const PostWritingPage = () => {
       </Header>
       <PostTitle submitFlag={submitFlag} />
       <TextEditor submitFlag={submitFlag} />
-      <button onClick={()=>setSubmitFlag(true)}>Log editor content</button>
     </ContentLayout>
   </>
 };
@@ -77,4 +76,4 @@ const Header = styled.div < { deviceType: string }>`
   justify-content: space-between;
   margin-bottom: ${(props) => props.deviceType === 'desktop' ? '22px' : (props.deviceType === 'tablet') ? '43px' : '10px'};
   row-gap: ${props => props.deviceType === 'mobile' ? '10px' : '26px'};
-}`
+}`;

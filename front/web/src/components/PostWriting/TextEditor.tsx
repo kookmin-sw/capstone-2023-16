@@ -41,7 +41,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
       init={{
         deprecation_warnings: false,
         width: '100%',
-        height: 700,
+        height: '70%',
         plugins: [
           'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
           'anchor', 'codesample', 'fullscreen', 'emoticons',
