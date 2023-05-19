@@ -13,7 +13,7 @@ from graphql_app.resolvers.persona.errors import PersonaNicknameDuplicatedError,
 from graphql_app.resolvers.persona.types import PersonaCreateInput, PersonaUpdateInput, PersonaFollowToggleOutput, PersonaFollowToggleInput
 from graphql_app.resolvers.utils import parse_global_ids
 
-from back.graphql_app.resolvers.utils import parse_global_id
+from graphql_app.resolvers.utils import parse_global_id
 
 
 @gql.type
