@@ -3,7 +3,7 @@ import {Environment, Network, RecordSource, Store} from 'relay-runtime';
 import {RequestParameters} from 'relay-runtime/lib/util/RelayConcreteNode';
 import {Variables} from 'relay-runtime/lib/util/RelayRuntimeTypes';
 import {REACT_APP_API_URL} from '@env';
-import { getData } from './asyncstorage';
+import {getData} from './asyncstorage';
 
 async function FetchGraphQL(params: RequestParameters, variables: Variables) {
   const persona_id = await getData('persona_id');
@@ -11,7 +11,7 @@ async function FetchGraphQL(params: RequestParameters, variables: Variables) {
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'persona_id':persona_id,
+    'X-Persona-Id': persona_id,
   };
 
   const response = await fetch(`${REACT_APP_API_URL}/graphql`, {
