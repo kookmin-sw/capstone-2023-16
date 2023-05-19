@@ -15,8 +15,8 @@ const ModelLabel = ({label}: ModelLabelProps) => {
 }
 
 const ModelGroup = () => {
-  return <ModelGroupContainer>
-    {MODEL_LABEL.map(l=><ModelLabel label={l} />)}
+  return <ModelGroupContainer >
+    {MODEL_LABEL.map(l => <ModelLabel key={l} label={l} />)}
   </ModelGroupContainer>
 };
 
