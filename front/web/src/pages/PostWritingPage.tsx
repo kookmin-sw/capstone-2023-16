@@ -43,7 +43,7 @@ const PostWritingPage = () => {
     </PersonaCardWrapper>
     <ContentLayout>
       <Header deviceType={deviceType}>
-        <CategorySelector submitFlag={submitFlag} />
+        <CategorySelector />
         <PostWritingSetting setSubmitFlag={setSubmitFlag} />
       </Header>
       <PostTitle submitFlag={submitFlag} />

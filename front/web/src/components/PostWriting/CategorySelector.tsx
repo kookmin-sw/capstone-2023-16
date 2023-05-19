@@ -1,25 +1,23 @@
 import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
-import dummy from './dummy/dummy.json';
 import { useDispatch } from "react-redux";
 import { partialChange } from "../../redux/slices/newPostSlice";
+import CategoryApiClient from "../../api/Category";
 
-type CategorySelectorProps = {
-  submitFlag: boolean
-}
-const CategorySelector = ({ submitFlag }: CategorySelectorProps) => {
+const CategorySelector = () => {
   const deviceType = useDeviceType();
   const dispatch = useDispatch();
+  const {data: categoryList} = CategoryApiClient.categoryAllGet();
 
-  const onChange = (e:any) => {
+  const onChange = (e: any) => {
     const { value } = e.currentTarget;
-    const selected = { key: "category", value: {id: value} };
+    const selected = { key: "category", value: { id: value } };
     dispatch(partialChange(selected));
-  }
+  };
 
   return <CategorySelectorContainer deviceType={deviceType} onChange={onChange}>
     <option key={"default"} value="">카테고리 선택</option>
-    {dummy.map((n: any) => <option key={n.node.id} value={n.node.id}>{n.node.body}</option>)}
+    {categoryList.getAllCategories.edges.map((n: any) => <option key={n.node.id} value={n.node.id}>{n.node.body}</option>)}
   </CategorySelectorContainer>
 };
 
