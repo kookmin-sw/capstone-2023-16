@@ -1,7 +1,7 @@
 import datetime
 from typing import Tuple, Optional, List, Awaitable
 
-from django.db.models import QuerySet, F
+from django.db.models import QuerySet, F, Count
 from strawberry.types import Info
 
 from graphql_app.domain.post.exceptions import PostNotFoundException
@@ -81,7 +81,7 @@ def get_posts(sorting_opt: PostSortingOption,
     :param filters: 적용할 필터링 목록
     :return: 조회된 게시물 목록
     """
-    posts = Post.objects.filter(is_public=True, is_deleted=False)
+    posts = Post.objects.annotate(like_count=Count('postlike')).filter(is_public=True, is_deleted=False)
     for field_filter in filters:
         if field_filter is not None:
             posts = field_filter.apply(posts)
