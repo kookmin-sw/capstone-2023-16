@@ -71,7 +71,7 @@ const AreaChart = ({width="100%", data, options}: AreaChartProps) => {
       options={{...AreaChartOptions, ...options}}
       series={data}
       type="area"
-      height={500}/>
+      height={450}/>
   </ReactChartContainer>
 }
 export default AreaChart;

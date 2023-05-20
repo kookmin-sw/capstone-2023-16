@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import './styles.css';
+import './tagStyle.css';
 
 const StyleReset = `
 /* http://meyerweb.com/eric/tools/css/reset/ 

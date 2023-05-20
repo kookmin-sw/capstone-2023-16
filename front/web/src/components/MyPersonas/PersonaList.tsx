@@ -9,7 +9,7 @@ import PersonaApiClient from "../../api/Persona";
 import { useEffect } from "react";
 import useThrottle from "../../hooks/useThrottle";
 import { ReactComponent as DeleteIcon } from '../../assets/icons/x.svg';
-import { setCookie } from "../../utils/cookieUtils";
+import EmptyMessage from "../commons/EmptyMessage";
 
 type PersonaListType = {
   mode: string,
@@ -46,7 +46,6 @@ const PersonaList = ({mode}: PersonaListType) => {
   const onClick = (n: any) => {
     if (mode==="default"){
       dispatch(connect(n));
-      setCookie('persona_id', n.key, 3);
       navigate('/posts');
     } else {
       const answer = window.confirm('정말 삭제하시겠습니까?');
@@ -54,13 +53,13 @@ const PersonaList = ({mode}: PersonaListType) => {
     }
   };
 
-  return <PersonaListWrapper id='scroll' deviceType={deviceType}>
-    {data?.getOwnPersonas?.edges.map((e:Root) => (
+  return data.getOwnPersonas.edges[0]?<PersonaListWrapper id='scroll' deviceType={deviceType}>
+    {data.getOwnPersonas.edges.map((e:Root) => (
       <PersonaCardWrapper deviceType={deviceType} key={e.node.id} onClick={() => onClick(e.node)}>
         <PersonaCard src='' nickname={e.node.nickname} deviceType={deviceType} usageType='choice' />
         {mode==="setting"&&<DeleteButton devicetype={deviceType}/>}
       </PersonaCardWrapper>))}
-  </PersonaListWrapper>
+  </PersonaListWrapper>:<EmptyMessage type='persona'/>
 };
 
 export default PersonaList;

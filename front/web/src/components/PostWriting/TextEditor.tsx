@@ -16,8 +16,12 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
   const dispatch = useDispatch();
 
   useEffect(() => { 
-    if (submitFlag&&editorRef.current) {
-      dispatch(partialChange({key: 'content', value: editorRef.current.getContent({format: 'text'})}));
+    if (submitFlag && editorRef.current) {
+      const htmlValue = JSON.stringify(editorRef.current.getContent({ format: 'html' }));
+      const textValue = editorRef.current.getContent({ format: 'text' });
+      dispatch(partialChange({ key: 'content', value: htmlValue }));
+      dispatch(partialChange({ key: 'length', value: textValue.length }));
+      if (textValue.length===0 || textValue.length < 20) alert("내용은 20자 이상입력해야합니다.");
     }
   }, [submitFlag])
     
@@ -37,7 +41,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
       init={{
         deprecation_warnings: false,
         width: '100%',
-        height: 700,
+        height: '70%',
         plugins: [
           'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
           'anchor', 'codesample', 'fullscreen', 'emoticons',
@@ -80,10 +84,9 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
       /* 
       내용이 바뀔때마다 호출되는 핸들러 속성
       첫번째 인자에는 HTML 구문이, 두번째 인자의 getContent({format: string})를 통해 html, text 등의 포맷형식 지정 추출 가능
-      */
       onEditorChange={(htmlContent, content) => { console.log(htmlContent) }}
-    />
-    <button>Log editor content</button>
+      */
+      />
   </>
 };
 

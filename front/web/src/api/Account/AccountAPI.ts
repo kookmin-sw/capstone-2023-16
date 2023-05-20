@@ -17,7 +17,6 @@ class AccountAPI {
           mutation: loginPostMutation,
           variables: loginform,
           onCompleted: (data) => {
-            alert("로그인 되었습니다.");
             resolve(data);
           },
           onError: (error) => {

@@ -1,15 +1,11 @@
-export function getCookie(key: string) {
-  const cookieString = document.cookie.split(';').filter(c => c.split('=')[0].trim() === key);
-  const value = cookieString[0]?.split('=')[1];
-  return value ? value : null;
-};
+import {Cookies} from 'react-cookie'
 
-export function setCookie(key:string, value:string, expiration_date:number) {
-  const expired = new Date();
-  expired.setTime(expired.getTime() + expiration_date * 24 * 60 * 60 * 1000);
-  try {
-    document.cookie = `${[key]}=${value}; expires=${expired};`
-  } catch (e) {
-    console.log(e);
-  }
-};
+const cookies = new Cookies()
+
+export const setCookie = (name:string, value: string, options?:any)=>{
+	return cookies.set(name, value, {...options})
+}
+
+export const getCookie = (name: string)=>{
+	return cookies.get(name)
+}

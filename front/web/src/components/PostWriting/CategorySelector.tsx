@@ -1,17 +1,29 @@
 import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
-import dummy from './dummy/dummy.json';
+import { useDispatch } from "react-redux";
+import { partialChange } from "../../redux/slices/newPostSlice";
+import CategoryApiClient from "../../api/Category";
 
 const CategorySelector = () => {
   const deviceType = useDeviceType();
-  return <CategoryChoiceContainer deviceType={deviceType}>
-    {dummy.map((n: any) => <option key={n.node.id} value={n.node.id}>{n.node.body}</option>)}
-  </CategoryChoiceContainer>
+  const dispatch = useDispatch();
+  const {data: categoryList} = CategoryApiClient.categoryAllGet();
+
+  const onChange = (e: any) => {
+    const { value } = e.currentTarget;
+    const selected = { key: "category", value: { id: value } };
+    dispatch(partialChange(selected));
+  };
+
+  return <CategorySelectorContainer deviceType={deviceType} onChange={onChange}>
+    <option key={"default"} value="">카테고리 선택</option>
+    {categoryList.getAllCategories.edges.map((n: any) => <option key={n.node.id} value={n.node.id}>{n.node.body}</option>)}
+  </CategorySelectorContainer>
 };
 
 export default CategorySelector;
 
-  const CategoryChoiceContainer = styled.select<{ deviceType: string }>`
+  const CategorySelectorContainer = styled.select<{ deviceType: string }>`
   width: ${(props) => {return (props.deviceType==='mobile')?'122px': '244px'}};
   height: ${(props) => {return (props.deviceType==='mobile')?'23px': '46px'}};
   padding-left: ${(props) => {return (props.deviceType==='mobile')?'11px': '22px'}};

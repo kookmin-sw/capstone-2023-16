@@ -12,9 +12,8 @@ const SignUpPage = () => {
   const [misMatchError, setMisMatchError] = useState<boolean>(false);
   const inputRefs = useRef<HTMLInputElement[]>([]);
   
-  const matchPassword = (e: any) => {
-    console.log(e.currentTarget.value, inputRefs.current[2].value);
-    setMisMatchError(e.currentTarget.value !== inputRefs.current[2].value)
+  const matchPassword = () => {
+    setMisMatchError(inputRefs.current[2].value !== inputRefs.current[3].value)
   };
 
   const valid = () => {
@@ -26,12 +25,11 @@ const SignUpPage = () => {
           inputRefs.current[0].value.toString(),  // username
           inputRefs.current[1].value.toString(),  // email
           inputRefs.current[2].value.toString()   // password
-        ).then(res => navigate('/personas')) :
+        ).then(res => navigate('/')) :
         alert("이용약관 동의는 필수입니다."):
         alert(nullErrors.map(e => e.id) + "은 필수 항목입니다."); 
   };
 
-  
 
   return <>
     <Container>
