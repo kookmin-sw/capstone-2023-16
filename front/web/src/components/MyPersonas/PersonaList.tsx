@@ -67,22 +67,22 @@ export default PersonaList;
 const PersonaListWrapper = styled.div<{ deviceType: string }>`
     width: 100%;
     height: 90%;
-    display: grid;
+    display: ${(props) => props.deviceType === 'desktop'? 'grid': 'block'};
     margin-top: ${(props) => props.deviceType === 'mobile'? '7px': '23px'}; 
     padding: 20px 0 40px; 
     row-gap: ${(props) => { return props.deviceType==='mobile'? '25px': '38px' }};
     overflow-y: auto;
     grid-template-columns: ${(props) => { return props.deviceType === 'desktop' ? `50% 50%` : 'none' }};
-    place-items: center;
+    place-items: start center;
 `;
 
 const PersonaCardWrapper = styled.div < { deviceType: string }>`
   position: relative;
     width: 90%;
     display: flex;
-    margin: 0 auto;
+    margin:  ${(props) => props.deviceType === 'desktop'? '0': props.deviceType==='tablet'? '20px': '10px'} auto;
     border-radius: ${(props) => { return props.deviceType === 'mobile' ? '15px' : '30px'; }};
-    &:hover{
+    &:hover{  
       cursor: pointer;
       transform: scale(0.9);
     }
@@ -94,7 +94,7 @@ const PersonaCardWrapper = styled.div < { deviceType: string }>`
 const DeleteButton = styled(DeleteIcon) < { devicetype: string }>`
     width: ${(props) => { return props.devicetype === 'mobile' ? '20px' : '50px'; }};
     position: absolute;
-    top: ${(props) => { return props.devicetype === 'mobile' ? '20px' : '50px'; }};
+    top: ${(props) => { return props.devicetype === 'mobile' ? '13px' : '50px'; }};
     right:  ${(props) => { return props.devicetype === 'mobile' ? '20px' : '40px'; }};
     z-index: 1;
 `
