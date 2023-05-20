@@ -55,7 +55,8 @@ const PostWritingPage = () => {
       </Header>
       <PostTitle submitFlag={submitFlag} />
       <TextEditor submitFlag={submitFlag} />
-      <TagInputBox submitFlag={submitFlag}/>
+      <TagInputBox submitFlag={submitFlag} />
+      <EmptyBox />
     </ContentLayout>
   </>
 };
@@ -85,3 +86,8 @@ const Header = styled.div < { deviceType: string }>`
   margin-bottom: ${(props) => props.deviceType === 'desktop' ? '22px' : (props.deviceType === 'tablet') ? '43px' : '10px'};
   row-gap: ${props => props.deviceType === 'mobile' ? '10px' : '26px'};
 }`;
+
+const EmptyBox = styled.div`
+  width: 100%;
+  height: 10px;
+`

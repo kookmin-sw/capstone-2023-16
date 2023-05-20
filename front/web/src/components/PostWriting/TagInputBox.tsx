@@ -13,7 +13,7 @@ type TagInputBoxProps = {
 }
 
 const Tag = ({ label, onRemove }: TagProps) => {
-  return <TagSpan id={label} onClick={onRemove}>{label} &times; </TagSpan>
+  return <span id={label} className='tag' onClick={onRemove}>{label} &times; </span>
 }
 
 const TagInputBox = ({submitFlag}: TagInputBoxProps) => {
@@ -49,37 +49,15 @@ const TagInputBox = ({submitFlag}: TagInputBoxProps) => {
     }
   };
 
-  return <Container className="box" ref={ref => refs.current[0] = ref} onClick={()=>refs?.current[2].focus()}>
-      <span className="innerBox" ref={ref => refs.current[2] = ref}>
+  return <div className="tag__container" ref={ref => refs.current[0] = ref} onClick={()=>refs?.current[2].focus()}>
+      <span ref={ref => refs.current[2] = ref}>
       {taglist.map(label => <Tag key={label} label={label} onRemove={onRemove} />)}
       </span> 
       <Input type="text" ref={ref => refs.current[3] = ref} onKeyDown={onAdd} placeholder='태그'/>
-    </Container>
+    </div>
 };
 
 export default TagInputBox;
-
-const TagSpan = styled.span`
-  display: inline-block;
-  margin: 5px;
-  padding: 5px;
-  background-color: #D38CFF;
-  color: #FFFFFF;
-  border-radius: 5px;
-  font-size: 18px;
-  &:hover{
-    cursor: pointer;
-  }
-`;
-
-const Container = styled.div`
-  width: 100%;
-  max-height: 90px;
-  border: 1px solid rgba(0,0,0,0.2);
-  padding: 5px 10px;
-  border-radius: 10px;
-  overflow: auto;
-`;
 
 const Input = styled.input`
   width: 100% !important;

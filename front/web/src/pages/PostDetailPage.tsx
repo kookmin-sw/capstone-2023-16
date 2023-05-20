@@ -10,17 +10,11 @@ import editIcon from "../assets/imgs/post.png"
 import deleteIcon from "../assets/imgs/trashcan.png"
 import PostApiClient from '../api/Post';
 import LoadingSpinnerPage from './LoadingSpinnerPage';
-
-type PostType = {
-  title: string,
-  content: string,
-  createdAt: string,
-};
+import { PostType } from '../graphQL/types/PostType';
 
 const initialPost = {
   title: "",
   content: "",
-  createdAt: "",
 };
 
 const PostDetailPage = () => {
@@ -33,7 +27,7 @@ const PostDetailPage = () => {
 
   useEffect(() => {
     setPost(queryData.getPost);
-  }, []);
+  }, [queryData]);
 
   const onEdit = () => {
     alert('편집모드로 전환합니다.');
@@ -64,8 +58,13 @@ const PostDetailPage = () => {
           </ButtonSet>
       </Header>
       <Content deviceType={deviceType}>
-        <p>{JSON.parse(JSON.stringify(post.content).replace(/\n/gi,"\\r\\n"))}</p>
+        <p>{post.content}</p>
         </Content>
+        {post.tags?.edges[0]&&
+          <div className='tag__container'>
+            {post.tags?.edges?.map((n:any, i:number)=><span key={i} className='tag'>{n.node.body}</span>)}
+          </div>
+        }
       </Suspense>
     </ContentLayout>
     </>)

@@ -1,0 +1,22 @@
+.tag{
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  background-color: #D38CFF;
+  color: #FFFFFF;
+  border-radius: 5px;
+  font-size: 18px;
+};
+
+.tag:hover{
+  cursor: pointer;
+}
+
+.tag__container {
+  width: 100% !important;
+  max-height: 90px;
+  border: 1px solid rgba(0,0,0,0.2);
+  padding: 5px 10px;
+  border-radius: 10px;
+  overflow: auto;
+}

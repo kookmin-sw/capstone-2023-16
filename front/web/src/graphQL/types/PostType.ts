@@ -1,6 +1,29 @@
-import User from './UserType';
-import Relay from './Relay';
-import {PageInfoType} from './PageInfoType';
+export type PostType = {
+  title: string,
+  content: string,
+  createdAt?: string,
+  likeCnt?: number,
+  bookmarkCnt?: number,
+  tags?:{
+    edges: [
+      node: {
+        body: string
+      }
+    ]
+  },
+  category?: {body:string},
+  author?: { nickname: string, id: string },
+  commentCnt?: number,
+  comments?:{
+    id: string,
+    body: string,
+    createdAt: string,
+    persona: {
+      id:string,
+      nickname: string,
+    }
+  }
+};
 
 export type PostCreationType = {
   title: string,
