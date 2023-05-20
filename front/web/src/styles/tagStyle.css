@@ -20,3 +20,20 @@
   border-radius: 10px;
   overflow: auto;
 }
+
+@media (max-width: 743px){
+  .tag{
+    margin: 3px;
+    padding: 3px;
+    font-size: 10px;
+  }
+
+  .tag__container{
+    max-height: 60px;
+  }
+
+  .tag__container input{
+    display: inline;
+    font-size: 10px;
+  }
+}
