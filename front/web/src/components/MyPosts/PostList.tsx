@@ -6,6 +6,7 @@ import useDeviceType from '../../hooks/useDeviceType';
 import PostApiClient from '../../api/Post';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import EmptyMessage from '../commons/EmptyMessage';
 
 const PostList = () => {
   const deviceType = useDeviceType();
@@ -13,11 +14,12 @@ const PostList = () => {
   const persona = useSelector((state: RootState) => state.persona);
   const { data: postList } = PostApiClient.postListGet(persona.id);
 
-  return <PostListContainer deviceType={deviceType} >
-    {postList?.getPublicPosts?.edges?.map((p:any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
+  return postList?.getPublicPosts.edges[0] ?
+    <PostListContainer deviceType={deviceType} >
+    {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
         <PostCard deviceType={deviceType} title={p.node.title} content={p.node.contentPreview} date={p.node.createdAt} />
       </PostCardWrapper>)}
-  </PostListContainer>
+  </PostListContainer>: <EmptyMessage type='post' />
 };
 
 export default PostList;
