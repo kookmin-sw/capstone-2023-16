@@ -1,15 +1,20 @@
+import os
 from typing import Optional, Iterable, cast
 
+import boto3
 from strawberry.types import Info
 from strawberry_django_plus import gql
 from strawberry_django_plus.relay import GlobalID
 
-from graphql_app.domain.post.core import get_posts, get_post
+from graphql_app.domain.persona.core import get_persona_context
+from graphql_app.domain.post.core import get_posts, get_post, increase_read_count
 from graphql_app.resolvers.decorators import admin_only
 from graphql_app.resolvers.helpers import DatetimeBetween
 from graphql_app.resolvers.model_types import Post
 from graphql_app.resolvers.post.types import PostSortingOption, AuthorFilter, TitleFilter, CategoryFilter, TagFilter, \
     IsPublicFilter, IsDeletedFilter
+
+from graphql_app.types.post.post import ImageUploadUrl
 
 
 @gql.type
@@ -36,9 +41,19 @@ class Query:
         """
         게시물 한 건 조회
         """
-        # TODO : 조회 기록 남겨야 함
         post_id: int = int(post_id.node_id)
-        return get_post(post_id)
+        post = get_post(post_id)
+
+        persona_id: Optional[int] = get_persona_context(info.context.request)
+        try:
+            if persona_id:
+                increase_read_count(post_id, persona_id)
+        except Exception as e:
+            # TODO : 로그는 남겨야 하지 않을까,,?
+            print(e)
+            pass
+
+        return post
 
     @gql.django.connection
     @admin_only
@@ -55,3 +70,20 @@ class Query:
         filters = (created_at_filter, author_filter, title_filter, category_filter, tags_filter)
         posts = get_posts(sorting_opt, filters)
         return cast(Iterable[Post], posts)
+
+    @gql.field
+    def get_image_upload_url(self, info: Info, image_name: str) -> ImageUploadUrl:
+        s3_client = boto3.client('s3',
+                                 region_name="ap-northeast-2",
+                                 aws_access_key_id=os.environ.get("S3_ACCESS_KEY"),
+                                 aws_secret_access_key=os.environ.get("S3_SECRET_ACCESS_KEY"))
+        response = s3_client.generate_presigned_post("postona-images",
+                                                     image_name,
+                                                     Fields={'acl': 'public-read'},
+                                                     Conditions=[
+                                                         {"acl": "public-read"},
+                                                         ["starts-with", "$Content-Type", "image/"]
+                                                     ],
+                                                     ExpiresIn=30 * 60)
+
+        return ImageUploadUrl(**response)

@@ -1,19 +1,22 @@
 from typing import Optional, List, Tuple
 
+from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet, Sum, Count
+from strawberry.types import Info
 
 from graphql_app.domain.persona.exceptions import NicknameDupliationException, NotPersonaOwnerException, \
     SelfFollowException
-from graphql_app.models import Persona, User, Category, Tag
+from graphql_app.models import Persona, User, Category, Tag, Bookmark
 from graphql_app.resolvers.enums import SortingDirection
 from graphql_app.resolvers.RetreiveFilter import RetreiveFilter
 from graphql_app.resolvers.persona.enums import Gender
 from graphql_app.resolvers.persona.enums import Job, PersonaSortBy
 from graphql_app.resolvers.persona.types import PersonaSortingOption
+from graphql_app.resolvers.utils import parse_global_id
 
 
 def create_persona(owner: User, nickname: str, introduction: str, is_public: Optional[bool] = True,
-                   gender: Optional[Gender] = None, age: Optional[int] = None, job: Optional[Job] = None,
+                   gender: Optional[Gender] = None, birth_year: Optional[int] = None, job: Optional[Job] = None,
                    preferred_tag_bodies: Optional[List[str]] = [],
                    preferred_category_ids: Optional[List[int]] = []) -> Persona:
     """
@@ -23,7 +26,7 @@ def create_persona(owner: User, nickname: str, introduction: str, is_public: Opt
     :param introduction: 새 페르소나 소개글
     :param is_public: 새 페르소나 공개 여부
     :param gender: 새 페르소나 성별 (Optional)
-    :param age: 새 페르소나 나이 (Optional)
+    :param birth_year: 새 페르소나 생년 (Optional)
     :param job: 새 페르소나 직업 (Optional)
     :param preferred_tag_bodies: 새 페르소나의 선호 태그 body 목록
     :param preferred_category_ids: 새 페르소나의 선호 카테고리의 GlobalID 목록
@@ -44,14 +47,44 @@ def create_persona(owner: User, nickname: str, introduction: str, is_public: Opt
     preferred_categories = Category.objects.filter(id__in=preferred_category_ids)
 
     # 태그 처리
-    preferred_tags = Tag.insert_tags(preferred_tag_bodies)
+    preferred_tags = list(map(lambda p: p[0], Tag.insert_tags(preferred_tag_bodies)))
 
     new_persona = Persona.objects.create(owner=owner, nickname=nickname, introduction=introduction,
-                                         is_public=is_public, gender=gender, age=age, job=job)
+                                         is_public=is_public, gender=gender, birth_year=birth_year, job=job)
     new_persona.preferred_categories.add(*preferred_categories)
     new_persona.preferred_tags.add(*preferred_tags)
 
     return new_persona
+
+
+def update_persona(persona_id: int, owner: User, nickname: str, introduction: str, is_public: bool, gender: str,
+                   age: int, job: str, preferred_tag_bodies: List[str], preferred_category_ids: List[int]) -> Persona:
+    if Persona.objects.filter(nickname=nickname).exists():
+        raise NicknameDupliationException
+
+    persona = Persona.objects.get(id=persona_id, owner=owner)
+
+    # Update persona fields
+    persona.nickname = nickname
+    persona.introduction = introduction
+    persona.is_public = is_public
+    persona.gender = gender
+    persona.age = age
+    persona.job = job
+    persona.save()
+
+    # Update preferred tags
+    persona.preferred_tags.clear()
+    tag_pairs = Tag.insert_tags(preferred_tag_bodies)
+    tags = list(map(lambda p: p[0], tag_pairs))
+    persona.preferred_tags.add(*tags)
+
+    # Update preferred categories
+    persona.preferred_categories.clear()
+    preferred_categories = Category.objects.filter(id__in=preferred_category_ids)
+    persona.preferred_categories.add(*preferred_categories)
+
+    return persona
 
 
 def persona_follow_toggle(requested_user: User, follower_persona: Persona, followee_persona: Persona) -> bool:
@@ -119,3 +152,30 @@ def get_personas(sorting_opt: PersonaSortingOption,
             ).order_by(f"{'-' if sorting_opt.direction == SortingDirection.DESC else ''}follower_cnt", 'id')
 
     return personas
+
+
+def get_persona_context(request: WSGIRequest) -> Optional[int]:
+    """
+    Django request 객체의 Header 또는 Cookie로부터 페르소나 id를 받아 오는 함수
+    """
+    if 'persona_id' in request.COOKIES.keys():
+        _, persona_id = parse_global_id(request.COOKIES['persona_id'])
+        return persona_id
+    elif 'X-Persona-Id' in request.headers.keys():
+        _, persona_id = parse_global_id(request.headers['X-Persona-Id'])
+        return persona_id
+    else:
+        return None
+
+
+def get_bookmarks(info: Info) -> QuerySet[Bookmark]:
+    """
+    요청한 사용자의 북마크를 반환하는 resolver
+    """
+    persona = info.context.request.persona
+    bookmarks = Bookmark.objects.filter(persona=persona)
+    return bookmarks
+
+
+def get_persona(persona_id: int) -> Persona:
+    return Persona.objects.get(id=persona_id)

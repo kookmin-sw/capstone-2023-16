@@ -113,9 +113,21 @@ class CreatePostInput:
     """
     게시물 생성 input
     """
-    author: gql.auto = strawberry.field(description='작성자 Persona 정보')
     title: str = strawberry.field(description='새 게시글 제목')
     content: str = strawberry.field(description='새 게시글 무료 본문')
+    paid_content: Optional[str] = strawberry.field(default=None, description='새 게시글 유료 본문')
+    tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
+                                                       description='연결할 태그의 body 목록 (insert 됨)')
+    category: gql.auto = strawberry.field(description='소속 카테고리')
+
+@gql.django.input(models.Post)
+class UpdatePostInput:
+    """
+    게시물 수정 input
+    """
+    post_id: GlobalID = strawberry.field(description='수정할 게시글 ID')
+    title: Optional[str] = strawberry.field(description='게시글 제목')
+    content: Optional[str] = strawberry.field(description='게시글 무료 본문')
     paid_content: Optional[str] = strawberry.field(default=None, description='새 게시글 유료 본문')
     tag_bodies: Optional[List[str]] = strawberry.field(default_factory=list,
                                                        description='연결할 태그의 body 목록 (insert 됨)')

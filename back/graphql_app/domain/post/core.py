@@ -1,10 +1,11 @@
 import datetime
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, Awaitable
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, F, Count
+from strawberry.types import Info
 
 from graphql_app.domain.post.exceptions import PostNotFoundException
-from graphql_app.models import Post, Persona, WaitFreePersona
+from graphql_app.models import Bookmark, WaitFreePersona, PostReadingRecord, PostLike, Comment
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
 from graphql_app.models import Post, Persona, Category, Tag, Membership
@@ -62,7 +63,7 @@ def has_required_tier(requested_persona_id: int, post: int | Post):
         post: Post = Post.objects.get(id=post)
 
     if post.required_membership_tier is None:
-        return None
+        return True
     else:
         membership = Membership.objects.filter(creator=post.author, subscriber=requested_persona_id)
         if not membership:
@@ -80,7 +81,7 @@ def get_posts(sorting_opt: PostSortingOption,
     :param filters: 적용할 필터링 목록
     :return: 조회된 게시물 목록
     """
-    posts = Post.objects.filter(is_public=True, is_deleted=False)
+    posts = Post.objects.annotate(like_count=Count('postlike')).filter(is_public=True, is_deleted=False)
     for field_filter in filters:
         if field_filter is not None:
             posts = field_filter.apply(posts)
@@ -133,5 +134,123 @@ def create_post(author_id: int, requested_user_id: int, title: str, content: str
         return new_post
 
 
+def update_post(post_id: int, author_id: int, requested_user_id: int, title: str, content: str, category_id: int,
+              paid_content: Optional[str] = None, tag_bodies: Optional[List[str]] = []) -> Post:
+    """
+    :param post_id: 게시물 ID
+    :param author_id: 게시물 생성을 요청한 페르소나의 ID
+    :param requested_user_id: 게시물 생성을 요청한 사용자의 ID
+    :param title: 게시물 제목
+    :param content: 게시물 본문
+    :param paid_content: 게시물 본문 (유료) (Optional)
+    :param category_id: 소속 카테고리의 ID
+    :param tag_bodies: 태그의 body 값이 담긴 list
+    :return: 수정된 Post
+    :raises PersonaNotFoundException: 요청된 페르소나를 찾을 수 없거나, 요청한 사용자가 페르소나의 소유자가 아닌 경우
+    :raises CategoryNotFoundException: category_id를 가지는 카테고리를 찾을 수 없는 경우
+    :raises PostNotFoundException: post_id를 가지는 게시물을 찾을 수 없는 경우
+    """
+
+    try:
+        post_to_edit: Post = Post.objects.get(id=post_id)
+        author: Persona = Persona.objects.get(id=author_id)
+        category: Category = Category.objects.get(id=category_id)
+
+        if author.owner.id != requested_user_id:
+            raise Persona.DoesNotExist
+    except Persona.DoesNotExist:
+        raise PersonaNotFoundException
+    except Category.DoesNotExist:
+        raise CategoryNotFoundException
+    except Post.DoesNotExist:
+        raise PostNotFoundException
+    else:
+        post_to_edit.author = author
+        post_to_edit.title = title
+        post_to_edit.content = content
+        post_to_edit.paid_content = paid_content
+        post_to_edit.category = category
+        post_to_edit.save()
+
+        # 태그 연결 처리
+        post_to_edit.tags.clear()
+        tag_pairs = Tag.insert_tags(tag_bodies)
+        tags = list(map(lambda p: p[0], tag_pairs))
+        post_to_edit.tags.add(*tags)
+
+        return post_to_edit
+
+
 def get_post(post_id: int) -> Post:
     return Post.objects.get(id=post_id)
+
+
+# TODO : 비동기적으로 실행되도록 리팩토링 필요
+def increase_read_count(post_id: int, persona_id: int) -> None:
+    """
+    게시물의 조회수를 1만큼 올리는 함수
+    """
+    post_reading_record, is_created = PostReadingRecord.objects.get_or_create(post_id=post_id, persona_id=persona_id)
+    post_reading_record.read_count = F('read_count') + 1
+    post_reading_record.updated_at = datetime.datetime.now()
+    post_reading_record.save(update_fields=['read_count', 'updated_at'])
+
+
+def post_bookmark_toggle(persona_id: int, post_id: int) -> bool:
+    bookmark = Bookmark.objects.filter(persona_id=persona_id, post_id=post_id)
+
+    if bookmark.exists():
+        bookmark = bookmark[0]
+        bookmark.delete()
+        bookmarked = False
+    else:
+        Bookmark.objects.create(persona_id=persona_id, post_id=post_id)
+        bookmarked = True
+
+    return bookmarked
+
+
+def get_bookmarks_of_persona(persona_id: int) -> List[Bookmark]:
+    return list(Bookmark.objects.filter(persona_id=persona_id))
+
+
+def post_like_toggle(post_id: int, persona_id: int) -> bool:
+    """
+    특정 게시물에 대한 특정 페르소나의 좋아요 및 좋아요 해제 토글을 수행하는 함수
+    :param post_id: 좋아요 토글을 수행할 게시물의 id
+    :param persona_id: 좋아요 토글을 수행할 페르소나의 id
+    :return: 실행 결과 좋아요 상태가 된 경우 True, 그렇지 않은 경우 False
+    """
+    if not PostLike.objects.filter(persona_id=persona_id, post_id=post_id).exists():
+        PostLike.objects.create(persona_id=persona_id, post_id=post_id)
+        liked = True
+    else:
+        PostLike.objects.get(persona_id=persona_id, post_id=post_id).delete()
+        liked = False
+
+    return liked
+
+
+def get_post_like_cnt(root: Post, info: Info) -> int:
+    """
+    특정 게시물의 좋아요 개수를 반환
+    """
+    post_likes = PostLike.objects.filter(post_id=root.id).count()
+    return post_likes
+
+
+def get_comments_of(root: Post, info: Info) -> List[Comment]:
+    """
+    특정 게시물의 댓글 목록을 작성 일시 내림차순으로 반환
+    """
+    return Comment.objects.filter(post=root)
+
+def get_comments_count(root: Post, info: Info) -> int:
+    """
+    특정 게시물의 댓글 갯수를 반환
+    """
+    return Comment.objects.filter(post=root).count
+
+
+def create_comment_to(post_id: int, persona_id: int, body) -> Comment:
+    return Comment.objects.create(post_id=post_id, persona_id=persona_id, body=body)
