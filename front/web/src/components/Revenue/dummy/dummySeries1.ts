@@ -1,5 +1,4 @@
 const dummySeries:any[] = [{
-  name: 'Network',
   data: [{
     x: 'Dec 23 2017',
     y: null

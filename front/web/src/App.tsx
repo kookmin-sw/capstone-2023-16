@@ -14,9 +14,9 @@ import TagAndCategoryPage from './pages/PersonaCreation/TagAndCategoryPage';
 import { Suspense } from 'react';
 import LoadingSpinnerPage from './pages/LoadingSpinnerPage';
 import SignUpPage from './pages/SignUpPage';
-import MyPersonaPage from './pages/MyPersonasPage';
 import MyPersonasPage from './pages/MyPersonasPage';
 import RevenuePage from './pages/RevenuePage';
+import StatisticsPage from './pages/StatisticsPage';
 
 const App = () => {
   return (
@@ -37,6 +37,7 @@ const App = () => {
               <Route path='2' element={<TagAndCategoryPage />} />
             </Route>
             <Route path='/revenue' element={<RevenuePage />} />
+            <Route path='/stats' element={<StatisticsPage />} />
           </Routes>
           </Suspense>
       </BackgroundLayout>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ContentLayout from '../components/commons/ContentLayout';
 import ModelGroup from '../components/Revenue/ModelGroup';
-import ApexChart from '../components/Revenue/AreaChart';
+import ApexChart from '../components/Charts/AreaChart';
 import styled from 'styled-components';
 import useDeviceType from '../hooks/useDeviceType';
 import dummySeries1 from '../components/Revenue/dummy/dummySeries1';
