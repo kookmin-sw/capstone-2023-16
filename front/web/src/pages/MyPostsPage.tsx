@@ -20,7 +20,7 @@ const MyPostsPage = () => {
       <ContentLayout>
         <MyPostsPageContainer>
         <MyPostsContainer>
-          <Header  deviceType={deviceType}>
+          <Header deviceType={deviceType}>
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
             <MyPostsSetting />
           </Header>

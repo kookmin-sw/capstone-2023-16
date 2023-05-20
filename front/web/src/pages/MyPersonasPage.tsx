@@ -10,27 +10,27 @@ const MyPersonasPage = () => {
     const [mode, setMode] = useState('default');
 
     return (<ContentLayout>            
-            <PersonaChoiceContainer>
-            <PersonaChoiceHeader deviceType={deviceType}>
+            <MyPersonasContainer>
+            <MyPersonasHeader deviceType={deviceType}>
                 <HeaderSpan deviceType={deviceType}>페르소나 선택</HeaderSpan>
                 <SettingButton mode={mode} setMode={setMode} />
-            </PersonaChoiceHeader>
+            </MyPersonasHeader>
             <PersonaList mode={mode} />
-            </PersonaChoiceContainer>
+            </MyPersonasContainer>
         </ContentLayout>
     )
 };
 
 export default MyPersonasPage;
 
-const PersonaChoiceContainer = styled.div`
+const MyPersonasContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
 `;
 
-const PersonaChoiceHeader = styled.div<{ deviceType: string }>`
+const MyPersonasHeader = styled.div<{ deviceType: string }>`
     display: flex;
     justify-content: space-between;
 `;

@@ -1,5 +1,5 @@
 // GraphQl 
-import { commitMutation, loadQuery, useFragment, useLazyLoadQuery, usePaginationFragment, useQueryLoader } from 'react-relay';
+import { commitMutation, useLazyLoadQuery, usePaginationFragment } from 'react-relay';
 import postListGetQuery from '../../graphQL/Queries/postListGetQuery';
 import { pagination_postListGetQuery } from '../../graphQL/Components/__generated__/pagination_postListGetQuery.graphql';
 import postPaginationFragment from '../../graphQL/Components/postPaginationFragment';

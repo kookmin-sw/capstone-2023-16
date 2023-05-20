@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { GrayShadowBox } from '../commons/GrayShadowBox';
-import { PropsWithChildren } from 'react';
   
 type SubmitButtonProps = {
   deviceType: string,
