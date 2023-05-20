@@ -11,12 +11,15 @@ import TextEditor from '../components/PostWriting/TextEditor';
 import useDeviceType from '../hooks/useDeviceType';
 import { RootState } from '../redux/store';
 import PostApiClient from '../api/Post';
-import TagInput from '../components/PostWriting/TagInput';
+import TagInputBox from '../components/PostWriting/TagInputBox';
+import { useDispatch } from 'react-redux';
+import { reset } from '../redux/slices/newPostSlice';
 
 const PostWritingPage = () => {
   const [submitFlag, setSubmitFlag] = useState(false);
   const persona = useSelector((state: RootState) => state.persona);
   const newPost = useSelector((state: RootState) => state.newPost);
+  const dispatch = useDispatch();
   const deviceType = useDeviceType();
   const navigate = useNavigate();
  
@@ -30,7 +33,10 @@ const PostWritingPage = () => {
           delete newPostInput.length;
           console.log(newPostInput);
           PostApiClient.postCreate(newPostInput)
-            .then(() => navigate('/posts'))
+            .then(() => {
+              dispatch(reset());
+              navigate('/posts')
+            })
             .catch(e => console.log(e));
         }
       }
@@ -49,7 +55,7 @@ const PostWritingPage = () => {
       </Header>
       <PostTitle submitFlag={submitFlag} />
       <TextEditor submitFlag={submitFlag} />
-      <TagInput />
+      <TagInputBox submitFlag={submitFlag}/>
     </ContentLayout>
   </>
 };
