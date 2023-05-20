@@ -1,9 +1,7 @@
 import ReactChart from "react-apexcharts";
 import styled from 'styled-components';
 
-const initialState:any = {
-  series: [],
-  options: {
+const AreaChartOptions:any = {
     chart: {
       type: 'area',
       height: 350,
@@ -60,16 +58,17 @@ const initialState:any = {
         text: '금액(원)'
       }
     },
-  },
 };
 
-type AreaChartProps = { 
-  data: any[]
+type AreaChartProps = {
+  width?: number|string,
+  data: any[],
+  options?: object,
 }
-const AreaChart = ({data}: AreaChartProps) => {
-  return <ReactChartContainer>
+const AreaChart = ({width="100%", data, options}: AreaChartProps) => {
+  return <ReactChartContainer width={width}>
     <ReactChart
-      options={initialState.options}
+      options={{...AreaChartOptions, ...options}}
       series={data}
       type="area"
       height={500}/>
@@ -77,6 +76,6 @@ const AreaChart = ({data}: AreaChartProps) => {
 }
 export default AreaChart;
 
-const ReactChartContainer = styled.div`
-  width: 100%;
+const ReactChartContainer = styled.div<{width: number|string}>`
+  width: ${props => props.width };
 `
