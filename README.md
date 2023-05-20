@@ -123,7 +123,7 @@ _(준비중)_
 
 ## 6. 사용법
 ### backend
-| ![backend-architecture](https://user-images.githubusercontent.com/1160378/228834767-6798a1da-2593-4522-a017-939b2e0daf42.jpg) | 
+| ![backend-architecture](https://user-images.githubusercontent.com/1160378/230551144-2db4da01-10ad-42e5-9454-26e33fc644d8.jpg) | 
 |:--:| 
 | *백엔드 아키텍처* |
 

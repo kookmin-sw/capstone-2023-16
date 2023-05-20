@@ -59,9 +59,8 @@ class Bookmark(relay.Node):
     created_at: datetime = strawberry.field(description='북마크 일시')
 
     @staticmethod
-    def get_bookmarks_of_persona(info: Info) -> List['Bookmark']:
-        persona_id = info.context.request.persona.id
-        bookmarks = get_bookmarks_of_persona(persona_id)
+    def get_bookmarks_of_persona(root: 'Persona', info: Info) -> List['Bookmark']:
+        bookmarks = get_bookmarks_of_persona(root.id)
         return bookmarks
 
 
