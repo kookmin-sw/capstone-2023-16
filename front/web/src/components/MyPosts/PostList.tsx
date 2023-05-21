@@ -17,7 +17,7 @@ const PostList = () => {
   return postList?.getPublicPosts.edges[0] ?
     <PostListContainer deviceType={deviceType} >
     {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
-        <PostCard deviceType={deviceType} title={p.node.title} content={p.node.contentPreview} date={p.node.createdAt} />
+        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.contentPreview} date={p.node.createdAt} />
       </PostCardWrapper>)}
   </PostListContainer>: <EmptyMessage type='post' />
 };

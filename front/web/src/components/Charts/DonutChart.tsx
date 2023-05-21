@@ -5,7 +5,6 @@ const DonutChartOptions: any = {
   chart: {
     height: '100%',
   },
-  labels: ['남성', '여성', '알 수 없음'],
   legend: {
     show: true,
   },

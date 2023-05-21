@@ -8,9 +8,12 @@ import useDeviceType from '../hooks/useDeviceType';
 import { RootState } from '../redux/store';
 import editIcon from "../assets/imgs/post.png"
 import deleteIcon from "../assets/imgs/trashcan.png"
+import statsIcon from "../assets/imgs/stats.png"
 import PostApiClient from '../api/Post';
 import LoadingSpinnerPage from './LoadingSpinnerPage';
 import { PostType } from '../graphQL/types/PostType';
+import StatisticModalContent from '../components/PostDetail/StatisticModalContent';
+import Modal from '../components/commons/Modal';
 
 const initialPost = {
   title: "",
@@ -24,10 +27,13 @@ const PostDetailPage = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
   const queryData: any = PostApiClient.postGet(postId);
+  const [modal, setModal] = useState<boolean>(false);
 
   useEffect(() => {
     setPost(queryData.getPost);
   }, [queryData]);
+
+  const onShow = () => setModal(true);
 
   const onEdit = () => {
     alert('편집모드로 전환합니다.');
@@ -45,6 +51,7 @@ const PostDetailPage = () => {
       && <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
         <PersonaCard {...persona} deviceType={deviceType} />
       </PersonaCardWrapper>}
+    
     <ContentLayout>
       <Suspense fallback={<LoadingSpinnerPage />}>
         <CategorySpan deviceType={deviceType}>{post.category?.body}</CategorySpan>
@@ -53,7 +60,8 @@ const PostDetailPage = () => {
           <Title deviceType={deviceType}>{post.title}</Title>
           <Date deviceType={deviceType}>{post.createdAt}</Date>
         </div>
-        <ButtonSet deviceType={deviceType}>
+          <ButtonSet deviceType={deviceType}>
+          <ImgButton deviceType={deviceType} src={statsIcon} onClick={onShow}></ImgButton>
           <ImgButton deviceType={deviceType} src={editIcon} onClick={onEdit}></ImgButton>
           <ImgButton deviceType={deviceType} src={deleteIcon} onClick={onDelete}></ImgButton>
           </ButtonSet>
@@ -68,6 +76,9 @@ const PostDetailPage = () => {
         }
       </Suspense>
     </ContentLayout>
+    {modal && <Modal modal={modal} setModal={setModal}>
+      <StatisticModalContent postId={postId} />
+    </Modal>}
     </>)
 };
 
