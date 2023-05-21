@@ -18,12 +18,12 @@ const Search = (props:FoldFilterProps) => {
     const searchTypeList = [
         '제목', '작성자',
     ];
-    const [searchType, setSearchType] = useState('제목만');
+    const [searchType, setSearchType] = useState('제목');
 
     return (
         <View style={style.SearchSection}>
             <View style={style.SearchBox}>
-                <TextInput style={style.TextInput} placeholder="#으로 시작하면 태그 검색이 됩니다." placeholderTextColor={colors.graydark2} onChangeText={(text)=>{
+                <TextInput style={style.TextInput} placeholder="검색어를 입력해주세요." placeholderTextColor={colors.graydark2} onChangeText={(text)=>{
                     setSearch(text);
                 }}/>
                 <TouchableOpacity
@@ -53,7 +53,7 @@ const Search = (props:FoldFilterProps) => {
                                 key={index}
                                 btnStyles={{
                                     ...whiteBGpurpleSD.btnStyle,
-                                    width: 'auto',
+                                    // width: 'auto',
                                     height: DimensionTheme.width(30),
                                     paddingTop: DimensionTheme.width(1),
                                     paddingStart: DimensionTheme.width(15),

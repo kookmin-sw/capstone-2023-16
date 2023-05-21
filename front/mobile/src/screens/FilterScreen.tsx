@@ -13,19 +13,6 @@ import { imagePath } from '../utils/imagePath';
 
 type Props = NavigationData<'FilterContent'>;
 
-
-// interface tmpProps{
-//   feed_id: string;
-//   title: string;
-//   author_nickname: string;
-//   author_id: string;
-//   contentPreview: string;
-//   likeCnt: number;
-//   bookmarkCnt: number;
-//   commentCnt: number;
-//   tags: Array<any>;
-// }
-
 const FilterScreen : FC<Props> = ({navigation}) => {
     // category는 한개만, tag는 여러개 가능
     const [searchState, setSearchState] = useState(true);
@@ -44,13 +31,17 @@ const FilterScreen : FC<Props> = ({navigation}) => {
 
     useEffect(() => {
         if (searchEvent){
+            const tmptext = (searchType === '작성자' && searchText !== '') ? searchText : undefined;
+            const tmptitle = (searchType === '제목' && searchText !== '') ? searchText : undefined;
+            const tmpcategory = (category !== '') ? category : undefined;
+            const tmpTags = (tagList.length !== 0) ? tagList : undefined;
             const fetchData = async() => {
-                try { 
+                try {
                     const response = await getAfterFiltering({
-                        searchAuthor: (searchType === '작성자' && searchText !== '') ? searchText : undefined,
-                        searchTitle: (searchType === '제목' && searchText !== '') ? searchText : undefined,
-                        searchCategory: (category !== '') ? category : undefined,
-                        searchTags: (tagList.length !== 0) ? tagList : undefined,
+                        searchAuthor: tmptext,
+                        searchTitle: tmptitle,
+                        searchCategory: tmpcategory,
+                        searchTags: tmpTags,
                     });
                     console.log('filter: ', response);
                     setContent(response);
@@ -58,9 +49,11 @@ const FilterScreen : FC<Props> = ({navigation}) => {
                     console.error('Error fetching data:', error);
                 }
             };
-
-            fetchData();
-
+            if (tmpTags === undefined && tmptitle === undefined && tmpcategory === undefined && tmptext === undefined){
+                setContent([]);
+            } else {
+                fetchData();
+            }
             setSearchEvent(false);
         }
     }, [searchEvent]);
@@ -87,7 +80,7 @@ const FilterScreen : FC<Props> = ({navigation}) => {
                 }
                 <FoldFilter text="CATEGORY" state={categoryState} onPress={()=>{setCategoryState(!categoryState);}} type="category"/>
                 {
-                    categoryState && <CategorySelect categoryEvent={setCategory} setSearchEvent={setSearchEvent}/>
+                    categoryState && <CategorySelect setCategory={setCategory} setSearchEvent={setSearchEvent}/>
                 }
                 <FoldFilter text="CONTENT" state={contentState} onPress={()=>{setContentState(!contentState);}}/>
                 {contentState && <View style={{marginStart:DimensionTheme.width(30)}}>

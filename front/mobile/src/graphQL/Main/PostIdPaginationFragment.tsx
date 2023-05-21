@@ -8,7 +8,7 @@ const PostIdPaginationFragment = graphql`
     after: {type: "String"}
   ) {
     getPublicPosts(first: $first, after: $after, sortingOpt: {sortBy: ID})
-      @connection(key: "Edges_getPublicPosts") {
+      @connection(key: "IdEdges_getPublicPosts") {
       edges {
         node {
           id

@@ -1,15 +1,15 @@
 /* eslint-disable prettier/prettier */
 import graphql from "babel-plugin-relay/macro";
 
-const PostLikePaginationFragment = graphql`
-    fragment PostLikePaginationFragment on Query
-        @refetchable(queryName: "pagination_PostLikeListGetQuery")
+const PostPaginationFragment = graphql`
+    fragment PostPaginationFragment on Query
+        @refetchable(queryName: "pagination_PostListGetQuery")
         @argumentDefinitions(
             first: {type: "Int", defaultValue: 20}
             after: {type: "String"}
         ) {
-        getPublicPosts(first: $first, after: $after, sortingOpt: {sortBy: LIKE_CNT})
-        @connection(key: "LikeEdges_getPublicPosts") {
+        getPublicPosts(first: $first, after: $after, sortingOpt: {})
+        @connection(key: "Edges_getPublicPosts") {
             edges {
                 node {
                     id
@@ -27,9 +27,6 @@ const PostLikePaginationFragment = graphql`
                     }
                     likeCnt
                     paidContent
-                    bookmarkCnt
-                    requiredMembershipTier
-                    commentCnt
                     title
                 }
             }
@@ -44,4 +41,4 @@ const PostLikePaginationFragment = graphql`
     }
 `;
 
-export default PostLikePaginationFragment;
+export default PostPaginationFragment;

@@ -38,7 +38,7 @@ const CategorySelect = (props:CategorySelectProps) => {
     const [category, setCategory] = useState('');
     return (
         <View style={{width:DimensionTheme.width(332), marginStart:DimensionTheme.width(30), display:'flex', flexDirection:'row', flexWrap: 'wrap'}}>
-            {categoryData.getAllCategories.edges.map((value: {id: string, body: string}, index?:number) => {
+            {categoryData.getAllCategories.edges.map((value: any, index?:number) => {
                 return (
                     <SmallButton
                         key={index}
@@ -52,18 +52,22 @@ const CategorySelect = (props:CategorySelectProps) => {
                             borderRadius: DimensionTheme.width(8),
                             marginEnd: DimensionTheme.width(10),
                             marginTop: DimensionTheme.width(15),
-                            backgroundColor: (value.id === category) ? colors.categorypurple : 'white',
+                            backgroundColor: (value.node.id === category) ? colors.categorypurple : 'white',
                         }}
                         textStyles={{color: colors.black}}
                         onPress={() => {
-                            if (value.id !== category) {
-                                setCategory(value.id);
-                                props.setCategory(value.id);
+                            if (value.node.id !== category) {
+                                setCategory(value.node.id);
+                                props.setCategory(value.node.id);
+                                props.setSearchEvent(true);
+                            } else {
+                                setCategory('');
+                                props.setCategory('');
                                 props.setSearchEvent(true);
                             }
                         }}
                     >
-                        {value.body}
+                        {value.node.body}
                     </SmallButton>
                 );
             })}

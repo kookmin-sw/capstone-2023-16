@@ -25,3 +25,13 @@ export const isLike = (like: any, feed_id: string) => {
   }
   return false;
 };
+
+export const isMembership = (list: any, author_id: string) => {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].node.creator.id === author_id) {
+      const tmp = {state: true, tier: list[i].node.tier};
+      return tmp;
+    }
+  }
+  return {state: false, tier: ''};
+};

@@ -25,7 +25,7 @@ import {graphql} from 'babel-plugin-relay/macro';
 import {useLazyLoadQuery, usePaginationFragment} from 'react-relay';
 import {MainScreenQuery} from './__generated__/MainScreenQuery.graphql';
 import PostLikePaginationFragment from '../graphQL/Main/PostLikePaginationFragment';
-import PostLikeListGetQuery from '../graphQL/Main/PostSeeListGetQuery';
+import PostLikeListGetQuery from '../graphQL/Main/PostLikeListGetQuery';
 import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
 
@@ -37,6 +37,8 @@ import PostSeeListGetQuery from '../graphQL/Main/PostSeeListGetQuery';
 import PostSeePaginationFragment from '../graphQL/Main/PostSeePaginationFragment';
 import PostIdListGetQuery from '../graphQL/Main/PostIdListGetQuery';
 import PostIdPaginationFragment from '../graphQL/Main/PostIdPaginationFragment';
+import PostListGetQuery from '../graphQL/Main/PostListGetQuery';
+import PostPaginationFragment from '../graphQL/Main/PostPaginationFragment';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -128,18 +130,39 @@ const MainScreen: FC<Props> = ({navigation}) => {
   );
   const IdSortdata = tmpIdAPI.data;
 
+  // const tmpData = useLazyLoadQuery(
+  //   PostListGetQuery,
+  //   {},
+  //   {fetchPolicy: 'network-only'},
+  // );
+
+  // const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(
+  //   PostPaginationFragment,
+  //   tmpData,
+  // );
+  // const data = tmpAPI.data;
+
   useEffect(() => {
-    console.log('main:', likeSortdata.getPublicPosts.edges[0].node.tags.edges);
+    console.log('main:', likeSortdata.getPublicPosts.edges);
   }, [likeSortdata]);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh_like = React.useCallback(() => {
     setRefreshing(true);
+    tmpLikeAPI.refetch({}, {fetchPolicy: 'network-only'});
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
-  }, []);
+  }, [tmpLikeAPI]);
+
+  const onRefresh_id = React.useCallback(() => {
+    setRefreshing(true);
+    tmpIdAPI.refetch({}, {fetchPolicy: 'network-only'});
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, [tmpIdAPI]);
 
   const [likeSort, setLikeSort] = useState(true);
   // const [seeSort, setSeeSort] = useState(false);
@@ -235,11 +258,26 @@ const MainScreen: FC<Props> = ({navigation}) => {
             </CategoryScroll>
             <ScrollView
               refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                <RefreshControl refreshing={refreshing} onRefresh={(likeSort) ? onRefresh_like : onRefresh_id} />
               }
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
+                {/* {data.getPublicPosts.edges.map((value: any, index?: number) => (
+                  <FeedCard
+                    key={index}
+                    title={value.node.title}
+                    feed_id={value.node.id}
+                    author={value.node.author.nickname}
+                    author_id={value.node.author.id}
+                    author_img={String(imagePath.avatar)}
+                    content={value.node.contentPreview}
+                    like={value.node.likeCnt}
+                    bookmark={value.node.bookmarkCnt}
+                    comment={value.node.commentCnt}
+                    hash_tag={value.node.tags.edges}
+                  />
+                ))} */}
                 {
                   likeSort &&
                   likeSortdata.getPublicPosts.edges.map((value: any, index?: number) => (
