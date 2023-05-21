@@ -22,7 +22,7 @@ const initialPost = {
 
 const PostDetailPage = () => {
   const deviceType = useDeviceType();
-  const persona = useSelector((state: RootState) => state.persona);
+  const {persona} = useSelector((state: RootState) => state.auth);
   const [post, setPost] = useState<PostType>(initialPost);
   const { postId } = useParams();
   const navigate = useNavigate();

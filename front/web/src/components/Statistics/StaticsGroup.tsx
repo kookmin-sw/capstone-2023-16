@@ -16,7 +16,7 @@ import { toFontSizeOption, toTitleOption } from '../../utils/toStatsInput';
 
 const StatisticsGroup = () => {
   const deviceType = useDeviceType();
-  const personaId: string = useSelector((state: RootState) => state.persona.id);
+  const {id:personaId}: any = useSelector((state: RootState) => state.auth.persona);
   const queryData: any = StatsApiClient.follwerAllGet({ opt: { personaId } });
   const { categoryScores, genderScores, jobScores, tagScores } = queryData.getPersonaFollowersStatistics;
 

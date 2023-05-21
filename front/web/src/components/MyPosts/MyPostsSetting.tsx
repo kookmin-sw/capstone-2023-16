@@ -3,14 +3,18 @@ import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import TextButton from "../commons/TextButton";
 
-const MyPostsSetting = () => {
+type MyPostsSettingProps = {
+  nickname: string
+}
+
+const MyPostsSetting = ({nickname}:MyPostsSettingProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
 
   return <MyPostsSettingContainer deviceType={deviceType}>
     <TextButton text='수익' deviceType={deviceType} onClick={()=>navigate('/revenue')}></TextButton>
     <TextButton text='통계' deviceType={deviceType} onClick={()=>navigate('/stats')}></TextButton>
-    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/write')}></TextButton>
+    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/write', {state: {nickname}})}></TextButton>
   </MyPostsSettingContainer>
 };
 

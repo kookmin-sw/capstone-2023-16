@@ -21,7 +21,7 @@ const Container = styled.div<{deviceType:string}>`
   height: 100%;
   display: flex;
   color: #bbbbbb;
-  font-size: ${props => props.deviceType === 'mobile' ? '18px' : '30px'};
+  font-size: ${props => props.deviceType === 'mobile' ? '16px' : '30px'};
   justify-content: center;
   align-items: center;
   `

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled  from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
@@ -17,11 +17,12 @@ import { reset } from '../redux/slices/newPostSlice';
 
 const PostWritingPage = () => {
   const [submitFlag, setSubmitFlag] = useState(false);
-  const persona = useSelector((state: RootState) => state.persona);
   const newPost = useSelector((state: RootState) => state.newPost);
   const dispatch = useDispatch();
   const deviceType = useDeviceType();
   const navigate = useNavigate();
+  let location = useLocation();
+  const {persona} = useSelector((state:RootState)=>state.auth);
  
   useEffect(() => {
     if (submitFlag) {
@@ -46,7 +47,7 @@ const PostWritingPage = () => {
 
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
-      <PersonaCard {...persona} deviceType={deviceType} />
+      <PersonaCard {...{nickname:persona.nickname, ...location.state }} deviceType={deviceType} />
     </PersonaCardWrapper>
     <ContentLayout>
       <Header deviceType={deviceType}>
