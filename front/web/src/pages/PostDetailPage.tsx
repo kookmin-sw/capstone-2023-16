@@ -12,7 +12,7 @@ import statsIcon from "../assets/imgs/stats.png"
 import PostApiClient from '../api/Post';
 import LoadingSpinnerPage from './LoadingSpinnerPage';
 import { PostType } from '../graphQL/types/PostType';
-import StatisticModalContent from '../components/PostDetail/StatisticModal';
+import StatisticModalContent from '../components/PostDetail/StatisticModalContent';
 import Modal from '../components/commons/Modal';
 
 const initialPost = {
@@ -28,7 +28,6 @@ const PostDetailPage = () => {
   const navigate = useNavigate();
   const queryData: any = PostApiClient.postGet(postId);
   const [modal, setModal] = useState<boolean>(false);
-
 
   useEffect(() => {
     setPost(queryData.getPost);
@@ -77,7 +76,9 @@ const PostDetailPage = () => {
         }
       </Suspense>
     </ContentLayout>
-    {modal&&<Modal modal={modal} setModal={setModal}><StatisticModalContent /></Modal>}
+    {modal && <Modal modal={modal} setModal={setModal}>
+      <StatisticModalContent postId={postId} />
+    </Modal>}
     </>)
 };
 

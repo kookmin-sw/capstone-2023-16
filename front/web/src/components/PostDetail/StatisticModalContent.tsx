@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '../commons/Modal';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
@@ -11,9 +11,24 @@ import categorySeries from '../Statistics/dummy/categorySeries';
 import tagSeries from '../Statistics/dummy/tagSeries';
 import jobSeries from '../Statistics/dummy/jobSeries';
 import BarChart from '../Charts/BarChart(deprecated)';
+import StatsApiClient from '../../api/Stats';
 
-const StatisticModalContent = () => {
+type StatisticModalContentProps = {
+  postId?: string,
+}
+
+const StatisticModalContent = ({postId}:StatisticModalContentProps) => {
   const deviceType = useDeviceType();
+  const queryData: any = StatsApiClient.readerAllGet({ opt: { postId } });
+  const { categoryScores, genderScores, jobScores, tagScores } = queryData.getPostReaderStatistics;
+
+  //const queryData = useLazyLoadQuery(follwerStatsAllGetQuery, { opt: {personaId} });
+  useEffect(() => {
+    if (queryData) {
+      console.log(categoryScores, genderScores, jobScores, tagScores)
+    }
+  }, [queryData]);
+
 
   return <Container deviceType={deviceType}>
       <Summary />

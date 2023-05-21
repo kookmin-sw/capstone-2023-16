@@ -4,7 +4,7 @@ import postImg from "../../assets/imgs/post.png";
 import trashcanImg from "../../assets/imgs/trashcan.png";
 import statsImg from "../../assets/imgs/stats.png";
 import { GrayShadowBox } from '../commons/GrayShadowBox';
-import StatisticModalContent from '../PostDetail/StatisticModal';
+import StatisticModalContent from '../PostDetail/StatisticModalContent';
 import Modal from '../commons/Modal';
 import { createPortal } from 'react-dom';
 
@@ -12,6 +12,7 @@ import { createPortal } from 'react-dom';
 // 전자방식으로 코드 작성함.
 
 interface post {
+    id: string,
     title: string,
     date: string,
     content: string,
@@ -19,7 +20,7 @@ interface post {
     deviceType: string,
 };
 
-const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
+const PostCard = ({ id, title, date, content, hashtag, deviceType }: post) => {
     const [modal, setModal] = useState<boolean>(false);
 
     const onShow = (e: any) => {
@@ -63,7 +64,9 @@ const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
                 </BottomBox>
             </ContentSection>
         </BoxDiv>
-        {modal&&createPortal(<Modal modal={modal} setModal={setModal}><StatisticModalContent /></Modal>, document.querySelector('#content__box') as Element)}
+        {modal && createPortal(<Modal modal={modal} setModal={setModal}>
+            <StatisticModalContent postId={id} />
+        </Modal>,document.querySelector('#content__box') as Element)}
         </>
     )
 };

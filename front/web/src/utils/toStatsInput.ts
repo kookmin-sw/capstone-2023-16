@@ -1,4 +1,4 @@
-import { LabelAndScore } from "../graphQL/types/Stats";
+import { LabelAndScore } from "../graphQL/types/StatsType";
 
 export function toTitleOption(text: string, deviceType: string){
   return { title: { text, style: { fontSize: deviceType === 'mobile' ? '12px' : '20px' } } };
