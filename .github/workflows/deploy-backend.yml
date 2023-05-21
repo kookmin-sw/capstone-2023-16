@@ -1,5 +1,10 @@
 name: 'Deploy Backend' # set whatever name you want to your github job
-on: workflow_dispatch
+on:
+  push:
+    paths:
+      - 'back/**'
+    branches:
+      - main
 
 jobs:
   build:
