@@ -25,3 +25,10 @@ export function toStatsPairedInput(arr: LabelAndScore[]) {
   const data = arr.map(a => ({ x: a.label, y: a.score }));
   return [{ data }];
 };
+
+export function getTopList(arr: LabelAndScore[], num: number) {
+  const topList = arr.sort(function (a, b) {
+    return (a.score < b.score) ? 1:  -1;
+  });
+  return topList.slice(0, num);
+}
