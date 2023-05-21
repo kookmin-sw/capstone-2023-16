@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import genderSeries from './dummy/genderSeries';
 import DonutChart from '../Charts/DonutChart';
@@ -12,18 +12,7 @@ import useDeviceType from '../../hooks/useDeviceType';
 import StatsApiClient from '../../api/Stats';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-
-const titleOption = (text: string, deviceType: string) => ({
-  title: { text, style: { fontSize: deviceType === 'mobile' ? '12px' : '20px' } }
-});
-const fontSizeOption = (deviceType: string) => ({
-  dataLabels: {
-    style: {
-      fontSize: deviceType === 'mobile' ? '10px' : '20px',
-      colors: ['#fff'],
-    }
-  }
-});
+import { toFontSizeOption, toTitleOption } from '../../utils/toStatsInput';
 
 const StatisticsGroup = () => {
   const deviceType = useDeviceType();
@@ -34,7 +23,7 @@ const StatisticsGroup = () => {
   //const queryData = useLazyLoadQuery(follwerStatsAllGetQuery, { opt: {personaId} });
   useEffect(() => {
     if (queryData) {
-      console.log(categoryScores, genderScores, jobScores)
+      console.log(categoryScores, genderScores, jobScores, tagScores)
     }
   }, [queryData]);
 
@@ -47,25 +36,25 @@ const StatisticsGroup = () => {
         width={deviceType === 'desktop' ? '50%' : '100%'}
         height={deviceType === 'desktop' ? '100%' : '300px'}
         data={genderSeries}
-        options={{labels:['남성', '여성', '알 수 없음'], ...titleOption('성별', deviceType), ...fontSizeOption(deviceType) }} /> 
+        options={{labels:['남성', '여성', '알 수 없음'], ...toTitleOption('성별', deviceType), ...toFontSizeOption(deviceType) }} /> 
       
       {/* real data */}
       {/* <DonutChart
         width={deviceType === 'desktop' ? '50%' : '100%'}
         height={deviceType === 'desktop' ? '100%' : '300px'}
         data={toStatsSingleInput(genderScores)[0]}
-        options={{labels: toStatsSingleInput(genderScores)[1],...titleOption('성별', deviceType), ...fontSizeOption(deviceType) }} />  */}
+        options={{labels: toStatsSingleInput(genderScores)[1],...toTitleOption('성별', deviceType), ...toFontSizeOption(deviceType) }} />  */}
     </Row>
     <Row deviceType={deviceType} style={{ flex: 1.5 }}>
       {/* dummy data */}
-      <TreemapChart height={'100%'} data={categorySeries} options={{...titleOption('카테고리',deviceType), ...fontSizeOption(deviceType)}} />
-      <TreemapChart height={'100%'} data={tagSeries} options={{...titleOption('태그',deviceType), ...fontSizeOption(deviceType)}}/>
-      <BarChart data={jobSeries} options={{ ...titleOption('직업(상위 3개)', deviceType), ...fontSizeOption(deviceType) }} />
+      <TreemapChart height={'100%'} data={categorySeries} options={{...toTitleOption('카테고리',deviceType), ...toFontSizeOption(deviceType)}} />
+      <TreemapChart height={'100%'} data={tagSeries} options={{...toTitleOption('태그',deviceType), ...toFontSizeOption(deviceType)}}/>
+      <BarChart data={jobSeries} options={{ ...toTitleOption('직업(상위 3개)', deviceType), ...toFontSizeOption(deviceType) }} />
       
       {/* real data */}
-      {/* <TreemapChart height={'100%'} data={toStatsPairedInput(categoryScores)} options={{...titleOption('카테고리',deviceType), ...fontSizeOption(deviceType)}} />
-      <TreemapChart height={'100%'} data={toStatsPairedInput(tagScores)} options={{...titleOption('태그',deviceType), ...fontSizeOption(deviceType)}}/>
-      <BarChart data={toStatsPairedInput(jobScores)} options={{...titleOption('직업(상위 3개)',deviceType), ...fontSizeOption(deviceType)}}/> */}
+      {/* <TreemapChart height={'100%'} data={toStatsPairedInput(categoryScores)} options={{...toTitleOption('카테고리',deviceType), ...toFontSizeOption(deviceType)}} />
+      <TreemapChart height={'100%'} data={toStatsPairedInput(tagScores)} options={{...toTitleOption('태그',deviceType), ...toFontSizeOption(deviceType)}}/>
+      <BarChart data={toStatsPairedInput(jobScores)} options={{...toTitleOption('직업(상위 3개)',deviceType), ...toFontSizeOption(deviceType)}}/> */}
     </Row> 
   </Container>:<></>
 };

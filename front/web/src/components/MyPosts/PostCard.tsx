@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import postImg from "../../assets/imgs/post.png";
 import trashcanImg from "../../assets/imgs/trashcan.png";
+import statsImg from "../../assets/imgs/stats.png";
 import { GrayShadowBox } from '../commons/GrayShadowBox';
+import StatisticModalContent from '../PostDetail/StatisticModal';
+import Modal from '../commons/Modal';
+import { createPortal } from 'react-dom';
 
 // event와 내용들을 바로 넘겨주는 방식도 괜찮고, 아예 id를 넘겨서 여기서 api post detail을 호출해서 해도 괜찮음.
 // 전자방식으로 코드 작성함.
@@ -16,6 +20,13 @@ interface post {
 };
 
 const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
+    const [modal, setModal] = useState<boolean>(false);
+
+    const onShow = (e: any) => {
+        e.stopPropagation();
+        setModal(true);
+    };
+
     const onEdit = (e: any) => {
         e.stopPropagation();
         // TODO: 텍스트 에디터로 전환
@@ -30,7 +41,7 @@ const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
         alert(answer ? '삭제되었습니다.' : '취소되었습니다.');
     };
 
-    return(
+    return(<>
         <BoxDiv deviceType={deviceType}>
             <HeaderSection deviceType={deviceType}>
                 <TitleText deviceType={deviceType}>{title}</TitleText>
@@ -45,12 +56,15 @@ const PostCard = ({ title, date, content, hashtag, deviceType }: post) => {
                         }
                     </div>
                     <div>
-                        <FirstButton deviceType={deviceType} onClick={onEdit}><BtnImg deviceType={deviceType} src={postImg}/></FirstButton>
+                        <Btn deviceType={deviceType} onClick={onShow}><BtnImg deviceType={deviceType} src={statsImg}/></Btn>
+                        <Btn deviceType={deviceType} onClick={onEdit}><BtnImg deviceType={deviceType} src={postImg}/></Btn>
                         <Btn deviceType={deviceType} onClick={onDelete}><BtnImg deviceType={deviceType} src={trashcanImg} /></Btn>
                     </div>
                 </BottomBox>
             </ContentSection>
         </BoxDiv>
+        {modal&&createPortal(<Modal modal={modal} setModal={setModal}><StatisticModalContent /></Modal>, document.querySelector('#content__box') as Element)}
+        </>
     )
 };
 
@@ -128,16 +142,13 @@ const BottomBox = styled.div<{ deviceType?: string }>`
 `;
 
 const Btn = styled.button<{deviceType?:string}>`
-    border-style:none;
-    background-color: #fefefe;
     width: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
-    height: ${(props) => {return (props.deviceType==='mobile')?'14.5px': '29px'}};
+    height: ${(props) => { return (props.deviceType === 'mobile') ? '14.5px' : '29px' }};
+    margin: 0 ${(props) => {return (props.deviceType==='mobile')?'3px': '6.5px'}};
+    border-style:none;    
+    background-color: #fefefe;
     padding: 0;
     border-width: 0px;
-`;
-
-const FirstButton = styled(Btn)<{deviceType?:string}>`  
-    margin-right: ${(props) => {return (props.deviceType==='mobile')?'6.5px': '13px'}};
 `;
 
 const BtnImg = styled.img<{deviceType?:string}>`
@@ -147,6 +158,7 @@ const BtnImg = styled.img<{deviceType?:string}>`
     box-sizing: content-box;
     &:hover{
         cursor: pointer;
+        zoom: 1.1;
     }
     &:active{
         cursor: default;

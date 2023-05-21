@@ -9,7 +9,7 @@ const BackgroundLayout = ({children}: React.PropsWithChildren) => {
       <ColoredLayout> 
         <Layout deviceType={deviceType}>
           <div>PERSONA</div>
-          <ContentLayout deviceType={deviceType}>
+          <ContentLayout id='content__box' deviceType={deviceType}>
             {children}
           </ContentLayout>
         </Layout>
