@@ -18,7 +18,7 @@
     "language": "typescript"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^4.4.5",
+    "@gorhom/bottom-sheet": "^4.4.6",
     "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
@@ -33,8 +33,10 @@
     "react-native-asset": "^2.1.1",
     "react-native-chart-kit": "^6.12.0",
     "react-native-dotenv": "^3.4.8",
-    "react-native-gesture-handler": "^2.9.0",
+    "react-native-gesture-handler": "^2.10.1",
+    "react-native-htmlview": "^0.16.0",
     "react-native-pager-view": "^6.2.0",
+    "react-native-reanimated": "^3.1.0",
     "react-native-responsive-dimensions": "^3.1.1",
     "react-native-safe-area-context": "^4.5.0",
     "react-native-screens": "^3.20.0",

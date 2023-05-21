@@ -24,8 +24,8 @@ import {imagePath} from '../utils/imagePath';
 import {graphql} from 'babel-plugin-relay/macro';
 import {useLazyLoadQuery, usePaginationFragment} from 'react-relay';
 import {MainScreenQuery} from './__generated__/MainScreenQuery.graphql';
-import PostPaginationFragment from '../graphQL/Main/PostPaginationFragment';
-import PostListGetQuery from '../graphQL/Main/PostListGetQuery';
+import PostLikePaginationFragment from '../graphQL/Main/PostLikePaginationFragment';
+import PostLikeListGetQuery from '../graphQL/Main/PostSeeListGetQuery';
 import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
 import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
 
@@ -33,6 +33,10 @@ import {selectPersona, setPersona} from '../redux/slices/userSlice';
 import {useAppDispatch, useAppSelector} from '../redux/hooks';
 import {getInitPersona} from '../relay/Persona/getInitPersona';
 import { storeData } from '../asyncstorage';
+import PostSeeListGetQuery from '../graphQL/Main/PostSeeListGetQuery';
+import PostSeePaginationFragment from '../graphQL/Main/PostSeePaginationFragment';
+import PostIdListGetQuery from '../graphQL/Main/PostIdListGetQuery';
+import PostIdPaginationFragment from '../graphQL/Main/PostIdPaginationFragment';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -89,21 +93,44 @@ const MainScreen: FC<Props> = ({navigation}) => {
     };
   }, []);
 
-  const tmpData = useLazyLoadQuery(
-    PostListGetQuery,
+  const tmpLikeData = useLazyLoadQuery(
+    PostLikeListGetQuery,
     {},
-    {fetchPolicy: 'store-or-network'},
+    {fetchPolicy: 'network-only'},
+  );
+  const tmpLikeAPI = usePaginationFragment<any, any>(
+    PostLikePaginationFragment,
+    tmpLikeData,
+  );
+  const likeSortdata = tmpLikeAPI.data;
+
+  // const tmpSeeData = useLazyLoadQuery(
+  //   PostSeeListGetQuery,
+  //   {},
+  //   {fetchPolicy: 'network-only'},
+  // );
+
+  // const tmpSeeAPI = usePaginationFragment<any, any>(
+  //   PostSeePaginationFragment,
+  //   tmpSeeData,
+  // );
+  // const SeeSortdata = tmpSeeAPI.data;
+
+  const tmpIdData = useLazyLoadQuery(
+    PostIdListGetQuery,
+    {},
+    {fetchPolicy: 'network-only'},
   );
 
-  const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(
-    PostPaginationFragment,
-    tmpData,
+  const tmpIdAPI = usePaginationFragment<any, any>(
+    PostIdPaginationFragment,
+    tmpIdData,
   );
-  const data = tmpAPI.data;
+  const IdSortdata = tmpIdAPI.data;
 
   useEffect(() => {
-    console.log('main:', data.getPublicPosts.edges[0].node);
-  }, [data]);
+    console.log('main:', likeSortdata.getPublicPosts.edges[0].node.tags.edges);
+  }, [likeSortdata]);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -111,12 +138,12 @@ const MainScreen: FC<Props> = ({navigation}) => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 2000);
+    }, 1000);
   }, []);
 
-  const [feedChoice1, setFeedChoice1] = useState(true);
-  const [feedChoice2, setFeedChoice2] = useState(false);
-  const [feedChoice3, setFeedChoice3] = useState(false);
+  const [likeSort, setLikeSort] = useState(true);
+  // const [seeSort, setSeeSort] = useState(false);
+  const [idSort, setIdSort] = useState(false);
 
   navigation.reset;
 
@@ -180,30 +207,30 @@ const MainScreen: FC<Props> = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               <FeedCategory
                 onPress={() => {
-                  setFeedChoice1(true);
-                  setFeedChoice2(false);
-                  setFeedChoice3(false);
+                  setLikeSort(true);
+                  // setSeeSort(false);
+                  setIdSort(false);
                 }}
                 img={''}>
-                추천 피드
+                좋아요피드
               </FeedCategory>
+              {/* <FeedCategory
+                onPress={() => {
+                  setLikeSort(false);
+                  setSeeSort(true);
+                  setIdSort(false);
+                }}
+                img={''}>
+                조회많은 피드
+              </FeedCategory> */}
               <FeedCategory
                 onPress={() => {
-                  setFeedChoice1(false);
-                  setFeedChoice2(true);
-                  setFeedChoice3(false);
+                  setLikeSort(false);
+                  // setSeeSort(false);
+                  setIdSort(true);
                 }}
                 img={''}>
-                오늘의 베스트 피드
-              </FeedCategory>
-              <FeedCategory
-                onPress={() => {
-                  setFeedChoice1(false);
-                  setFeedChoice2(false);
-                  setFeedChoice3(true);
-                }}
-                img={''}>
-                피드 예시3
+                추천피드
               </FeedCategory>
             </CategoryScroll>
             <ScrollView
@@ -213,60 +240,60 @@ const MainScreen: FC<Props> = ({navigation}) => {
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
-              {feedChoice1 &&
-                data.getPublicPosts.edges.map((value: any, index?: number) => (
-                  <FeedCard
-                    key={index}
-                    title={value.node.title}
-                    feed_id={value.node.id}
-                    author={value.node.author.nickname}
-                    author_id={value.node.author.id}
-                    author_img={imagePath.avatar}
-                    content={value.node.contentPreview}
-                    like={1}
-                    bookmark={2}
-                    comment={3}
-                    hash_tag={['대학', '조별과제']}
-                    like_check={true}
-                    bookmark_check={false}
-                  />
-                ))}
-              {feedChoice2 &&
-                data.getPublicPosts.edges.map((value: any, index?: number) => (
-                  <FeedCard
-                    key={index}
-                    title={value.node.title}
-                    feed_id={value.node.id}
-                    author={value.node.author.nickname}
-                    author_id={value.node.author.id}
-                    author_img={imagePath.avatar}
-                    content={value.node.contentPreview}
-                    like={2}
-                    bookmark={3}
-                    comment={4}
-                    hash_tag={['IT', '조별과제']}
-                    like_check={false}
-                    bookmark_check={true}
-                  />
-                ))}
-              {feedChoice3 &&
-                data.getPublicPosts.edges.map((value: any, index?: number) => (
-                  <FeedCard
-                    key={index}
-                    title={value.node.title}
-                    feed_id={value.node.id}
-                    author={value.node.author.nickname}
-                    author_id={value.node.author.id}
-                    author_img={imagePath.avatar}
-                    content={value.node.contentPreview}
-                    like={3}
-                    bookmark={4}
-                    comment={5}
-                    hash_tag={['직장', '조별과제']}
-                    like_check={true}
-                    bookmark_check={false}
-                  />
-                ))}
+                {
+                  likeSort &&
+                  likeSortdata.getPublicPosts.edges.map((value: any, index?: number) => (
+                    <FeedCard
+                      key={index}
+                      title={value.node.title}
+                      feed_id={value.node.id}
+                      author={value.node.author.nickname}
+                      author_id={value.node.author.id}
+                      author_img={String(imagePath.avatar)}
+                      content={value.node.contentPreview}
+                      like={value.node.likeCnt}
+                      bookmark={value.node.bookmarkCnt}
+                      comment={value.node.commentCnt}
+                      hash_tag={value.node.tags.edges}
+                    />
+                  ))
+                }
+                {/* {
+                  seeSort &&
+                  SeeSortdata.getPublicPosts.edges.map((value: any, index?: number) => (
+                    <FeedCard
+                      key={index}
+                      title={value.node.title}
+                      feed_id={value.node.id}
+                      author={value.node.author.nickname}
+                      author_id={value.node.author.id}
+                      author_img={String(imagePath.avatar)}
+                      content={value.node.contentPreview}
+                      like={value.node.likeCnt}
+                      bookmark={value.node.bookmarkCnt}
+                      comment={value.node.commentCnt}
+                      hash_tag={value.node.tags.edges}
+                    />
+                  ))
+                } */}
+                {
+                  idSort &&
+                  IdSortdata.getPublicPosts.edges.map((value: any, index?: number) => (
+                    <FeedCard
+                      key={index}
+                      title={value.node.title}
+                      feed_id={value.node.id}
+                      author={value.node.author.nickname}
+                      author_id={value.node.author.id}
+                      author_img={String(imagePath.avatar)}
+                      content={value.node.contentPreview}
+                      like={value.node.likeCnt}
+                      bookmark={value.node.bookmarkCnt}
+                      comment={value.node.commentCnt}
+                      hash_tag={value.node.tags.edges}
+                    />
+                  ))
+                }
             </ScrollView>
           </View>
         </View>

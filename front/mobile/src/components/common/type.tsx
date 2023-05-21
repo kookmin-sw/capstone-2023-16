@@ -1,20 +1,24 @@
+interface tag {
+  node: {
+    body: string;
+  };
+}
+
 export interface FeedProps {
-    feed_id: number;
-    title: string;
-    author: string;
-    author_id: string;
-    author_img: string;
-    content: string;
-    like: number;
-    bookmark: number;
-    comment: number;
-    hash_tag: string[];
-    like_check: boolean;
-    bookmark_check: boolean;
+  feed_id: string;
+  title: string;
+  author: string;
+  author_id: string;
+  author_img: string;
+  content: string;
+  like: number;
+  bookmark: number;
+  comment: number;
+  hash_tag: Array<tag>;
 }
 
-export interface tagItem {
-    node: any;
-    state: boolean|undefined;
+export interface tagCategoryItem {
+  id: string;
+  text: string;
+  state: boolean | undefined;
 }
-

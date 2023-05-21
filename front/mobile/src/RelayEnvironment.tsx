@@ -11,7 +11,7 @@ async function FetchGraphQL(params: RequestParameters, variables: Variables) {
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'persona_id':persona_id,
+    'X-Persona-Id':`${persona_id}`,
   };
 
   const response = await fetch(`${REACT_APP_API_URL}/graphql`, {
@@ -25,8 +25,6 @@ async function FetchGraphQL(params: RequestParameters, variables: Variables) {
     }),
   });
   console.log(`@post1 ; ${JSON.stringify(response.headers)}`);
-  console.log(`@post2 ; ${response.headers.get('set-cookie')}`);
-  console.log(`@post3 ; ${JSON.stringify(response)}`);
 
   return await response.json();
 }

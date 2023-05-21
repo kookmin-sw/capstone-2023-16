@@ -1,31 +1,29 @@
 /* eslint-disable prettier/prettier */
-import React, {SetStateAction, useState, Dispatch, useEffect} from 'react';
+import React, {SetStateAction, useState, Dispatch} from 'react';
 import {
   StyleSheet,
-  TouchableOpacity,
-  Image,
-  TextInput,
   View,
 } from 'react-native';
 import {DimensionTheme} from '../common/shared';
 import {colors} from '../common/colors';
 import SmallButton from '../common/Buttons/SmallButton';
 import {whiteBGpurpleSD} from '../common/theme';
-import {tagItem} from '../common/type';
+import {tagCategoryItem} from '../common/type';
 
-import {useAppDispatch, useAppSelector} from '../redux/hooks';
-import { selectSearch, selectCategories, selectTags } from '../../redux/slices/searchSlice';
+interface tmp{
+    list:Array<tagCategoryItem>;
+    setTagList: Dispatch<SetStateAction<Array<string>>>;
+    tagList: Array<string>;
+    setSearchEvent: Dispatch<SetStateAction<boolean>>;
+}
 
-const SearchTag = (props: tagItem[]) => {
-  const [allTags, setALLTags] = useState(props);
-  
-  const dispatch = useAppDispatch();
-  const searchTag = useAppSelector(selectTags);
+const Tags = (props:tmp) => {
+  const [allTags, setALLTags] = useState(props.list);
 
   return (
     <View style={style.SearchTypes}>
         {
-            allTags.map((value: tagItem, index?:number) => {
+            allTags.map((value: tagCategoryItem, index?:number) => {
                 return (
                     <SmallButton
                         key={index}
@@ -43,14 +41,23 @@ const SearchTag = (props: tagItem[]) => {
                         }}
                         textStyles={{color: colors.black, fontSize:DimensionTheme.fontSize(14)}}
                         onPress={()=>{
-                            searchTypeList[index!].state = !searchTypeList[index!].state;
-                            setSearchTypeList(searchTypeList);
-                            setRender(!render);
+                            allTags[index!].state = !allTags[index!].state;
+                            setALLTags(allTags);
+                            console.log(`TagSearch: ${props.tagList.find(item => item === value.id)}`);
+                            if (props.tagList.find(item => item === value.id) === value.id) {
+                                const tmplist = props.tagList.filter((item) => item !== value.id);
+                                props.setTagList(tmplist);
+                                props.setSearchEvent(true);
+                            } else if (props.tagList.find(item => item === value.id) === undefined) {
+                                props.tagList.push(value.id);
+                                props.setTagList(props.tagList);
+                                props.setSearchEvent(true);
+                            }
                         }}
                     >
-                        {value.node.body}
+                        {value.text}
                     </SmallButton>
-                )
+                );
             })
         }
     </View>
@@ -65,4 +72,4 @@ const style = StyleSheet.create({
     },
 })
 
-export default SearchTag;
+export default Tags;

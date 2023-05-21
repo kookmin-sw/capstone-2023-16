@@ -343,7 +343,7 @@ input DatetimeBetween {
   startDt: DateTime = null
 
   """조회 종료 일시"""
-  endDt: DateTime = "2023-05-18T20:28:49.186711"
+  endDt: DateTime = "2023-05-21T12:43:25.688350"
 }
 
 enum DurationType {
@@ -572,6 +572,9 @@ type Mutation {
   """새 게시물을 생성한다."""
   postCreate(newPostInput: CreatePostInput!): CreatePostResult!
 
+  """기존 게시글 수정"""
+  postUpdate(updatePostInput: UpdatePostInput!): UpdatePostResult!
+
   """
   특정 게시물에 대한 좋아요 토글을 수행한다.
   수행 결과 좋아요 상태가 되었다면 True, 그렇지 않다면 False를 반환한다.
@@ -592,6 +595,7 @@ type Mutation {
 
   """새 Persona를 생성한다."""
   personaCreate(newPersonaInput: PersonaCreateInput!): CreatePersonaResult!
+  personaUpdate(updatePersonaInput: PersonaUpdateInput!): UpdatePersonaResult!
 
   """특정 페르소나에 대한 팔로우/언팔로우 토글을 수행한다."""
   personaFollowToggle(personaFollowInput: PersonaFollowToggleInput!): PersonaFollowToggleResult!
@@ -918,6 +922,36 @@ type PersonaStatistics {
   jobScores: [FieldScore!]!
 }
 
+"""페르소나 수정에 필요한 정보"""
+input PersonaUpdateInput {
+  """수정하려는 persona id"""
+  personaId: GlobalID!
+
+  """닉네임 (unique)"""
+  nickname: String!
+
+  """소개"""
+  introduction: String = "자기소개가 없습니다."
+
+  """공개 여부"""
+  isPublic: Boolean = true
+
+  """성별"""
+  gender: Gender = null
+
+  """나이"""
+  age: Int = null
+
+  """직업"""
+  job: Job = null
+
+  """선호하는 태그의 body 목록 (insert 됨)"""
+  preferredTagBodies: [String!] = []
+
+  """선호 카테고리 목록"""
+  preferredCategories: [CategoryIDInput!] = []
+}
+
 type Post implements Node {
   id: GlobalID!
 
@@ -1020,6 +1054,9 @@ enum PostSortBy {
 
   """조회수"""
   READ_CNT
+
+  """좋아요순"""
+  LIKE_CNT
 }
 
 """게시물 목록 조회시 적용할 정렬 방법"""
@@ -1289,10 +1326,10 @@ enum SortingDirection {
 """통계에 사용할 데이터의 날짜 범위"""
 input StatisticsDatetimeBetween {
   """조회 시작 일시 (기본값 : 30일 이전)"""
-  startDatetime: DateTime = "2023-04-18T20:28:49.266423"
+  startDatetime: DateTime = "2023-04-21T12:43:25.769872"
 
   """조회 종료 일시 (기본값 : 오늘)"""
-  endDatetime: DateTime = "2023-05-18T20:28:49.266442"
+  endDatetime: DateTime = "2023-05-21T12:43:25.769893"
 }
 
 enum StringFindMode {
@@ -1433,6 +1470,31 @@ input TitleFilter {
   """검색 문자열"""
   token: String!
 }
+
+union UpdatePersonaResult = Persona | AuthInfoRequiredError | PersonaNicknameDuplicatedError
+
+"""게시물 수정 input"""
+input UpdatePostInput {
+  """수정할 게시글 ID"""
+  postId: GlobalID!
+
+  """게시글 제목"""
+  title: String
+
+  """게시글 무료 본문"""
+  content: String
+
+  """새 게시글 유료 본문"""
+  paidContent: String = null
+
+  """연결할 태그의 body 목록 (insert 됨)"""
+  tagBodies: [String!] = []
+
+  """소속 카테고리"""
+  category: NodeInput
+}
+
+union UpdatePostResult = Post | AuthInfoRequiredError | ResourceNotFoundError
 
 union UpsertTagResult = TagInsertionResult | AuthInfoRequiredError | TagBodyTooShortError | TagBodyTooLongError
 

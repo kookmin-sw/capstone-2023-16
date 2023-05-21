@@ -14,54 +14,25 @@ import {DimensionTheme} from '../components/common/shared';
 
 import DetailHeader from '../components/Detail/DetailHeader';
 import ReactBtn from '../components/Detail/ReactBtn';
-import CommentInput from '../components/Detail/CommentInput';
 import BookmarkBtn from '../components/Detail/BookmarkBtn';
 import {NavigationData} from '../navigation/AppNavigator';
-import Comment from '../components/Detail/Comment';
 
 import {useLazyLoadQuery, useMutation} from 'react-relay';
 import {detail_getPostQuery} from '../graphQL/Post/DetailPost';
 import {PostLikeMutation} from '../graphQL/Post/__generated__/PostLikeMutation.graphql';
 import {Post_likeMutation} from '../graphQL/Post/PostLike';
-import {CommentInputMutation} from '../graphQL/Post/__generated__/CommentInputMutation.graphql';
-import {comments_inputMutation} from '../graphQL/Post/CommentInput';
-import {persona_LBQuery} from '../graphQL/Post/PersonaLBGet';
+import {PersonaLBGetquery} from '../graphQL/Post/PersonaLBGet';
 import {useAppSelector} from '../redux/hooks';
 import {selectPersona} from '../redux/slices/userSlice';
 import {PostBookmarkMutation} from '../graphQL/Post/__generated__/PostBookmarkMutation.graphql';
 import {Post_bookmarkMutation} from '../graphQL/Post/PostBookmark';
 import {Alert} from 'react-native';
 import CommentContent from '../components/Detail/CommentContent';
+import { isBookmark, isLike } from '../LBCheck';
+// import { BottomSheet } from '../components/common/BottomSheet/BottomSheet';
+import HTMLView from 'react-native-htmlview';
 
 type Props = NavigationData<'DetailContent'>;
-
-type bookmarkPost = {
-  post: {
-    id: string;
-  };
-};
-
-type likePost = {
-  id: string;
-};
-
-const isBookmark = (bookmark: Array<bookmarkPost>, feed_id: string) => {
-  for (let i = 0; i < bookmark.length; i++) {
-    if (bookmark[i].post.id === feed_id) {
-      return true;
-    }
-  }
-  return false;
-};
-
-const isLike = (like: Array<likePost>, feed_id: string) => {
-  for (let i = 0; i < like.length; i++) {
-    if (like[i].id === feed_id) {
-      return true;
-    }
-  }
-  return false;
-};
 
 const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const feed_id: string = route.params as unknown as string;
@@ -73,17 +44,17 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const data = useLazyLoadQuery(
     detail_getPostQuery,
     {id: feed_id},
-    {fetchPolicy: 'store-or-network'},
+    {fetchPolicy: 'network-only'},
   );
 
   const personaData = useLazyLoadQuery(
-    persona_LBQuery,
+    PersonaLBGetquery,
     {id: persona.id},
     {fetchPolicy: 'store-or-network'},
   );
 
   console.log('DetailPost:', data);
-  console.log('PersonaData:', personaData.getPublicPersona.likedPosts);
+  console.log('PersonaData:', personaData.getPublicPersona.bookmarks);
 
   const [like, setLike] = useState(data.getPost.likeCnt);
   const [likeCheck, setLikeCheck] = useState(
@@ -96,10 +67,11 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const [commentCount, setCommentCount] = useState(data.getPost.commentCnt);
   const [commitLike, isInFlightLike] =
     useMutation<PostLikeMutation>(Post_likeMutation);
-  // const [commitComment, isInFlightComment] = useMutation<CommentInputMutation>(comments_inputMutation);
   const [commitBookmark, isInFlightlike] = useMutation<PostBookmarkMutation>(
     Post_bookmarkMutation,
   );
+
+  
 
   return (
     <SafeAreaView>
@@ -110,7 +82,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
           <TouchableOpacity
             style={style.BackBtn}
             onPress={() => {
-              navigation.pop();
+              navigation.pop;
             }}>
             <Image
               style={{

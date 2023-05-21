@@ -18,7 +18,7 @@ const CommentContent = (prop: CommentContentProps) => {
   const data = useLazyLoadQuery(
     comments_getPostQuery,
     {id: prop.feed_id},
-    {fetchPolicy: 'store-or-network'},
+    {fetchPolicy: 'network-only'},
   );
 
   return (

@@ -1,38 +1,44 @@
 /* eslint-disable prettier/prettier */
-import React, { SetStateAction, useState, Dispatch } from 'react';
+import React, { SetStateAction, useState, Dispatch, useEffect } from 'react';
 import { View } from 'react-native';
 import { DimensionTheme } from '../common/shared';
 import { colors } from '../common/colors';
 import SmallButton from '../common/Buttons/SmallButton';
 import { whiteBGpurpleSD } from '../common/theme';
-import { tagData } from '../../constants/tag';
+import {useLazyLoadQuery} from 'react-relay';
+import {graphql} from 'babel-plugin-relay/macro';
 
 interface CategorySelectProps{
-    categoryEvent: Dispatch<SetStateAction<any>>;
+    setCategory: Dispatch<SetStateAction<string>>;
+    setSearchEvent: Dispatch<SetStateAction<boolean>>;
 }
 
-// const getAllTagQuery = graphql`
-//   query SearchQuery($search: String!) {
-//     getAllTags(
-//         sortingOpt: {}, 
-//         bodyFilter: {mode:CONTAINS ,token: $search}
-//     ) {
-//       edges {
-//         node {
-//           id
-//           body
-//         }
-//       }
-//     }
-//   }
-// `;
+const getAllCategoryQuery = graphql`
+  query CategorySelectQuery {
+    getAllCategories(
+        sortingOpt: {sortBy: PERSONA_REFERENCE_CNT},
+    ) {
+      edges {
+        node {
+          id
+          body
+        }
+      }
+    }
+  }
+`;
 
 const CategorySelect = (props:CategorySelectProps) => {
-    const [category, setCategory] = useState(tagData);
-    const [render, setRender] = useState(true);
+    const categoryData = useLazyLoadQuery(
+        getAllCategoryQuery,
+        {},
+        {fetchPolicy: 'store-or-network'},
+    );
+
+    const [category, setCategory] = useState('');
     return (
         <View style={{width:DimensionTheme.width(332), marginStart:DimensionTheme.width(30), display:'flex', flexDirection:'row', flexWrap: 'wrap'}}>
-            {category.map((value: {title: string; flag: boolean}, index?:number) => {
+            {categoryData.getAllCategories.edges.map((value: {id: string, body: string}, index?:number) => {
                 return (
                     <SmallButton
                         key={index}
@@ -46,19 +52,18 @@ const CategorySelect = (props:CategorySelectProps) => {
                             borderRadius: DimensionTheme.width(8),
                             marginEnd: DimensionTheme.width(10),
                             marginTop: DimensionTheme.width(15),
-                            backgroundColor: (value.flag) ? colors.categorypurple : 'white',
+                            backgroundColor: (value.id === category) ? colors.categorypurple : 'white',
                         }}
                         textStyles={{color: colors.black}}
                         onPress={() => {
-                            category[index!].flag = !category[index!].flag;
-                            setCategory(category);
-                            console.log(index!);
-                            console.log(category[index!]);
-                            setRender(!render);
-                            props.categoryEvent(category);
+                            if (value.id !== category) {
+                                setCategory(value.id);
+                                props.setCategory(value.id);
+                                props.setSearchEvent(true);
+                            }
                         }}
                     >
-                        {value.title}
+                        {value.body}
                     </SmallButton>
                 );
             })}
