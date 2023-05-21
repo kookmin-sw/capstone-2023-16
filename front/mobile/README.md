@@ -37,3 +37,23 @@
 ### github flow
 
 1. base branch : app-develop
+
+### mobile
+
+#### requirements
+- Node.js
+- React Native Cli
+
+### 앱 시작하기
+```
+cd front/mobile/
+npm install
+
+cd ios
+pod install
+
+cd ..
+npm run start
+
+```
+
