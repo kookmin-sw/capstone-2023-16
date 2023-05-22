@@ -1,14 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import AccountApiClient from '../../api/Account';
+import { redirect } from 'react-router-dom';
+import { logout } from '../../redux/slices/authSlice';
 
-const BackgroundLayout = ({children}: React.PropsWithChildren) => {
+const BackgroundLayout = ({ children }: React.PropsWithChildren) => {
+  const { auth } = useSelector((state: RootState) => state);
   const deviceType = useDeviceType();
+  const dispatch = useDispatch();
+
+  const onClick = () => {
+    const answer = window.confirm('로그아웃 하시겠습니까?');
+    console.log(answer);
+    if (answer) {
+      AccountApiClient.logoutPost()
+        .then((res: any) => {
+          dispatch(logout());
+          redirect('/')
+        })
+    }
+  }
   
   return<Background>
       <ColoredLayout> 
         <Layout deviceType={deviceType}>
-          <div>PERSONA</div>
+        <Header deviceType={deviceType}>
+          <span>POSTONA</span>
+          {auth.isLoggedIn && <span onClick={onClick}>로그아웃</span>}
+        </Header>
           <ContentLayout id='content__box' deviceType={deviceType}>
             {children}
           </ContentLayout>
@@ -44,13 +66,28 @@ const Layout = styled.div<{ deviceType?: string }>`
   flex-direction: column;
   align-items: center;
   overflow-y: auto;
-  & > div:nth-child(1){
-    align-self: start;
-    margin: ${(props) => { return props.deviceType === 'desktop' ? '48px 0 35px 55px': props.deviceType === 'tablet'? '44px 0 35px 42px': '21px 0 25px 21px'}};
-    font-size: ${(props) => {return props.deviceType==='mobile'? '24px' : '36px'}};
-    font-weight: 900;
-  }
 `;
+
+const Header = styled.section<{ deviceType: string }>`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: ${(props) => { return props.deviceType === 'desktop' ? '48px': props.deviceType === 'tablet'? '42px': '21px'}};
+  font-size: ${(props) => {return props.deviceType==='mobile'? '24px' : '36px'}};
+  font-weight: 900; 
+  & span:nth-child(2){
+    display: flex;
+    margin: 0 ${(props) => { return props.deviceType === 'mobile' ? '10px' : '15px' }};
+    padding: 2px ${(props) => { return props.deviceType === 'mobile' ? '2px' : '5px' }};
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    font-size: ${(props) => { return props.deviceType === 'mobile' ? '10px' : '18px' }};
+    justify-content: center;
+    align-items: center;
+    &:hover{
+      cursor: pointer;
+  }
+`
 
 const ContentLayout = styled.section<{ deviceType?: string }>`
   width: 100%;
