@@ -2,29 +2,30 @@ import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
 import PostList from '../components/MyPosts/PostList';
 import useDeviceType from '../hooks/useDeviceType';
-import { useSelector } from 'react-redux';
-import { RootState } from './../redux/store';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import MyPostsSetting from '../components/MyPosts/MyPostsSetting';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const MyPostsPage = () => {
   const deviceType = useDeviceType();
-  const persona = useSelector((state: RootState) => state.persona);
+  let location = useLocation();
+  const {persona} = useSelector((state:RootState)=>state.auth);
   const navigate = useNavigate();
 
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
-        <PersonaCard {...persona} deviceType={deviceType} />
+        <PersonaCard {...{...persona, ...location.state}} deviceType={deviceType} />
       </PersonaCardWrapper>
       <ContentLayout>
         <MyPostsPageContainer>
         <MyPostsContainer>
           <Header deviceType={deviceType}>
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
-            <MyPostsSetting />
+            <MyPostsSetting nickname={location.state?.nickname||persona?.id} />
           </Header>
-            <PostList />
+            <PostList id={location.state?.id||persona?.id} />
           </MyPostsContainer>
         </MyPostsPageContainer>
         </ContentLayout>

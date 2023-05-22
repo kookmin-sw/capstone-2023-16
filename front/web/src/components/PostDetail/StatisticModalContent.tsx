@@ -37,14 +37,14 @@ const StatisticModalContent = ({postId}:StatisticModalContentProps) => {
       {/* dummy data */}
       <DonutChart
         width={deviceType === 'desktop' ? '50%' : '100%'}
-        height={deviceType === 'desktop' ? '100%' : '300px'}
+        height={'300px'}
         data={genderSeries}
         options={{labels:['남성', '여성', '알 수 없음'], ...toTitleOption('성별', deviceType), ...toFontSizeOption(deviceType) }} /> 
 
       {/* real data */}
       {/* <DonutChart
         width={deviceType === 'desktop' ? '50%' : '100%'}
-        height={deviceType === 'desktop' ? '100%' : '300px'}
+        height={'300px'}
         data={toStatsSingleInput(genderScores)[0]}
         options={{labels: toStatsSingleInput(genderScores)[1],...toTitleOption('성별', deviceType), ...toFontSizeOption(deviceType) }} />  */}
 

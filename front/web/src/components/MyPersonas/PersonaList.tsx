@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import PersonaCard from "../commons/PersonaCard";
-import { connect } from '../../redux/slices/personaSlice';
+import { connect } from '../../redux/slices/authSlice';
 import { Root } from "./dummy/personalListType";
 import PersonaApiClient from "../../api/Persona";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import useThrottle from "../../hooks/useThrottle";
 import { ReactComponent as DeleteIcon } from '../../assets/icons/x.svg';
 import EmptyMessage from "../commons/EmptyMessage";
@@ -41,12 +41,12 @@ const PersonaList = ({mode}: PersonaListType) => {
       window.removeEventListener("scroll", throttle);
     };
   }, []);
-  
+
   // 페르소나 클릭 이벤트 핸들러
   const onClick = (n: any) => {
     if (mode==="default"){
       dispatch(connect(n));
-      navigate('/posts');
+      navigate('/posts', {state: n});
     } else {
       const answer = window.confirm('정말 삭제하시겠습니까?');
       answer && alert("삭제되었습니다.");
