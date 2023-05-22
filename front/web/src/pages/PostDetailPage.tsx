@@ -50,7 +50,7 @@ const PostDetailPage = () => {
   return (<>
     {deviceType === 'desktop'
       && <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
-        <PersonaCard {...{...persona,...location.state}} deviceType={deviceType} />
+        <PersonaCard nickname={persona.nickname||location.state.nickname} deviceType={deviceType} />
       </PersonaCardWrapper>}
     
     <ContentLayout>
