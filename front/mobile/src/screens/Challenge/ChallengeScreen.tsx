@@ -47,7 +47,7 @@ const BodySection = styled.View`
 type Props = NavigationProp<'Challenge'>;
 
 export const ChallengeScreen: FC<Props> = ({navigation}) => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(1);
   const [routes] = useState([
     {key: 'myChallenge', body: <ChallengeCardSection data={challengeData} />},
     {key: 'all', body: <ChallengeCardSection data={challengeData} />},
