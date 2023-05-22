@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Modal from '../commons/Modal';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 import DonutChart from '../Charts/DonutChart';

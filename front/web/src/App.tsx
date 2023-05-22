@@ -1,4 +1,5 @@
 import { GlobalStyles } from './styles/GlobalStyles';
+
 import BackgroundLayout from './components/commons/BackgroundLayout';
 import {RelayEnvironmentProvider} from 'react-relay';
 import RelayEnvironment from './RelayEnvironment';
