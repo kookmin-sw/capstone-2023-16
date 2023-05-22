@@ -1,11 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit'
-import loginSlice from './slices/loginSlice'
-import personaReducer from './slices/personaSlice'
+import { configureStore } from '@reduxjs/toolkit';
+import authSlice from './slices/authSlice';
+import newPostReducer from './slices/newPostSlice';
+import newPersonaReducer from './slices/newPersonaSlice'
 
 export const store = configureStore({
   reducer: {
-    login: loginSlice,
-    persona: personaReducer
+    auth: authSlice,
+    newPost: newPostReducer,
+    newPersona: newPersonaReducer
   },
 })
 
