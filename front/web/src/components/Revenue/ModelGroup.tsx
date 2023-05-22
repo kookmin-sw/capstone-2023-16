@@ -15,7 +15,7 @@ type ModelGroupProps = {
 
 const ModelLabel = ({ label, setModel }: ModelLabelProps) => {
   return <ModelLabelContainer htmlFor={label}>
-    <input id={label} type='radio' name='revenue_model' value={label} onChange={()=>setModel(label)} />
+    <input id={label} type='radio' name='revenue_model' value={label} onChange={() => setModel(label)} defaultChecked={label==='TOTAL'} />
     <ModelLabelSpan>{label}</ModelLabelSpan>
   </ModelLabelContainer>
 }

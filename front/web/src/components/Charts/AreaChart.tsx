@@ -61,21 +61,22 @@ const AreaChartOptions:any = {
 };
 
 type AreaChartProps = {
-  width?: number|string,
+  width?: number | string,
+  height?: number | string,
   data: any[],
   options?: object,
 }
-const AreaChart = ({width="100%", data, options}: AreaChartProps) => {
+const AreaChart = ({width="100%", height=450, data, options}: AreaChartProps) => {
   return <ReactChartContainer width={width}>
     <ReactChart
       options={{...AreaChartOptions, ...options}}
       series={data}
       type="area"
-      height={450}/>
+      height={height}/>
   </ReactChartContainer>
 }
 export default AreaChart;
 
 const ReactChartContainer = styled.div<{width: number|string}>`
-  width: ${props => props.width };
+  width: 100%;
 `
