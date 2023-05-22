@@ -38,6 +38,7 @@ export const authSlice = createSlice({
     logout: () => {
       removeCookie('isLoggedIn');
       removeCookie('persona_id');
+      removeCookie('persona_nickname');
       return {...initialState, isLoggedIn: false}  
     },
     connect: (state, action: PayloadAction<PersonaType>) => {
@@ -48,6 +49,7 @@ export const authSlice = createSlice({
     disconnect: (state) => ({...state, ...initialState, isConnected: false}),
   },
 });
+
 
 // Action creators are generated for each case reducer function
 export const { login, logout, connect, disconnect } = authSlice.actions;

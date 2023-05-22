@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ContentLayout from '../components/commons/ContentLayout';
 import ModelGroup from '../components/Revenue/ModelGroup';
-import ApexChart from '../components/Charts/AreaChart';
+import AreaChart from '../components/Charts/AreaChart';
 import styled from 'styled-components';
 import useDeviceType from '../hooks/useDeviceType';
 import dummySeries1 from '../components/Revenue/dummy/dummySeries1';
@@ -18,10 +18,11 @@ const RevenuePage = () => {
   return <ContentLayout>
     <Header deviceType={deviceType}>수익 관리</Header>
     <ModelGroup setModel={setModel} />
-    <ApexChart
+    <AreaChart
       data={(model === "TOTAL") ? dummySeries1 :
         (model === "MEMBERSHIP") ? dummySeries2 :
-        (model === "DONATION") ? dummySeries3: dummySeries4} />
+          (model === "DONATION") ? dummySeries3 : dummySeries4}
+      height={deviceType==='mobile'? 450: 700} />
   </ContentLayout>
 };
 

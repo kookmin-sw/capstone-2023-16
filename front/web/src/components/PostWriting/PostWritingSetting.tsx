@@ -3,15 +3,15 @@ import useDeviceType from "../../hooks/useDeviceType";
 import TextButton from "../commons/TextButton";
 
 type PostWritingSettingType = {
-  setSubmitFlag: (b:boolean) => void;
+  onSubmit: () => void;
 }
-const PostWritingSetting = ({setSubmitFlag}: PostWritingSettingType) => {
+const PostWritingSetting = ({onSubmit}: PostWritingSettingType) => {
   const deviceType = useDeviceType();
 
   return <PostWritingSettingContainer deviceType={deviceType}>
-    <TextButton text='미리보기' deviceType={deviceType}></TextButton>
-    <TextButton text='임시저장' deviceType={deviceType}></TextButton>
-    <TextButton text='포스팅' deviceType={deviceType} onClick={(e:any)=>setSubmitFlag(true)}></TextButton>
+    {/*<TextButton text='미리보기' deviceType={deviceType}></TextButton>
+    <TextButton text='임시저장' deviceType={deviceType}></TextButton>*/}
+    <TextButton text='포스팅' deviceType={deviceType} onClick={(e: any) => { onSubmit(); }}></TextButton>
   </PostWritingSettingContainer>
 };
 

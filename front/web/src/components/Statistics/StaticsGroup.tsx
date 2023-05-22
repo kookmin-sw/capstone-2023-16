@@ -10,14 +10,16 @@ import jobSeries from './dummy/jobSeries';
 import Summary from './Summary';
 import useDeviceType from '../../hooks/useDeviceType';
 import StatsApiClient from '../../api/Stats';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 import { toFontSizeOption, toTitleOption } from '../../utils/toStatsInput';
 
-const StatisticsGroup = () => {
+type StatisticsGroupProps = {
+  id: string,
+}
+
+const StatisticsGroup = ({id}:StatisticsGroupProps) => {
   const deviceType = useDeviceType();
-  const {id:personaId}: any = useSelector((state: RootState) => state.auth.persona);
-  const queryData: any = StatsApiClient.follwerAllGet({ opt: { personaId } });
+//  const {id:personaId}: any = useSelector((state: RootState) => state.auth.persona);
+  const queryData: any = StatsApiClient.follwerAllGet({ opt: { personaId:id } });
   const { categoryScores, genderScores, jobScores, tagScores } = queryData.getPersonaFollowersStatistics;
 
   //const queryData = useLazyLoadQuery(follwerStatsAllGetQuery, { opt: {personaId} });

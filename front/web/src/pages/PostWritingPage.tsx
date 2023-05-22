@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled  from 'styled-components';
@@ -24,6 +24,7 @@ const PostWritingPage = () => {
   let location = useLocation();
   const {persona} = useSelector((state:RootState)=>state.auth);
  
+  console.log(location.state, persona);
   useEffect(() => {
     if (submitFlag) {
       if ((newPost.title !== "") && (newPost.length >= 20)) {
@@ -36,7 +37,7 @@ const PostWritingPage = () => {
           PostApiClient.postCreate(newPostInput)
             .then(() => {
               dispatch(reset());
-              navigate('/posts')
+              navigate('/posts', { state: {...{...location.state}||{...persona}}});
             })
             .catch(e => console.log(e));
         }
@@ -45,6 +46,8 @@ const PostWritingPage = () => {
     setSubmitFlag(false);
   }, [submitFlag]);
 
+  const onSubmit = useCallback(() => setSubmitFlag(prev => true), []);
+
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
       <PersonaCard {...{nickname:persona.nickname, ...location.state }} deviceType={deviceType} />
@@ -52,7 +55,7 @@ const PostWritingPage = () => {
     <ContentLayout>
       <Header deviceType={deviceType}>
         <CategorySelector />
-        <PostWritingSetting setSubmitFlag={setSubmitFlag} />
+        <PostWritingSetting onSubmit={onSubmit} />
       </Header>
       <PostTitle submitFlag={submitFlag} />
       <TextEditor submitFlag={submitFlag} />

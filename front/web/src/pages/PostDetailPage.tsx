@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
@@ -26,6 +26,7 @@ const PostDetailPage = () => {
   const [post, setPost] = useState<PostType>(initialPost);
   const { postId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const queryData: any = PostApiClient.postGet(postId);
   const [modal, setModal] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ const PostDetailPage = () => {
   return (<>
     {deviceType === 'desktop'
       && <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
-        <PersonaCard {...persona} deviceType={deviceType} />
+        <PersonaCard nickname={persona.nickname||location.state.nickname} deviceType={deviceType} />
       </PersonaCardWrapper>}
     
     <ContentLayout>
