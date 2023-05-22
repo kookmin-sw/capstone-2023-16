@@ -143,6 +143,9 @@ class WaitFreePersona(relay.Node):
 @gql.django.type(models.Challenge)
 class Challenge(relay.Node):
     title: str = strawberry.field(description='제목')
+    description: str = strawberry.field(description='설명')
+    max_persona_count: int = strawberry.field(description='최대참석인원')
+    personas: relay.Connection[Persona] = strawberry.field(description='참석 페르소나 목록')
     created_at: datetime = strawberry.field(description='생성 일시')
     updated_at: datetime = strawberry.field(description='갱신 일시')
 
