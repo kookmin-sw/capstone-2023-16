@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import PersonaCard from "../commons/PersonaCard";
-import { connect } from '../../redux/slices/personaSlice';
+import { connect } from '../../redux/slices/authSlice';
 import { Root } from "./dummy/personalListType";
 import PersonaApiClient from "../../api/Persona";
 import { useEffect } from "react";
