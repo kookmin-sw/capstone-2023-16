@@ -1,6 +1,5 @@
 {
-  "extends": "expo/tsconfig.base",
-  "compilerOptions": {
-    "strict": true
-  }
+  "extends": "@tsconfig/react-native/tsconfig.json"
 }
+
+// "typeRoots":["node_modules/@types/styled-components-react-native"]
