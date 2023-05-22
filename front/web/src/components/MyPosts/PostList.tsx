@@ -1,20 +1,21 @@
 import React from 'react';
 import PostCard from './PostCard';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import useDeviceType from '../../hooks/useDeviceType';
 import PostApiClient from '../../api/Post';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 import EmptyMessage from '../commons/EmptyMessage';
 
-const PostList = () => {
+type PostListProps = {
+  id: string
+}
+
+const PostList = ({id}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  const persona = useSelector((state: RootState) => state.persona);
-  const { data: postList } = PostApiClient.postListGet(persona.id);
+  const { data: postList } = PostApiClient.postListGet(id);
 
-  return postList?.getPublicPosts.edges[0] ?
+  return postList.getPublicPosts.edges[0] ?
     <PostListContainer deviceType={deviceType} >
     {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
         <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.contentPreview} date={p.node.createdAt} />

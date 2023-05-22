@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ContentLayout from '../components/commons/ContentLayout';
 import ModelGroup from '../components/Revenue/ModelGroup';
 import ApexChart from '../components/Charts/AreaChart';

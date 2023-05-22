@@ -1,6 +1,6 @@
 
 // GraphQl 
-import { commitMutation, useMutation } from 'react-relay';
+import { commitMutation } from 'react-relay';
 import environment from '../../RelayEnvironment';
 import loginPostMutation from '../../graphQL/Mutations/loginPostMutation';
 import logoutPostMutation from '../../graphQL/Mutations/logoutPostMutation';
@@ -27,7 +27,18 @@ class AccountAPI {
   };
 
   public logoutPost = () => {
-    return () => useMutation(logoutPostMutation);
+    return new Promise((resolve, reject) => {
+      commitMutation(
+        environment,
+        {
+          mutation: logoutPostMutation,
+          variables: {},
+          onCompleted: (data) => {
+            resolve(data);
+          }
+        }
+      );
+    })
   };
 
   public register = (username:string, email: string, password: string, ) => {
