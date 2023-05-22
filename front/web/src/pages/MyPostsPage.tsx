@@ -11,8 +11,9 @@ import { RootState } from '../redux/store';
 const MyPostsPage = () => {
   const deviceType = useDeviceType();
   let location = useLocation();
-  const {persona} = useSelector((state:RootState)=>state.auth);
+  const { persona } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  console.log('내 게시글 목록', location, persona);
 
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
@@ -23,7 +24,7 @@ const MyPostsPage = () => {
         <MyPostsContainer>
           <Header deviceType={deviceType}>
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
-            <MyPostsSetting nickname={location.state?.nickname||persona?.id} />
+            <MyPostsSetting id={location.state?.id||persona?.id} nickname={location.state?.nickname||persona?.nickname} />
           </Header>
             <PostList id={location.state?.id||persona?.id} />
           </MyPostsContainer>
