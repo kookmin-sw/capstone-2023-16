@@ -15,7 +15,7 @@ const MyPostsSetting = ({id, nickname}:MyPostsSettingProps) => {
   return <MyPostsSettingContainer deviceType={deviceType}>
     <TextButton text='수익' deviceType={deviceType} onClick={()=>navigate('/revenue')}></TextButton>
     <TextButton text='통계' deviceType={deviceType} onClick={() => navigate('/stats', { state: { id } })}></TextButton>
-    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/write', {state: {nickname}})}></TextButton>
+    <TextButton text='생성' deviceType={deviceType} onClick={()=>navigate('/write', {state: {id, nickname}})}></TextButton>
   </MyPostsSettingContainer>
 };
 

@@ -24,6 +24,7 @@ const PostWritingPage = () => {
   let location = useLocation();
   const {persona} = useSelector((state:RootState)=>state.auth);
  
+  console.log(location.state, persona);
   useEffect(() => {
     if (submitFlag) {
       if ((newPost.title !== "") && (newPost.length >= 20)) {
@@ -36,7 +37,7 @@ const PostWritingPage = () => {
           PostApiClient.postCreate(newPostInput)
             .then(() => {
               dispatch(reset());
-              navigate('/posts')
+              navigate('/posts', { state: {id: persona.id || location.state?.id} });
             })
             .catch(e => console.log(e));
         }
