@@ -7,17 +7,18 @@ import PostApiClient from '../../api/Post';
 import EmptyMessage from '../commons/EmptyMessage';
 
 type PostListProps = {
-  id: string
+  id: string,
+  nickname: string,
 }
 
-const PostList = ({id}: PostListProps) => {
+const PostList = ({id, nickname}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
   const { data: postList } = PostApiClient.postListGet(id);
 
   return postList.getPublicPosts.edges[0] ?
     <PostListContainer deviceType={deviceType} >
-    {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
+      {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`, { state: { id, nickname } })} >
         <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.contentPreview} date={p.node.createdAt} />
       </PostCardWrapper>)}
   </PostListContainer>: <EmptyMessage type='post' />
