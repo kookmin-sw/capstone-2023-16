@@ -37,7 +37,7 @@ const PostWritingPage = () => {
           PostApiClient.postCreate(newPostInput)
             .then(() => {
               dispatch(reset());
-              navigate('/posts', { state: {id: persona.id || location.state?.id} });
+              navigate('/posts', { state: {...{...location.state}||{...persona}}});
             })
             .catch(e => console.log(e));
         }
