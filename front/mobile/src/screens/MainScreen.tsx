@@ -32,7 +32,7 @@ import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
 import {selectPersona, setPersona} from '../redux/slices/userSlice';
 import {useAppDispatch, useAppSelector} from '../redux/hooks';
 import {getInitPersona} from '../relay/Persona/getInitPersona';
-import { storeData } from '../asyncstorage';
+import {storeData} from '../asyncstorage';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -59,12 +59,13 @@ const MainScreen: FC<Props> = ({navigation}) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-      if (persona.id === ''){
-        const fetchData = async () => {
-          try {
-            const response = await getInitPersona();
-            console.log('cur : ', response[0].node);
-            if (response.length === 0) navigation.navigate('BaseInfo');
+    if (persona.id === '') {
+      const fetchData = async () => {
+        try {
+          const response = await getInitPersona();
+          console.log('cur : ', response);
+          if (response.length === 0) navigation.navigate('BaseInfo');
+          else {
             storeData('persona_id', response[0].node.id);
             dispatch(
               setPersona({
@@ -72,14 +73,15 @@ const MainScreen: FC<Props> = ({navigation}) => {
                 nickname: response[0].node.nickname,
               }),
             );
-          } catch (error) {
-            console.error('Error fetching data:', error);
           }
-        };
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
 
-        fetchData();
-      }
-      storeData('persona_id', persona.id);
+      fetchData();
+    }
+    storeData('persona_id', persona.id);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 300);
@@ -120,23 +122,23 @@ const MainScreen: FC<Props> = ({navigation}) => {
 
   navigation.reset;
 
-  if (isLoading){
+  if (isLoading) {
     return (
       <SafeAreaView>
         <ImageBackground
           style={style.BackgroundView}
-          source={require('../assets/background1.png')} >
-            <HeaderBox>
-              <Image
-                style={style.HearderTitle}
-                source={require('../assets/logoText.png')}
-                resizeMode="contain"
-              />
-              <View style={style.LibraryTool}>
-                <Text>Loading..</Text>
-              </View>
-            </HeaderBox>
-          </ImageBackground>
+          source={require('../assets/background1.png')}>
+          <HeaderBox>
+            <Image
+              style={style.HearderTitle}
+              source={require('../assets/logoText.png')}
+              resizeMode="contain"
+            />
+            <View style={style.LibraryTool}>
+              <Text>Loading..</Text>
+            </View>
+          </HeaderBox>
+        </ImageBackground>
       </SafeAreaView>
     );
   }
