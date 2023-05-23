@@ -1,7 +1,9 @@
 import { Environment, Network, RecordSource, Store } from "relay-runtime";
+import getHost from "./utils/getHost";
 
 async function fetchQuery(operation: any, variables: object) {
-	return await fetch("https://api.postona.xyz/graphql", {
+	const host = getHost();
+	return await fetch(host, {
 		method: "POST",
 		mode: "cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
