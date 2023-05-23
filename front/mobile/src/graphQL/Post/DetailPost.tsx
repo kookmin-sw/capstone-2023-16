@@ -7,7 +7,6 @@ export const detail_getPostQuery = graphql`
       contentPreview
       createdAt
       likeCnt
-      paidContent
       bookmarkCnt
       requiredMembershipTier
       title

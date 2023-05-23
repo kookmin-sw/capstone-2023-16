@@ -49,11 +49,11 @@ type Props = NavigationProp<'Challenge'>;
 export const ChallengeScreen: FC<Props> = ({navigation}) => {
   const [index, setIndex] = useState(1);
   const [routes] = useState([
-    {key: 'myChallenge', body: <ChallengeCardSection data={challengeData} />},
-    {key: 'all', body: <ChallengeCardSection data={challengeData} />},
+    {key: 'myChallenge', body: <ChallengeCardSection type="myChallenge" />},
+    {key: 'all', body: <ChallengeCardSection type="all" />},
     {
       key: 'recruit',
-      body: <ChallengeCardSection data={challengeDataRecruit} />,
+      body: <ChallengeCardSection type="recruit" />,
     },
   ]);
 

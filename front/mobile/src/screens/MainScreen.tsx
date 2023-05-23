@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, {FC, useEffect, useState} from 'react';
 import {
   SafeAreaView,
@@ -20,25 +19,18 @@ import FeedCard from '../components/common/Cards/FeedCard';
 import {NavigationData} from '../navigation/AppNavigator';
 import {imagePath} from '../utils/imagePath';
 
-//@ts-ignore
-import {graphql} from 'babel-plugin-relay/macro';
 import {useLazyLoadQuery, usePaginationFragment} from 'react-relay';
-import {MainScreenQuery} from './__generated__/MainScreenQuery.graphql';
 import PostLikePaginationFragment from '../graphQL/Main/PostLikePaginationFragment';
 import PostLikeListGetQuery from '../graphQL/Main/PostLikeListGetQuery';
-import {MainScreenQuery$data} from './__generated__/MainScreenQuery.graphql';
-import getOwnPersonasQuery from '../graphQL/CookieSetting/GetPersona';
 
 import {selectPersona, setPersona} from '../redux/slices/userSlice';
 import {useAppDispatch, useAppSelector} from '../redux/hooks';
 import {getInitPersona} from '../relay/Persona/getInitPersona';
-import { storeData } from '../asyncstorage';
+import {storeData} from '../asyncstorage';
 import PostSeeListGetQuery from '../graphQL/Main/PostSeeListGetQuery';
 import PostSeePaginationFragment from '../graphQL/Main/PostSeePaginationFragment';
 import PostIdListGetQuery from '../graphQL/Main/PostIdListGetQuery';
 import PostIdPaginationFragment from '../graphQL/Main/PostIdPaginationFragment';
-import PostListGetQuery from '../graphQL/Main/PostListGetQuery';
-import PostPaginationFragment from '../graphQL/Main/PostPaginationFragment';
 
 const HeaderBox = styled.View`
   display: flex;
@@ -65,27 +57,27 @@ const MainScreen: FC<Props> = ({navigation}) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-      if (persona.id === ''){
-        const fetchData = async () => {
-          try {
-            const response = await getInitPersona();
-            console.log('cur : ', response[0].node);
-            if (response.length === 0) navigation.navigate('BaseInfo');
-            storeData('persona_id', response[0].node.id);
-            dispatch(
-              setPersona({
-                id: response[0].node.id,
-                nickname: response[0].node.nickname,
-              }),
-            );
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-        };
+    if (persona.id === '') {
+      const fetchData = async () => {
+        try {
+          const response = await getInitPersona();
+          console.log('cur : ', response[0].node);
+          if (response.length === 0) navigation.navigate('BaseInfo');
+          storeData('persona_id', response[0].node.id);
+          dispatch(
+            setPersona({
+              id: response[0].node.id,
+              nickname: response[0].node.nickname,
+            }),
+          );
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
 
-        fetchData();
-      }
-      storeData('persona_id', persona.id);
+      fetchData();
+    }
+    storeData('persona_id', persona.id);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 300);
@@ -130,18 +122,6 @@ const MainScreen: FC<Props> = ({navigation}) => {
   );
   const IdSortdata = tmpIdAPI.data;
 
-  // const tmpData = useLazyLoadQuery(
-  //   PostListGetQuery,
-  //   {},
-  //   {fetchPolicy: 'network-only'},
-  // );
-
-  // const tmpAPI = usePaginationFragment<PostAPIPostsGetQuery, any>(
-  //   PostPaginationFragment,
-  //   tmpData,
-  // );
-  // const data = tmpAPI.data;
-
   useEffect(() => {
     console.log('main:', likeSortdata.getPublicPosts.edges);
   }, [likeSortdata]);
@@ -170,23 +150,37 @@ const MainScreen: FC<Props> = ({navigation}) => {
 
   navigation.reset;
 
-  if (isLoading){
+  if (isLoading) {
     return (
       <SafeAreaView>
         <ImageBackground
           style={style.BackgroundView}
-          source={require('../assets/background1.png')} >
-            <HeaderBox>
-              <Image
-                style={style.HearderTitle}
-                source={require('../assets/logoText.png')}
-                resizeMode="contain"
-              />
-              <View style={style.LibraryTool}>
-                <Text>Loading..</Text>
-              </View>
-            </HeaderBox>
-          </ImageBackground>
+          source={require('../assets/background1.png')}>
+          <HeaderBox>
+            <Image
+              style={style.HearderTitle}
+              source={require('../assets/logoText.png')}
+              resizeMode="contain"
+            />
+            <TopButton
+              width={18}
+              height={18}
+              onPress={() => {}}
+              img={require('../assets/search-black.png')}
+            />
+            <TopButton
+              width={28}
+              height={28}
+              onPress={() => {}}
+              img={require('../assets/profileImg.png')}
+            />
+          </HeaderBox>
+          <View style={style.LibraryTool}>
+            <View style={style.LibraryToolShadow}>
+              <Text>...Loading...</Text>
+            </View>
+          </View>
+        </ImageBackground>
       </SafeAreaView>
     );
   }
@@ -258,29 +252,17 @@ const MainScreen: FC<Props> = ({navigation}) => {
             </CategoryScroll>
             <ScrollView
               refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={(likeSort) ? onRefresh_like : onRefresh_id} />
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={likeSort ? onRefresh_like : onRefresh_id}
+                />
               }
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>
-                {/* {data.getPublicPosts.edges.map((value: any, index?: number) => (
-                  <FeedCard
-                    key={index}
-                    title={value.node.title}
-                    feed_id={value.node.id}
-                    author={value.node.author.nickname}
-                    author_id={value.node.author.id}
-                    author_img={String(imagePath.avatar)}
-                    content={value.node.contentPreview}
-                    like={value.node.likeCnt}
-                    bookmark={value.node.bookmarkCnt}
-                    comment={value.node.commentCnt}
-                    hash_tag={value.node.tags.edges}
-                  />
-                ))} */}
-                {
-                  likeSort &&
-                  likeSortdata.getPublicPosts.edges.map((value: any, index?: number) => (
+              {likeSort &&
+                likeSortdata.getPublicPosts.edges.map(
+                  (value: any, index?: number) => (
                     <FeedCard
                       key={index}
                       title={value.node.title}
@@ -294,9 +276,9 @@ const MainScreen: FC<Props> = ({navigation}) => {
                       comment={value.node.commentCnt}
                       hash_tag={value.node.tags.edges}
                     />
-                  ))
-                }
-                {/* {
+                  ),
+                )}
+              {/* {
                   seeSort &&
                   SeeSortdata.getPublicPosts.edges.map((value: any, index?: number) => (
                     <FeedCard
@@ -314,9 +296,9 @@ const MainScreen: FC<Props> = ({navigation}) => {
                     />
                   ))
                 } */}
-                {
-                  idSort &&
-                  IdSortdata.getPublicPosts.edges.map((value: any, index?: number) => (
+              {idSort &&
+                IdSortdata.getPublicPosts.edges.map(
+                  (value: any, index?: number) => (
                     <FeedCard
                       key={index}
                       title={value.node.title}
@@ -330,8 +312,8 @@ const MainScreen: FC<Props> = ({navigation}) => {
                       comment={value.node.commentCnt}
                       hash_tag={value.node.tags.edges}
                     />
-                  ))
-                }
+                  ),
+                )}
             </ScrollView>
           </View>
         </View>

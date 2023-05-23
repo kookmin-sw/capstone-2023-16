@@ -32,6 +32,7 @@ import { isBookmark, isLike, isMembership } from '../LBCheck';
 import ContentBlock from '../components/Detail/ContentBlock';
 import DetailContent from '../components/Detail/DetailContent';
 import { CheckMembershipQuery } from '../graphQL/Post/CheckMembership';
+import PaidContent from '../components/Detail/PaidContent';
 // import { BottomSheet } from '../components/common/BottomSheet/BottomSheet';
 // import HTMLView from 'react-native-htmlview';
 
@@ -56,7 +57,15 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
     {fetchPolicy: 'network-only'},
   );
 
-  console.log('DetailPost:', data);
+  // const membershipData = useLazyLoadQuery(
+  //   CheckMembershipQuery,
+  //   {},
+  //   {fetchPolicy:'network-only'},
+  // );
+
+  // const checkMembershipData = isMembership(membershipData.getOwnMemberships.edges, data.getPost.author.id);
+
+  console.log('DetailPost:', data.getPost);
   console.log('PersonaData:', personaData.getPublicPersona.bookmarks);
 
   const [like, setLike] = useState(data.getPost.likeCnt);
@@ -73,13 +82,6 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const [commitBookmark, isInFlightlike] = useMutation<PostBookmarkMutation>(
     Post_bookmarkMutation,
   );
-
-  const membershipData = useLazyLoadQuery(
-    CheckMembershipQuery,
-    {},
-    {fetchPolicy:'network-only'},
-  )
-  const checkMembershipData = isMembership(membershipData.getOwnMembership.edges, data.getPost.author.id);
 
   return (
     <SafeAreaView>
@@ -208,16 +210,19 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
               author_id={data.getPost.author.id}
               author_img={String(require('../assets/profileImg.png'))}
             />
-            {/* <Text style={style.Text}>{data.getPost.content}</Text> */}
-            {
+            <Text style={style.Text}>{data.getPost.content}</Text>
+            {/* {
               (data.getPost.requiredMembershipTier === null) ? 
-                (data.getPost.paidContent === null)?
-                  <DetailContent feed_id={feed_id}/>
-                :
-                  <><Text style={style.Text}>{data.getPost.content}</Text><ContentBlock paid={true} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} lowtier={false}/></>
+                <PaidContent feed_id={feed_id} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} />
               :
-                (checkMembershipData.state) ? (parseInt(checkMembershipData.tier.charAt(5)) < parseInt(checkMembershipData.tier.charAt(5))) ? <ContentBlock paid={false} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} lowtier={true}/> : <DetailContent feed_id={feed_id}/> : <ContentBlock paid={false} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} lowtier={false}/>
-            }
+                (checkMembershipData.state) ? 
+                  (parseInt(membershipData.tier.charAt(5), 10) < parseInt(data.getPost.requiredMembershipTier.charAt(5), 10)) ? 
+                    <ContentBlock paid={false} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} lowtier={true}/> 
+                  : 
+                    <PaidContent feed_id={feed_id} author_id={data.getPost.author.id} author_nickname={data.getPost.author.nickname}/> 
+                : 
+                  <ContentBlock paid={false} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} lowtier={false}/>
+            } */}
             <View
               style={{
                 ...style.RowView,

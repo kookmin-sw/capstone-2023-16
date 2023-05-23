@@ -172,6 +172,25 @@ type Challenge implements Node {
   """제목"""
   title: String!
 
+  """설명"""
+  description: String!
+
+  """최대참석인원"""
+  maxPersonaCount: Int!
+  personas(
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
+
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+
+    """Returns the first n items from the list."""
+    first: Int = null
+
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): PersonaConnection!
+
   """생성 일시"""
   createdAt: DateTime!
 
@@ -343,7 +362,7 @@ input DatetimeBetween {
   startDt: DateTime = null
 
   """조회 종료 일시"""
-  endDt: DateTime = "2023-05-21T12:43:25.688350"
+  endDt: DateTime = "2023-05-22T17:36:42.691721"
 }
 
 enum DurationType {
@@ -1326,10 +1345,10 @@ enum SortingDirection {
 """통계에 사용할 데이터의 날짜 범위"""
 input StatisticsDatetimeBetween {
   """조회 시작 일시 (기본값 : 30일 이전)"""
-  startDatetime: DateTime = "2023-04-21T12:43:25.769872"
+  startDatetime: DateTime = "2023-04-22T17:36:42.776750"
 
   """조회 종료 일시 (기본값 : 오늘)"""
-  endDatetime: DateTime = "2023-05-21T12:43:25.769893"
+  endDatetime: DateTime = "2023-05-22T17:36:42.776770"
 }
 
 enum StringFindMode {

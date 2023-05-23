@@ -4,13 +4,13 @@ import {contentOpenQuery} from '../../graphQL/Post/ContentOpen';
 import {Text, StyleSheet} from 'react-native';
 import {DimensionTheme} from '../common/shared';
 
-const DetailContent = ({feed_id}: {feed_id: string}) => {
-  const data = useLazyLoadQuery(
-    contentOpenQuery,
-    {id: feed_id},
-    {fetchPolicy: 'network-only'},
-  );
-  return <Text style={style.Text}>{data.getPost.content}</Text>;
+const DetailContent = ({content}: {content: string}) => {
+  // const data = useLazyLoadQuery(
+  //   contentOpenQuery,
+  //   {id: feed_id},
+  //   {fetchPolicy: 'network-only'},
+  // );
+  return <Text style={style.Text}>{content}</Text>;
 };
 
 const style = StyleSheet.create({

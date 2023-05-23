@@ -7,11 +7,16 @@ import {DimensionTheme} from '../shared';
 import RegularText from '../Texts/RegularText';
 import SmallText from '../Texts/SmallText';
 import {CardProps} from './types';
-import {Image, View} from 'react-native';
+import {Alert, Image, View} from 'react-native';
 import ImageButton from '../Buttons/ImageButton';
 import {imagePath} from '../../../utils/imagePath';
 import SmallButton from '../Buttons/SmallButton';
 import {useNavigation} from '@react-navigation/native';
+import {JoinChallengeMutation} from '../../../graphQL/Challenge/__generated__/JoinChallengeMutation.graphql';
+import {JoinChallenge} from '../../../graphQL/Challenge/JoinChallenge';
+import {useMutation} from 'react-relay';
+import {useAppSelector} from '../../../redux/hooks';
+import {selectPersona} from '../../../redux/slices/userSlice';
 
 const CardContainer = styled.TouchableOpacity`
   width: ${DimensionTheme.width(348)};
@@ -46,7 +51,10 @@ const BottomSection = styled.View`
 `;
 
 export const ChallengeCardItem: FC<CardProps> = props => {
+  const [commitJoin, isInFlightJoin] =
+    useMutation<JoinChallengeMutation>(JoinChallenge);
   const tempNavigation = useNavigation();
+  const persona = useAppSelector(selectPersona);
   return (
     <CardContainer
       onPress={() => {
@@ -54,7 +62,7 @@ export const ChallengeCardItem: FC<CardProps> = props => {
       }}
       style={[ButtonTheme.whiteBGblackSD.btnStyle]}>
       <TopSection>
-        <View
+        {/* <View
           style={[
             props.open
               ? ButtonTheme.purpleLightBGblackSD.btnStyle
@@ -71,8 +79,8 @@ export const ChallengeCardItem: FC<CardProps> = props => {
           <SmallText textStyle={{color: colors.black}}>
             {props.open ? '모집' : '모집 마감'}
           </SmallText>
-        </View>
-        {props.open ? null : <Image source={imagePath.lockIcon} />}
+        </View> */}
+        {/* {props.open ? null : <Image source={imagePath.lockIcon} />} */}
         <SmallText textStyle={{color: colors.black}}>
           인원 : {props.current} / {props.max}
         </SmallText>
@@ -98,7 +106,23 @@ export const ChallengeCardItem: FC<CardProps> = props => {
               },
             ]}
             textStyles={{color: colors.black}}
-            onPress={() => {}}>
+            onPress={() => {
+              commitJoin({
+                variables: {
+                  challengeId: props.id,
+                  personaId: persona.id,
+                },
+                onCompleted(data) {
+                  if (data.joinChallenge.id === props.id) {
+                    props.setRender(true);
+                  }
+                },
+                onError(error){
+                  console.log(`@JoinChallengeError: ${error}`);
+                  Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
+                }
+              });
+            }}>
             {'참가신청'}
           </SmallButton>
         </BottomSection>

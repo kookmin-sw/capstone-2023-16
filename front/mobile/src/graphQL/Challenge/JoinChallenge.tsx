@@ -1,6 +1,6 @@
 import {graphql} from 'babel-plugin-relay/macro';
 
-export const JoinChallengeMutation = graphql`
+export const JoinChallenge = graphql`
   mutation JoinChallengeMutation(
     $challengeId: GlobalID!
     $personaId: GlobalID!
