@@ -32,7 +32,7 @@ def get_following_personas_statistics(persona_id: int, result_limit: int) -> Dic
 
 
 def get_follower_personas_statistics(persona_id: int, result_limit: int) -> Dict[str, List[Dict[str, int]]]:
-    follower_personas = Persona.objects.filter(follower_personas__in=[persona_id]) \
+    follower_personas = Persona.objects.filter(following_personas__in=[persona_id]) \
         .values('id',
                 'gender',
                 'birth_year',

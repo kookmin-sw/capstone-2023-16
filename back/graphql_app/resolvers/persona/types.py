@@ -142,7 +142,7 @@ class IsPublicFilter(RetreiveFilter):
         self.is_public = is_public
 
     def apply(self, qs: QuerySet):
-        return qs.filter(job=self.is_public)
+        return qs.filter(is_public=self.is_public)
 
 
 @strawberry.input
