@@ -1,15 +1,19 @@
-import {Cookies} from 'react-cookie'
+import { Cookies } from 'react-cookie';
 
-const cookies = new Cookies()
+const cookies = new Cookies();
 
-export const setCookie = (name:string, value: string, options?:any)=>{
-	return cookies.set(name, value, {...options})
-}
+export const setCookie = (name: string, value: string, options?: any) => {
+	let domain = "localhost";
+	if (process.env.NODE_ENV !== 'development') {
+		domain = ".postona.xyz";
+	}
+	return cookies.set(name, value, { ...options, domain: domain });
+};
 
 export const getCookie = (name: string) => {
 	return cookies.get(name);
-}
+};
 
 export const removeCookie = (name: string) => {
 	return cookies.remove(name);
-}
+};
