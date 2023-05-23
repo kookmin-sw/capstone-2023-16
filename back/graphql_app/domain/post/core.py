@@ -135,7 +135,7 @@ def create_post(author_id: int, requested_user_id: int, title: str, content: str
 
 
 def update_post(post_id: int, author_id: int, requested_user_id: int, title: str, content: str, category_id: int,
-              paid_content: Optional[str] = None, tag_bodies: Optional[List[str]] = []) -> Post:
+                paid_content: Optional[str] = None, tag_bodies: Optional[List[str]] = []) -> Post:
     """
     :param post_id: 게시물 ID
     :param author_id: 게시물 생성을 요청한 페르소나의 ID
@@ -244,6 +244,7 @@ def get_comments_of(root: Post, info: Info) -> List[Comment]:
     특정 게시물의 댓글 목록을 작성 일시 내림차순으로 반환
     """
     return Comment.objects.filter(post=root)
+
 
 def get_comments_count(root: Post, info: Info) -> int:
     """
