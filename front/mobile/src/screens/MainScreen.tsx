@@ -60,6 +60,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
 
   useEffect(() => {
       if (persona.id === ''){
+        console.log('MainScreen: loading');
         const fetchData = async () => {
           try {
             const response = await getInitPersona();
@@ -82,7 +83,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
       storeData('persona_id', persona.id);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 300);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);

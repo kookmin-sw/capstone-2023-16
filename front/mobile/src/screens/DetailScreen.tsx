@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -70,16 +70,24 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
 
   const [render, setRender] = useState(false);
 
+  useEffect(()=>{
+    if (render){
+      // data.refetch({id:feed_id});
+      // personaData.refetch({id:feed_id});
+      setRender(false);
+    }
+  },[render]);
+
   const data = useLazyLoadQuery(
     detail_getPostQuery,
     {id: feed_id},
-    {fetchPolicy: 'store-or-network'},
+    {fetchPolicy: 'network-only'},
   );
 
   const personaData = useLazyLoadQuery(
     persona_LBQuery,
     {id: persona.id},
-    {fetchPolicy: 'store-or-network'},
+    {fetchPolicy: 'network-only'},
   );
 
   console.log('DetailPost:', data);
@@ -344,6 +352,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
             </View>
             <CommentContent
               feed_id={feed_id}
+              lists={data.getPost.comments}
               render={setRender}
               state={render}
             />

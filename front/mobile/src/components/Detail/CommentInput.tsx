@@ -23,7 +23,6 @@ const CommentInput = (props:CommentInputProps) => {
         <View style={{display: 'flex', flexDirection: 'row'}}>
             <TextInput style={style.InputStyel} placeholder="댓글을 남겨주세요." placeholderTextColor={colors.graytext} value={comment} onChangeText={setComment}/>
             <TouchableOpacity style={style.BtnStyle} onPress={()=>{
-                // props.render(!props.state);
                 commitCommnet({
                     variables:{
                         postId:props.feed_id,
@@ -31,7 +30,7 @@ const CommentInput = (props:CommentInputProps) => {
                     },
                     onCompleted(data){
                         setComment('');
-                        props.render(!props.state);
+                        props.render(true);
                     },
                     onError(error){
                         console.log(`@CommentInputError: ${error}`);
