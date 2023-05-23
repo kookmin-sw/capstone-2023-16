@@ -4,7 +4,7 @@ const categoryPaginationFragment = graphql`
       fragment categoryPaginationFragment on Query
         @refetchable(queryName: "pagination_categoryAllGetQuery")
         @argumentDefinitions(
-          first: {type: "Int", defaultValue: 20}
+          first: {type: "Int", defaultValue: 30}
           after: {type: "String"}
         ) {
           getAllCategories(first: $first, after: $after, sortingOpt: {})

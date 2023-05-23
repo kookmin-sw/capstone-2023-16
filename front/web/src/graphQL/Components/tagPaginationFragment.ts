@@ -4,7 +4,7 @@ const tagPaginationFragment = graphql`
       fragment tagPaginationFragment on Query
         @refetchable(queryName: "pagination_tagAllGetQuery")
         @argumentDefinitions(
-          first: {type: "Int", defaultValue: 20}
+          first: {type: "Int", defaultValue: 30}
           after: {type: "String"}
         ) {
           getAllTags(first: $first, after: $after, sortingOpt: {})
