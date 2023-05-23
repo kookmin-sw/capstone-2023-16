@@ -107,7 +107,7 @@ const CardItem: FC<CardProps> = props => {
         </SmallText>
       </ProfileInfo>
       <RightSection>
-        {route.name !== 'Persona' ? (
+        {/* {route.name !== 'Persona' ? (
           <SmallButton
             btnStyles={[
               ButtonTheme.whiteBGpurpleSD.btnStyle,
@@ -126,7 +126,7 @@ const CardItem: FC<CardProps> = props => {
             onPress={() => {}}>
             {false ? '팔로잉' : '팔로우'}
           </SmallButton>
-        ) : null}
+        ) : null} */}
         <TouchableOpacity
           style={{marginLeft: DimensionTheme.width(12)}}
           onPress={pressButton}>
