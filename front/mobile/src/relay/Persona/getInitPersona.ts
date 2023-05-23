@@ -19,5 +19,6 @@ export const getInitPersona = async () => {
   `;
   const request = fetchQuery(RelayEnvironment, query, {});
   const response = await request.toPromise();
-  return response?.getOwnPersonas.edges;
+  console.log('here : ', response);
+  return response?.getOwnPersonas?.edges;
 };

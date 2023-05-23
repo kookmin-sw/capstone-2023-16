@@ -2,10 +2,7 @@ import {graphql} from 'babel-plugin-relay/macro';
 import {fetchQuery} from 'relay-runtime';
 import RelayEnvironment from '../../RelayEnvironment';
 
-export const getOwnReadPostStatistics = async (
-  persona_id: string,
-  opt: any,
-) => {
+export const getOwnReadPostStatistics = async (opt: any) => {
   const query = graphql`
     query getOwnReadPostStatisticsQuery($opt: GetOwnReadPostStatisticsInput!) {
       getOwnReadPostStatistics(opt: $opt) {
