@@ -37,7 +37,10 @@ export const RoundedTab: FC<RoundedTabProps> = ({tabInfo}) => {
         ]}
         textStyles={{fontSize: 12, color: colors.black}}
         onPress={() => {
-          navigation.navigate(tabInfo[0].key);
+          navigation.navigate(tabInfo[0].key, {
+            data: tabInfo[0].data,
+            persona_nick: tabInfo[0].persona_nick,
+          });
         }}>
         {tabInfo[0].title}
       </SmallButton>
@@ -56,6 +59,7 @@ export const RoundedTab: FC<RoundedTabProps> = ({tabInfo}) => {
             isMine: tabInfo[1].isMine,
             followingList: tabInfo[1].followingList,
             followerList: tabInfo[1].followerList,
+            persona_id: tabInfo[1]?.persona_id,
           });
         }}>
         {tabInfo[1].title}
@@ -71,7 +75,10 @@ export const RoundedTab: FC<RoundedTabProps> = ({tabInfo}) => {
         ]}
         textStyles={{fontSize: 12, color: colors.black}}
         onPress={() => {
-          navigation.navigate(tabInfo[2].key);
+          navigation.navigate(tabInfo[2].key, {
+            data: tabInfo[2].data,
+            name: 'history',
+          });
         }}>
         {tabInfo[2].title}
       </SmallButton>

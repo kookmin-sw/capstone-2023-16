@@ -6,7 +6,7 @@ import {SceneMap} from 'react-native-tab-view';
 import {LikeScreen} from './LikeScreen';
 import {Container, DimensionTheme} from '../../components/common/shared';
 import {StatisticsScreen} from './StatisticsScreen';
-import {routeProps, sceneMapProps} from '../../components/common/Tab/type';
+import {routeProps} from '../../components/common/Tab/type';
 import {Header} from '../../components/common/Header/Header';
 import RegularText from '../../components/common/Texts/RegularText';
 import {NavigationData} from '../../navigation/AppNavigator';
@@ -23,7 +23,7 @@ const HeaderSection = styled.View`
 
 type Props = NavigationData<'History'>;
 
-export const MyHistoryScreen: FC<Props> = ({navigation}) => {
+export const MyHistoryScreen: FC<Props> = ({navigation, route}) => {
   const [routes] = useState<routeProps[]>([
     {key: 'like', title: 'LIKE'},
     {key: 'bookmark', title: 'BOOKMARK'},
@@ -31,12 +31,41 @@ export const MyHistoryScreen: FC<Props> = ({navigation}) => {
     {key: 'statistics', title: 'STATISTICS'},
   ]);
 
-  const sceneMaps = SceneMap<sceneMapProps>({
-    like: LikeScreen,
-    bookmark: LikeScreen,
-    recent: LikeScreen,
-    statistics: StatisticsScreen,
-  });
+  const props = route;
+  console.log('history', props);
+
+  const sceneMaps = ({route}) => {
+    switch (route.key) {
+      case 'like':
+        return (
+          <LikeScreen
+            type={route.key}
+            data={props.params?.data?.likedPosts}
+            name={'history'}
+          />
+        );
+      case 'bookmark':
+        return (
+          <LikeScreen
+            type={route.key}
+            data={props.params?.data?.bookmarks}
+            name={'history'}
+          />
+        );
+      case 'recent':
+        return (
+          <LikeScreen
+            type={route.key}
+            data={props.params?.date?.likedPosts}
+            name={'history'}
+          />
+        );
+      case 'statistics':
+        return <StatisticsScreen />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <HistoryContainer>
