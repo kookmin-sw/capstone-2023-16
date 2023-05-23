@@ -10,11 +10,11 @@ type TagProps = {
 
 type TagInputBoxProps = {
   submitFlag: boolean,
-}
+};
 
 const Tag = ({ label, onRemove }: TagProps) => {
   return <span id={label} className='tag' onClick={onRemove}>{label} &times; </span>
-}
+};
 
 const TagInputBox = ({submitFlag}: TagInputBoxProps) => {
   const [taglist, setTaglist] = useState<string[]>([]);
