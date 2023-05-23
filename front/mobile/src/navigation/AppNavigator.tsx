@@ -23,6 +23,7 @@ import {MyContentScreen} from '../screens/MyContent/MyContentScreen';
 import {FollowScreen} from '../screens/MyAccount/FollowScreen';
 import {PersonaInfo, PersonaPage} from './type';
 import FilterScreen from '../screens/FilterScreen';
+import {DefaultScreen} from '../screens/MyContent/DefaultScreen';
 // import LoadingScreen from '../screens/LoadingScreen';
 
 export type ParamList = {
@@ -42,6 +43,7 @@ export type ParamList = {
   ChallengeDetail: undefined;
   MyContent: undefined;
   FilterContent: undefined;
+  Default: undefined;
   // Loading: undefined;
 };
 
@@ -158,6 +160,11 @@ const AppNavigator = () => {
         name="FilterContent"
         component={FilterScreen}
         options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="Default"
+        component={DefaultScreen}
+        // options={{headerShown: false}}
       />
     </StackNavigator.Navigator>
   );
