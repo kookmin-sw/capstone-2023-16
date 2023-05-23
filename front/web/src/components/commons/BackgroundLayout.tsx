@@ -1,16 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 import AccountApiClient from '../../api/Account';
 import { redirect } from 'react-router-dom';
-import { logout } from '../../redux/slices/authSlice';
+import { useAuth } from '../../context/AuthContext';
 
 const BackgroundLayout = ({ children }: React.PropsWithChildren) => {
-  const { auth } = useSelector((state: RootState) => state);
   const deviceType = useDeviceType();
-  const dispatch = useDispatch();
+  const context = useAuth();
 
   const onClick = () => {
     const answer = window.confirm('로그아웃 하시겠습니까?');
@@ -18,7 +15,7 @@ const BackgroundLayout = ({ children }: React.PropsWithChildren) => {
     if (answer) {
       AccountApiClient.logoutPost()
         .then((res: any) => {
-          dispatch(logout());
+          context.logout();
           redirect('/')
         })
     }
@@ -29,7 +26,7 @@ const BackgroundLayout = ({ children }: React.PropsWithChildren) => {
         <Layout deviceType={deviceType}>
         <Header deviceType={deviceType}>
           <span>POSTONA</span>
-          {auth.isLoggedIn && <span onClick={onClick}>로그아웃</span>}
+          {context.loginState && <span onClick={onClick}>로그아웃</span>}
         </Header>
           <ContentLayout id='content__box' deviceType={deviceType}>
             {children}

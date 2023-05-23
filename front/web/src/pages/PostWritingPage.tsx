@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled  from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
@@ -14,6 +14,7 @@ import PostApiClient from '../api/Post';
 import TagInputBox from '../components/PostWriting/TagInputBox';
 import { useDispatch } from 'react-redux';
 import { reset } from '../redux/slices/newPostSlice';
+import { useAuth } from '../context/AuthContext';
 
 const PostWritingPage = () => {
   const [submitFlag, setSubmitFlag] = useState(false);
@@ -21,10 +22,8 @@ const PostWritingPage = () => {
   const dispatch = useDispatch();
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  let location = useLocation();
-  const {persona} = useSelector((state:RootState)=>state.auth);
+  const context = useAuth();
  
-  console.log(location.state, persona);
   useEffect(() => {
     if (submitFlag) {
       if ((newPost.title !== "") && (newPost.length >= 20)) {
@@ -33,24 +32,23 @@ const PostWritingPage = () => {
         } else {
           const newPostInput: any = { ...newPost };
           delete newPostInput.length;
-          console.log(newPostInput);
           PostApiClient.postCreate(newPostInput)
             .then(() => {
               dispatch(reset());
-              navigate('/posts', { state: {...{...location.state}||{...persona}}});
+              navigate('/posts');
             })
             .catch(e => console.log(e));
         }
       }
     }
     setSubmitFlag(false);
-  }, [submitFlag]);
+  }, [submitFlag, newPost]);
 
   const onSubmit = useCallback(() => setSubmitFlag(prev => true), []);
 
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
-      <PersonaCard {...{nickname:persona.nickname, ...location.state }} deviceType={deviceType} />
+      <PersonaCard nickname={context?.persona?.nickname!} deviceType={deviceType} />
     </PersonaCardWrapper>
     <ContentLayout>
       <Header deviceType={deviceType}>

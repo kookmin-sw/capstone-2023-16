@@ -6,16 +6,19 @@ import RelayEnvironment from './RelayEnvironment';
 import { Suspense } from 'react';
 import LoadingSpinnerPage from './pages/LoadingSpinnerPage';
 import AppRouter from './components/Router/AppRouter';
+import { AuthProvider } from './context/AuthContext';
 
 const App = () => {
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <BackgroundLayout>
-        <GlobalStyles />
-        <Suspense fallback={<LoadingSpinnerPage />}>
-          <AppRouter />
-        </Suspense>
-      </BackgroundLayout>
+      <AuthProvider>
+        <BackgroundLayout>
+          <GlobalStyles />
+          <Suspense fallback={<LoadingSpinnerPage />}>
+            <AppRouter />
+          </Suspense>
+        </BackgroundLayout>
+      </AuthProvider>
     </RelayEnvironmentProvider>
   );  
 }
