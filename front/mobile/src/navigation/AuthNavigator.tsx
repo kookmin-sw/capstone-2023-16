@@ -1,15 +1,25 @@
-import React from "react";
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable prettier/prettier */
+import React from 'react';
 
-import { RouteProp } from "@react-navigation/native";
+import {RouteProp} from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
-} from "@react-navigation/native-stack";
+} from '@react-navigation/native-stack';
 
-import { LoginScreen } from "../screens/LoginScreen";
+import {LoginScreen} from '../screens/LoginScreen';
+import {SignupScreen} from '../screens/SignupScreen';
+import {BaseInfoScreen} from '../screens/Persona/BaseInfoScreen';
+import {InterestTagSettingScreen} from '../screens/Persona/InterestTagSettingScreen';
+import {WelcomeScreen} from '../screens/WelcomScreen';
 
 export type ParamList = {
+  Welcome: undefined;
   Login: undefined;
+  Signup: undefined;
+  BaseInfo: undefined;
+  InterestTagSetting: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
@@ -18,9 +28,37 @@ const AuthNavigator = () => {
   return (
     <StackNavigator.Navigator>
       <StackNavigator.Screen
+        name="Welcome"
+        component={WelcomeScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{title: '회원가입', headerShadowVisible: false}}
+      />
+      <StackNavigator.Screen
+        name="BaseInfo"
+        component={BaseInfoScreen}
+        options={{
+          title: '페르소나 생성',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <StackNavigator.Screen
+        name="InterestTagSetting"
+        component={InterestTagSettingScreen}
+        options={{
+          title: '페르소나 생성',
+          headerShadowVisible: false,
+          headerBackTitleVisible: false,
+        }}
       />
     </StackNavigator.Navigator>
   );

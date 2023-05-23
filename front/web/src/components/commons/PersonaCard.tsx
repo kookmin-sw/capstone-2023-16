@@ -11,9 +11,8 @@ interface profile {
     usageType?: string,
 };
 
-const PersonaCard = ({src, nickname,  deviceType, usageType}:profile) =>{
-    return(
-        <BoxDiv deviceType={deviceType} usageType={usageType}>
+const PersonaCard = ({ src, nickname, deviceType, usageType }: profile) => {
+    return(<BoxDiv deviceType={deviceType} usageType={usageType}>
             <ImgBox deviceType={deviceType} usageType={usageType} src={(src===null||src==="")? profileImg: src} alt="Profile Image"/>
             <NicknameText deviceType={deviceType} usageType={usageType}>{nickname}</NicknameText>
         </BoxDiv>
@@ -26,8 +25,8 @@ const BoxDiv = styled(GrayShadowBox)<profile>`
     width: 100%;
     height: ${(props)=>{ return (
         (props.usageType==='choice')? 
-            (props.deviceType==='mobile')? '73px':
-                '134px':
+            (props.deviceType==='mobile')? '60px':
+                '125px':
             (props.deviceType==='mobile')? '69px':
                 '105px'
         )}};

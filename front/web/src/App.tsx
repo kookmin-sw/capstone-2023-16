@@ -1,23 +1,26 @@
-import { Routes, Route } from 'react-router-dom';
 import { GlobalStyles } from './styles/GlobalStyles';
-import LoginPage from './pages/LoginPage';
-import PersonaChoice from './pages/PersonaChoicePage';
-import MyPostsPage from './pages/MyPostsPage';
-import PostDetailPage from './pages/PostDetailPage';
+
 import BackgroundLayout from './components/commons/BackgroundLayout';
+import {RelayEnvironmentProvider} from 'react-relay';
+import RelayEnvironment from './RelayEnvironment';
+import { Suspense } from 'react';
+import LoadingSpinnerPage from './pages/LoadingSpinnerPage';
+import AppRouter from './components/Router/AppRouter';
+import { AuthProvider } from './context/AuthContext';
 
 const App = () => {
   return (
-    <BackgroundLayout>
-      <GlobalStyles />
-      <Routes>
-        <Route path='/' element={<LoginPage />} />
-        <Route path='/personas' element={<PersonaChoice />} />
-        <Route path='/posts' element={<MyPostsPage />} />
-        <Route path='/posts/:id' element={<PostDetailPage />} />
-      </Routes>
-    </BackgroundLayout>
-  );
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <AuthProvider>
+        <BackgroundLayout>
+          <GlobalStyles />
+          <Suspense fallback={<LoadingSpinnerPage />}>
+            <AppRouter />
+          </Suspense>
+        </BackgroundLayout>
+      </AuthProvider>
+    </RelayEnvironmentProvider>
+  );  
 }
 
 export default App;
