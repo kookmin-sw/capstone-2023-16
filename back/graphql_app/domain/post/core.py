@@ -255,3 +255,7 @@ def get_comments_count(root: Post, info: Info) -> int:
 
 def create_comment_to(post_id: int, persona_id: int, body) -> Comment:
     return Comment.objects.create(post_id=post_id, persona_id=persona_id, body=body)
+
+
+def delete_post(post_id: int) -> None:
+    Post.objects.get(id=post_id).delete()

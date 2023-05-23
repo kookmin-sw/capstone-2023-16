@@ -5,9 +5,9 @@ from strawberry_django_plus.relay import GlobalID
 
 from graphql_app.domain.category.exceptions import CategoryNotFoundException
 from graphql_app.domain.persona.exceptions import PersonaNotFoundException
-from graphql_app.domain.post.core import create_post, post_bookmark_toggle, create_comment_to
-from graphql_app.domain.post.core import create_post, post_like_toggle, update_post
-from graphql_app.resolvers.decorators import requires_persona_context
+from graphql_app.domain.post.core import post_bookmark_toggle, create_comment_to
+from graphql_app.domain.post.core import create_post, post_like_toggle, update_post, delete_post
+from graphql_app.resolvers.decorators import requires_persona_context, requires_auth
 from graphql_app.resolvers.errors import AuthInfoRequiredError, ResourceNotFoundError
 from graphql_app.resolvers.model_types import Post, Comment
 from graphql_app.resolvers.post.types import CreatePostInput, UpdatePostInput
@@ -110,3 +110,12 @@ class Mutation:
 
         comment = create_comment_to(post_id, persona_id, body)
         return comment
+
+    @gql.mutation
+    @requires_auth
+    def delete_post(self, info: Info, post_id: GlobalID) -> None:
+        """
+        특정 게시물을 삭제한다.
+        """
+        post_id = post_id.node_id
+        delete_post(post_id)
