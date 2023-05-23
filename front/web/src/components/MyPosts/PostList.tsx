@@ -14,7 +14,7 @@ type PostListProps = {
 const PostList = ({id, nickname}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  const { data: postList } = PostApiClient.postListGet(id);
+  const { data: postList } = PostApiClient.postListGet(id!);
 
   return postList.getPublicPosts.edges[0] ?
     <PostListContainer deviceType={deviceType} >

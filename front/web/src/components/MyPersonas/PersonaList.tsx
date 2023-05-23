@@ -1,15 +1,14 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useDeviceType from "../../hooks/useDeviceType";
 import PersonaCard from "../commons/PersonaCard";
-import { connect } from '../../redux/slices/authSlice';
 import { Root } from "./dummy/personalListType";
 import PersonaApiClient from "../../api/Persona";
 import { useEffect } from "react";
 import useThrottle from "../../hooks/useThrottle";
 import { ReactComponent as DeleteIcon } from '../../assets/icons/x.svg';
 import EmptyMessage from "../commons/EmptyMessage";
+import { useAuth } from "../../context/AuthContext";
 
 type PersonaListType = {
   mode: string,
@@ -20,7 +19,7 @@ const AVERAGE_LOAD = 20;
 const PersonaList = ({mode}: PersonaListType) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const context = useAuth();
   
   const { data, hasNext, loadNext, isLoadingNext } = PersonaApiClient.personaListGet();
 
@@ -45,7 +44,7 @@ const PersonaList = ({mode}: PersonaListType) => {
   // 페르소나 클릭 이벤트 핸들러
   const onClick = (n: any) => {
     if (mode==="default"){
-      dispatch(connect(n));
+      context.connect(n.id, n.nickname);
       navigate('/posts');
     } else {
       const answer = window.confirm('정말 삭제하시겠습니까?');

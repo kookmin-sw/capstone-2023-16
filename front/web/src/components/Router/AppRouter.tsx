@@ -1,19 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import ServiceRouter from './ServiceRouter';
 import LoginPage from '../../pages/LoginPage';
 import SignUpPage from '../../pages/SignUpPage';
 import PrivateRoute from './PrivateRoute';
-import { RootState } from '../../redux/store';
+import { useAuth } from '../../context/AuthContext';
 
 const AppRouter = () => {
-  const {isLoggedIn} = useSelector((state: RootState) => state.auth);
+  const context = useAuth();
   
   return (<Routes>
         <Route path='/' element={<LoginPage />} />
         <Route path='/signup' element={<SignUpPage />} />
     
-        <Route path='*' element={<PrivateRoute access={isLoggedIn} Component={<ServiceRouter />} />} />
+        <Route path='*' element={<PrivateRoute access={context.loginState} Component={<ServiceRouter />} />} />
     </Routes>
   );  
 }

@@ -1,26 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import useDeviceType from '../hooks/useDeviceType';
 import { Container, Input, SubmitButton } from '../components/Account';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import AccountApiClient from '../api/Account';
 import '../components/Account/style.css';
-import { useDispatch } from 'react-redux';
-import { login } from '../redux/slices/authSlice';
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/store';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const deviceType = useDeviceType();
   const usernameInput = useRef<HTMLInputElement>(null);
   const pwInput = useRef<HTMLInputElement>(null);
-  const isLoggedIn = useSelector((state:RootState)=>state.auth.isLoggedIn);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isLoggedIn) navigate('/personas');
-  }, [isLoggedIn]);
+  const context = useAuth();
 
   const onLogin = () => {
     if (usernameInput.current && pwInput.current) {
@@ -30,9 +22,9 @@ const LoginPage = () => {
       };
       AccountApiClient.loginPost(loginform)
         .then((res: any) => {
-          console.log(res);
-          dispatch(login());
-        }).then(() => { console.log(isLoggedIn); navigate('/personas'); })
+          context.login();
+          navigate('/personas');
+        })
     }
   }
 

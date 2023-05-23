@@ -1,19 +1,17 @@
-import { Suspense, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentLayout from '../components/commons/ContentLayout';
 import PersonaCard from '../components/commons/PersonaCard';
 import useDeviceType from '../hooks/useDeviceType';
-import { RootState } from '../redux/store';
 import editIcon from "../assets/imgs/post.png"
 import deleteIcon from "../assets/imgs/trashcan.png"
 import statsIcon from "../assets/imgs/stats.png"
 import PostApiClient from '../api/Post';
-import LoadingSpinnerPage from './LoadingSpinnerPage';
 import { PostType } from '../graphQL/types/PostType';
 import StatisticModalContent from '../components/PostDetail/StatisticModalContent';
 import Modal from '../components/commons/Modal';
+import { useAuth } from '../context/AuthContext';
 
 const initialPost = {
   title: "",
@@ -22,11 +20,10 @@ const initialPost = {
 
 const PostDetailPage = () => {
   const deviceType = useDeviceType();
-  const {persona} = useSelector((state: RootState) => state.auth);
   const [post, setPost] = useState<PostType>(initialPost);
   const { postId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
+  const context = useAuth();
   const queryData: any = PostApiClient.postGet(postId);
   const [modal, setModal] = useState<boolean>(false);
 
@@ -38,7 +35,7 @@ const PostDetailPage = () => {
 
   const onEdit = () => {
     alert('편집모드로 전환합니다.');
-    navigate(`/post/edit/${postId}`);
+    //navigate(`/post/edit/${postId}`);
   };
 
   const onDelete = () => {
@@ -47,14 +44,13 @@ const PostDetailPage = () => {
     alert(answer ? '삭제되었습니다.' : '취소되었습니다.');
   };
 
-  return (<>
+  return (<>    
     {deviceType === 'desktop'
       && <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
-        <PersonaCard nickname={persona.nickname||location.state.nickname} deviceType={deviceType} />
+        <PersonaCard nickname={context?.persona?.nickname!} deviceType={deviceType} />
       </PersonaCardWrapper>}
     
     <ContentLayout>
-      <Suspense fallback={<LoadingSpinnerPage />}>
         <CategorySpan deviceType={deviceType}>{post.category?.body}</CategorySpan>
         <Header deviceType={deviceType}>
           <div>
@@ -75,8 +71,7 @@ const PostDetailPage = () => {
             {post.tags?.edges?.map((n:any, i:number)=><span key={i} className='tag'>{n.node.body}</span>)}
           </div>
         }
-      </Suspense>
-    </ContentLayout>
+      </ContentLayout>      
     {modal && <Modal modal={modal} setModal={setModal}>
       <StatisticModalContent postId={postId} />
     </Modal>}

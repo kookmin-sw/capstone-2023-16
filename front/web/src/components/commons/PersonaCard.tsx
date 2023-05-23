@@ -12,8 +12,7 @@ interface profile {
 };
 
 const PersonaCard = ({ src, nickname, deviceType, usageType }: profile) => {
-    return(
-        <BoxDiv deviceType={deviceType} usageType={usageType}>
+    return(<BoxDiv deviceType={deviceType} usageType={usageType}>
             <ImgBox deviceType={deviceType} usageType={usageType} src={(src===null||src==="")? profileImg: src} alt="Profile Image"/>
             <NicknameText deviceType={deviceType} usageType={usageType}>{nickname}</NicknameText>
         </BoxDiv>
