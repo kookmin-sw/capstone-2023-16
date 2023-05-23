@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import useDeviceType from '../hooks/useDeviceType';
 import { Container, Input, SubmitButton } from '../components/Account';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,6 +13,12 @@ const LoginPage = () => {
   const usernameInput = useRef<HTMLInputElement>(null);
   const pwInput = useRef<HTMLInputElement>(null);
   const context = useAuth();
+
+  useEffect(() => {
+    if (context.loginState) {
+      navigate('/personas');
+    }
+  }, []);
 
   const onLogin = () => {
     if (usernameInput.current && pwInput.current) {
