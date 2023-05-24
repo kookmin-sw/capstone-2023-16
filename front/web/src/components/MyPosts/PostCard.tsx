@@ -8,6 +8,7 @@ import StatisticModalContent from '../PostDetail/StatisticModalContent';
 import Modal from '../commons/Modal';
 import { createPortal } from 'react-dom';
 import HTMLViewer from '../PostDetail/HTMLViewer';
+import PostApiClient from '../../api/Post';
 
 // event와 내용들을 바로 넘겨주는 방식도 괜찮고, 아예 id를 넘겨서 여기서 api post detail을 호출해서 해도 괜찮음.
 // 전자방식으로 코드 작성함.
@@ -17,11 +18,12 @@ interface post {
     title: string,
     date: string,
     content: string,
-    hashtag?: string[],
+    tagBodies?: string[],
     deviceType: string,
+    refetcher: () => void,
 };
 
-const PostCard = ({ id, title, date, content, hashtag, deviceType }: post) => {
+const PostCard = ({ id, title, date, content, tagBodies, deviceType, refetcher }: post) => {
     const [modal, setModal] = useState<boolean>(false);
 
     const onShow = (e: any) => {
@@ -40,7 +42,10 @@ const PostCard = ({ id, title, date, content, hashtag, deviceType }: post) => {
         // TODO: 삭제 api 호출
         // eslint-disable-next-line no-restricted-globals
         const answer = confirm('정말로 삭제하시겠습니까?');
-        alert(answer ? '삭제되었습니다.' : '취소되었습니다.');
+        if (answer) {
+            PostApiClient.postDelete(id!).then((res: any) => refetcher());
+        }
+        else alert('취소되었습니다.');
     };
 
     return(<>
@@ -54,7 +59,7 @@ const PostCard = ({ id, title, date, content, hashtag, deviceType }: post) => {
                 <BottomBox deviceType={deviceType}>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         {
-                            hashtag?.map(tag => <HashTagText deviceType={deviceType}>#{tag}</HashTagText>)
+                            tagBodies?.map(tag => <HashTagText deviceType={deviceType}>#{tag}</HashTagText>)
                         }
                     </div>
                     <div>
@@ -115,7 +120,7 @@ const ContentSection = styled.div<{ deviceType?: string }>`
     justify-content: space-between;
 `;
 
-const ContentText = styled.p<{ deviceType?: string }>`
+const ContentText = styled.div<{ deviceType?: string }>`
     display: -webkit-box;
     width: 100%;
     height: ${(props) => { return (props.deviceType === 'mobile') ? '55px' : '105px' }};

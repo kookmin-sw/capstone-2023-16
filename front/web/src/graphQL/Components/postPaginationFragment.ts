@@ -8,11 +8,12 @@ const postPaginationFragment = graphql`
           after: {type: "String"}
           id: {type: "GlobalID!"}
         ) {
-          getPublicPosts(first: $first, after: $after, sortingOpt: {}, authorFilter: {id: $id})
+          getPublicPosts(first: $first, after: $after, sortingOpt:  {direction: DESC, sortBy: ID}, authorFilter: {id: $id})
           @connection(key: "Edges_getPublicPosts") {
             edges {
               node {
                 id
+                content
                 contentPreview
                 title
               }

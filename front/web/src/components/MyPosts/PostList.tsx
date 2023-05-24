@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import styled from 'styled-components';
 import {useNavigate } from 'react-router-dom';
@@ -16,14 +16,18 @@ const PostList = ({id, nickname}: PostListProps) => {
   const navigate = useNavigate();
   const { data: postList, refetch } = PostApiClient.postListGet(id!);
 
+  const refetcher = useCallback(() =>
+    refetch({ first: 10, id }, { fetchPolicy: 'store-and-network' })
+    , []);
+  
   useEffect(() => {
-    refetch({ first: 10, id }, {fetchPolicy: 'network-only'});
-  }, []);
+    refetcher();
+  }, [refetcher])
 
   return postList.getPublicPosts.edges[0] ?
     <PostListContainer deviceType={deviceType} >
-      {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`, { state: { id, nickname } })} >
-        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.contentPreview} date={p.node.createdAt} />
+      {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
+        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} refetcher={refetcher} />
       </PostCardWrapper>)}
   </PostListContainer>: <EmptyMessage type='post' />
 };

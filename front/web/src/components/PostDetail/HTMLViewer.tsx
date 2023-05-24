@@ -14,7 +14,6 @@ function useProcessor(text:string) {
       .then((file) => {
         setContent(file.result)
       })
-      console.log(text);
     }, [text])
 
   return Content
