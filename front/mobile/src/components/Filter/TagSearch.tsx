@@ -46,17 +46,21 @@ const TagSearch = (props: TagSearchProps) => {
   var tagList: Array<tagCategoryItem> = [];
 
   useEffect(() => {
-    console.log('Search', Object.values(tagData.getAllTags.edges));
-    tagData.getAllTags.edges.map((value: any, index?: number) => {
-      var tmp: tagCategoryItem = {
-        id: value.node.id,
-        text: value.node.body,
-        state: false,
-      };
-      tagList.push(tmp);
-    });
-    console.log('tagList', tagList);
-    setALLTags(tagList);
+    if (search === ''){
+      tagList = [];
+    } else {
+      console.log('Search', Object.values(tagData.getAllTags.edges));
+      tagData.getAllTags.edges.map((value: any, index?: number) => {
+        var tmp: tagCategoryItem = {
+          id: value.node.id,
+          text: value.node.body,
+          state: false,
+        };
+        tagList.push(tmp);
+      });
+      console.log('tagList', tagList);
+      setALLTags(tagList);
+    }
   }, [tagData, search]);
 
   return (
@@ -110,8 +114,7 @@ const TagSearch = (props: TagSearchProps) => {
                 } else if (
                   props.tagList.find(item => item === value.id) === undefined
                 ) {
-                  const tmpList = props.tagList;
-                  tmpList.push(value.id);
+                  var tmpList = props.tagList.concat(value.id);
                   props.setTagList(tmpList);
                   props.setSearchEvent(true);
                 }
@@ -160,6 +163,7 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     marginBottom: DimensionTheme.width(17),
+    width: DimensionTheme.width(332),
   },
 });
 

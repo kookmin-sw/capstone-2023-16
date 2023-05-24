@@ -148,6 +148,28 @@ const MainScreen: FC<Props> = ({navigation}) => {
   // const [seeSort, setSeeSort] = useState(false);
   const [idSort, setIdSort] = useState(false);
 
+  const likeEnd = () => {
+    if (
+      !likeSortdata.getPublicPosts.pageInfo.hasNextPage ||
+      tmpLikeAPI.isLoadingNext
+    ) {
+      return;
+    }
+
+    tmpLikeAPI.loadNext(10);
+  };
+
+  const idEnd = () => {
+    if (
+      !IdSortdata.getPublicPosts.pageInfo.hasNextPage ||
+      tmpIdAPI.isLoadingNext
+    ) {
+      return;
+    }
+
+    tmpIdAPI.loadNext(10); 
+  };
+
   navigation.reset;
 
   if (isLoading) {
@@ -257,6 +279,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
                   onRefresh={likeSort ? onRefresh_like : onRefresh_id}
                 />
               }
+              onScrollEndDrag={likeSort ? likeEnd : idEnd}
               style={{width: '100%'}}
               contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
               showsVerticalScrollIndicator={false}>

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -33,6 +33,7 @@ import ContentBlock from '../components/Detail/ContentBlock';
 import DetailContent from '../components/Detail/DetailContent';
 import { CheckMembershipQuery } from '../graphQL/Post/CheckMembership';
 import PaidContent from '../components/Detail/PaidContent';
+import { getDetailContent } from '../graphQL/Post/getDetailContent';
 // import { BottomSheet } from '../components/common/BottomSheet/BottomSheet';
 // import HTMLView from 'react-native-htmlview';
 
@@ -44,12 +45,41 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const persona = useAppSelector(selectPersona);
 
   const [render, setRender] = useState(false);
+  // const [data, setData] = useState();
 
   const data = useLazyLoadQuery(
     detail_getPostQuery,
     {id: feed_id},
     {fetchPolicy: 'network-only'},
   );
+
+  // useEffect(()=>{
+  //   const fetchData = async() => {
+  //     try{
+  //       const response = await getDetailContent(feed_id);
+  //       setData(response!);
+  //     }catch(error){
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // });
+
+  // useEffect(() => {
+  //   if(render){
+  //     const fetchData = async() => {
+  //       try{
+  //         const response = await getDetailContent(feed_id);
+  //         setData(response);
+  //       }catch(error){
+  //         console.error('Error fetching data:', error);
+  //       }
+  //     };
+  //     fetchData();
+  //     setRender(false);
+  //   }
+  // }, [render])
 
   const personaData = useLazyLoadQuery(
     PersonaLBGetquery,
@@ -92,7 +122,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
           <TouchableOpacity
             style={style.BackBtn}
             onPress={() => {
-              navigation.pop;
+              navigation.pop();
             }}>
             <Image
               style={{
@@ -338,6 +368,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
             </View>
             <CommentContent
               feed_id={feed_id}
+              list={data.getPost.comments}
               render={setRender}
               state={render}
             />

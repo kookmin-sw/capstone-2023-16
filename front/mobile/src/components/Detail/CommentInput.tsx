@@ -30,6 +30,7 @@ const CommentInput = (props:CommentInputProps) => {
                         body:comment,
                     },
                     onCompleted(data){
+                        console.log('CommnetInput: success');
                         setComment('');
                         props.render(!props.state);
                     },

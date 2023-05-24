@@ -10,16 +10,12 @@ import {DimensionTheme} from '../common/shared';
 
 interface CommentContentProps {
   feed_id: string;
+  list: any;
   render: Dispatch<SetStateAction<boolean>>;
   state: boolean;
 }
 
 const CommentContent = (prop: CommentContentProps) => {
-  const data = useLazyLoadQuery(
-    comments_getPostQuery,
-    {id: prop.feed_id},
-    {fetchPolicy: 'network-only'},
-  );
 
   return (
     <View>
@@ -29,7 +25,7 @@ const CommentContent = (prop: CommentContentProps) => {
         feed_id={prop.feed_id}
       />
       <View style={{marginStart: DimensionTheme.width(19), height: 'auto'}}>
-        {data.getPost.comments.map((value: any, index: number) => {
+        {prop.list.map((value: any, index: number) => {
           return (
             <Comment
               key={index}

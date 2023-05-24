@@ -4,6 +4,7 @@ export const detail_getPostQuery = graphql`
   query DetailPostQuery($id: GlobalID!) {
     getPost(postId: $id) {
       id
+      content
       contentPreview
       createdAt
       likeCnt
@@ -25,6 +26,15 @@ export const detail_getPostQuery = graphql`
         id
       }
       commentCnt
+      comments {
+        id
+        body
+        createdAt
+        persona {
+          nickname
+          id
+        }
+      }
     }
   }
 `;
