@@ -31,12 +31,6 @@ import {useMutation} from 'react-relay';
 import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
 import {Error} from '../relay/type';
 
-// @ts-ignore
-import {graphql} from 'babel-plugin-relay/macro';
-
-import {useMutation} from 'react-relay';
-import {SignupScreenMutation} from './__generated__/SignupScreenMutation.graphql';
-
 const SignupContainer = styled(Container)`
   width: 100%;
   padding-top: 10px;

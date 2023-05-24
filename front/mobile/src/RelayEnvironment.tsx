@@ -14,8 +14,7 @@ async function FetchGraphQL(params: RequestParameters, variables: Variables) {
     'X-Persona-Id': persona_id,
   };
 
-async function fetchGraphQL(params: RequestParameters, variables: Variables) {
-  const response = await fetch(`https://persona-backend.herokuapp.com/graphql`, {
+  const response = await fetch(`${REACT_APP_API_URL}/graphql`, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',

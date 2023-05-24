@@ -81,27 +81,6 @@ const OccupationInfoSection = styled.View`
   height: ${DimensionTheme.width(43)};x
 `;
 
-const GenderInfoSection = styled.View`
-  flex-direction: row;
-  margin-top: ${DimensionTheme.width(20)};
-  z-index: -1;
-  width: ${DimensionTheme.width(318)};
-  height: ${DimensionTheme.width(43)};
-  align-items: center;
-`;
-
-const RadioButtonSection = styled.View`
-  flex-direction: row;
-  margin-left: ${DimensionTheme.width(30)};
-`;
-
-const OccupationInfoSection = styled.View`
-  flex-direction: row;
-  margin-top: ${DimensionTheme.width(15)};
-  width: ${DimensionTheme.width(318)};
-  height: ${DimensionTheme.width(43)};x
-`;
-
 const PersonaDescriptionSection = styled.View`
   z-index: -1;
   margin-top: ${DimensionTheme.width(30)};
