@@ -15,7 +15,6 @@ const PostList = ({id, nickname}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
   const { data: postList, refetch } = PostApiClient.postListGet(id!);
-  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     refetch({ first: 10, id }, {fetchPolicy: 'network-only'});

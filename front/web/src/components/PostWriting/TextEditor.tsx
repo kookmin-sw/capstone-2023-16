@@ -17,7 +17,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
 
   useEffect(() => { 
     if (submitFlag && editorRef.current) {
-      const htmlValue = JSON.stringify(editorRef.current.getContent({ format: 'html' }));
+      const htmlValue = editorRef.current.getContent({ format: 'html' })
       const textValue = editorRef.current.getContent({ format: 'text' });
       dispatch(partialChange({ key: 'content', value: htmlValue }));
       dispatch(partialChange({ key: 'length', value: textValue.length }));

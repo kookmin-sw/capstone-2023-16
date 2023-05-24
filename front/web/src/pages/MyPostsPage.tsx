@@ -14,7 +14,7 @@ const MyPostsPage = () => {
 
   return <>
     <PersonaCardWrapper deviceType={deviceType} onClick={() => navigate('/personas')}>
-      <PersonaCard nickname={context?.persona?.nickname!} deviceType={deviceType} />
+      <PersonaCard nickname={context?.persona?.nickname!} src="" deviceType={deviceType} />
       </PersonaCardWrapper>
       <ContentLayout>
         <MyPostsPageContainer>

@@ -7,6 +7,7 @@ import { GrayShadowBox } from '../commons/GrayShadowBox';
 import StatisticModalContent from '../PostDetail/StatisticModalContent';
 import Modal from '../commons/Modal';
 import { createPortal } from 'react-dom';
+import HTMLViewer from '../PostDetail/HTMLViewer';
 
 // event와 내용들을 바로 넘겨주는 방식도 괜찮고, 아예 id를 넘겨서 여기서 api post detail을 호출해서 해도 괜찮음.
 // 전자방식으로 코드 작성함.
@@ -49,7 +50,7 @@ const PostCard = ({ id, title, date, content, hashtag, deviceType }: post) => {
                 <DateText deviceType={deviceType}>{date}</DateText>
             </HeaderSection>
             <ContentSection deviceType={deviceType}>
-                <ContentText deviceType={deviceType}>{content}</ContentText>
+                <ContentText deviceType={deviceType}>  <HTMLViewer text={content} /></ContentText>
                 <BottomBox deviceType={deviceType}>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         {

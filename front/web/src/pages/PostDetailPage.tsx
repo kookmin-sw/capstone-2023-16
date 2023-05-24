@@ -12,6 +12,7 @@ import { PostType } from '../graphQL/types/PostType';
 import StatisticModalContent from '../components/PostDetail/StatisticModalContent';
 import Modal from '../components/commons/Modal';
 import { useAuth } from '../context/AuthContext';
+import HTMLViewer from '../components/PostDetail/HTMLViewer';
 
 const initialPost = {
   title: "",
@@ -64,7 +65,7 @@ const PostDetailPage = () => {
           </ButtonSet>
       </Header>
       <Content deviceType={deviceType}>
-        <p>{post.content}</p>
+        <HTMLViewer text={post.content} />
         </Content>
         {post.tags?.edges[0]&&
           <div className='tag__container'>
@@ -116,6 +117,9 @@ const Header = styled.div<{ deviceType: string }>`
   border-bottom: 1px solid #717171;
   justify-content: space-between;
   align-items: start;
+  & > div:nth-child(1){
+    padding-right: ${(props) => (props.deviceType === 'mobile') ? '5px' : '20px'};
+  }
 `;
 
 const Title = styled.div<{ deviceType: string }>`
