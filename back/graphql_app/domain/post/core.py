@@ -86,7 +86,7 @@ def get_posts(sorting_opt: PostSortingOption,
         if field_filter is not None:
             posts = field_filter.apply(posts)
 
-    if sorting_opt.sort_by in (PostSortBy.ID, PostSortBy.CREATED_AT, PostSortBy.READ_CNT):
+    if sorting_opt.sort_by in (PostSortBy.ID, PostSortBy.CREATED_AT, PostSortBy.READ_CNT, PostSortBy.LIKE_CNT):
         order_by_prefix = '' if sorting_opt.direction == SortingDirection.ASC else '-'
         order_by_suffix = sorting_opt.sort_by.value
         posts = posts.order_by(order_by_prefix + order_by_suffix, 'id')
