@@ -5,14 +5,14 @@ import styled from 'styled-components/native';
 import {Header} from '../../components/common/Header/Header';
 import {Container, DimensionTheme} from '../../components/common/shared';
 import {Tab} from '../../components/common/Tab/Tab';
-import {routeProps, sceneMapProps} from '../../components/common/Tab/type';
+import {routeProps} from '../../components/common/Tab/type';
 import RegularText from '../../components/common/Texts/RegularText';
 import {NavigationData} from '../../navigation/AppNavigator';
 import {LikeScreen} from '../MyHistory/LikeScreen';
-import {StatisticsScreen} from '../MyHistory/StatisticsScreen';
 
 import {selectPersona} from '../../redux/slices/userSlice';
 import {useAppSelector} from '../../redux/hooks';
+import {DefaultScreen} from './DefaultScreen';
 
 const ContentContainer = styled(Container)`
   align-items: flex-start;
@@ -25,7 +25,7 @@ const HeaderSection = styled.View`
 
 type Props = NavigationData<'MyContent'>;
 
-export const MyContentScreen: FC<Props> = ({navigation}) => {
+export const MyContentScreen: FC<Props> = ({navigation, route}) => {
   const persona = useAppSelector(selectPersona);
   console.log(persona);
 
@@ -36,19 +36,36 @@ export const MyContentScreen: FC<Props> = ({navigation}) => {
     {key: 'membership', title: 'MEMBERSHIP'},
   ]);
 
-  const sceneMaps = SceneMap<sceneMapProps>({
-    all: LikeScreen,
-    free: LikeScreen,
-    waiterm: LikeScreen,
-    membership: StatisticsScreen,
-  });
+  const props = route;
+  console.log('mycontent', props.params.data.posts);
+
+  const sceneMaps = ({route}) => {
+    switch (route.key) {
+      case 'all':
+        return (
+          <LikeScreen
+            type={route.key}
+            data={props.params?.data?.posts}
+            name={'content'}
+          />
+        );
+      case 'free':
+        return <DefaultScreen />;
+      case 'waiterm':
+        return <DefaultScreen />;
+      case 'membership':
+        return <DefaultScreen />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <ContentContainer>
       <HeaderSection>
         <Header navigation={navigation} />
         <RegularText textStyle={{marginLeft: DimensionTheme.width(20)}}>
-          {persona.nickname}님의 CONTENT
+          {route.params?.persona_nick}님의 CONTENT
         </RegularText>
       </HeaderSection>
       <Tab routes={routes} sceneMap={sceneMaps} />
