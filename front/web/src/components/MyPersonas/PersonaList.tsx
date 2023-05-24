@@ -21,7 +21,7 @@ const PersonaList = ({mode}: PersonaListType) => {
   const navigate = useNavigate();
   const context = useAuth();
   
-  const { data, hasNext, loadNext, isLoadingNext } = PersonaApiClient.personaListGet();
+  const { data, hasNext, loadNext, isLoadingNext, refetch } = PersonaApiClient.personaListGet();
 
   // 스크롤 이벤트 핸들러
   const handleScroll = () => { 
@@ -35,7 +35,8 @@ const PersonaList = ({mode}: PersonaListType) => {
   const throttle = useThrottle(handleScroll); // 스크롤 이벤트 핸들러에 대한 쓰로틀링 적용
 
   useEffect(() => {
-      window.addEventListener("scroll", throttle, {capture: true});
+    window.addEventListener("scroll", throttle, { capture: true });
+    refetch({ first: 10 }, { fetchPolicy: 'network-only' });
     return () => {
       window.removeEventListener("scroll", throttle);
     };

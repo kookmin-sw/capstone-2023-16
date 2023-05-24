@@ -33,7 +33,7 @@ export const newPersonaSlice = createSlice({
       delete state[action.payload.key as keyof CreationFormType];
       return state;
     },
-    reset: (state) => ({ ...initialState }),
+    reset: (state) => (state = initialState),
   },
 });
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import styled from 'styled-components';
 import {useNavigate } from 'react-router-dom';
@@ -14,7 +14,12 @@ type PostListProps = {
 const PostList = ({id, nickname}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  const { data: postList } = PostApiClient.postListGet(id!);
+  const { data: postList, refetch } = PostApiClient.postListGet(id!);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    refetch({ first: 10, id }, {fetchPolicy: 'network-only'});
+  }, []);
 
   return postList.getPublicPosts.edges[0] ?
     <PostListContainer deviceType={deviceType} >
