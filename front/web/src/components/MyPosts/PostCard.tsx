@@ -50,7 +50,7 @@ const PostCard = ({ id, title, date, content, hashtag, deviceType }: post) => {
                 <DateText deviceType={deviceType}>{date}</DateText>
             </HeaderSection>
             <ContentSection deviceType={deviceType}>
-                <ContentText deviceType={deviceType}>  <HTMLViewer text={content} /></ContentText>
+                <ContentText deviceType={deviceType}><HTMLViewer text={content} /></ContentText>
                 <BottomBox deviceType={deviceType}>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         {

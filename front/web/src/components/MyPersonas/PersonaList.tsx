@@ -36,7 +36,7 @@ const PersonaList = ({mode}: PersonaListType) => {
 
   useEffect(() => {
     window.addEventListener("scroll", throttle, { capture: true });
-    refetch({ first: 10 }, { fetchPolicy: 'network-only' });
+    refetch({ first: 10 }, { fetchPolicy: 'store-and-network' });
     return () => {
       window.removeEventListener("scroll", throttle);
     };
@@ -44,7 +44,7 @@ const PersonaList = ({mode}: PersonaListType) => {
   
   // 페르소나 클릭 이벤트 핸들러
   const onClick = (n: any) => {
-    if (mode==="default"){
+    if (mode === "default") {
       context.connect(n.id, n.nickname);
       navigate('/posts');
     } else {
