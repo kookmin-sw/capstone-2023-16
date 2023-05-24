@@ -40,7 +40,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "yarn run relay && react-scripts start",
+    "start": "npm run relay && react-scripts start",
     "build": "npm run relay && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
