@@ -1,5 +1,5 @@
 // GraphQl 
-import { commitMutation, useLazyLoadQuery, useMutation, usePaginationFragment } from 'react-relay';
+import { commitMutation, useLazyLoadQuery, usePaginationFragment } from 'react-relay';
 import postListGetQuery from '../../graphQL/Queries/postListGetQuery';
 import { pagination_postListGetQuery } from '../../graphQL/Components/__generated__/pagination_postListGetQuery.graphql';
 import postPaginationFragment from '../../graphQL/Components/postPaginationFragment';
@@ -12,7 +12,7 @@ import postDeleteMutation from '../../graphQL/Mutations/postDeleteMutation';
 
 class PostAPI {
   public postListGet = (id: string) => {
-    const queryData = useLazyLoadQuery(postListGetQuery, { id });
+    const queryData = useLazyLoadQuery(postListGetQuery, { id }, {fetchPolicy: 'network-only'});
     return usePaginationFragment<pagination_postListGetQuery, any>(postPaginationFragment, queryData);
   };
 
