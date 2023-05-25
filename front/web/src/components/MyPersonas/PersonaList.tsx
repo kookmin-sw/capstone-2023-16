@@ -43,7 +43,7 @@ const PersonaList = ({mode}: PersonaListType) => {
   const onClick = (n: any) => {
     if (mode === "default") {
       context.connect(n.id, n.nickname);
-      navigate('/posts');
+      navigate('/post');
     } else {
       const answer = window.confirm('정말 삭제하시겠습니까?');
       answer && alert("삭제되었습니다.");

@@ -35,7 +35,7 @@ const PostWritingPage = () => {
           PostApiClient.postCreate(newPostInput)
             .then(() => {
               dispatch(reset());
-              navigate('/posts');
+              navigate('/post');
             })
             .catch(e => console.log(e));
         }

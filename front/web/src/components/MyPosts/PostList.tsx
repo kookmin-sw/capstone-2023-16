@@ -16,7 +16,7 @@ const AVERAGE_LOAD = 10;
 const PostList = ({id}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  const { data: postList, hasNext, isLoadingNext, loadNext } = PostApiClient.postListGet(id!);
+  const { data: postList, hasNext, isLoadingNext, loadNext, refetch } = PostApiClient.postListGet(id!);
   
   // 스크롤 이벤트 핸들러
   const handleScroll = (e:any) => {
@@ -33,10 +33,14 @@ const PostList = ({id}: PostListProps) => {
     })
   };
 
+  const onRefetch = (index: number) => {
+    refetch({ first: index-1 }, { fetchPolicy: 'network-only' });
+  }
+
   return postList.getPublicPosts.edges[0] ?
     <PostListContainer deviceType={deviceType} onScroll={handleScroll}>
-      {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
-        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} />
+      {postList?.getPublicPosts?.edges?.map((p: any, i:any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
+        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} refetch={()=>onRefetch(i)} />
       </PostCardWrapper>)}
   </PostListContainer>: <EmptyMessage type='post' />
 };
