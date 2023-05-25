@@ -28,6 +28,7 @@ class PersonaAPI {
           },
           onError: (error) => {
             alert(error.message);
+            reject(error.message);
           }
         });
     });

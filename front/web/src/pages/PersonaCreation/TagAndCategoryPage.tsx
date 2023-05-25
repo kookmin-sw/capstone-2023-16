@@ -24,7 +24,9 @@ const TagAndCategoryPage = () => {
         navigate('/personas');
         dispatch(reset());
       })
-      .catch((err: any) => console.error(err));
+      .catch((err: any) => {
+        if (err === "이미 사용중인 nickname입니다.") navigate('/create')
+      })
   };
 
   return <><Container deviceType={deviceType}>

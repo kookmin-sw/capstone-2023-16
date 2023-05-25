@@ -73,7 +73,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
         statusbar: false,
         automatic_uploads: true,
         images_upload_handler: handlerImageuUpload,
-        font_css: 'font.css',
+        font_css: '/properties/font.css',
         font_family_formats: 'Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats; 나눔명조=Nanum Myeongjo; serif=Noto Serif KR',
         /*
          임시저장 기능 good, but 나중에 회원정보를 식별하여 받아올 수 있게 되면 구현
