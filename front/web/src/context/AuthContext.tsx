@@ -30,13 +30,16 @@ export function AuthProvider({ children }:PropsWithChildren) {
   const logout = useCallback(() => {
     setLoginState(false);
     removeCookie('isLoggedIn');
+    removeCookie('persona_id');
+    removeCookie('persona_nickname');
+    setPersona({ id: undefined, nickname: undefined });
   }, []);
 
   const connect = useCallback((id: string, nickname: string) =>{
     console.log(persona);
-    setPersona(prev => ({ ...prev, id: id, nickname: nickname }));
     setCookie('persona_id', id);
     setCookie('persona_nickname', nickname);
+    setPersona(prev => ({ id: id, nickname: nickname }));
   }, []);
 
   const value:any = { loginState, login, logout, persona, connect };

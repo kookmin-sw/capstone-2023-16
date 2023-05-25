@@ -10,9 +10,6 @@ import { createPortal } from 'react-dom';
 import HTMLViewer from '../PostDetail/HTMLViewer';
 import PostApiClient from '../../api/Post';
 
-// event와 내용들을 바로 넘겨주는 방식도 괜찮고, 아예 id를 넘겨서 여기서 api post detail을 호출해서 해도 괜찮음.
-// 전자방식으로 코드 작성함.
-
 interface post {
     id: string,
     title: string,
@@ -20,12 +17,11 @@ interface post {
     content: string,
     tagBodies?: string[],
     deviceType: string,
-//    refetcher: () => void,
+    refetch: () => void,
 };
 
-const PostCard = ({ id, title, date, content, tagBodies, deviceType }: post) => {
+const PostCard = ({ id, title, date, content, tagBodies, deviceType, refetch }: post) => {
     const [modal, setModal] = useState<boolean>(false);
-
     const onShow = (e: any) => {
         e.stopPropagation();
         setModal(true);
@@ -43,7 +39,7 @@ const PostCard = ({ id, title, date, content, tagBodies, deviceType }: post) => 
         // eslint-disable-next-line no-restricted-globals
         const answer = confirm('정말로 삭제하시겠습니까?');
         if (answer) {
-            PostApiClient.postDelete(id!) //.then((res: any) => refetcher());
+            PostApiClient.postDelete(id!).then((res: any) => refetch());
         }
         else alert('취소되었습니다.');
     };
