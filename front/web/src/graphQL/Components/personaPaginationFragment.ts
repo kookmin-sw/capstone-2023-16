@@ -4,7 +4,7 @@ const personaPaginationFragment = graphql`
       fragment personaPaginationFragment on Query
         @refetchable(queryName: "pagination_personaListGetQuery")
         @argumentDefinitions(
-          first: {type: "Int", defaultValue: 20}
+          first: {type: "Int", defaultValue: 10}
           after: {type: "String"}
         ) {
           getOwnPersonas(first: $first, after: $after, sortingOpt: {})

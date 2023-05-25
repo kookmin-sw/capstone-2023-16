@@ -20,10 +20,10 @@ interface post {
     content: string,
     tagBodies?: string[],
     deviceType: string,
-    refetcher: () => void,
+//    refetcher: () => void,
 };
 
-const PostCard = ({ id, title, date, content, tagBodies, deviceType, refetcher }: post) => {
+const PostCard = ({ id, title, date, content, tagBodies, deviceType }: post) => {
     const [modal, setModal] = useState<boolean>(false);
 
     const onShow = (e: any) => {
@@ -43,7 +43,7 @@ const PostCard = ({ id, title, date, content, tagBodies, deviceType, refetcher }
         // eslint-disable-next-line no-restricted-globals
         const answer = confirm('정말로 삭제하시겠습니까?');
         if (answer) {
-            PostApiClient.postDelete(id!).then((res: any) => refetcher());
+            PostApiClient.postDelete(id!) //.then((res: any) => refetcher());
         }
         else alert('취소되었습니다.');
     };

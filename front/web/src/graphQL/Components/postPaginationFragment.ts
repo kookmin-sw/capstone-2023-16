@@ -4,7 +4,7 @@ const postPaginationFragment = graphql`
       fragment postPaginationFragment on Query
         @refetchable(queryName: "pagination_postListGetQuery")
         @argumentDefinitions(
-          first: {type: "Int", defaultValue: 20}
+          first: {type: "Int", defaultValue: 10}
           after: {type: "String"}
           id: {type: "GlobalID!"}
         ) {

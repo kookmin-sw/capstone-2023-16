@@ -5,16 +5,17 @@ import PersonaCard from "../commons/PersonaCard";
 import { Root } from "./dummy/personalListType";
 import PersonaApiClient from "../../api/Persona";
 import { useEffect } from "react";
-import useThrottle from "../../hooks/useThrottle";
+//import useThrottle from "../../hooks/useThrottle";
 import { ReactComponent as DeleteIcon } from '../../assets/icons/x.svg';
 import EmptyMessage from "../commons/EmptyMessage";
 import { useAuth } from "../../context/AuthContext";
+import { throttle } from "../../utils/performUtils";
 
 type PersonaListType = {
   mode: string,
 };
 
-const AVERAGE_LOAD = 20;
+const AVERAGE_LOAD = 10;
 
 const PersonaList = ({mode}: PersonaListType) => {
   const deviceType = useDeviceType();
@@ -24,23 +25,19 @@ const PersonaList = ({mode}: PersonaListType) => {
   const { data, hasNext, loadNext, isLoadingNext, refetch } = PersonaApiClient.personaListGet();
 
   // 스크롤 이벤트 핸들러
-  const handleScroll = () => { 
-    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+  const handleScroll = (e:any) => {
+    throttle(() => {
+      const { scrollTop, scrollHeight, clientHeight } = e.target;
 
-    if (scrollTop + 500 >= scrollHeight - clientHeight) {
-      if(!isLoadingNext && hasNext) loadNext(AVERAGE_LOAD);
-    }
-  }
-
-  const throttle = useThrottle(handleScroll); // 스크롤 이벤트 핸들러에 대한 쓰로틀링 적용
-
-  useEffect(() => {
-    window.addEventListener("scroll", throttle, { capture: true });
-    refetch({ first: 10 }, { fetchPolicy: 'store-and-network' });
-    return () => {
-      window.removeEventListener("scroll", throttle);
-    };
-  }, []);
+      if (scrollTop+10 >= scrollHeight - clientHeight) {
+        console.log('실행!')
+        if (hasNext&&!isLoadingNext) {
+          console.log('handleScroll')
+          loadNext(AVERAGE_LOAD);
+        }
+      }
+    })
+  };
   
   // 페르소나 클릭 이벤트 핸들러
   const onClick = (n: any) => {
@@ -53,7 +50,7 @@ const PersonaList = ({mode}: PersonaListType) => {
     }
   };
 
-  return data.getOwnPersonas.edges[0]?<PersonaListWrapper id='scroll' deviceType={deviceType}>
+  return data.getOwnPersonas.edges[0] ? <PersonaListWrapper id='scroll' deviceType={deviceType} onScroll={handleScroll}>
     {data.getOwnPersonas.edges.map((e:Root) => (
       <PersonaCardWrapper deviceType={deviceType} key={e.node.id} onClick={() => onClick(e.node)}>
         <PersonaCard src='' nickname={e.node.nickname} deviceType={deviceType} usageType='choice' />
@@ -72,6 +69,7 @@ const PersonaListWrapper = styled.div<{ deviceType: string }>`
     padding: 20px 0 40px; 
     row-gap: ${(props) => { return props.deviceType==='mobile'? '25px': '38px' }};
     overflow-y: auto;
+    scroll-behavior: smooth;
     grid-template-columns: ${(props) => { return props.deviceType === 'desktop' ? `50% 50%` : 'none' }};
     place-items: start center;
 `;

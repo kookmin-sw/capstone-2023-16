@@ -5,29 +5,38 @@ import {useNavigate } from 'react-router-dom';
 import useDeviceType from '../../hooks/useDeviceType';
 import PostApiClient from '../../api/Post';
 import EmptyMessage from '../commons/EmptyMessage';
+import { throttle } from '../../utils/performUtils';
 
 type PostListProps = {
   id: string,
-  nickname: string,
 }
 
-const PostList = ({id, nickname}: PostListProps) => {
+const AVERAGE_LOAD = 10;
+
+const PostList = ({id}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  const { data: postList, refetch } = PostApiClient.postListGet(id!);
-
-  const refetcher = useCallback(() =>
-    refetch({ first: 10, id }, { fetchPolicy: 'store-and-network' })
-    , []);
+  const { data: postList, hasNext, isLoadingNext, loadNext } = PostApiClient.postListGet(id!);
   
-  useEffect(() => {
-    refetcher();
-  }, [refetcher])
+  // 스크롤 이벤트 핸들러
+  const handleScroll = (e:any) => {
+    throttle(() => {
+      const { scrollTop, scrollHeight, clientHeight } = e.target;
+
+      if (scrollTop+10 >= scrollHeight - clientHeight) {
+        console.log('실행!')
+        if (hasNext&&!isLoadingNext) {
+          console.log('handleScroll')
+          loadNext(AVERAGE_LOAD);
+        }
+      }
+    })
+  };
 
   return postList.getPublicPosts.edges[0] ?
-    <PostListContainer deviceType={deviceType} >
+    <PostListContainer deviceType={deviceType} onScroll={handleScroll}>
       {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
-        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} refetcher={refetcher} />
+        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} />
       </PostCardWrapper>)}
   </PostListContainer>: <EmptyMessage type='post' />
 };

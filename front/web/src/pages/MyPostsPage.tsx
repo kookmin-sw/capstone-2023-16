@@ -23,7 +23,7 @@ const MyPostsPage = () => {
             <MyPostsHeader deviceType={deviceType}>내가 쓴 글 목록</MyPostsHeader>
             <MyPostsSetting id={context?.persona?.id!} nickname={context?.persona?.nickname!} />
           </Header>
-            <PostList id={context?.persona?.id!} nickname={context?.persona?.nickname!} />
+            <PostList id={context?.persona?.id!} />
           </MyPostsContainer>
         </MyPostsPageContainer>
       </ContentLayout>

@@ -66,12 +66,13 @@ const PostDetailPage = () => {
       </Header>
       <Content deviceType={deviceType}>
         <HTMLViewer text={post.content} />
-        </Content>
         {post.tags?.edges[0]&&
-          <div className='tag__container'>
-            {post.tags?.edges?.map((n:any, i:number)=><span key={i} className='tag'>{n.node.body}</span>)}
+          <div className='tag__container' >
+            {post.tags?.edges?.map((n:any, i:number)=><span key={i} className='tag' >{n.node.body}</span>)}
           </div>
         }
+        </Content>
+        
       </ContentLayout>      
     {modal && <Modal modal={modal} setModal={setModal}>
       <StatisticModalContent postId={postId} />
@@ -155,7 +156,7 @@ const ImgButton = styled.img<ImgButtonProps>`
 
 const Content = styled.div<{ deviceType: string }>`
   width: 100%;
-  padding: ${(props) => (props.deviceType === 'desktop') ?  '34px 30px 34px' :(props.deviceType === 'tablet')? '34px 13.5px 34px' : '15px 10px 15px'};
+  padding: ${(props) => (props.deviceType === 'desktop') ? '34px 30px 34px' : (props.deviceType === 'tablet') ? '34px 13.5px 34px' : '15px 10px 15px'};
   overflow-x: hidden;
   overflow-y: auto;
   & > p{
@@ -163,4 +164,4 @@ const Content = styled.div<{ deviceType: string }>`
     line-height: 150%;
     white-space: pre-wrap;
   }
-`
+`;
