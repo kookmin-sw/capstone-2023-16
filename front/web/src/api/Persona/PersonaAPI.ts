@@ -11,7 +11,7 @@ import { PersonaType } from '../../graphQL/types/PersonaType';
 
 class PersonaAPI {
   public personaListGet = () => {
-    const queryData = useLazyLoadQuery(personaListGetQuery, [], {fetchPolicy: 'network-only'});
+    const queryData = useLazyLoadQuery(personaListGetQuery, []);
     return usePaginationFragment<pagination_personaListGetQuery, any>(PersonaPaginationFragment, queryData);
   };
 
