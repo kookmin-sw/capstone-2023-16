@@ -33,7 +33,7 @@ const PostList = ({id}: PostListProps) => {
   };
 
   const onRefetch = (index: number) => {
-    refetch({ first: index+1 }, { fetchPolicy: 'network-only' });
+    refetch({ first: 10 }, { fetchPolicy: 'network-only' });
     console.log(index, 'onRefetc');
   }
 

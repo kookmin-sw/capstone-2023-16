@@ -22,7 +22,7 @@ const PersonaList = ({mode}: PersonaListType) => {
   const navigate = useNavigate();
   const context = useAuth();
   
-  const { data, hasNext, loadNext, isLoadingNext, refetch } = PersonaApiClient.personaListGet();
+  const { data, hasNext, loadNext, isLoadingNext } = PersonaApiClient.personaListGet();
 
   // 스크롤 이벤트 핸들러
   const handleScroll = (e:any) => {

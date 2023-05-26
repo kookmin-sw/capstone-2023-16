@@ -12,7 +12,7 @@ import postDeleteMutation from '../../graphQL/Mutations/postDeleteMutation';
 
 class PostAPI {
   public postListGet = (id: string) => {
-    const queryData = useLazyLoadQuery(postListGetQuery, { id });
+    const queryData = useLazyLoadQuery(postListGetQuery, { id }, {fetchPolicy: 'network-only'});
     return usePaginationFragment<pagination_postListGetQuery, any>(postPaginationFragment, queryData);
   };
 
