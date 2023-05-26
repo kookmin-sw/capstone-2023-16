@@ -43,12 +43,14 @@ const CategorySelect = (props:CategorySelectProps) => {
                     <SmallButton
                         key={index}
                         btnStyles={{
+                            paddingEnd: DimensionTheme.width(15),
+                            width: 'auto',
                             ...whiteBGpurpleSD.btnStyle,
                             height: DimensionTheme.width(30),
                             paddingTop: DimensionTheme.width(1),
                             paddingBottom: DimensionTheme.width(2),
                             paddingStart: DimensionTheme.width(15),
-                            paddingEnd: DimensionTheme.width(15),
+                            // paddingEnd: DimensionTheme.width(15),
                             borderRadius: DimensionTheme.width(8),
                             marginEnd: DimensionTheme.width(10),
                             marginTop: DimensionTheme.width(15),

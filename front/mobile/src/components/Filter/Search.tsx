@@ -52,12 +52,13 @@ const Search = (props:FoldFilterProps) => {
                             <SmallButton
                                 key={index}
                                 btnStyles={{
+                                    paddingEnd: DimensionTheme.width(15),
                                     ...whiteBGpurpleSD.btnStyle,
-                                    // width: 'auto',
+                                    width: 'auto',
                                     height: DimensionTheme.width(30),
+                                    // paddingEnd: DimensionTheme.width(15),
                                     paddingTop: DimensionTheme.width(1),
                                     paddingStart: DimensionTheme.width(15),
-                                    paddingEnd: DimensionTheme.width(15),
                                     paddingBottom: DimensionTheme.width(2),
                                     borderRadius: DimensionTheme.width(8),
                                     marginEnd: DimensionTheme.width(10),

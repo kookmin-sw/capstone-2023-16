@@ -7,7 +7,7 @@ export interface CardProps {
   max: number;
   current: number;
   body: string;
-  setRender: Dispatch<SetStateAction<boolean>>;
+  setRender?: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface CardSectionProps {

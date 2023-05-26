@@ -5,6 +5,7 @@ import {Image, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import SmallButton from '../../components/common/Buttons/SmallButton';
 import ChallengeCardSection from '../../components/common/Challenge/ChallengeCardSection';
+import ChallengeCardSectionTmp from '../../components/common/Challenge/ChallengeCardSectionTmp';
 import {colors} from '../../components/common/colors';
 import {
   Container,
@@ -49,7 +50,10 @@ type Props = NavigationProp<'Challenge'>;
 export const ChallengeScreen: FC<Props> = ({navigation}) => {
   const [index, setIndex] = useState(1);
   const [routes] = useState([
-    {key: 'myChallenge', body: <ChallengeCardSection type="myChallenge" />},
+    {
+      key: 'myChallenge',
+      body: <ChallengeCardSectionTmp data={challengeData} />,
+    },
     {key: 'all', body: <ChallengeCardSection type="all" />},
     {
       key: 'recruit',

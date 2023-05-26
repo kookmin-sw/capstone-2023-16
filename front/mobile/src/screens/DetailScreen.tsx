@@ -241,6 +241,15 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
               author_img={String(require('../assets/profileImg.png'))}
             />
             <Text style={style.Text}>{data.getPost.content}</Text>
+            {(data.getPost.tags.edges.length > 0) ?
+              <View style={{width: DimensionTheme.width(345), margin: DimensionTheme.width(24),marginBottom: DimensionTheme.width(33),}}>
+                {data.getPost.tags.edges.map((value: any, index?: number)=>{
+                  return <Text>{value.node.body}</Text>
+                })}
+              </View>
+            :
+              <></>
+            }
             {/* {
               (data.getPost.requiredMembershipTier === null) ? 
                 <PaidContent feed_id={feed_id} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} />
@@ -419,7 +428,6 @@ const style = StyleSheet.create({
   Text: {
     width: DimensionTheme.width(345),
     margin: DimensionTheme.width(24),
-    marginBottom: DimensionTheme.width(33),
     fontSize: DimensionTheme.fontSize(14),
     color: 'black',
   },

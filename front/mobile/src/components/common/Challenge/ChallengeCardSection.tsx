@@ -27,16 +27,8 @@ const ChallengeCardSection = ({type}: {type: string}) => {
     {fetchPolicy: 'network-only'},
   );
 
-  const myData = useLazyLoadQuery(
-    MyChanllengeGet,
-    {personaId: persona.id},
-    {fetchPolicy: 'network-only'},
-  );
-
   if (type === 'all' || type === 'recruit') {
     tmpitems = allData.getAllChallenges.edges;
-  } else if (type === 'myChallenge') {
-    tmpitems = myData.getMyChallenges.edges;
   }
 
   // useEffect(() => {

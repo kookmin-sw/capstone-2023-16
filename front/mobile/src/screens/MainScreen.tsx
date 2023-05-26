@@ -80,7 +80,7 @@ const MainScreen: FC<Props> = ({navigation}) => {
     storeData('persona_id', persona.id);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 300);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
