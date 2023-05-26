@@ -12,6 +12,7 @@ import { PostType } from '../graphQL/types/PostType';
 import StatisticModalContent from '../components/PostDetail/StatisticModalContent';
 import Modal from '../components/commons/Modal';
 import { useAuth } from '../context/AuthContext';
+import HTMLViewer from '../components/PostDetail/HTMLViewer';
 
 const initialPost = {
   title: "",
@@ -64,13 +65,14 @@ const PostDetailPage = () => {
           </ButtonSet>
       </Header>
       <Content deviceType={deviceType}>
-        <p>{post.content}</p>
-        </Content>
+        <HTMLViewer text={post.content} />
         {post.tags?.edges[0]&&
-          <div className='tag__container'>
-            {post.tags?.edges?.map((n:any, i:number)=><span key={i} className='tag'>{n.node.body}</span>)}
+          <div className='tag__container' >
+            {post.tags?.edges?.map((n:any, i:number)=><span key={i} className='tag' >{n.node.body}</span>)}
           </div>
         }
+        </Content>
+        
       </ContentLayout>      
     {modal && <Modal modal={modal} setModal={setModal}>
       <StatisticModalContent postId={postId} />
@@ -116,6 +118,9 @@ const Header = styled.div<{ deviceType: string }>`
   border-bottom: 1px solid #717171;
   justify-content: space-between;
   align-items: start;
+  & > div:nth-child(1){
+    padding-right: ${(props) => (props.deviceType === 'mobile') ? '5px' : '20px'};
+  }
 `;
 
 const Title = styled.div<{ deviceType: string }>`
@@ -151,7 +156,7 @@ const ImgButton = styled.img<ImgButtonProps>`
 
 const Content = styled.div<{ deviceType: string }>`
   width: 100%;
-  padding: ${(props) => (props.deviceType === 'desktop') ?  '34px 30px 34px' :(props.deviceType === 'tablet')? '34px 13.5px 34px' : '15px 10px 15px'};
+  padding: ${(props) => (props.deviceType === 'desktop') ? '34px 30px 34px' : (props.deviceType === 'tablet') ? '34px 13.5px 34px' : '15px 10px 15px'};
   overflow-x: hidden;
   overflow-y: auto;
   & > p{
@@ -159,4 +164,4 @@ const Content = styled.div<{ deviceType: string }>`
     line-height: 150%;
     white-space: pre-wrap;
   }
-`
+`;

@@ -1,25 +1,46 @@
-import React from 'react';
 import PostCard from './PostCard';
 import styled from 'styled-components';
 import {useNavigate } from 'react-router-dom';
 import useDeviceType from '../../hooks/useDeviceType';
 import PostApiClient from '../../api/Post';
 import EmptyMessage from '../commons/EmptyMessage';
+import { throttle } from '../../utils/performUtils';
 
 type PostListProps = {
   id: string,
-  nickname: string,
 }
 
-const PostList = ({id, nickname}: PostListProps) => {
+const AVERAGE_LOAD = 10;
+
+const PostList = ({id}: PostListProps) => {
   const deviceType = useDeviceType();
   const navigate = useNavigate();
-  const { data: postList } = PostApiClient.postListGet(id!);
+  const { data: postList, hasNext, isLoadingNext, loadNext, refetch } = PostApiClient.postListGet(id!);
+  
+  // 스크롤 이벤트 핸들러
+  const handleScroll = (e:any) => {
+    throttle(() => {
+      const { scrollTop, scrollHeight, clientHeight } = e.target;
+
+      if (scrollTop+10 >= scrollHeight - clientHeight) {
+        console.log('실행!')
+        if (hasNext&&!isLoadingNext) {
+          console.log('handleScroll')
+          loadNext(AVERAGE_LOAD);
+        }
+      }
+    })
+  };
+
+  const onRefetch = (index: number) => {
+    refetch({ first: index+1 }, { fetchPolicy: 'store-and-network' });
+    console.log(index, 'onRefetc');
+  }
 
   return postList.getPublicPosts.edges[0] ?
-    <PostListContainer deviceType={deviceType} >
-      {postList?.getPublicPosts?.edges?.map((p: any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`, { state: { id, nickname } })} >
-        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.contentPreview} date={p.node.createdAt} />
+    <PostListContainer deviceType={deviceType} onScroll={handleScroll}>
+      {postList?.getPublicPosts?.edges?.map((p: any, i:any) => <PostCardWrapper key={p.node.id} deviceType={deviceType} onClick={() => navigate(`/post/${p.node.id}`)} >
+        <PostCard deviceType={deviceType} id={p.node.id} title={p.node.title} content={p.node.content} date={p.node.createdAt} refetch={()=>onRefetch(i)} />
       </PostCardWrapper>)}
   </PostListContainer>: <EmptyMessage type='post' />
 };

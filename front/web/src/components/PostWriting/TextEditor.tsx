@@ -17,7 +17,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
 
   useEffect(() => { 
     if (submitFlag && editorRef.current) {
-      const htmlValue = JSON.stringify(editorRef.current.getContent({ format: 'html' }));
+      const htmlValue = editorRef.current.getContent({ format: 'html' })
       const textValue = editorRef.current.getContent({ format: 'text' });
       dispatch(partialChange({ key: 'content', value: htmlValue }));
       dispatch(partialChange({ key: 'length', value: textValue.length }));
@@ -50,9 +50,9 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
         toolbar1: 'undo redo blocks fontfamily fontsize | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify lineheight| link emoticons blockquote codesample image |',
         toolbar2: 'bullist numlist | outdent indent | fullscreen restoredraft save print | help',
         toolbar_mode: 'wrap',
-        save_onsavecallback: () => {
-          console.log('Saved');
-        },
+        // save_onsavecallback: () => {
+        //   console.log('Saved');
+        // },
         block_formats: 'Paragraph=p; 제목=h1; 부제목=h2; 본문1=h3; 본문2=h4; 본문3=h5;',
         file_picker_types: 'image media',
         images_file_types: 'jpg, gif, png, svg, webp',
@@ -73,7 +73,7 @@ const TextEditor = ({submitFlag}:TextEditorProps) => {
         statusbar: false,
         automatic_uploads: true,
         images_upload_handler: handlerImageuUpload,
-        font_css: 'font.css',
+        font_css: '/properties/font.css',
         font_family_formats: 'Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats; 나눔명조=Nanum Myeongjo; serif=Noto Serif KR',
         /*
          임시저장 기능 good, but 나중에 회원정보를 식별하여 받아올 수 있게 되면 구현

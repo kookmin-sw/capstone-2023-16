@@ -15,6 +15,7 @@ import TagInputBox from '../components/PostWriting/TagInputBox';
 import { useDispatch } from 'react-redux';
 import { reset } from '../redux/slices/newPostSlice';
 import { useAuth } from '../context/AuthContext';
+import { throttle } from '../utils/performUtils';
 
 const PostWritingPage = () => {
   const [submitFlag, setSubmitFlag] = useState(false);
@@ -26,20 +27,22 @@ const PostWritingPage = () => {
  
   useEffect(() => {
     if (submitFlag) {
-      if ((newPost.title !== "") && (newPost.length >= 20)) {
-        if (!newPost.category || newPost.category.id === "default") {
-          alert("카테고리 선택은 필수입니다.");
-        } else {
-          const newPostInput: any = { ...newPost };
-          delete newPostInput.length;
-          PostApiClient.postCreate(newPostInput)
-            .then(() => {
-              dispatch(reset());
-              navigate('/posts');
-            })
-            .catch(e => console.log(e));
+      throttle(() => {
+        if ((newPost.title !== "") && (newPost.length >= 20)) {
+          if (!newPost.category || newPost.category.id === "default") {
+            alert("카테고리 선택은 필수입니다.");
+          } else {
+            const newPostInput: any = { ...newPost };
+            delete newPostInput.length;
+            PostApiClient.postCreate(newPostInput)
+              .then(() => {
+                dispatch(reset());
+                navigate('/post');
+              })
+              .catch(e => console.log(e));
+          }
         }
-      }
+      });
     }
     setSubmitFlag(false);
   }, [submitFlag, newPost]);

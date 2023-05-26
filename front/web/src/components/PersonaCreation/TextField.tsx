@@ -1,4 +1,3 @@
-import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import useDeviceType from '../../hooks/useDeviceType';
 import { useSelector } from 'react-redux';
@@ -9,7 +8,7 @@ type TextFieldType = {
   label?: string,
   type?: string,
   required?: boolean,
-  onSave?: (e:any) => void,
+  onSave?: (e: any) => void,
 }
 
 const TextField = ({ fieldname, label, type = 'text', required = false, onSave }: TextFieldType) => {

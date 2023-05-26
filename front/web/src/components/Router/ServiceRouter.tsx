@@ -17,9 +17,9 @@ const ServiceRouter = () => {
   return (<Routes>       
             <Route path='/personas' element={<MyPersonasPage />} />
       
-            <Route path='/posts' element={<PrivateRoute access={context.persona?.id!==undefined} Component={<MyPostsPage />} />} />
+            <Route path='/post' element={<PrivateRoute access={context.persona?.id!==undefined} Component={<MyPostsPage />} />} />
             <Route path='/post/:postId' element={<PrivateRoute access={context.persona?.id!==undefined} Component={<PostDetailPage />} />} /> 
-            <Route path='/write' element={<PrivateRoute access={context.persona?.id!==undefined} Component={<PostWritingPage />} />} /> 
+            <Route path='/write' element={<PrivateRoute access={context.persona?.id !== undefined} Component={<PostWritingPage />} />} /> 
             <Route path='/post/edit/:postId' element={<PostWritingPage />} />
             <Route path='/create' element={<PersonaCreationPage />} >
               <Route path='' element={<UserInfoPage />} />

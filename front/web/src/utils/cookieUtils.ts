@@ -7,7 +7,8 @@ export const setCookie = (name: string, value: string, options?: any) => {
 	if (process.env.NODE_ENV !== 'development') {
 		domain = ".postona.xyz";
 	}
-	return cookies.set(name, value, { ...options, domain: domain });
+	document.cookie = `${name}=${value};domain=${domain}`;
+	//cookies.set(name, value, { ...options, domain: domain });
 };
 
 export const getCookie = (name: string) => {

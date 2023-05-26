@@ -572,6 +572,9 @@ type Mutation {
   """새 게시물을 생성한다."""
   postCreate(newPostInput: CreatePostInput!): CreatePostResult!
 
+    """게시물을 삭제한다."""
+  deletePost(postId: GlobalID!): Void
+
   """
   특정 게시물에 대한 좋아요 토글을 수행한다.
   수행 결과 좋아요 상태가 되었다면 True, 그렇지 않다면 False를 반환한다.
