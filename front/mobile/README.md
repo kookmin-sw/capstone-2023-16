@@ -5,7 +5,7 @@
 ### 주요 기술 스택 : React Native, React Relay, Redux Toolkit
 
 ## 개발 환경
- 
+
 ### Visual Studio Code
 
 ## 아키텍처 구성
@@ -37,3 +37,24 @@
 ### github flow
 
 1. base branch : app-develop
+
+### mobile
+
+#### requirements
+
+- Node.js
+- React Native Cli
+
+### 앱 시작하기
+
+```
+cd front/mobile/
+npm install
+
+cd ios
+pod install
+
+cd ..
+npm run start
+
+```

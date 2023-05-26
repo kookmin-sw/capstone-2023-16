@@ -13,12 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from graphql_app.types import schema
+from graphql_app.resolvers import schema
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from strawberry.django.views import GraphQLView
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
 
 urlpatterns = [
     path('admin', admin.site.urls),
     path("graphql", GraphQLView.as_view(schema=schema)),
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('sentry-debug/', trigger_error),
 ]

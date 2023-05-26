@@ -1,5 +1,3 @@
-import {Dispatch, SetStateAction} from 'react';
-
 export interface CardProps {
   id: string;
   open: boolean;
@@ -7,7 +5,6 @@ export interface CardProps {
   max: number;
   current: number;
   body: string;
-  setRender?: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface CardSectionProps {
