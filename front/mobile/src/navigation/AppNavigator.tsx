@@ -50,11 +50,6 @@ const StackNavigator = createNativeStackNavigator<ParamList>();
 const AppNavigator = () => {
   return (
     <StackNavigator.Navigator>
-      {/* <StackNavigator.Screen
-        name="Loading"
-        component={LoadingScreen}
-        options={{headerShown: false}}
-      /> */}
       <StackNavigator.Screen
         name="Main"
         component={MainScreen}

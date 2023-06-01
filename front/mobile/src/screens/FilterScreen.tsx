@@ -1,97 +1,62 @@
 /* eslint-disable prettier/prettier */
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import { SafeAreaView, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { DimensionTheme } from '../components/common/shared';
 import FoldFilter from '../components/Filter/FoldFilter';
 import Search from '../components/Filter/Search';
-import { tagData } from '../constants/tag';
 import { NavigationData } from '../navigation/AppNavigator';
 import FeedCard from '../components/common/Cards/FeedCard';
 import CategorySelect from '../components/Filter/CategorySelect';
+import TagSearch from '../components/Filter/TagSearch';
+import { getAfterFiltering } from '../graphQL/Filter/FilteringPost';
+import { imagePath } from '../utils/imagePath';
 
 type Props = NavigationData<'FilterContent'>;
 
 const FilterScreen : FC<Props> = ({navigation}) => {
-    const example = [
-        {
-            feed_id: 1,
-            title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-            author: '홍현지',
-            author_id: '@hongs_0430',
-            author_img: String(require('../assets/profileImg.png')),
-            content: "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-            like:16,
-            bookmark:16,
-            comment:3,
-            hash_tag:['대학', '조별과제'],
-            like_check:true,
-            bookmark_check:false,
-        },
-        {
-            feed_id: 2,
-            title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-            author: '홍현지',
-            author_id: '@hongs_0430',
-            author_img: String(require('../assets/profileImg.png')),
-            content: "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-            like:16,
-            bookmark:16,
-            comment:3,
-            hash_tag:['대학', '조별과제'],
-            like_check:true,
-            bookmark_check:false,
-        },
-        {
-            feed_id: 3,
-            title: '반려동물: 우린 왜 고양이를 까칠하다고 생각할까?',
-            author: '홍현지',
-            author_id: '@hongs_0430',
-            author_img: String(require('../assets/profileImg.png')),
-            content: "무관심하고 까칠하다는 이미지는 사라지지 않는 것일까. 어느 정도 사실인 부분도 있을까. 고양이가 '독립적'이라는 인식에도, 반려동물로서의 인기는 사그라들지 않는다.",
-            like:16,
-            bookmark:16,
-            comment:3,
-            hash_tag:['대학', '조별과제'],
-            like_check:true,
-            bookmark_check:false,
-        },
-    ];
+    // category는 한개만, tag는 여러개 가능
     const [searchState, setSearchState] = useState(true);
     const [categoryState, setCategoryState] = useState(false);
     const [contentState, setContentState] = useState(false);
-    const [search, setSearch] = useState([]);
-    const [tagSearch, setTagSearch] = useState(false);
-    const [category, setCategory] = useState(tagData);
-    const [render, setRender] = useState(true);
+    // const [search, setSearch] = useState();
+    const [tagState, setTagState] = useState(false);
+    const [tagList, setTagList] = useState([]);
+    const [category, setCategory] = useState('');
+    // const [render, setRender] = useState(true);
     const [content, setContent] = useState([]);
     const [searchText, setSearchText] = useState('');
-    const [searchType, setSearchType] = useState([
-        {
-            'type':'제목만',
-            'state':true,
-        },
-        {
-            'type':'제목+내용',
-            'state':false,
-        },
-        {
-            'type':'내용',
-            'state':false,
-        },
-        {
-            'type':'작성자',
-            'state':false,
-        },
-    ]);
+    const [searchType, setSearchType] = useState('제목만');
     const [searchEvent, setSearchEvent] = useState(false);
+    // var contentList : Array<tmpProps> = [];
 
-    if (searchEvent){
-        console.log('searchEvent : ', searchEvent);
-        
-        setSearchEvent(false);
-        // search했을 때 이벤트
-        // 일단 서치 버튼 눌렀을 때만 서치 이벤트 발동하도록 제작
-    }
+    useEffect(() => {
+        if (searchEvent){
+            const tmptext = (searchType === '작성자' && searchText !== '') ? searchText : undefined;
+            const tmptitle = (searchType === '제목' && searchText !== '') ? searchText : undefined;
+            const tmpcategory = (category !== '') ? category : undefined;
+            const tmpTags = (tagList.length !== 0) ? tagList : undefined;
+            const fetchData = async() => {
+                try {
+                    const response = await getAfterFiltering({
+                        searchAuthor: tmptext,
+                        searchTitle: tmptitle,
+                        searchCategory: tmpcategory,
+                        searchTags: tmpTags,
+                    });
+                    console.log('filter: ', response);
+                    setContent(response);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            };
+            if (tmpTags === undefined && tmptitle === undefined && tmpcategory === undefined && tmptext === undefined){
+                setContent([]);
+            } else {
+                fetchData();
+            }
+            setSearchEvent(false);
+        }
+    }, [searchEvent]);
 
     return (
         <SafeAreaView style={{backgroundColor:'white', minHeight: '100%'}}>
@@ -106,18 +71,35 @@ const FilterScreen : FC<Props> = ({navigation}) => {
                 {searchState && <Search
                         searchText={setSearchText}
                         searchEvent={setSearchEvent}
-                        searchTagState={setTagSearch}
                         searchType={setSearchType}
                     />
                 }
+                <FoldFilter text="TAG" state={tagState} onPress={()=>{setTagState(!tagState);}} />
+                {
+                    tagState && <TagSearch setTagList={setTagList} tagList={tagList} setSearchEvent={setSearchEvent}/>
+                }
                 <FoldFilter text="CATEGORY" state={categoryState} onPress={()=>{setCategoryState(!categoryState);}} type="category"/>
                 {
-                    categoryState && <CategorySelect categoryEvent={setCategory}/>
+                    categoryState && <CategorySelect setCategory={setCategory} setSearchEvent={setSearchEvent}/>
                 }
                 <FoldFilter text="CONTENT" state={contentState} onPress={()=>{setContentState(!contentState);}}/>
                 {contentState && <View style={{marginStart:DimensionTheme.width(30)}}>
                         {
-                            example.map((value, index)=><FeedCard key={index} title={value.title} feed_id={value.feed_id} author={value.author} author_id={value.author_id} author_img={value.author_img} content={value.content} like={value.like} bookmark={value.bookmark} comment={value.comment} hash_tag={value.hash_tag} like_check={value.like_check} bookmark_check={value.bookmark_check}/>)
+                            content.map((value, index)=>(
+                                <FeedCard
+                                key={index}
+                                title={value.node.title}
+                                feed_id={value.node.id}
+                                author={value.node.author.nickname}
+                                author_id={value.node.author.id}
+                                author_img={String(imagePath.avatar)}
+                                content={value.node.contentPreview}
+                                like={value.node.likeCnt}
+                                bookmark={value.node.bookmarkCnt}
+                                comment={value.node.commentCnt}
+                                hash_tag={value.node.tags.edges}
+                              />
+                            ))
                         }
                     </View>
                 }
