@@ -8,7 +8,6 @@ export const detail_getPostQuery = graphql`
       contentPreview
       createdAt
       likeCnt
-      paidContent
       bookmarkCnt
       requiredMembershipTier
       title
@@ -32,8 +31,8 @@ export const detail_getPostQuery = graphql`
         body
         createdAt
         persona {
-          id
           nickname
+          id
         }
       }
     }

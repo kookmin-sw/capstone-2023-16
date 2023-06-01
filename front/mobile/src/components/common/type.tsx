@@ -1,5 +1,11 @@
+interface tag {
+  node: {
+    body: string;
+  };
+}
+
 export interface FeedProps {
-  feed_id: number;
+  feed_id: string;
   title: string;
   author: string;
   author_id: string;
@@ -8,12 +14,11 @@ export interface FeedProps {
   like: number;
   bookmark: number;
   comment: number;
-  hash_tag: string[];
-  like_check: boolean;
-  bookmark_check: boolean;
+  hash_tag: Array<tag>;
 }
 
-export interface tagItem {
-  node: any;
+export interface tagCategoryItem {
+  id: string;
+  text: string;
   state: boolean | undefined;
 }

@@ -1,12 +1,29 @@
-/* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {DimensionTheme} from '../shared';
-import {Text, TouchableOpacity, View, StyleSheet, Image} from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Image,
+  Alert,
+} from 'react-native';
 
 import {colors} from '../colors';
 import {useNavigation} from '@react-navigation/native';
 import {FeedProps} from '../type';
+import {selectPersona} from '../../../redux/slices/userSlice';
+import {useAppSelector} from '../../../redux/hooks';
+import {
+  PersonaLBGetquery
+} from '../../../graphQL/Post/PersonaLBGet';
+import {isBookmark, isLike} from '../../../LBCheck';
+import {useLazyLoadQuery, useMutation} from 'react-relay';
+import {Post_bookmarkMutation} from '../../../graphQL/Post/PostBookmark';
+import {Post_likeMutation} from '../../../graphQL/Post/PostLike';
+import {PostBookmarkMutation} from '../../../graphQL/Post/__generated__/PostBookmarkMutation.graphql';
+import {PostLikeMutation} from '../../../graphQL/Post/__generated__/PostLikeMutation.graphql';
 
 const ProfileBox = styled.View`
   display: flex;
@@ -44,9 +61,37 @@ const ReactionText = styled.Text`
 `;
 
 const FeedCard = (props: FeedProps) => {
-  const [like, setLike] = useState(props.like_check);
-  const [bookmark, setBookmark] = useState(props.bookmark_check);
+  // const [like, setLike] = useState(false);
+  // const [bookmark, setBookmark] = useState(false);
+  const persona = useAppSelector(selectPersona);
+  // const fetchData = async () => {
+  //     try {
+  //         const response = await persona_LBQuery(persona.id);
+  //         setLike(isLike(response.likedPosts, props.feed_id));
+  //         setBookmark(isBookmark(response.bookmarks, props.feed_id));
+  //     } catch (error) {
+  //         console.error('Error fetching data:', error);
+  //     }
+  // };
   const tempNavigation = useNavigation();
+
+  const personaData = useLazyLoadQuery(
+    PersonaLBGetquery,
+    {id: persona.id},
+    {fetchPolicy: 'network-only'},
+  );
+
+  const [like, setLike] = useState(
+    isLike(personaData.getPublicPersona.likedPosts, props.feed_id),
+  );
+  const [bookmark, setBookmark] = useState(
+    isBookmark(personaData.getPublicPersona.bookmarks, props.feed_id),
+  );
+  const [commitLike, isInFlightLike] =
+    useMutation<PostLikeMutation>(Post_likeMutation);
+  const [commitBookmark, isInFlightlike] = useMutation<PostBookmarkMutation>(
+    Post_bookmarkMutation,
+  );
 
   return (
     <TouchableOpacity
@@ -86,11 +131,37 @@ const FeedCard = (props: FeedProps) => {
             <TouchableOpacity
               onPress={() => {
                 if (like) {
-                  props.like -= 1;
-                  setLike(false);
+                  commitLike({
+                    variables: {
+                      postId: props.feed_id,
+                    },
+                    onCompleted(likedata) {
+                      if (likedata.postLikeToggle === false) {
+                        props.like -= 1;
+                        setLike(false);
+                      }
+                    },
+                    onError(error) {
+                      console.log(`@likeToggle error: ${error}`);
+                      Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
+                    },
+                  });
                 } else {
-                  props.like += 1;
-                  setLike(true);
+                  commitLike({
+                    variables: {
+                      postId: props.feed_id,
+                    },
+                    onCompleted(likedata) {
+                      if (likedata.postLikeToggle === true) {
+                        props.like += 1;
+                        setLike(true);
+                      }
+                    },
+                    onError(error) {
+                      console.log(`@likeToggle error: ${error}`);
+                      Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
+                    },
+                  });
                 }
               }}>
               <Image
@@ -107,11 +178,37 @@ const FeedCard = (props: FeedProps) => {
             <TouchableOpacity
               onPress={() => {
                 if (bookmark) {
-                  props.bookmark -= 1;
-                  setBookmark(false);
+                  commitBookmark({
+                    variables: {
+                      postId: props.feed_id,
+                    },
+                    onCompleted(bookmarkdata) {
+                      if (!bookmarkdata.postBookmarkToggle) {
+                        props.bookmark -= 1;
+                        setBookmark(false);
+                      }
+                    },
+                    onError(error) {
+                      console.log(`@likeToggle error: ${error}`);
+                      Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
+                    },
+                  });
                 } else {
-                  props.bookmark += 1;
-                  setBookmark(true);
+                  commitBookmark({
+                    variables: {
+                      postId: props.feed_id,
+                    },
+                    onCompleted(bookmarkdata) {
+                      if (bookmarkdata.postBookmarkToggle === true) {
+                        setBookmark(true);
+                        props.bookmark += 1;
+                      }
+                    },
+                    onError(error) {
+                      console.log(`@likeToggle error: ${error}`);
+                      Alert.alert('오류가 발생했습니다. 다시 시도해주세요.');
+                    },
+                  });
                 }
               }}>
               <Image
@@ -119,7 +216,7 @@ const FeedCard = (props: FeedProps) => {
                 source={
                   bookmark
                     ? require('../../../assets/bookmark-filled.png')
-                    : require('../../../assets/heart-empty.png')
+                    : require('../../../assets/bookmark-empty.png')
                 }
                 resizeMode="contain"
               />

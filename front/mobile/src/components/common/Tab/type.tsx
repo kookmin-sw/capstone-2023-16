@@ -4,9 +4,6 @@ export type routeProps = {
   isMine?: boolean;
   followingList?: any;
   followerList?: any;
-  persona_id?: any;
-  data?: any;
-  persona_nick?: any;
 };
 
 export type sceneMapProps = {

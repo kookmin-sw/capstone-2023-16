@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -14,54 +14,30 @@ import {DimensionTheme} from '../components/common/shared';
 
 import DetailHeader from '../components/Detail/DetailHeader';
 import ReactBtn from '../components/Detail/ReactBtn';
-import CommentInput from '../components/Detail/CommentInput';
 import BookmarkBtn from '../components/Detail/BookmarkBtn';
 import {NavigationData} from '../navigation/AppNavigator';
-import Comment from '../components/Detail/Comment';
 
 import {useLazyLoadQuery, useMutation} from 'react-relay';
 import {detail_getPostQuery} from '../graphQL/Post/DetailPost';
 import {PostLikeMutation} from '../graphQL/Post/__generated__/PostLikeMutation.graphql';
 import {Post_likeMutation} from '../graphQL/Post/PostLike';
-import {CommentInputMutation} from '../graphQL/Post/__generated__/CommentInputMutation.graphql';
-import {comments_inputMutation} from '../graphQL/Post/CommentInput';
-import {persona_LBQuery} from '../graphQL/Post/PersonaLBGet';
+import {PersonaLBGetquery} from '../graphQL/Post/PersonaLBGet';
 import {useAppSelector} from '../redux/hooks';
 import {selectPersona} from '../redux/slices/userSlice';
 import {PostBookmarkMutation} from '../graphQL/Post/__generated__/PostBookmarkMutation.graphql';
 import {Post_bookmarkMutation} from '../graphQL/Post/PostBookmark';
 import {Alert} from 'react-native';
 import CommentContent from '../components/Detail/CommentContent';
+import { isBookmark, isLike, isMembership } from '../LBCheck';
+import ContentBlock from '../components/Detail/ContentBlock';
+import DetailContent from '../components/Detail/DetailContent';
+import { CheckMembershipQuery } from '../graphQL/Post/CheckMembership';
+import PaidContent from '../components/Detail/PaidContent';
+import { getDetailContent } from '../graphQL/Post/getDetailContent';
+// import { BottomSheet } from '../components/common/BottomSheet/BottomSheet';
+// import HTMLView from 'react-native-htmlview';
 
 type Props = NavigationData<'DetailContent'>;
-
-type bookmarkPost = {
-  post: {
-    id: string;
-  };
-};
-
-type likePost = {
-  id: string;
-};
-
-const isBookmark = (bookmark: Array<bookmarkPost>, feed_id: string) => {
-  for (let i = 0; i < bookmark.length; i++) {
-    if (bookmark[i].post.id === feed_id) {
-      return true;
-    }
-  }
-  return false;
-};
-
-const isLike = (like: Array<likePost>, feed_id: string) => {
-  for (let i = 0; i < like.length; i++) {
-    if (like[i].id === feed_id) {
-      return true;
-    }
-  }
-  return false;
-};
 
 const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const feed_id: string = route.params as unknown as string;
@@ -69,21 +45,58 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const persona = useAppSelector(selectPersona);
 
   const [render, setRender] = useState(false);
+  // const [data, setData] = useState();
 
   const data = useLazyLoadQuery(
     detail_getPostQuery,
     {id: feed_id},
-    {fetchPolicy: 'store-or-network'},
+    {fetchPolicy: 'network-only'},
   );
+
+  // useEffect(()=>{
+  //   const fetchData = async() => {
+  //     try{
+  //       const response = await getDetailContent(feed_id);
+  //       setData(response!);
+  //     }catch(error){
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // });
+
+  // useEffect(() => {
+  //   if(render){
+  //     const fetchData = async() => {
+  //       try{
+  //         const response = await getDetailContent(feed_id);
+  //         setData(response);
+  //       }catch(error){
+  //         console.error('Error fetching data:', error);
+  //       }
+  //     };
+  //     fetchData();
+  //     setRender(false);
+  //   }
+  // }, [render])
 
   const personaData = useLazyLoadQuery(
-    persona_LBQuery,
+    PersonaLBGetquery,
     {id: persona.id},
-    {fetchPolicy: 'store-or-network'},
+    {fetchPolicy: 'network-only'},
   );
 
-  console.log('DetailPost:', data);
-  console.log('PersonaData:', personaData.getPublicPersona.likedPosts);
+  // const membershipData = useLazyLoadQuery(
+  //   CheckMembershipQuery,
+  //   {},
+  //   {fetchPolicy:'network-only'},
+  // );
+
+  // const checkMembershipData = isMembership(membershipData.getOwnMemberships.edges, data.getPost.author.id);
+
+  console.log('DetailPost:', data.getPost);
+  console.log('PersonaData:', personaData.getPublicPersona.bookmarks);
 
   const [like, setLike] = useState(data.getPost.likeCnt);
   const [likeCheck, setLikeCheck] = useState(
@@ -96,7 +109,6 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
   const [commentCount, setCommentCount] = useState(data.getPost.commentCnt);
   const [commitLike, isInFlightLike] =
     useMutation<PostLikeMutation>(Post_likeMutation);
-  // const [commitComment, isInFlightComment] = useMutation<CommentInputMutation>(comments_inputMutation);
   const [commitBookmark, isInFlightlike] = useMutation<PostBookmarkMutation>(
     Post_bookmarkMutation,
   );
@@ -229,6 +241,27 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
               author_img={String(require('../assets/profileImg.png'))}
             />
             <Text style={style.Text}>{data.getPost.content}</Text>
+            {(data.getPost.tags.edges.length > 0) ?
+              <View style={{width: DimensionTheme.width(345), margin: DimensionTheme.width(24),marginBottom: DimensionTheme.width(33),}}>
+                {data.getPost.tags.edges.map((value: any, index?: number)=>{
+                  return <Text>{value.node.body}</Text>
+                })}
+              </View>
+            :
+              <></>
+            }
+            {/* {
+              (data.getPost.requiredMembershipTier === null) ? 
+                <PaidContent feed_id={feed_id} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} />
+              :
+                (checkMembershipData.state) ? 
+                  (parseInt(membershipData.tier.charAt(5), 10) < parseInt(data.getPost.requiredMembershipTier.charAt(5), 10)) ? 
+                    <ContentBlock paid={false} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} lowtier={true}/> 
+                  : 
+                    <PaidContent feed_id={feed_id} author_id={data.getPost.author.id} author_nickname={data.getPost.author.nickname}/> 
+                : 
+                  <ContentBlock paid={false} author_nickname={data.getPost.author.nickname} author_id={data.getPost.author.id} lowtier={false}/>
+            } */}
             <View
               style={{
                 ...style.RowView,
@@ -344,6 +377,7 @@ const DetailScreen: FC<Props> = ({route, navigation}: Props) => {
             </View>
             <CommentContent
               feed_id={feed_id}
+              list={data.getPost.comments}
               render={setRender}
               state={render}
             />
@@ -394,7 +428,6 @@ const style = StyleSheet.create({
   Text: {
     width: DimensionTheme.width(345),
     margin: DimensionTheme.width(24),
-    marginBottom: DimensionTheme.width(33),
     fontSize: DimensionTheme.fontSize(14),
     color: 'black',
   },

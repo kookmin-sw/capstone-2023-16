@@ -20,10 +20,6 @@ export type ParamList = {
   Signup: undefined;
   BaseInfo: undefined;
   InterestTagSetting: undefined;
-  MyPage: undefined;
-  Following: undefined;
-  History: undefined;
-  Setting: undefined;
 };
 
 const StackNavigator = createNativeStackNavigator<ParamList>();
