@@ -25,7 +25,7 @@ export function AuthProvider({ children }:PropsWithChildren) {
 
   const login = useCallback(() => {
     setLoginState(true);
-    setCookie('isLoggedIn', 'true');
+    setCookie('isLoggedIn', 'true', true);
   }, []);
   const logout = useCallback(() => {
     setLoginState(false);
