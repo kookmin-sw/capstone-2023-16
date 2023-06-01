@@ -17,6 +17,7 @@ import {graphql} from 'babel-plugin-relay/macro';
 import {useLazyLoadQuery} from 'react-relay';
 import SmallButton from '../../components/common/Buttons/SmallButton';
 import {imagePath} from '../../utils/imagePath';
+import {getAllOwnPersonas} from '../../relay/Persona/getAllOwnPersonas';
 
 const FollowingContainer = styled(Container)`
   align-items: flex-start;
@@ -40,36 +41,28 @@ const FollowingCardSection = styled.View`
   margin-top: 80px;
 `;
 
-const getOwnPersonasQuery = graphql`
-  query PersonaScreenQuery {
-    getOwnPersonas(sortingOpt: {direction: ASC}) {
-      edges {
-        node {
-          id
-          nickname
-        }
-      }
-    }
-  }
-`;
-
 type Props = NavigationData<'Persona'>;
 
 export const PersonaScreen: FC<Props> = ({navigation}) => {
-  const data = useLazyLoadQuery(getOwnPersonasQuery, {
-    fetchPolicy: 'store-or-network',
-  });
-
   const [personas, SetPersonas] = useState([]);
 
   useEffect(() => {
-    SetPersonas([]);
-    console.log('###personaList');
-    console.log(data.getOwnPersonas);
-    data.getOwnPersonas.edges.map(item => {
-      SetPersonas(prev => [...prev, item.node]);
-    });
-  }, [data]);
+    const fetchData = async () => {
+      try {
+        const response = await getAllOwnPersonas();
+        SetPersonas([]);
+        console.log('###personaList');
+        console.log(response);
+        response?.edges.map(item => {
+          SetPersonas(prev => [...prev, item.node]);
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <FollowingContainer>
@@ -125,7 +118,7 @@ export const PersonaScreen: FC<Props> = ({navigation}) => {
             marginTop: Platform.OS === 'ios' ? 7 : 3,
             color: colors.black,
           }}>
-          {data.getOwnPersonas.edges.length}명
+          {personas?.length}명
         </SmallText>
       </TopSection>
       <SearchInput viewStyle={{marginLeft: 20}} placeholder="페르소나 검색" />

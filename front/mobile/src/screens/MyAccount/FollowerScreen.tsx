@@ -31,6 +31,7 @@ type FollowProps = {
 };
 
 export const FollowerScreen: FC<FollowProps> = props => {
+  console.log('follow: ', props);
   return (
     <FollowingContainer>
       <TopSection>
@@ -40,7 +41,7 @@ export const FollowerScreen: FC<FollowProps> = props => {
             marginTop: Platform.OS === 'ios' ? 7 : 3,
             color: colors.black,
           }}>
-          {props.data.length}명
+          {props.data?.length}명
         </SmallText>
       </TopSection>
       <SearchInput viewStyle={{marginLeft: 20}} placeholder="팔로워 검색" />

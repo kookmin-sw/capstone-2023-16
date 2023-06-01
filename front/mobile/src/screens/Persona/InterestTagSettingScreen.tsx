@@ -128,11 +128,12 @@ export const InterestTagSettingScreen: FC<Props> = ({
       onCompleted(data) {
         console.log(data);
         Alert.alert('페르소나 생성 성공!');
-        navigation.navigate('MyPage', {
-          isMine: true,
-          nickname: data.personaCreate.nickname,
-          id: data.personaCreate.id,
-        });
+        // navigation.navigate('MyPage', {
+        //   isMine: true,
+        //   nickname: data.personaCreate.nickname,
+        //   id: data.personaCreate.id,
+        // });
+        navigation.navigate('Main');
       },
       onError(error) {
         console.log('@persona create error : ', error);
