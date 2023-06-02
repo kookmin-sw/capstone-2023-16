@@ -65,11 +65,6 @@ const AppNavigator = () => {
         }}
       />
       <StackNavigator.Screen
-        name="Setting"
-        component={SettingScreen}
-        options={{headerShown: true, title: 'SETTING'}}
-      />
-      <StackNavigator.Screen
         name="BaseInfo"
         component={BaseInfoScreen}
         options={{

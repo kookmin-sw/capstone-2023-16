@@ -27,8 +27,8 @@ import {selectPersona, setPersona} from '../redux/slices/userSlice';
 import {useAppDispatch, useAppSelector} from '../redux/hooks';
 import {getInitPersona} from '../relay/Persona/getInitPersona';
 import {storeData} from '../asyncstorage';
-import PostSeeListGetQuery from '../graphQL/Main/PostSeeListGetQuery';
-import PostSeePaginationFragment from '../graphQL/Main/PostSeePaginationFragment';
+// import PostSeeListGetQuery from '../graphQL/Main/PostSeeListGetQuery';
+// import PostSeePaginationFragment from '../graphQL/Main/PostSeePaginationFragment';
 import PostIdListGetQuery from '../graphQL/Main/PostIdListGetQuery';
 import PostIdPaginationFragment from '../graphQL/Main/PostIdPaginationFragment';
 

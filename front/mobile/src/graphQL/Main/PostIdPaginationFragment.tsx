@@ -6,8 +6,8 @@ const PostIdPaginationFragment = graphql`
   @argumentDefinitions(
     first: {type: "Int", defaultValue: 20}
     after: {type: "String"}
-  ) {
-    getPublicPosts(first: $first, after: $after, sortingOpt: {sortBy: ID})
+  )($tag: GlobalID!) {
+    getPublicPosts(first: $first, after: $after, sortingOpt: {sortBy: ID}, tagsFilter: {tagIds: $tag})
       @connection(key: "IdEdges_getPublicPosts") {
       edges {
         node {
