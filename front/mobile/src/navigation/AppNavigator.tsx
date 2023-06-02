@@ -56,6 +56,11 @@ const AppNavigator = () => {
         options={{headerShown: false}}
       />
       <StackNavigator.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={{headerShown: false}}
+      />
+      <StackNavigator.Screen
         name="MyPage"
         component={MyPageScreen}
         options={{

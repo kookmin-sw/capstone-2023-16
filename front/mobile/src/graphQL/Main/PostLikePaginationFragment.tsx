@@ -7,8 +7,8 @@ const PostLikePaginationFragment = graphql`
         @argumentDefinitions(
             first: {type: "Int", defaultValue: 20}
             after: {type: "String"}
-        )($tag: GlobalID!) {
-        getPublicPosts(first: $first, after: $after, sortingOpt: {sortBy: LIKE_CNT}, tagsFilter: {tagIds: $tag})
+        ){
+        getPublicPosts(first: $first, after: $after, sortingOpt: {sortBy: LIKE_CNT})
         @connection(key: "LikeEdges_getPublicPosts") {
             edges {
                 node {
